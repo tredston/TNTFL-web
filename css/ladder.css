@@ -318,6 +318,10 @@ h3.statbox {
   background-color: #FCF8E3;
 }
 
+.game .panel-achievement .panel-body {
+  font-size: 14px;
+}
+
 .panel-achievement .panel-heading {
   background-color: #DDDDDD;
   padding: 5px 10px;
