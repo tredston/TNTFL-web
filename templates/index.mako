@@ -3,7 +3,9 @@
 from datetime import datetime
 %>
 <%inherit file="html.mako" />
+
 <div class="container-fluid">
+${self.blocks.render("ladder-legend", base=self.attr.base)}
   <div class="row">
     <div class="col-lg-8">
       <div class="panel panel-default">
