@@ -152,6 +152,23 @@ class Unstable(Achievement):
         return result
 
 
+class UpUpAndAway(Achievement):
+    name = "UpUpAndAway"
+    description = "Gain points for 8 consecutive games"
+
+    def __init__(self):
+        self.count = Counter()
+
+    def applies(self, player, game, opponent, ladder):
+        delta = game.skillChangeToBlue if player.name == game.bluePlayer else -game.skillChangeToBlue
+        if delta > 0:
+            self.count[player.name] += 1
+        else:
+            self.count[player.name] = 0
+
+        return self.count[player.name] > 0 and self.count[player.name] % 8 == 0
+
+
 class Comrades(Achievement):
     name = "Comrades"
     description = "Play 100 games against the same opponent"
