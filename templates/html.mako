@@ -56,9 +56,14 @@ base = ""
                 $(".blue.score").val(10 - $(".red.score").val());
               })
             })( jQuery );
+            (function($){
+              $(".game-entry input").change(function() {
+                checkGameSubmitForm();
+              })
+            })( jQuery );
             </script>
           </div>
-          <button type="submit" class="btn btn-default" onClick="this.form.submit(); this.disabled=true;">Add game <span class="glyphicon glyphicon-triangle-right"></span></button>
+          <button type="submit" id="gameFormSubmit" disabled="true" class="btn btn-default" onClick="this.form.submit(); this.disabled=true;">Add game <span class="glyphicon glyphicon-triangle-right"></span></button>
         </form>
       </div><!-- /.container-fluid -->
     </nav>
