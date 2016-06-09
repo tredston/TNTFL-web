@@ -153,7 +153,7 @@ class Unstable(Achievement):
 
 
 class UpUpAndAway(Achievement):
-    name = "UpUpAndAway"
+    name = "Up Up And Away"
     description = "Gain points for 8 consecutive games"
 
     def __init__(self):
