@@ -63,10 +63,7 @@ class TableFootballLadder(object):
             game.redPosChange = redPosBefore - redPosAfter
 
         if self._ladderTime['now']:
-            game.redAchievements = self.achievements.getAllForGame(red, game, blue, self)
-            game.blueAchievements = self.achievements.getAllForGame(blue, game, red, self)
-            red.achieve(game.redAchievements, game)
-            blue.achieve(game.blueAchievements, game)
+            self.achievements.apply(red, game, blue, self)
 
     # returns blue's goal ratio
     def predict(self, red, blue):

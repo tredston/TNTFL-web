@@ -354,7 +354,13 @@ class Achievements(object):
         for clz in Achievement.__subclasses__():
             self.achievements.append(clz())
 
-    def getAllForGame(self, player, game, opponent, ladder):
+    def apply(self, red, game, blue, ladder):
+        game.redAchievements = self._getAllForGame(red, game, blue, ladder)
+        game.blueAchievements = self._getAllForGame(blue, game, red, ladder)
+        red.achieve(game.redAchievements, game)
+        blue.achieve(game.blueAchievements, game)
+
+    def _getAllForGame(self, player, game, opponent, ladder):
         '''
         Identifies all achievements unlocked by player in game against opponent.
         This method should be called AFTER Player.game() has been called with game for BOTH players.
