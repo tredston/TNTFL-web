@@ -1,6 +1,7 @@
 from collections import Counter, defaultdict
 import datetime
 import os.path
+import abc
 
 
 def oncePerPlayer(applies):
@@ -12,7 +13,19 @@ def oncePerPlayer(applies):
 
 
 class Achievement(object):
-    pass
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractproperty
+    def name(self):
+        pass
+
+    @abc.abstractproperty
+    def description(self):
+        pass
+
+    @abc.abstractmethod
+    def applies(self, player, game, opponent, ladder):
+        pass
 
 
 class FirstGame(Achievement):
