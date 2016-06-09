@@ -68,7 +68,7 @@ class TableFootballLadder(object):
             red.achieve(game.redAchievements, game)
             blue.achieve(game.blueAchievements, game)
 
-    # returns blueScore/10
+    # returns blue's goal ratio
     def predict(self, red, blue):
         return 1 / (1 + 10 ** ((red.elo - blue.elo) / 180))
 
