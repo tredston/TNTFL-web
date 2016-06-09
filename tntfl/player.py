@@ -10,12 +10,15 @@ class Streak(object):
     @property
     def count(self):
         return len(self.gameTimes)
+
     @property
     def fromDate(self):
         return self.gameTimes[0] if self.count > 0 else 0
+
     @property
     def toDate(self):
         return self.gameTimes[-1] if self.count > 0 else 0
+
 
 class Player(object):
     def __init__(self, name):
@@ -147,8 +150,8 @@ class Player(object):
 
     def getStreaks(self):
         streaks = self.getAllStreaks(self.games)
-        winStreaks = sorted([s for s in streaks['past'] if s.win], key=lambda s:s.count, reverse=True)
-        loseStreaks = sorted([s for s in streaks['past'] if not s.win], key=lambda s:s.count, reverse=True)
+        winStreaks = sorted([s for s in streaks['past'] if s.win], key=lambda s: s.count, reverse=True)
+        loseStreaks = sorted([s for s in streaks['past'] if not s.win], key=lambda s: s.count, reverse=True)
         currentStreakType = "(last game was a draw)" if streaks['current'].count == 0 else "wins" if streaks['current'].win else "losses"
         return {
             'win': winStreaks[0] if len(winStreaks) > 0 else Streak(),
@@ -156,6 +159,7 @@ class Player(object):
             'current': streaks['current'],
             'currentType': currentStreakType
         }
+
 
 class PerPlayerStat(object):
     games = 0

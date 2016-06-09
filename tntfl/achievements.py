@@ -5,8 +5,8 @@ import os.path
 
 def oncePerPlayer(applies):
     '''
-    Decorate an Achievement class's applies() function with oncePerPlayer to limit the achievement
-    to a maximum of once per player.
+    Decorate an Achievement class' applies() function with oncePerPlayer to
+    limit the achievement to a maximum of once per player.
     '''
     return lambda self, p, g, o, l: False if self.__class__ in p.achievements.keys() else applies(self, p, g, o, l)
 
@@ -94,6 +94,7 @@ class AgainstTheOdds(Achievement):
             return (game.redScore > game.blueScore) and (player.elo + game.skillChangeToBlue) + 50 <= (opponent.elo - game.skillChangeToBlue)
         else:
             return (game.blueScore > game.redScore) and (player.elo - game.skillChangeToBlue) + 50 <= (opponent.elo + game.skillChangeToBlue)
+
 
 class AgainstAllOdds(Achievement):
     name = "Against All Odds"
@@ -328,7 +329,7 @@ class BossFight(Achievement):
                 self.boss = f.readline().strip()
 
     def applies(self, player, game, opponent, ladder):
-        if self.boss != None:
+        if self.boss is not None:
             won = game.blueScore > game.redScore if player.name == game.bluePlayer else game.redScore > game.blueScore
             return self.boss and self.boss == opponent.name and won
         return False

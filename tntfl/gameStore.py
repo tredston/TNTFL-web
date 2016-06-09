@@ -1,6 +1,7 @@
 from time import time
 from tntfl.game import Game
 
+
 class GameStore(object):
 
     def __init__(self, ladderFilePath):
@@ -24,7 +25,7 @@ class GameStore(object):
         with open(self._ladderFilePath, 'a') as ladder:
             self._writeGame(ladder, game)
 
-    def deleteGame(self, gameTime, deletedBy, deletedAt = time()):
+    def deleteGame(self, gameTime, deletedBy, deletedAt=time()):
         games = self.getGames()
         found = False
         for game in games:

@@ -12,14 +12,14 @@ class TableFootballLadder(object):
     # Number of days inactivity after which players are considered inactive
     DAYS_INACTIVE = 60
 
-    def __init__(self, ladderFilePath, useCache = True, timeRange=None):
+    def __init__(self, ladderFilePath, useCache=True, timeRange=None):
         self.games = []
         self.players = {}
         self.achievements = Achievements()
         self._recentlyActivePlayers = (-1, [])
         self._gameStore = CachingGameStore(ladderFilePath, useCache)
 
-        self._ladderTime = {'now': timeRange == None, 'range': timeRange}
+        self._ladderTime = {'now': timeRange is None, 'range': timeRange}
         self._theTime = time.time()
         self._gameStore.loadGames(self, self._ladderTime)
 
@@ -39,7 +39,7 @@ class TableFootballLadder(object):
 
         self._calculateSkillChange(red, game, blue)
 
-        activePlayers = {p.name: p for p in self.getActivePlayers(game.time -1)}
+        activePlayers = {p.name: p for p in self.getActivePlayers(game.time - 1)}
         players = sorted(activePlayers.values(), key=lambda x: x.elo, reverse=True)
         redPosBefore = players.index(red) if red in players else -1
         bluePosBefore = players.index(blue) if blue in players else -1
@@ -54,7 +54,7 @@ class TableFootballLadder(object):
         redPosAfter = players.index(red)
         bluePosAfter = players.index(blue)
 
-        game.bluePosAfter = bluePosAfter + 1 # because it's zero-indexed here
+        game.bluePosAfter = bluePosAfter + 1  # because it's zero-indexed here
         game.redPosAfter = redPosAfter + 1
 
         if bluePosBefore > 0:
@@ -68,7 +68,7 @@ class TableFootballLadder(object):
             red.achieve(game.redAchievements, game)
             blue.achieve(game.blueAchievements, game)
 
-    #returns blueScore/10
+    # returns blueScore/10
     def predict(self, red, blue):
         return 1 / (1 + 10 ** ((red.elo - blue.elo) / 180))
 
@@ -78,15 +78,15 @@ class TableFootballLadder(object):
         delta = 25 * (result - predict)
         game.skillChangeToBlue = delta
 
-    def getActivePlayers(self, atTime = None):
-        if atTime == None:
+    def getActivePlayers(self, atTime=None):
+        if atTime is None:
             atTime = self._getTime()
         if self._recentlyActivePlayers[0] != atTime:
             self._recentlyActivePlayers = (atTime, [p for p in self.players.values() if self.isPlayerActive(p, atTime)])
         return self._recentlyActivePlayers[1]
 
     def isPlayerActive(self, player, atTime=None):
-        if atTime == None:
+        if atTime is None:
             atTime = self._getTime()
         for game in reversed(player.games):
             if game.time <= atTime:

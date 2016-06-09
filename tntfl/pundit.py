@@ -3,8 +3,9 @@ import tntfl.template_utils as utils
 from datetime import datetime
 from tntfl.ladder import TableFootballLadder
 
+
 class FactChecker(object):
-    _reportCount = 10    #eg report the 10 most significant games
+    _reportCount = 10    # eg report the 10 most significant games
 
     def __init__(self):
         self._sharedGames = {}
@@ -29,6 +30,7 @@ class FactChecker(object):
         else:
             self._sharedGames[(player1, player2)] = utils.getSharedGames(player1, player2)
             return self._sharedGames[(player1, player2)]
+
 
 class HighestSkill(FactChecker):
     _description = 'That game puts %s on their highest ever skill.'
@@ -58,6 +60,7 @@ class HighestSkill(FactChecker):
                 return self._description % (player.name)
         return None
 
+
 class SignificantGames(FactChecker):
     _description = "That was %s's %smost significant game."
 
@@ -80,6 +83,7 @@ class SignificantGames(FactChecker):
             return self._description % (player.name, ordinal)
         return None
 
+
 class Games(FactChecker):
     _description = "That was %s's %s game."
 
@@ -92,12 +96,13 @@ class Games(FactChecker):
             return self._description % (player.name, self.ordinal(numGames))
         return None
 
+
 class GamesAgainst(Games):
     _description = "That was %s and %s's %s encounter."
 
     def __init__(self):
         Games.__init__(self)
-        self._pairings = {} #to avoid repeating this fact in a game
+        self._pairings = {}  # to avoid repeating this fact in a game
 
     def getFact(self, player, game, opponent):
         key = None
@@ -114,6 +119,7 @@ class GamesAgainst(Games):
             self._pairings[key].append(numGames)
             return self._description % (player.name, opponent.name, self.ordinal(numGames))
         return None
+
 
 class Goals(FactChecker):
     _description = "That game featured %s's %s goal."
@@ -133,6 +139,7 @@ class Goals(FactChecker):
                 return i
         return None
 
+
 class GoalsAgainst(Goals):
     _description = "That game featured %s's %s goal against %s."
 
@@ -146,6 +153,7 @@ class GoalsAgainst(Goals):
             return self._description % (player.name, self.ordinal(goals), opponent.name) if goals is not None else None
         return None
 
+
 class Wins(FactChecker):
     _description = "That was %s's %s win."
 
@@ -154,7 +162,7 @@ class Wins(FactChecker):
         self._wins = {}
 
     def _getWinsOrdinal(self, player, game, games):
-        numWins = len([g for g in games if g.time <= game.time ])
+        numWins = len([g for g in games if g.time <= game.time])
         if numWins >= 10 and self.isRoundNumber(numWins) and player.wonGame(game):
             return self.ordinal(numWins)
 
@@ -163,6 +171,7 @@ class Wins(FactChecker):
             self._wins[player.name] = [g for g in player.games if player.wonGame(g)]
         ordinal = self._getWinsOrdinal(player, game, self._wins[player.name])
         return self._description % (player.name, ordinal) if ordinal is not None else None
+
 
 class WinsAgainst(Wins):
     _description = "That was %s's %s win against %s."
@@ -182,6 +191,7 @@ class WinsAgainst(Wins):
         ordinal = self._getWinsOrdinal(player, game, playerWins[opponent.name])
         return self._description % (player.name, ordinal, opponent.name) if ordinal is not None else None
 
+
 class Streaks(FactChecker):
     _description = "At %d games, %s was on their %slongest %s streak."
     _descriptionBroken = "%s broke their %s streak of %d games."
@@ -200,7 +210,7 @@ class Streaks(FactChecker):
         return split
 
     def _rewind(self, streaks, time):
-        rewound = {'past': [], 'current':Streak()}
+        rewound = {'past': [], 'current': Streak()}
         for streak in streaks['past']:
             if streak.toDate < time:
                 rewound['past'].append(streak)
@@ -212,19 +222,19 @@ class Streaks(FactChecker):
             rewound['current'] = self._truncateStreak(streaks['current'], time)
         return rewound
 
-    #returns 1-indexed significance, 0 = insignificant
+    # returns 1-indexed significance, 0 = insignificant
     def _getCurrentStreakSignificance(self, streaks):
         if streaks['current'].count >= 3:
             prevStreaks = [s for s in streaks['past'] if s.win == streaks['current'].win]
             if len(prevStreaks) > 0:
-                #find the current streak's significance
+                # find the current streak's significance
                 sortedStreaks = sorted(prevStreaks, key=lambda s:s.count, reverse=True)
                 for i, s in enumerate(sortedStreaks):
                     if s.count < streaks['current'].count:
                         return i + 1
                     elif i >= self._reportCount - 1:
                         return 0
-                #not found, is "least significant"
+                # not found, is "least significant"
                 return len(prevStreaks) + 1
             else:
                 return 1
@@ -249,6 +259,7 @@ class Streaks(FactChecker):
             broken = self._getBrokenStreak(player.games, streaks, game)
             return self._descriptionBroken % (player.name, self._getStreakTypeText(broken.win), broken.count) if broken is not None else None
 
+
 class StreaksAgainst(Streaks):
     _description = "That was %s's %s consecutive win against %s."
     _descriptionBroken = '%s avoided losing to %s for the first time in %d games.'
@@ -266,6 +277,7 @@ class StreaksAgainst(Streaks):
             broken = self._getBrokenStreak(sharedGames, streaks, game)
             return self._descriptionBroken % (player.name, opponent.name, broken.count) if broken is not None and not broken.win else None
 
+
 class FirstGameSince(FactChecker):
     _description = "That was %s's first game since retiring on %s."
 
@@ -277,6 +289,7 @@ class FirstGameSince(FactChecker):
                 dateStr = date.strftime("%Y-%m-%d")
                 return self._description % (player.name, dateStr)
         return None
+
 
 class Pundit(object):
     _factCheckers = []
@@ -293,16 +306,16 @@ class Pundit(object):
         facts = []
         for clz in self._factCheckers:
             fact = clz.getFact(player, game, opponent)
-            if fact != None:
+            if fact is not None:
                 facts.append(fact)
         return facts
 
     def anyComment(self, player, game, opponent):
         for clz in self._factCheckers:
             fact = clz.getFact(player, game, opponent)
-            if fact != None:
+            if fact is not None:
                 return True
             fact = clz.getFact(opponent, game, player)
-            if fact != None:
+            if fact is not None:
                 return True
         return False
