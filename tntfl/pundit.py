@@ -1,5 +1,5 @@
 from tntfl.player import Streak
-import tntfl.templateUtils as utils
+import tntfl.template_utils as utils
 from datetime import datetime
 from tntfl.ladder import TableFootballLadder
 

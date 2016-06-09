@@ -1,6 +1,6 @@
 <%page args="game, base, totalActivePlayers, punditryAvailable=False, speculative=False"/>
 <%!
-import tntfl.templateUtils as utils
+import tntfl.template_utils as utils
 %>
 <%namespace name="blocks" file="blocks.mako"/>
 <%

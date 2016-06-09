@@ -2,7 +2,7 @@
 title = "Head to Head | "
 base = "../../../"
 from tntfl.game import Game
-import tntfl.templateUtils as utils
+import tntfl.template_utils as utils
 
 def getNumWins(player, games):
     return len([g for g in games if (g.redPlayer == player.name and g.redScore > g.blueScore) or (g.bluePlayer == player.name and g.blueScore > g.redScore)])

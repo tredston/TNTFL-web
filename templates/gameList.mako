@@ -2,7 +2,7 @@
 <%namespace name="blocks" file="blocks.mako" />
 <%!
 from tntfl.pundit import Pundit
-import tntfl.templateUtils as utils
+import tntfl.template_utils as utils
 %>
 <%
   pundit = Pundit()

@@ -5,7 +5,7 @@ from tntfl.game import Game
 from tntfl.web import get_template
 from tntfl.player import PerPlayerStat
 from tntfl.pundit import Pundit
-import tntfl.templateUtils as utils
+import tntfl.template_utils as utils
 
 def getPerPlayerStats(player):
     pps = {}

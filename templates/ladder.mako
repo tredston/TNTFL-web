@@ -4,7 +4,7 @@ import re
 from datetime import datetime
 from tntfl.player import Player
 from tntfl.ladder import TableFootballLadder
-import tntfl.templateUtils as utils
+import tntfl.template_utils as utils
 
 def rankPlayers(ladder):
     ranked = []

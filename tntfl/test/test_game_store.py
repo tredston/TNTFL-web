@@ -1,6 +1,6 @@
 import unittest
 import os
-from tntfl.gameStore import GameStore
+from tntfl.game_store import GameStore
 from tntfl.game import Game
 
 class TestGameStore(unittest.TestCase):

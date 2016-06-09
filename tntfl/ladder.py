@@ -3,7 +3,7 @@ import cPickle as pickle
 import time
 from tntfl.achievements import Achievements
 from tntfl.player import Player, Streak
-from tntfl.gameStore import GameStore
+from tntfl.game_store import GameStore
 from tntfl.game import Game
 
 class CachingGameStore(object):

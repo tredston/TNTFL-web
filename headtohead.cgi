@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from tntfl.ladder import TableFootballLadder
 from tntfl.web import serve_template, fail_404
-import tntfl.templateUtils as utils
+import tntfl.template_utils as utils
 import cgi
 
 form = cgi.FieldStorage()
