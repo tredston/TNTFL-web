@@ -5,6 +5,7 @@ from tntfl.achievements import Achievements
 from tntfl.player import Player, Streak
 from tntfl.caching_game_store import CachingGameStore
 from tntfl.game import Game
+from tntfl.skill_change import Elo
 
 
 class TableFootballLadder(object):
@@ -16,6 +17,7 @@ class TableFootballLadder(object):
         self.games = []
         self.players = {}
         self.achievements = Achievements()
+        self._skillChange = Elo()
         self._recentlyActivePlayers = (-1, [])
         self._gameStore = CachingGameStore(ladderFilePath, useCache)
 
@@ -37,7 +39,7 @@ class TableFootballLadder(object):
         red = self.getPlayer(game.redPlayer)
         blue = self.getPlayer(game.bluePlayer)
 
-        self._calculateSkillChange(red, game, blue)
+        self._skillChange.apply(red, game, blue)
 
         activePlayers = {p.name: p for p in self.getActivePlayers(game.time - 1)}
         players = sorted(activePlayers.values(), key=lambda x: x.elo, reverse=True)
@@ -67,13 +69,7 @@ class TableFootballLadder(object):
 
     # returns blue's goal ratio
     def predict(self, red, blue):
-        return 1 / (1 + 10 ** ((red.elo - blue.elo) / 180))
-
-    def _calculateSkillChange(self, red, game, blue):
-        predict = self.predict(red, blue)
-        result = float(game.blueScore) / (game.blueScore + game.redScore)
-        delta = 25 * (result - predict)
-        game.skillChangeToBlue = delta
+        return self._skillChange.getBlueGoalRatio(red, blue)
 
     def getActivePlayers(self, atTime=None):
         if atTime is None:
