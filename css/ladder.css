@@ -308,6 +308,10 @@ h3.statbox {
   background-color: #FCF8E3;
 }
 
+.game .panel-achievement .panel-body {
+  font-size: 14px;
+}
+
 .panel-achievement .panel-heading {
   background-color: #DDDDDD;
   padding: 5px 10px;
@@ -479,6 +483,32 @@ span.irs > span {
   padding: 0;
 }
 
+
+/*
+ * Ladder key/legend
+ */
+.ladder-legend {}
+.ladder-legend .legend {
+  list-style: none;
+}
+.legend>li {
+  display: block;
+  float: left;
+  margin-right: 30px;
+}
+.legend>li>span {
+  vertical-align: middle;
+}
+.legend-entry {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+.legend .text {
+  line-height: 40px;
+  height: 40px;
+}
 
 /*
  * Misc BS over-writes
