@@ -137,7 +137,7 @@ class TheWorst(Achievement):
     @oncePerPlayer
     def applies(self, player, game, opponent, ladder):
         rank = game.bluePosAfter if player.name == game.bluePlayer else game.redPosAfter
-        return rank == len(ladder.getActivePlayers(game.time))
+        return rank == ladder.getNumActivePlayers(game.time)
 
 
 class Improver(Achievement):

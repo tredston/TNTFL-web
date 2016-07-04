@@ -25,7 +25,7 @@ import os
 <div class="game table-responsive container-fluid">
   <table class="table no-table-boder" style="margin-top: 20px;">
     <tbody>
-      ${self.blocks.render("game", game=game, base=self.attr.base, totalActivePlayers=len(ladder.getActivePlayers(game.time-1)))}
+      ${self.blocks.render("game", game=game, base=self.attr.base, totalActivePlayers=ladder.getNumActivePlayers(game.time-1))}
     </tbody>
   </table>
 </div>

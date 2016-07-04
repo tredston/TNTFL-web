@@ -41,7 +41,7 @@ class TableFootballLadder(object):
 
         self._skillChange.apply(red, game, blue)
 
-        activePlayers = {p.name: p for p in self.getActivePlayers(game.time - 1)}
+        activePlayers = {p.name: p for p in self._getActivePlayers(game.time - 1)}
         before = activePlayers.values()
 
         blue.game(game)
@@ -78,12 +78,15 @@ class TableFootballLadder(object):
     def predict(self, red, blue):
         return self._skillChange.getBlueGoalRatio(red, blue)
 
-    def getActivePlayers(self, atTime=None):
+    def _getActivePlayers(self, atTime=None):
         if atTime is None:
             atTime = self._getTime()
         if self._recentlyActivePlayers[0] != atTime:
             self._recentlyActivePlayers = (atTime, [p for p in self.players.values() if self.isPlayerActive(p, atTime)])
         return self._recentlyActivePlayers[1]
+
+    def getNumActivePlayers(self, atTime=None):
+        return len(self._getActivePlayers(atTime))
 
     def isPlayerActive(self, player, atTime=None):
         if atTime is None:

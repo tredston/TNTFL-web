@@ -43,7 +43,7 @@ def getPunditry(pundit, game, ladder):
 <%
 pundit = Pundit()
 facts = getPunditry(pundit, game, ladder)
-totalActivePlayers = len(ladder.getActivePlayers(game.time-1))
+totalActivePlayers = ladder.getNumActivePlayers(game.time-1)
 %>
 
 <div class="game table-responsive container-fluid">

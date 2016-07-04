@@ -36,7 +36,7 @@ for game in ladder.games:
     blueGoals += game.blueScore
 
 mostSignificantGames = getMostSignificantGames(ladder.games)
-activePlayers = len(ladder.getActivePlayers())
+activePlayers = ladder.getNumActivePlayers()
 skillBounds = ladder.getSkillBounds()
 streaks = ladder.getStreaks()
 plotData = getGamesPerDay(ladder)
