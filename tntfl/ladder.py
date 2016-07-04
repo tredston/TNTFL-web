@@ -42,7 +42,7 @@ class TableFootballLadder(object):
         self._skillChange.apply(red, game, blue)
 
         activePlayers = {p.name: p for p in self.getActivePlayers(game.time - 1)}
-        before = sorted(activePlayers.values(), key=lambda x: x.elo, reverse=True)
+        before = activePlayers.values()
 
         blue.game(game)
         red.game(game)
@@ -50,7 +50,7 @@ class TableFootballLadder(object):
         activePlayers[red.name] = red
         activePlayers[blue.name] = blue
         self._recentlyActivePlayers = (game.time, activePlayers.values())
-        after = sorted(activePlayers.values(), key=lambda x: x.elo, reverse=True)
+        after = activePlayers.values()
 
         self.rankChange(before, after, red, game, blue)
 
@@ -58,8 +58,11 @@ class TableFootballLadder(object):
             self.achievements.apply(red, game, blue, self)
 
     def rankChange(self, before, after, red, game, blue):
+        before = sorted(before, key=lambda x: x.elo, reverse=True)
         redPosBefore = before.index(red) if red in before else -1
         bluePosBefore = before.index(blue) if blue in before else -1
+
+        after = sorted(after, key=lambda x: x.elo, reverse=True)
         redPosAfter = after.index(red)
         bluePosAfter = after.index(blue)
 
