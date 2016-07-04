@@ -143,6 +143,63 @@ class TestUnstable(unittest.TestCase):
         self.assertFalse(result)
 
 
+class TestUpUpAndAway(unittest.TestCase):
+    def test(self):
+        sut = UpUpAndAway()
+        player = Player("foo")
+        opponent = Player("bar")
+        for i in range(7):
+            game = Game(player.name, 6, opponent.name, 4, i)
+            game.skillChangeToBlue = -1
+            player.game(game)
+            opponent.game(game)
+            result = sut.applies(player, game, opponent, None)
+            self.assertFalse(result)
+            result = sut.applies(opponent, game, player, None)
+            self.assertFalse(result)
+
+        game = Game(player.name, 6, opponent.name, 4, 8)
+        game.skillChangeToBlue = -1
+        player.game(game)
+        opponent.game(game)
+        result = sut.applies(player, game, opponent, None)
+        self.assertTrue(result)
+        result = sut.applies(opponent, game, player, None)
+        self.assertFalse(result)
+
+    def testNonContiguous(self):
+        sut = UpUpAndAway()
+        player = Player("foo")
+        opponent = Player("bar")
+        for i in range(7):
+            game = Game(player.name, 6, opponent.name, 4, i)
+            game.skillChangeToBlue = -1
+            player.game(game)
+            opponent.game(game)
+            result = sut.applies(player, game, opponent, None)
+            self.assertFalse(result)
+            result = sut.applies(opponent, game, player, None)
+            self.assertFalse(result)
+
+        game = Game(player.name, 4, opponent.name, 6, 8)
+        game.skillChangeToBlue = 1
+        player.game(game)
+        opponent.game(game)
+        result = sut.applies(player, game, opponent, None)
+        self.assertFalse(result)
+        result = sut.applies(opponent, game, player, None)
+        self.assertFalse(result)
+
+        game = Game(player.name, 6, opponent.name, 4, 9)
+        game.skillChangeToBlue = -1
+        player.game(game)
+        opponent.game(game)
+        result = sut.applies(player, game, opponent, None)
+        self.assertFalse(result)
+        result = sut.applies(opponent, game, player, None)
+        self.assertFalse(result)
+
+
 class TestComrades(unittest.TestCase):
     def test(self):
         sut = Comrades()
