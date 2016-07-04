@@ -7,6 +7,7 @@ from tntfl.achievements import *
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
+
 class TestAgainstTheOdds(unittest.TestCase):
     def testUnder50(self):
         ach = AgainstTheOdds()
@@ -73,6 +74,7 @@ class TestAgainstTheOdds(unittest.TestCase):
         result = ach.applies(player, game, opponent, None)
         self.assertTrue(result)
 
+
 class TestAgainstAllOdds(unittest.TestCase):
     def testUnder100(self):
         ach = AgainstAllOdds()
@@ -99,6 +101,7 @@ class TestAgainstAllOdds(unittest.TestCase):
         opponent.game(game)
         result = ach.applies(player, game, opponent, None)
         self.assertTrue(result)
+
 
 class TestUnstable(unittest.TestCase):
     def test(self):
@@ -236,7 +239,7 @@ class TestDedication(unittest.TestCase):
         sut = Dedication()
         player = Player("foo")
         opponent = Player("bar")
-        timeBetweenGames = 60*60*24* 59
+        timeBetweenGames = 60 * 60 * 24 * 59
         for i in range(0, 7):
             game = Game(player.name, 5, opponent.name, 5, i * timeBetweenGames)
             player.game(game)
