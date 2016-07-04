@@ -137,7 +137,7 @@ class TableFootballLadder(object):
         if redScore >= 0 and blueScore >= 0 and (redScore + blueScore) > 0:
             game = Game(redPlayer, redScore, bluePlayer, blueScore, int(time.time()))
             self.addGame(game)
-            self._gameStore.writeGame(game)
+            self._gameStore.appendGame(game)
         return game
 
     def deleteGame(self, gameTime, deletedBy):

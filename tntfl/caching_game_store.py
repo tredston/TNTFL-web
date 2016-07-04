@@ -23,7 +23,7 @@ class CachingGameStore(object):
             if ladderTime['now']:
                 self._writeToCache(ladder)
 
-    def writeGame(self, game):
+    def appendGame(self, game):
         self._deleteCache()
         self._gameStore.appendGame(game)
 
