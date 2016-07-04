@@ -42,9 +42,7 @@ class TableFootballLadder(object):
         self._skillChange.apply(red, game, blue)
 
         activePlayers = {p.name: p for p in self.getActivePlayers(game.time - 1)}
-        players = sorted(activePlayers.values(), key=lambda x: x.elo, reverse=True)
-        redPosBefore = players.index(red) if red in players else -1
-        bluePosBefore = players.index(blue) if blue in players else -1
+        before = activePlayers.values()
 
         blue.game(game)
         red.game(game)
@@ -52,9 +50,21 @@ class TableFootballLadder(object):
         activePlayers[red.name] = red
         activePlayers[blue.name] = blue
         self._recentlyActivePlayers = (game.time, activePlayers.values())
-        players = sorted(activePlayers.values(), key=lambda x: x.elo, reverse=True)
-        redPosAfter = players.index(red)
-        bluePosAfter = players.index(blue)
+        after = activePlayers.values()
+
+        self.rankChange(before, after, red, game, blue)
+
+        if self._ladderTime['now']:
+            self.achievements.apply(red, game, blue, self)
+
+    def rankChange(self, before, after, red, game, blue):
+        before = sorted(before, key=lambda x: x.elo, reverse=True)
+        redPosBefore = before.index(red) if red in before else -1
+        bluePosBefore = before.index(blue) if blue in before else -1
+
+        after = sorted(after, key=lambda x: x.elo, reverse=True)
+        redPosAfter = after.index(red)
+        bluePosAfter = after.index(blue)
 
         game.bluePosAfter = bluePosAfter + 1  # because it's zero-indexed here
         game.redPosAfter = redPosAfter + 1
@@ -63,9 +73,6 @@ class TableFootballLadder(object):
             game.bluePosChange = bluePosBefore - bluePosAfter  # It's this way around because a rise in position is to a lower numbered rank.
         if redPosBefore > 0:
             game.redPosChange = redPosBefore - redPosAfter
-
-        if self._ladderTime['now']:
-            self.achievements.apply(red, game, blue, self)
 
     # returns blue's goal ratio
     def predict(self, red, blue):
