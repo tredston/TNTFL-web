@@ -56,3 +56,12 @@ class Test(TestCase):
         l = TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False, [5000000000, 5000000002])
         self.assertEqual(3, len(l.games))
         self.assertEqual(3, len(l.players))
+
+    def testRankChange(self):
+        ladder = TableFootballLadder(os.path.join(__location__, "test_rank.txt"), False)
+        self.assertEqual(2, ladder.games[0].redPosAfter)
+        self.assertEqual(1, ladder.games[0].bluePosAfter)
+        self.assertEqual(1, ladder.games[1].redPosAfter)
+        self.assertEqual(1, ladder.games[1].redPosChange)
+        self.assertEqual(2, ladder.games[1].bluePosAfter)
+        self.assertEqual(-1, ladder.games[1].bluePosChange)
