@@ -5,6 +5,9 @@ from tntfl.achievements import Achievements
 from tntfl.player import Player, Streak
 from tntfl.game_store import GameStore
 from tntfl.game import Game
+import tntfl.transforms.elo as eloTransform
+import tntfl.transforms.rank as rankTransform
+import tntfl.transforms.achievement as achievementTransform
 
 
 class CachingGameStore(object):
@@ -32,24 +35,33 @@ class CachingGameStore(object):
         return self._gameStore.deleteGame(gameTime, deletedBy)
 
     def _loadFromStore(self, ladder, ladderTime):
-        loadedGames = self._gameStore.getGames()
+        games = self._gameStore.getGames()
         if not ladderTime['now']:
-            loadedGames = [g for g in loadedGames if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
-        for loadedGame in loadedGames:
-            ladder.addGame(loadedGame)
+            games = [g for g in games if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
+
+        games = eloTransform.do(games)
+        games = rankTransform.do(games)
+        if ladderTime['now']:
+            games = achievementTransform.do(games)
+        self._loadGamesIntoLadder(games, ladder)
 
     def _loadFromCache(self, ladder):
         if os.path.exists(self._cacheFilePath) and self._usingCache:
-            ladder.games = pickle.load(open(self._cacheFilePath, 'rb'))
-            for game in [g for g in ladder.games if not g.isDeleted()]:
-                red = ladder.getPlayer(game.redPlayer)
-                blue = ladder.getPlayer(game.bluePlayer)
-                red.game(game)
-                blue.game(game)
-                red.achieve(game.redAchievements, game)
-                blue.achieve(game.blueAchievements, game)
+            games = pickle.load(open(self._cacheFilePath, 'rb'))
+            self._loadGamesIntoLadder(games, ladder)
             return True
         return False
+
+    def _loadGamesIntoLadder(self, games, ladder):
+        # games expected to be calculated!
+        ladder.games = games
+        for game in [g for g in ladder.games if not g.isDeleted()]:
+            red = ladder.getPlayer(game.redPlayer)
+            blue = ladder.getPlayer(game.bluePlayer)
+            blue.game(game)
+            red.game(game)
+            red.achieve(game.redAchievements, game)
+            blue.achieve(game.blueAchievements, game)
 
     def _writeToCache(self, ladder):
         if self._usingCache:
