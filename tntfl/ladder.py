@@ -43,6 +43,9 @@ class TableFootballLadder(object):
 
         activePlayers = {p.name: p for p in self._getActivePlayers(game.time - 1)}
         before = activePlayers.values()
+        before = sorted(before, key=lambda x: x.elo, reverse=True)
+        redPosBefore = before.index(red) if red in before else -1
+        bluePosBefore = before.index(blue) if blue in before else -1
 
         blue.game(game)
         red.game(game)
@@ -52,16 +55,6 @@ class TableFootballLadder(object):
         self._recentlyActivePlayers = (game.time, activePlayers.values())
         after = activePlayers.values()
 
-        self.rankChange(before, after, red, game, blue)
-
-        if self._ladderTime['now']:
-            self.achievements.apply(red, game, blue, self)
-
-    def rankChange(self, before, after, red, game, blue):
-        before = sorted(before, key=lambda x: x.elo, reverse=True)
-        redPosBefore = before.index(red) if red in before else -1
-        bluePosBefore = before.index(blue) if blue in before else -1
-
         after = sorted(after, key=lambda x: x.elo, reverse=True)
         redPosAfter = after.index(red)
         bluePosAfter = after.index(blue)
@@ -69,10 +62,12 @@ class TableFootballLadder(object):
         game.bluePosAfter = bluePosAfter + 1  # because it's zero-indexed here
         game.redPosAfter = redPosAfter + 1
 
-        if bluePosBefore > 0:
-            game.bluePosChange = bluePosBefore - bluePosAfter  # It's this way around because a rise in position is to a lower numbered rank.
-        if redPosBefore > 0:
-            game.redPosChange = redPosBefore - redPosAfter
+        game.bluePosChange = bluePosBefore - bluePosAfter  # It's this way around because a rise in position is to a lower numbered rank.
+        game.redPosChange = redPosBefore - redPosAfter
+
+        if self._ladderTime['now']:
+            self.achievements.apply(red, game, blue, self)
+
 
     # returns blue's goal ratio
     def predict(self, red, blue):
