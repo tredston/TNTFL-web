@@ -61,8 +61,8 @@ class Pages(Deployment):
         self.assertTrue("<!DOCTYPE html>" in response)
 
 class DeletePage(Deployment):
-    _username = 'tlr'
-    _password = ''
+    _username = None
+    _password = None
 
     def testAuthenticationRequired(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
@@ -70,6 +70,7 @@ class DeletePage(Deployment):
         e = cm.exception
         self.assertEqual(e.code, 401)
 
+    @unittest.skip('requres credentials')
     def testReachable(self):
         password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
         password_mgr.add_password(None, self.urlBase, self._username, self._password)
