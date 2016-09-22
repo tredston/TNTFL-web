@@ -85,5 +85,6 @@ class CachingGameStore(object):
             blue.achieve(game.blueAchievements, game)
 
     def _deleteCache(self):
-        if os.path.exists(self._cacheFilePath) and self._usingCache:
-            os.remove(self._cacheFilePath)
+        for transform in self._transforms:
+            if os.path.exists(transform.getCacheName()) and self._usingCache:
+                os.remove(transform.getCacheName())
