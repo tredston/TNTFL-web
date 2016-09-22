@@ -40,10 +40,14 @@ class CachingGameStore(object):
         games = eloTransform.do(games)
         games = rankTransform.do(games)
         if ladderTime['now']:
-            games = achievementTransform.do(games)
-            if self._usingCache:
-                pickle.dump(games, open(self._cacheFilePath, 'wb'), pickle.HIGHEST_PROTOCOL)
+            games = self._transform(achievementTransform, games, ladderTime['now'], self._cacheFilePath)
         self._loadGamesIntoLadder(games, ladder)
+
+    def _transform(self, transform, games, cache, cacheName):
+        games = transform.do(games)
+        if cache and self._usingCache:
+            pickle.dump(games, open(cacheName, 'wb'), pickle.HIGHEST_PROTOCOL)
+        return games
 
     def _loadFromCache(self, ladder):
         if os.path.exists(self._cacheFilePath) and self._usingCache:
