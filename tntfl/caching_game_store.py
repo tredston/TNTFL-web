@@ -10,7 +10,24 @@ import tntfl.transforms.rank as rankTransform
 import tntfl.transforms.achievement as achievementTransform
 
 
+class Transform(object):
+    def __init__(self, transform, name):
+        self._transform = transform
+        self._name = name
+
+    def getTransform(self):
+        return self._transform.do
+
+    def getCacheName(self):
+        return '.cache.%s' % self._name
+
+
 class CachingGameStore(object):
+    _transforms = {
+        'elo': Transform(eloTransform, 'elo'),
+        'rank': Transform(rankTransform, 'rank'),
+        'achievement': Transform(achievementTransform, 'achievement'),
+    }
     _cacheFilePath = ".cache.achievement"
 
     def __init__(self, ladderFilePath, useCache):
@@ -37,16 +54,16 @@ class CachingGameStore(object):
         if not ladderTime['now']:
             games = [g for g in games if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
 
-        games = self._transform(eloTransform.do, games, ladderTime['now'], '.cache.elo')
-        games = self._transform(rankTransform.do, games, ladderTime['now'], '.cache.rank')
+        games = self._transform(self._transforms['elo'], games, ladderTime['now'])
+        games = self._transform(self._transforms['rank'], games, ladderTime['now'])
         if ladderTime['now']:
-            games = self._transform(achievementTransform.do, games, ladderTime['now'], self._cacheFilePath)
+            games = self._transform(self._transforms['achievement'], games, ladderTime['now'])
         self._loadGamesIntoLadder(games, ladder)
 
-    def _transform(self, transform, games, cache, cacheName):
-        games = transform(games)
+    def _transform(self, transform, games, cache):
+        games = transform.getTransform()(games)
         if cache and self._usingCache:
-            pickle.dump(games, open(cacheName, 'wb'), pickle.HIGHEST_PROTOCOL)
+            pickle.dump(games, open(transform.getCacheName(), 'wb'), pickle.HIGHEST_PROTOCOL)
         return games
 
     def _loadFromCache(self, ladder):
