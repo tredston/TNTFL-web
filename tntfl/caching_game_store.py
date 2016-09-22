@@ -11,7 +11,7 @@ import tntfl.transforms.achievement as achievementTransform
 
 
 class CachingGameStore(object):
-    _cacheFilePath = "cache"
+    _cacheFilePath = ".cache.achievement"
 
     def __init__(self, ladderFilePath, useCache):
         self._gameStore = GameStore(ladderFilePath)
@@ -37,14 +37,14 @@ class CachingGameStore(object):
         if not ladderTime['now']:
             games = [g for g in games if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
 
-        games = eloTransform.do(games)
-        games = rankTransform.do(games)
+        games = self._transform(eloTransform.do, games, ladderTime['now'], '.cache.elo')
+        games = self._transform(rankTransform.do, games, ladderTime['now'], '.cache.rank')
         if ladderTime['now']:
-            games = self._transform(achievementTransform, games, ladderTime['now'], self._cacheFilePath)
+            games = self._transform(achievementTransform.do, games, ladderTime['now'], self._cacheFilePath)
         self._loadGamesIntoLadder(games, ladder)
 
     def _transform(self, transform, games, cache, cacheName):
-        games = transform.do(games)
+        games = transform(games)
         if cache and self._usingCache:
             pickle.dump(games, open(cacheName, 'wb'), pickle.HIGHEST_PROTOCOL)
         return games
