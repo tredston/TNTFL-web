@@ -36,10 +36,7 @@ class CachingGameStore(object):
 
     def loadGames(self, ladder, ladderTime):
         loaded = False
-        if ladderTime['now']:
-            loaded = self._loadFromCache(ladder)
-        if not loaded:
-            self._loadFromStore(ladder, ladderTime)
+        self._loadFromStore(ladder, ladderTime)
 
     def appendGame(self, game):
         self._deleteCache()
@@ -50,14 +47,19 @@ class CachingGameStore(object):
         return self._gameStore.deleteGame(gameTime, deletedBy)
 
     def _loadFromStore(self, ladder, ladderTime):
-        games = self._gameStore.getGames()
-        if not ladderTime['now']:
-            games = [g for g in games if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
-
-        games = self._transform(self._transforms['elo'], games, ladderTime['now'])
-        games = self._transform(self._transforms['rank'], games, ladderTime['now'])
-        if ladderTime['now']:
-            games = self._transform(self._transforms['achievement'], games, ladderTime['now'])
+        games = self._loadTransform(self._transforms['achievement'], ladderTime['now'])
+        if not games:
+            games = self._loadTransform(self._transforms['rank'], ladderTime['now'])
+            if not games:
+                games = self._loadTransform(self._transforms['elo'], ladderTime['now'])
+                if not games:
+                    games = self._gameStore.getGames()
+                    if not ladderTime['now']:
+                        games = [g for g in games if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
+                    games = self._transform(self._transforms['elo'], games, ladderTime['now'])
+                games = self._transform(self._transforms['rank'], games, ladderTime['now'])
+            if ladderTime['now']:
+                games = self._transform(self._transforms['achievement'], games, ladderTime['now'])
         self._loadGamesIntoLadder(games, ladder)
 
     def _transform(self, transform, games, writeCache):
@@ -66,12 +68,10 @@ class CachingGameStore(object):
             pickle.dump(games, open(transform.getCacheName(), 'wb'), pickle.HIGHEST_PROTOCOL)
         return games
 
-    def _loadFromCache(self, ladder):
-        if os.path.exists(self._cacheFilePath) and self._usingCache:
-            games = pickle.load(open(self._cacheFilePath, 'rb'))
-            self._loadGamesIntoLadder(games, ladder)
-            return True
-        return False
+    def _loadTransform(self, transform, readCache):
+        if os.path.exists(transform.getCacheName()) and self._usingCache and readCache:
+            return pickle.load(open(transform.getCacheName(), 'rb'))
+        return None
 
     def _loadGamesIntoLadder(self, games, ladder):
         # games expected to be calculated!
