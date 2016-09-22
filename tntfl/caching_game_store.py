@@ -60,9 +60,9 @@ class CachingGameStore(object):
             games = self._transform(self._transforms['achievement'], games, ladderTime['now'])
         self._loadGamesIntoLadder(games, ladder)
 
-    def _transform(self, transform, games, cache):
+    def _transform(self, transform, games, writeCache):
         games = transform.getTransform()(games)
-        if cache and self._usingCache:
+        if writeCache and self._usingCache:
             pickle.dump(games, open(transform.getCacheName(), 'wb'), pickle.HIGHEST_PROTOCOL)
         return games
 
