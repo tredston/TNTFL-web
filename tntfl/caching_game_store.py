@@ -23,8 +23,6 @@ class CachingGameStore(object):
             loaded = self._loadFromCache(ladder)
         if not loaded:
             self._loadFromStore(ladder, ladderTime)
-            if ladderTime['now']:
-                self._writeToCache(ladder)
 
     def appendGame(self, game):
         self._deleteCache()
@@ -43,6 +41,8 @@ class CachingGameStore(object):
         games = rankTransform.do(games)
         if ladderTime['now']:
             games = achievementTransform.do(games)
+            if self._usingCache:
+                pickle.dump(games, open(self._cacheFilePath, 'wb'), pickle.HIGHEST_PROTOCOL)
         self._loadGamesIntoLadder(games, ladder)
 
     def _loadFromCache(self, ladder):
@@ -62,10 +62,6 @@ class CachingGameStore(object):
             red.game(game)
             red.achieve(game.redAchievements, game)
             blue.achieve(game.blueAchievements, game)
-
-    def _writeToCache(self, ladder):
-        if self._usingCache:
-            pickle.dump(ladder.games, open(self._cacheFilePath, 'wb'), pickle.HIGHEST_PROTOCOL)
 
     def _deleteCache(self):
         if os.path.exists(self._cacheFilePath) and self._usingCache:
