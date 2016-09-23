@@ -45,16 +45,7 @@ class CachingGameStore(object):
         }
 
     def loadGames(self, ladder, ladderTime):
-        transforms = [
-            self._transforms['elo'],
-            self._transforms['rank'],
-        ]
-        if ladderTime['now']:
-            transforms.append(self._transforms['achievement'])
-
-        cache = self._usingCache and ladderTime['now']
-        for t in transforms:
-            t.setUseCache(cache)
+        transforms = self._getTransforms(ladderTime)
 
         games = None
         transformsToRun = []
@@ -72,6 +63,19 @@ class CachingGameStore(object):
             games = t.transform(games)
 
         return games
+
+    def _getTransforms(self, ladderTime):
+        transforms = [
+            self._transforms['elo'],
+            self._transforms['rank'],
+        ]
+        if ladderTime['now']:
+            transforms.append(self._transforms['achievement'])
+
+        cache = self._usingCache and ladderTime['now']
+        for t in transforms:
+            t.setUseCache(cache)
+        return transforms
 
     def _baseLoadGames(self, ladderTime):
         games = self._gameStore.getGames()
