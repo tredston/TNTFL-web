@@ -11,32 +11,57 @@ import tntfl.transforms.achievement as achievementTransform
 
 
 class Transform(object):
-    def __init__(self, transform, name):
+    def __init__(self, transform, name, usingCache):
         self._transform = transform
         self._name = name
+        self._usingCache = usingCache
 
-    def getTransform(self):
-        return self._transform.do
-
-    def getCacheName(self):
+    def _getCacheName(self):
         return '.cache.%s' % self._name
+
+    def transform(self, games):
+        games = self._transform(games)
+        if self._usingCache:
+            pickle.dump(games, open(self._getCacheName(), 'wb'), pickle.HIGHEST_PROTOCOL)
+        return games
+
+    def loadCached(self):
+        if self._usingCache and os.path.exists(self._getCacheName()):
+            return pickle.load(open(self._getCacheName(), 'rb'))
+        return None
 
 
 class CachingGameStore(object):
-    _transforms = {
-        'elo': Transform(eloTransform, 'elo'),
-        'rank': Transform(rankTransform, 'rank'),
-        'achievement': Transform(achievementTransform, 'achievement'),
-    }
-    _cacheFilePath = ".cache.achievement"
-
     def __init__(self, ladderFilePath, useCache):
         self._gameStore = GameStore(ladderFilePath)
         self._usingCache = useCache
 
     def loadGames(self, ladder, ladderTime):
-        loaded = False
-        self._loadFromStore(ladder, ladderTime)
+        cache = self._usingCache and ladderTime['now']
+        transforms = [
+            Transform(eloTransform.do, 'elo', cache),
+            Transform(rankTransform.do, 'rank', cache),
+        ]
+        if ladderTime['now']:
+            transforms.append(Transform(achievementTransform.do, 'achievement', cache))
+        games = None
+        transformsToRun = []
+        for t in reversed(transforms):
+            games = t.loadCached()
+            if games:
+                break
+            else:
+                transformsToRun.append(t)
+
+        if games is None:
+            games = self._gameStore.getGames()
+            if not ladderTime['now']:
+                games = [g for g in games if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
+
+        for t in reversed(transformsToRun):
+            games = t.transform(games)
+
+        self._loadGamesIntoLadder(games, ladder)
 
     def appendGame(self, game):
         self._deleteCache()
@@ -45,33 +70,6 @@ class CachingGameStore(object):
     def deleteGame(self, gameTime, deletedBy):
         self._deleteCache()
         return self._gameStore.deleteGame(gameTime, deletedBy)
-
-    def _loadFromStore(self, ladder, ladderTime):
-        games = self._loadTransform(self._transforms['achievement'], ladderTime['now'])
-        if not games:
-            games = self._loadTransform(self._transforms['rank'], ladderTime['now'])
-            if not games:
-                games = self._loadTransform(self._transforms['elo'], ladderTime['now'])
-                if not games:
-                    games = self._gameStore.getGames()
-                    if not ladderTime['now']:
-                        games = [g for g in games if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
-                    games = self._transform(self._transforms['elo'], games, ladderTime['now'])
-                games = self._transform(self._transforms['rank'], games, ladderTime['now'])
-            if ladderTime['now']:
-                games = self._transform(self._transforms['achievement'], games, ladderTime['now'])
-        self._loadGamesIntoLadder(games, ladder)
-
-    def _transform(self, transform, games, writeCache):
-        games = transform.getTransform()(games)
-        if writeCache and self._usingCache:
-            pickle.dump(games, open(transform.getCacheName(), 'wb'), pickle.HIGHEST_PROTOCOL)
-        return games
-
-    def _loadTransform(self, transform, readCache):
-        if os.path.exists(transform.getCacheName()) and self._usingCache and readCache:
-            return pickle.load(open(transform.getCacheName(), 'rb'))
-        return None
 
     def _loadGamesIntoLadder(self, games, ladder):
         # games expected to be calculated!
