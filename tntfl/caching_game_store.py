@@ -54,14 +54,18 @@ class CachingGameStore(object):
                 transformsToRun.append(t)
 
         if games is None:
-            games = self._gameStore.getGames()
-            if not ladderTime['now']:
-                games = [g for g in games if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
+            games = self._baseLoadGames(ladderTime)
 
         for t in reversed(transformsToRun):
             games = t.transform(games)
 
         self._loadGamesIntoLadder(games, ladder)
+
+    def _baseLoadGames(self, ladderTime):
+        games = self._gameStore.getGames()
+        if not ladderTime['now']:
+            games = [g for g in games if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
+        return games
 
     def appendGame(self, game):
         self._deleteCache()
