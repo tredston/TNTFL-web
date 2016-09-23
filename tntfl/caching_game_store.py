@@ -16,18 +16,18 @@ class Transform(object):
         self._name = name
         self._usingCache = usingCache
 
-    def _getCacheName(self):
+    def getCacheName(self):
         return '.cache.%s' % self._name
 
     def transform(self, games):
         games = self._transform(games)
         if self._usingCache:
-            pickle.dump(games, open(self._getCacheName(), 'wb'), pickle.HIGHEST_PROTOCOL)
+            pickle.dump(games, open(self.getCacheName(), 'wb'), pickle.HIGHEST_PROTOCOL)
         return games
 
     def loadCached(self):
-        if self._usingCache and os.path.exists(self._getCacheName()):
-            return pickle.load(open(self._getCacheName(), 'rb'))
+        if self._usingCache and os.path.exists(self.getCacheName()):
+            return pickle.load(open(self.getCacheName(), 'rb'))
         return None
 
 
