@@ -11,10 +11,13 @@ import tntfl.transforms.achievement as achievementTransform
 
 
 class Transform(object):
-    def __init__(self, transform, name, usingCache):
+    def __init__(self, transform, name):
         self._transform = transform
         self._name = name
-        self._usingCache = usingCache
+        self._usingCache = True
+
+    def setUseCache(self, useCache):
+        self._usingCache = useCache
 
     def getCacheName(self):
         return '.cache.%s' % self._name
@@ -35,15 +38,24 @@ class CachingGameStore(object):
     def __init__(self, ladderFilePath, useCache):
         self._gameStore = GameStore(ladderFilePath)
         self._usingCache = useCache
+        self._transforms = {
+            'elo': Transform(eloTransform.do, 'elo'),
+            'rank': Transform(rankTransform.do, 'rank'),
+            'achievement': Transform(achievementTransform.do, 'achievement'),
+        }
 
     def loadGames(self, ladder, ladderTime):
-        cache = self._usingCache and ladderTime['now']
         transforms = [
-            Transform(eloTransform.do, 'elo', cache),
-            Transform(rankTransform.do, 'rank', cache),
+            self._transforms['elo'],
+            self._transforms['rank'],
         ]
         if ladderTime['now']:
-            transforms.append(Transform(achievementTransform.do, 'achievement', cache))
+            transforms.append(self._transforms['achievement'])
+
+        cache = self._usingCache and ladderTime['now']
+        for t in transforms:
+            t.setUseCache(cache)
+
         games = None
         transformsToRun = []
         for t in reversed(transforms):
@@ -59,7 +71,7 @@ class CachingGameStore(object):
         for t in reversed(transformsToRun):
             games = t.transform(games)
 
-        self._loadGamesIntoLadder(games, ladder)
+        return games
 
     def _baseLoadGames(self, ladderTime):
         games = self._gameStore.getGames()
@@ -75,18 +87,7 @@ class CachingGameStore(object):
         self._deleteCache()
         return self._gameStore.deleteGame(gameTime, deletedBy)
 
-    def _loadGamesIntoLadder(self, games, ladder):
-        # games expected to be calculated!
-        ladder.games = games
-        for game in [g for g in ladder.games if not g.isDeleted()]:
-            red = ladder.getPlayer(game.redPlayer)
-            blue = ladder.getPlayer(game.bluePlayer)
-            blue.game(game)
-            red.game(game)
-            red.achieve(game.redAchievements, game)
-            blue.achieve(game.blueAchievements, game)
-
     def _deleteCache(self):
-        for transform in self._transforms:
+        for transform in self._transforms.values():
             if os.path.exists(transform.getCacheName()) and self._usingCache:
                 os.remove(transform.getCacheName())

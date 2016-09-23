@@ -23,7 +23,17 @@ class TableFootballLadder(object):
 
         self._ladderTime = {'now': timeRange is None, 'range': timeRange}
         self._theTime = time.time()
-        self._gameStore.loadGames(self, self._ladderTime)
+        self._loadGamesIntoLadder()
+
+    def _loadGamesIntoLadder(self):
+        self.games = self._gameStore.loadGames(self, self._ladderTime)
+        for game in [g for g in self.games if not g.isDeleted()]:
+            red = self.getPlayer(game.redPlayer)
+            blue = self.getPlayer(game.bluePlayer)
+            blue.game(game)
+            red.game(game)
+            red.achieve(game.redAchievements, game)
+            blue.achieve(game.blueAchievements, game)
 
     def getPlayer(self, name):
         if name not in self.players:
