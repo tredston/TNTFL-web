@@ -26,7 +26,7 @@ class TableFootballLadder(object):
         self._loadGamesIntoLadder()
 
     def _loadGamesIntoLadder(self):
-        self.games = self._gameStore.loadGames(self, self._ladderTime)
+        self.games = self._gameStore.loadGames(self._ladderTime)
         for game in [g for g in self.games if not g.isDeleted()]:
             red = self.getPlayer(game.redPlayer)
             blue = self.getPlayer(game.bluePlayer)

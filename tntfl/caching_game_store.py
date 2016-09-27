@@ -44,7 +44,7 @@ class CachingGameStore(object):
             'achievement': Transform(achievementTransform.do, 'achievement'),
         }
 
-    def loadGames(self, ladder, ladderTime):
+    def loadGames(self, ladderTime):
         transforms = self._getTransforms(ladderTime)
 
         games = None
