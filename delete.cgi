@@ -2,13 +2,14 @@
 
 import cgi
 import os
+import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
 from tntfl.web import redirect_302, fail_404, serve_template
 
 form = cgi.FieldStorage()
 
 
-ladder = TableFootballLadder("ladder.txt")
+ladder = TableFootballLadder(Constants.ladderFilePath)
 if "game" in form:
     gameTime = int(form["game"].value)
     if "deleteConfirm" in form and form["deleteConfirm"].value == "true":

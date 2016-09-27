@@ -1,11 +1,12 @@
 <%!
 base = "../"
+import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
 import tntfl.transforms.transforms as PresetTransforms
 %>
 <%inherit file="json.mako" />[
 <%
-  ladder = TableFootballLadder(ladderFilePath, transforms=PresetTransforms.transforms_for_recent())
+  ladder = TableFootballLadder(Constants.ladderFilePath, transforms=PresetTransforms.transforms_for_recent())
   recentGames = [l for l in ladder.games if not l.isDeleted()][-limit:]
   recentGames.reverse()
 %>

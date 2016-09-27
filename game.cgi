@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
 import cgi
+import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
 from tntfl.web import redirect_302, fail_404, serve_template
 
 form = cgi.FieldStorage()
 
 if "method" in form:
-    ladder = TableFootballLadder("ladder.txt")
+    ladder = TableFootballLadder(Constants.ladderFilePath)
     if form["method"].value == "add":
         if "bluePlayer" in form and "redPlayer" in form:
             redScore = form["redScore"].value if "redScore" in form else 0
