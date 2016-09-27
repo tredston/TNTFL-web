@@ -6,6 +6,7 @@ from tntfl.player import Player, Streak
 from tntfl.caching_game_store import CachingGameStore
 from tntfl.game import Game
 from tntfl.skill_change import Elo
+import tntfl.transforms.transforms as PresetTransforms
 
 
 class TableFootballLadder(object):
@@ -26,7 +27,7 @@ class TableFootballLadder(object):
         self._loadGamesIntoLadder()
 
     def _loadGamesIntoLadder(self):
-        self.games = self._gameStore.loadGames(self._ladderTime)
+        self.games = self._gameStore.loadGames(self._ladderTime, PresetTransforms.transforms_for_full_games(self._ladderTime))
         for game in [g for g in self.games if not g.isDeleted()]:
             red = self.getPlayer(game.redPlayer)
             blue = self.getPlayer(game.bluePlayer)

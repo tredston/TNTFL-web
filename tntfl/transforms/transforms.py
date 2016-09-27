@@ -9,3 +9,13 @@ Transforms = {
     'rank': TransformWrapper(rankTransform.do, 'rank'),
     'achievement': TransformWrapper(achievementTransform.do, 'achievement'),
 }
+
+
+def transforms_for_full_games(ladderTime):
+    transforms = [
+        Transforms['elo'],
+        Transforms['rank'],
+    ]
+    if ladderTime['now']:
+        transforms.append(Transforms['achievement'])
+    return transforms
