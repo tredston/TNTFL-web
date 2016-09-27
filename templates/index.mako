@@ -1,6 +1,7 @@
 <%! title = "" %>
 <%!
 from datetime import datetime
+ladderFilePath="ladder.txt"
 %>
 <%inherit file="html.mako" />
 <div class="container-fluid">
@@ -8,7 +9,7 @@ from datetime import datetime
     <div class="col-lg-8">
       <div class="panel panel-default">
         <div class="panel-body" id="ladderHolder">
-          ${self.blocks.render("ladder", base=self.attr.base, ladderFilePath="ladder.txt", timeRange=None)}
+          ${self.blocks.render("ladder", base=self.attr.base, ladderFilePath=ladderFilePath, timeRange=None)}
         </div>
       </div>
       ${self.blocks.render("ladder-info", base=self.attr.base)}
@@ -19,8 +20,8 @@ from datetime import datetime
           <h2 class="panel-title">Recent Games</h2>
         </div>
         <div class="panel-body recentHolder" id="recentHolder">
-          ${self.blocks.render("recent", base=self.attr.base, games=ladder.games)}
-        </div>            
+          ${self.blocks.render("recent", base=self.attr.base, ladderFilePath=ladderFilePath)}
+        </div>
         <script type="text/javascript">
           var sortOpts = getSortOptions("#ladder th");
           var showInactive = isShowInactive();

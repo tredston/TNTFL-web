@@ -25,3 +25,10 @@ def transforms_for_ladder():
     return [
         Transforms['elo'],
     ]
+
+
+def transforms_for_recent():
+    return [
+        Transforms['elo'],
+        Transforms['rank'],
+    ]
