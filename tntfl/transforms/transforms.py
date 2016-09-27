@@ -19,3 +19,9 @@ def transforms_for_full_games(ladderTime):
     if ladderTime['now']:
         transforms.append(Transforms['achievement'])
     return transforms
+
+
+def transforms_for_ladder():
+    return [
+        Transforms['elo'],
+    ]

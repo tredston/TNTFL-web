@@ -8,7 +8,7 @@ from datetime import datetime
     <div class="col-lg-8">
       <div class="panel panel-default">
         <div class="panel-body" id="ladderHolder">
-          ${self.blocks.render("ladder", base=self.attr.base)}
+          ${self.blocks.render("ladder", base=self.attr.base, ladderFilePath="ladder.txt", timeRange=None)}
         </div>
       </div>
       ${self.blocks.render("ladder-info", base=self.attr.base)}

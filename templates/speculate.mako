@@ -13,7 +13,7 @@ base = "../"
         </div>
 % endif
         <div class="panel-body ${"speculative" if len(games) > 0 else ""}" id="ladderHolder">
-          ${self.blocks.render("ladder", base=self.attr.base)}
+          ${self.blocks.render("ladder", base=self.attr.base, ladderFilePath="ladder.txt", timeRange=None)}
         </div>
       </div>
     </div>

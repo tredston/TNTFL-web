@@ -71,6 +71,7 @@ def getTrend(player):
 </%def>
 
 <%
+ladder = TableFootballLadder(ladderFilePath, timeRange=timeRange)
 ranked = rankPlayers(ladder)
 totalActivePlayers = len([p for p in ladder.players.values() if ladder.isPlayerActive(p)])
 %>
