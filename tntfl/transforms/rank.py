@@ -29,8 +29,6 @@ def do(games):
             blue = getPlayer(players, game.bluePlayer)
 
             activePlayers = filterActivePlayers(activePlayers, game.time - 1)
-            activePlayers = sorted(activePlayers, key=lambda x: x.elo, reverse=True)
-
             redPosBefore = activePlayers.index(red) if red in activePlayers else -1
             bluePosBefore = activePlayers.index(blue) if blue in activePlayers else -1
 
