@@ -80,7 +80,7 @@ class PageBits(Deployment):
         self._testPageReachable('recent.cgi')
 
 
-class Api(Deployment):
+class PlayerApi(Deployment):
     def testPlayerJson(self):
         response = self._getJsonFrom('player.cgi', 'player=ndt&view=json')
         self.assertEqual(response['name'], "ndt")
@@ -100,11 +100,15 @@ class Api(Deployment):
         self.assertEqual(len(response), 490)
         self.assertEqual(response[0]['date'], 1392725064)
 
+
+class HeadToHeadApi(Deployment):
     def testHeadToHeadGamesJsonReachable(self):
         response = self._getJsonFrom('headtohead.cgi', 'player1=cjm&player2=ndt&method=games&view=json')
         self.assertEqual(len(response), 9)
         self.assertEqual(response[0]['date'], 1394037228)
 
+
+class RecentApi(Deployment):
     def testRecentJsonReachable(self):
         response = self._getJsonFrom('recent.cgi', 'view=json')
 
@@ -115,7 +119,6 @@ class LadderApi(Deployment):
 
     def testRange(self):
         response = self._getJsonFrom('ladder.cgi', 'gamesFrom=1223308996&gamesTo=1223400000&view=json')
-
         self.assertEqual(len(response), 3)
         self.assertEqual(response[0]['rank'], 1)
         self.assertEqual(response[0]['name'], 'jrem')
@@ -128,7 +131,6 @@ class LadderApi(Deployment):
 class GameApi(Deployment):
     def test(self):
         response = self._getJsonFrom('game.cgi', 'method=view&game=1223308996&view=json')
-
         self.assertEqual(response['red']['name'], 'jrem')
         self.assertEqual(response['red']['href'], '../../player/jrem/json')
         self.assertEqual(response['red']['score'], 10)
