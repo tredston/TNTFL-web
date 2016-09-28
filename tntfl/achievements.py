@@ -252,19 +252,24 @@ class EarlyBird(Achievement):
     description = "Play and win the first game of the day"
 
     def applies(self, player, game, opponent, ladder):
-        prevGame = self.getMostRecentGame(game, ladder)
-        if prevGame == -1:
-            return player.wonGame(game)
-        thisGame = datetime.datetime.fromtimestamp(game.time).date()
-        return thisGame != prevGame and player.wonGame(game)
+        if player.wonGame(game):
+            prevGame = self._getMostRecentGame(game, ladder)
+            if prevGame:
+                prevGame = self._toDate(prevGame.time)
+                thisGame = self._toDate(game.time)
+                return thisGame != prevGame
+            return True
+        return False
 
-    def getMostRecentGame(self, curGame, ladder):
-        numGames = len(ladder.games)
-        for i in xrange(numGames - 2, 0, -1):
+    def _getMostRecentGame(self, curGame, ladder):
+        for i in xrange(len(ladder.games) - 2, 0, -1):
             game = ladder.games[i]
             if not game.isDeleted():
-                return datetime.datetime.fromtimestamp(game.time).date()
-        return -1
+                return game
+        return None
+
+    def _toDate(self, time):
+        return datetime.datetime.fromtimestamp(time).date()
 
 
 class PokeMaster(Achievement):
