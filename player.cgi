@@ -3,18 +3,17 @@
 import cgi
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
-from tntfl.web import fail_404, serve_template
+from tntfl.web import fail_404, serve_template, getString
 
 
 form = cgi.FieldStorage()
 
-player = form.getfirst('player')
+player = getString('player', form)
 if player:
     ladder = TableFootballLadder(Constants.ladderFilePath)
-    player = player.lower()
     if player in ladder.players:
         player = ladder.getPlayer(player)
-        if form.getfirst('method') == "games":
+        if getString('method', form) == "games":
             serve_template("playerGames.mako", pageTitle="%s's games" % player.name, games=player.games, ladder=ladder)
         else:
             serve_template("player.mako", player=player, ladder=ladder)

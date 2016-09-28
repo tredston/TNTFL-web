@@ -4,16 +4,16 @@ import cgi
 import os
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
-from tntfl.web import redirect_302, fail_404, serve_template
+from tntfl.web import redirect_302, fail_404, serve_template, getInt, getString
 
 form = cgi.FieldStorage()
 
 
 ladder = TableFootballLadder(Constants.ladderFilePath)
 
-gameTime = form.getfirst('game')
+gameTime = getInt('game', form)
 if gameTime is not None:
-    if form.getfirst('deleteConfirm') == "true":
+    if getString('deleteConfirm', form) == "true":
         deletedBy = os.environ["REMOTE_USER"] if "REMOTE_USER" in os.environ else "Unknown"
         deleted = ladder.deleteGame(gameTime, deletedBy)
         if deleted:

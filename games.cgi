@@ -3,15 +3,15 @@
 import cgi
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
-from tntfl.web import serve_template
+from tntfl.web import serve_template, getInt
 
 form = cgi.FieldStorage()
 
 serve_template(
     "games.mako",
     ladder=TableFootballLadder(Constants.ladderFilePath),
-    fromTime=int(form.getfirst('from')) if "from" in form else None,
-    toTime=int(form["to"].value) if "to" in form else None,
-    limit=int(form['limit'].value) if "limit" in form else None,
-    includeDeleted=int(form.getfirst('includeDeleted', 0))
+    fromTime=getInt('from', form),
+    toTime=getInt('to', form),
+    limit=getInt('limit', form),
+    includeDeleted=getInt('includeDeleted', form, 0),
 )

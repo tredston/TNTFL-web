@@ -3,26 +3,25 @@
 import cgi
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
-from tntfl.web import redirect_302, fail_404, serve_template
+from tntfl.web import redirect_302, fail_404, serve_template, getInt, getString
 
 form = cgi.FieldStorage()
 
 ladder = TableFootballLadder(Constants.ladderFilePath)
-if form.getfirst('method') == "add":
-    redPlayer = form.getfirst('redPlayer')
-    bluePlayer = form.getfirst('bluePlayer')
-    redScore = form.getfirst('redScore')
-    blueScore = form.getfirst('blueScore')
+if getString('method', form) == "add":
+    redPlayer = getString('redPlayer', form)
+    bluePlayer = getString('bluePlayer', form)
+    redScore = getInt('redScore', form)
+    blueScore = getInt('blueScore', form)
     if redPlayer and bluePlayer and redScore and blueScore:
         ladder.addAndWriteGame(redPlayer, redScore, bluePlayer, blueScore)
-        if form.getfirst('view') == 'json':
+        if getString('view', form) == 'json':
             serve_template("wrappedGame.mako", game=game, ladder=ladder)
         else:
             redirect_302("../%.0f" % game.time)
-elif form.getfirst('method') == 'view':
-    gameTime = form.getfirst('game')
+elif getString('method', form) == 'view':
+    gameTime = getInt('game', form)
     if gameTime is not None:
-        gameTime = int(gameTime)
         try:
             game = next(g for g in ladder.games if g.time == gameTime)
             serve_template("wrappedGame.mako", game=game, ladder=ladder)

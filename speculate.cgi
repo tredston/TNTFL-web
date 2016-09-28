@@ -5,7 +5,7 @@ from time import time
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
 from tntfl.game import Game
-from tntfl.web import serve_template
+from tntfl.web import serve_template, getString, getInt
 
 
 def deserialise(serialisedGames):
@@ -22,10 +22,10 @@ ladder = TableFootballLadder(Constants.ladderFilePath)
 serialisedSpecGames = form.getfirst('previousGames', '')
 games = deserialise(serialisedSpecGames)
 
-redPlayer = form.getfirst('redPlayer')
-bluePlayer = form.getfirst('bluePlayer')
-redScore = form.getfirst('redScore')
-blueScore = form.getfirst('blueScore')
+redPlayer = getString('redPlayer', form)
+bluePlayer = getString('bluePlayer', form)
+redScore = getInt('redScore', form)
+blueScore = getInt('blueScore', form)
 if redPlayer and bluePlayer and redScore and blueScore:
     g = Game(redPlayer, redScore, bluePlayer, blueScore, time())
     games.append(g)
