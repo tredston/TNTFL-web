@@ -1,27 +1,40 @@
-import os.path
-import cPickle as pickle
-import time
-from tntfl.achievements import Achievements
-from tntfl.player import Player, Streak
+import os
 from tntfl.game_store import GameStore
-from tntfl.game import Game
+from tntfl.transforms.transforms import Transforms
 
 
 class CachingGameStore(object):
-    _cacheFilePath = "cache"
-
     def __init__(self, ladderFilePath, useCache):
         self._gameStore = GameStore(ladderFilePath)
         self._usingCache = useCache
 
-    def loadGames(self, ladder, ladderTime):
-        loaded = False
-        if ladderTime['now']:
-            loaded = self._loadFromCache(ladder)
-        if not loaded:
-            self._loadFromStore(ladder, ladderTime)
-            if ladderTime['now']:
-                self._writeToCache(ladder)
+    def loadGames(self, ladderTime, transforms):
+        cache = self._usingCache and ladderTime['now']
+        for t in transforms:
+            t.setUseCache(cache)
+            
+        games = None
+        transformsToRun = []
+        for t in reversed(transforms):
+            games = t.loadCached()
+            if games:
+                break
+            else:
+                transformsToRun.append(t)
+
+        if games is None:
+            games = self._baseLoadGames(ladderTime)
+
+        for t in reversed(transformsToRun):
+            games = t.transform(games)
+
+        return games
+
+    def _baseLoadGames(self, ladderTime):
+        games = self._gameStore.getGames()
+        if not ladderTime['now']:
+            games = [g for g in games if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
+        return games
 
     def appendGame(self, game):
         self._deleteCache()
@@ -31,30 +44,7 @@ class CachingGameStore(object):
         self._deleteCache()
         return self._gameStore.deleteGame(gameTime, deletedBy)
 
-    def _loadFromStore(self, ladder, ladderTime):
-        loadedGames = self._gameStore.getGames()
-        if not ladderTime['now']:
-            loadedGames = [g for g in loadedGames if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
-        for loadedGame in loadedGames:
-            ladder.addGame(loadedGame)
-
-    def _loadFromCache(self, ladder):
-        if os.path.exists(self._cacheFilePath) and self._usingCache:
-            ladder.games = pickle.load(open(self._cacheFilePath, 'rb'))
-            for game in [g for g in ladder.games if not g.isDeleted()]:
-                red = ladder.getPlayer(game.redPlayer)
-                blue = ladder.getPlayer(game.bluePlayer)
-                red.game(game)
-                blue.game(game)
-                red.achieve(game.redAchievements, game)
-                blue.achieve(game.blueAchievements, game)
-            return True
-        return False
-
-    def _writeToCache(self, ladder):
-        if self._usingCache:
-            pickle.dump(ladder.games, open(self._cacheFilePath, 'wb'), pickle.HIGHEST_PROTOCOL)
-
     def _deleteCache(self):
-        if os.path.exists(self._cacheFilePath) and self._usingCache:
-            os.remove(self._cacheFilePath)
+        for transform in Transforms.values():
+            if os.path.exists(transform.getCacheName()) and self._usingCache:
+                os.remove(transform.getCacheName())

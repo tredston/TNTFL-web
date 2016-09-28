@@ -1,12 +1,13 @@
 #!/usr/bin/env python
+import cgi
+import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
 from tntfl.web import serve_template, fail_404
 import tntfl.template_utils as utils
-import cgi
 
 form = cgi.FieldStorage()
 
-ladder = TableFootballLadder("ladder.txt")
+ladder = TableFootballLadder(Constants.ladderFilePath)
 
 depth = 0
 if "depth" in form:

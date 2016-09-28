@@ -1,9 +1,15 @@
-<%page args="ladder, base, games, limit=10"/>
+<%page args="base, limit=10"/>
 <%namespace name="blocks" file="blocks.mako" />
+<%!
+import tntfl.constants as Constants
+from tntfl.ladder import TableFootballLadder
+import tntfl.transforms.transforms as PresetTransforms
+%>
 <%
-  recentGames = [l for l in games if not l.isDeleted()][-limit:]
+  ladder = TableFootballLadder(Constants.ladderFilePath)
+  recentGames = [l for l in ladder.games if not l.isDeleted()][-limit:]
   recentGames.reverse()
 %>
 <div class="container-fluid">
-    ${blocks.render("gameList", games=recentGames, base=base)}
+    ${blocks.render("gameList", ladder=ladder, games=recentGames, base=base)}
 </div>

@@ -1,4 +1,5 @@
 import os
+import re
 import unittest
 
 import tntfl.test.test_achievements as test_achievements
@@ -6,6 +7,7 @@ import tntfl.test.test_game_store as test_game_store
 import tntfl.test.test_ladder as test_ladder
 import tntfl.test.test_pundit as test_pundit
 import tntfl.test.test_scripts as test_scripts
+import tntfl.test.transforms as transforms
 
 import tntfl.test.test_deployment as test_deployment
 
@@ -16,6 +18,7 @@ def unit_test_suite():
     test_suite.addTest(unittest.findTestCases(test_game_store))
     test_suite.addTest(unittest.findTestCases(test_ladder))
     test_suite.addTest(unittest.findTestCases(test_pundit))
+    test_suite.addTest(unittest.findTestCases(transforms))
     return test_suite
 
 
@@ -31,9 +34,10 @@ def integration_test_suite():
     return test_suite
 
 print 'Clearing cache'
-cacheFile = 'cache'
-if os.path.exists(cacheFile):
-    os.remove(cacheFile)
+cacheFile = '.cache.*'
+for f in os.listdir('.'):
+    if re.search(cacheFile, f):
+        os.remove(f)
 
 runner = unittest.TextTestRunner()
 

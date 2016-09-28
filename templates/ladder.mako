@@ -2,6 +2,7 @@
 <%!
 import re
 from datetime import datetime
+import tntfl.constants as Constants
 from tntfl.player import Player
 from tntfl.ladder import TableFootballLadder
 import tntfl.template_utils as utils
@@ -71,6 +72,7 @@ def getTrend(player):
 </%def>
 
 <%
+ladder = TableFootballLadder(Constants.ladderFilePath, timeRange=timeRange)
 ranked = rankPlayers(ladder)
 totalActivePlayers = len([p for p in ladder.players.values() if ladder.isPlayerActive(p)])
 %>

@@ -3,4 +3,4 @@
 
 # And the rest
 /ladder.txt
-/cache
+.cache.*

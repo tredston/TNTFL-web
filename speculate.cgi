@@ -2,6 +2,7 @@
 
 import cgi
 from time import time
+import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
 from tntfl.game import Game
 from tntfl.web import serve_template
@@ -9,7 +10,7 @@ from tntfl.web import serve_template
 
 form = cgi.FieldStorage()
 
-ladder = TableFootballLadder("ladder.txt")
+ladder = TableFootballLadder(Constants.ladderFilePath)
 
 if "previousGames" in form:
     serialisedSpecGames = form["previousGames"].value
