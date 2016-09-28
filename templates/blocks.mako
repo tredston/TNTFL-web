@@ -2,5 +2,5 @@
 <%!
 from tntfl.web import get_template
 %>
-  ${get_template(templateFile + ".mako", ladder=ladder, **kwargs)}
+  ${get_template(templateFile + ".mako", **kwargs)}
 </%def>

@@ -36,7 +36,7 @@ for game in ladder.games:
     blueGoals += game.blueScore
 
 mostSignificantGames = getMostSignificantGames(ladder.games)
-activePlayers = len(ladder.getActivePlayers())
+activePlayers = ladder.getNumActivePlayers()
 skillBounds = ladder.getSkillBounds()
 streaks = ladder.getStreaks()
 plotData = getGamesPerDay(ladder)
@@ -87,7 +87,7 @@ plotData = getGamesPerDay(ladder)
           <h2 class="panel-title">Most Significant Games</h2>
         </div>
         <div class="panel-body">
-          ${self.blocks.render("gameList", games=mostSignificantGames[0:5], base=self.attr.base)}
+          ${self.blocks.render("gameList", ladder=ladder, games=mostSignificantGames[0:5], base=self.attr.base)}
         </div>
       </div>
     </div>
@@ -97,7 +97,7 @@ plotData = getGamesPerDay(ladder)
           <h2 class="panel-title">Least Significant Games</h2>
         </div>
         <div class="panel-body">
-          ${self.blocks.render("gameList", games=mostSignificantGames[-5:], base=self.attr.base)}
+          ${self.blocks.render("gameList", ladder=ladder, games=mostSignificantGames[-5:], base=self.attr.base)}
         </div>
       </div>
     </div>

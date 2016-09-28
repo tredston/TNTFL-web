@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import cgi
+import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
 from tntfl.web import fail_404, serve_template
 
@@ -8,7 +9,7 @@ from tntfl.web import fail_404, serve_template
 form = cgi.FieldStorage()
 
 if "player" in form:
-    ladder = TableFootballLadder("ladder.txt")
+    ladder = TableFootballLadder(Constants.ladderFilePath)
     if form["player"].value.lower() in ladder.players:
         player = ladder.players[form["player"].value.lower()]
         if "method" in form:

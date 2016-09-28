@@ -1,18 +1,31 @@
 from collections import Counter, defaultdict
 import datetime
 import os.path
+import abc
 
 
 def oncePerPlayer(applies):
     '''
-    Decorate an Achievement class's applies() function with oncePerPlayer to limit the achievement
-    to a maximum of once per player.
+    Decorate an Achievement class' applies() function with oncePerPlayer to
+    limit the achievement to a maximum of once per player.
     '''
     return lambda self, p, g, o, l: False if self.__class__ in p.achievements.keys() else applies(self, p, g, o, l)
 
 
 class Achievement(object):
-    pass
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractproperty
+    def name(self):
+        pass
+
+    @abc.abstractproperty
+    def description(self):
+        pass
+
+    @abc.abstractmethod
+    def applies(self, player, game, opponent, ladder):
+        pass
 
 
 class FirstGame(Achievement):
@@ -95,6 +108,7 @@ class AgainstTheOdds(Achievement):
         else:
             return (game.blueScore > game.redScore) and (player.elo - game.skillChangeToBlue) + 50 <= (opponent.elo + game.skillChangeToBlue)
 
+
 class AgainstAllOdds(Achievement):
     name = "Against All Odds"
     description = "Beat a player 100 or more skillpoints higher than you"
@@ -123,7 +137,7 @@ class TheWorst(Achievement):
     @oncePerPlayer
     def applies(self, player, game, opponent, ladder):
         rank = game.bluePosAfter if player.name == game.bluePlayer else game.redPosAfter
-        return rank == len(ladder.getActivePlayers(game.time))
+        return rank == ladder.getNumActivePlayers(game.time)
 
 
 class Improver(Achievement):
@@ -153,7 +167,7 @@ class Unstable(Achievement):
 
 
 class UpUpAndAway(Achievement):
-    name = "UpUpAndAway"
+    name = "Up Up And Away"
     description = "Gain points for 8 consecutive games"
 
     def __init__(self):
@@ -328,7 +342,7 @@ class BossFight(Achievement):
                 self.boss = f.readline().strip()
 
     def applies(self, player, game, opponent, ladder):
-        if self.boss != None:
+        if self.boss is not None:
             won = game.blueScore > game.redScore if player.name == game.bluePlayer else game.redScore > game.blueScore
             return self.boss and self.boss == opponent.name and won
         return False
@@ -340,7 +354,13 @@ class Achievements(object):
         for clz in Achievement.__subclasses__():
             self.achievements.append(clz())
 
-    def getAllForGame(self, player, game, opponent, ladder):
+    def apply(self, red, game, blue, ladder):
+        game.redAchievements = self._getAllForGame(red, game, blue, ladder)
+        game.blueAchievements = self._getAllForGame(blue, game, red, ladder)
+        red.achieve(game.redAchievements, game)
+        blue.achieve(game.blueAchievements, game)
+
+    def _getAllForGame(self, player, game, opponent, ladder):
         '''
         Identifies all achievements unlocked by player in game against opponent.
         This method should be called AFTER Player.game() has been called with game for BOTH players.

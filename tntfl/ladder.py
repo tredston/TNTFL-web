@@ -3,60 +3,10 @@ import cPickle as pickle
 import time
 from tntfl.achievements import Achievements
 from tntfl.player import Player, Streak
-from tntfl.game_store import GameStore
+from tntfl.caching_game_store import CachingGameStore
 from tntfl.game import Game
-
-class CachingGameStore(object):
-    _cacheFilePath = "cache"
-
-    def __init__(self, ladderFilePath, useCache):
-        self._gameStore = GameStore(ladderFilePath)
-        self._usingCache = useCache
-
-    def loadGames(self, ladder, ladderTime):
-        loaded = False
-        if ladderTime['now']:
-            loaded = self._loadFromCache(ladder)
-        if not loaded:
-            self._loadFromStore(ladder, ladderTime)
-            if ladderTime['now']:
-                self._writeToCache(ladder)
-
-    def writeGame(self, game):
-        self._deleteCache()
-        self._gameStore.appendGame(game)
-
-    def deleteGame(self, gameTime, deletedBy):
-        self._deleteCache()
-        return self._gameStore.deleteGame(gameTime, deletedBy)
-
-    def _loadFromStore(self, ladder, ladderTime):
-        loadedGames = self._gameStore.getGames()
-        if not ladderTime['now']:
-            loadedGames = [g for g in loadedGames if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
-        for loadedGame in loadedGames:
-            ladder.addGame(loadedGame)
-
-    def _loadFromCache(self, ladder):
-        if os.path.exists(self._cacheFilePath) and self._usingCache:
-            ladder.games = pickle.load(open(self._cacheFilePath, 'rb'))
-            for game in [g for g in ladder.games if not g.isDeleted()]:
-                red = ladder.getPlayer(game.redPlayer)
-                blue = ladder.getPlayer(game.bluePlayer)
-                red.game(game)
-                blue.game(game)
-                red.achieve(game.redAchievements, game)
-                blue.achieve(game.blueAchievements, game)
-            return True
-        return False
-
-    def _writeToCache(self, ladder):
-        if self._usingCache:
-            pickle.dump(ladder.games, open(self._cacheFilePath, 'wb'), pickle.HIGHEST_PROTOCOL)
-
-    def _deleteCache(self):
-        if os.path.exists(self._cacheFilePath) and self._usingCache:
-            os.remove(self._cacheFilePath)
+from tntfl.skill_change import Elo
+import tntfl.transforms.transforms as PresetTransforms
 
 
 class TableFootballLadder(object):
@@ -64,16 +14,29 @@ class TableFootballLadder(object):
     # Number of days inactivity after which players are considered inactive
     DAYS_INACTIVE = 60
 
-    def __init__(self, ladderFilePath, useCache = True, timeRange=None):
+    def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None):
         self.games = []
         self.players = {}
         self.achievements = Achievements()
+        self._skillChange = Elo()
         self._recentlyActivePlayers = (-1, [])
-        self._gameStore = CachingGameStore(ladderFilePath, useCache)
 
-        self._ladderTime = {'now': timeRange == None, 'range': timeRange}
+        self._ladderTime = {'now': timeRange is None, 'range': timeRange}
         self._theTime = time.time()
-        self._gameStore.loadGames(self, self._ladderTime)
+
+        self._gameStore = CachingGameStore(ladderFilePath, useCache)
+        self._transforms = PresetTransforms.transforms_for_full_games(self._ladderTime) if transforms is None else transforms
+        self._loadGamesIntoLadder()
+
+    def _loadGamesIntoLadder(self):
+        self.games = self._gameStore.loadGames(self._ladderTime, self._transforms)
+        for game in [g for g in self.games if not g.isDeleted()]:
+            red = self.getPlayer(game.redPlayer)
+            blue = self.getPlayer(game.bluePlayer)
+            blue.game(game)
+            red.game(game)
+            red.achieve(game.redAchievements, game)
+            blue.achieve(game.blueAchievements, game)
 
     def getPlayer(self, name):
         if name not in self.players:
@@ -89,12 +52,13 @@ class TableFootballLadder(object):
         red = self.getPlayer(game.redPlayer)
         blue = self.getPlayer(game.bluePlayer)
 
-        self._calculateSkillChange(red, game, blue)
+        self._skillChange.apply(red, game, blue)
 
-        activePlayers = {p.name: p for p in self.getActivePlayers(game.time -1)}
-        players = sorted(activePlayers.values(), key=lambda x: x.elo, reverse=True)
-        redPosBefore = players.index(red) if red in players else -1
-        bluePosBefore = players.index(blue) if blue in players else -1
+        activePlayers = {p.name: p for p in self._getActivePlayers(game.time - 1)}
+        before = activePlayers.values()
+        before = sorted(before, key=lambda x: x.elo, reverse=True)
+        redPosBefore = before.index(red) if red in before else -1
+        bluePosBefore = before.index(blue) if blue in before else -1
 
         blue.game(game)
         red.game(game)
@@ -102,43 +66,38 @@ class TableFootballLadder(object):
         activePlayers[red.name] = red
         activePlayers[blue.name] = blue
         self._recentlyActivePlayers = (game.time, activePlayers.values())
-        players = sorted(activePlayers.values(), key=lambda x: x.elo, reverse=True)
-        redPosAfter = players.index(red)
-        bluePosAfter = players.index(blue)
+        after = activePlayers.values()
 
-        game.bluePosAfter = bluePosAfter + 1 # because it's zero-indexed here
+        after = sorted(after, key=lambda x: x.elo, reverse=True)
+        redPosAfter = after.index(red)
+        bluePosAfter = after.index(blue)
+
+        game.bluePosAfter = bluePosAfter + 1  # because it's zero-indexed here
         game.redPosAfter = redPosAfter + 1
 
-        if bluePosBefore > 0:
-            game.bluePosChange = bluePosBefore - bluePosAfter  # It's this way around because a rise in position is to a lower numbered rank.
-        if redPosBefore > 0:
-            game.redPosChange = redPosBefore - redPosAfter
+        game.bluePosChange = bluePosBefore - bluePosAfter  # It's this way around because a rise in position is to a lower numbered rank.
+        game.redPosChange = redPosBefore - redPosAfter
 
         if self._ladderTime['now']:
-            game.redAchievements = self.achievements.getAllForGame(red, game, blue, self)
-            game.blueAchievements = self.achievements.getAllForGame(blue, game, red, self)
-            red.achieve(game.redAchievements, game)
-            blue.achieve(game.blueAchievements, game)
+            self.achievements.apply(red, game, blue, self)
 
-    #returns blueScore/10
+
+    # returns blue's goal ratio
     def predict(self, red, blue):
-        return 1 / (1 + 10 ** ((red.elo - blue.elo) / 180))
+        return self._skillChange.getBlueGoalRatio(red, blue)
 
-    def _calculateSkillChange(self, red, game, blue):
-        predict = self.predict(red, blue)
-        result = float(game.blueScore) / (game.blueScore + game.redScore)
-        delta = 25 * (result - predict)
-        game.skillChangeToBlue = delta
-
-    def getActivePlayers(self, atTime = None):
-        if atTime == None:
+    def _getActivePlayers(self, atTime=None):
+        if atTime is None:
             atTime = self._getTime()
         if self._recentlyActivePlayers[0] != atTime:
             self._recentlyActivePlayers = (atTime, [p for p in self.players.values() if self.isPlayerActive(p, atTime)])
         return self._recentlyActivePlayers[1]
 
+    def getNumActivePlayers(self, atTime=None):
+        return len(self._getActivePlayers(atTime))
+
     def isPlayerActive(self, player, atTime=None):
-        if atTime == None:
+        if atTime is None:
             atTime = self._getTime()
         for game in reversed(player.games):
             if game.time <= atTime:
@@ -186,7 +145,7 @@ class TableFootballLadder(object):
         if redScore >= 0 and blueScore >= 0 and (redScore + blueScore) > 0:
             game = Game(redPlayer, redScore, bluePlayer, blueScore, int(time.time()))
             self.addGame(game)
-            self._gameStore.writeGame(game)
+            self._gameStore.appendGame(game)
         return game
 
     def deleteGame(self, gameTime, deletedBy):

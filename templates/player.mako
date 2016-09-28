@@ -122,7 +122,7 @@ rankChangeClass = "positive" if rankChange > 0 else "negative" if rankChange < 0
         </div>
         <div class="panel-body">
           <div class="row">
-            ${statBox(title="Current Ranking", body=(rank if rank != -1 else "-"), classes=utils.getRankCSS(rank, len(ladder.getActivePlayers())))}
+            ${statBox(title="Current Ranking", body=(rank if rank != -1 else "-"), classes=utils.getRankCSS(rank, ladder.getNumActivePlayers()))}
             ${statBox(title="Skill", body="{:.3f}".format(player.elo))}
             ${statBox(title="Overrated", body="{:.3f}".format(player.overrated()), classes=overratedClass)}
             ${statBox(title="Side preference", body="{:.2%}".format(redness if redness >= 0.5 else (1-redness)) + (" red" if redness >= 0.5 else " blue"), classes="side-preference", style=sideStyle)}
@@ -221,7 +221,7 @@ rankChangeClass = "positive" if rankChange > 0 else "negative" if rankChange < 0
             <div class="game table-responsive container-fluid">
               <table class="table no-table-boder" style="margin-top: 20px;">
                 <tbody>
-                  ${self.blocks.render("game", game=player.mostSignificantGame(), base=self.attr.base, punditryAvailable=utils.punditryAvailable(pundit, player.mostSignificantGame(), ladder), totalActivePlayers=len(ladder.getActivePlayers(player.mostSignificantGame().time-1)))}
+                  ${self.blocks.render("game", game=player.mostSignificantGame(), base=self.attr.base, punditryAvailable=utils.punditryAvailable(pundit, player.mostSignificantGame(), ladder), totalActivePlayers=ladder.getNumActivePlayers(player.mostSignificantGame().time-1))}
                 </tbody>
               </table>
             </div>
@@ -235,7 +235,7 @@ rankChangeClass = "positive" if rankChange > 0 else "negative" if rankChange < 0
             <div class="game table-responsive container-fluid">
               <table class="table no-table-boder" style="margin-top: 20px;">
                 <tbody>
-                  ${self.blocks.render("game", game=player.games[0], base=self.attr.base, punditryAvailable=utils.punditryAvailable(pundit, player.games[0], ladder), totalActivePlayers=len(ladder.getActivePlayers(player.games[0].time-1)))}
+                  ${self.blocks.render("game", game=player.games[0], base=self.attr.base, punditryAvailable=utils.punditryAvailable(pundit, player.games[0], ladder), totalActivePlayers=ladder.getNumActivePlayers(player.games[0].time-1))}
                 </tbody>
               </table>
             </div>

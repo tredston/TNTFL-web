@@ -11,7 +11,7 @@ import tntfl.template_utils as utils
 	<table class="table no-table-boder" style="margin-top: 20px;">
 		<tbody>
 		% for game in games:
-		    ${blocks.render("game", game=game, base=base, punditryAvailable=utils.punditryAvailable(pundit, game, ladder), speculative=speculative, totalActivePlayers=len(ladder.getActivePlayers(game.time-1)))}
+		    ${blocks.render("game", game=game, base=base, punditryAvailable=utils.punditryAvailable(pundit, game, ladder), speculative=speculative, totalActivePlayers=ladder.getNumActivePlayers(game.time-1))}
 		% endfor
 		</tbody>
 	</table>

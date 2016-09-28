@@ -1,4 +1,4 @@
-<%page args="base, pageTitle, games"/>
+<%page args="base, pageTitle, ladder, games"/>
 <%namespace name="blocks" file="blocks.mako" />
 <div class="container-fluid">
   <div class="row">
@@ -8,7 +8,7 @@
           <h1 class="panel-title">${pageTitle}</h1>
         </div>
         <div class="panel-body">
-          ${blocks.render("gameList", games=games, base=base)}
+          ${blocks.render("gameList", ladder=ladder, games=games, base=base)}
         </div>
       </div>
     </div>
