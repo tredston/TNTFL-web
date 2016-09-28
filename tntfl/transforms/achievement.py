@@ -48,7 +48,7 @@ class TableFootballLadder:
         self.games = []
         self.players = {}
         self.achievements = Achievements()
-        self._recentlyActivePlayers = (-1, [])
+        self._recentlyActivePlayers = []
 
     def addGame(self, game):
         self.games.append(game)
@@ -57,15 +57,16 @@ class TableFootballLadder:
         red.game(game)
         blue.game(game)
 
+        if red not in self._recentlyActivePlayers:
+            self._recentlyActivePlayers.append(red)
+        if blue not in self._recentlyActivePlayers:
+            self._recentlyActivePlayers.append(blue)
+        self._recentlyActivePlayers = [p for p in self._recentlyActivePlayers if (p._activeTillTime - game.time) > 0]
+
         self.achievements.apply(red, game, blue, self)
 
-    def _getActivePlayers(self, time):
-        if self._recentlyActivePlayers[0] != time:
-            self._recentlyActivePlayers = (time, [p for p in self.players.values() if (p._activeTillTime - time) > 0])
-        return self._recentlyActivePlayers[1]
-
     def getNumActivePlayers(self, time):
-        return len(self._getActivePlayers(time))
+        return len(self._recentlyActivePlayers)
 
     def _getPlayer(self, name):
         if name not in self.players:
