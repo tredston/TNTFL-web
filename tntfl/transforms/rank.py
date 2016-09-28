@@ -37,11 +37,11 @@ def do(games):
             red.lastPlayed = game.time
             blue.lastPlayed = game.time
 
-            if red not in activePlayers:
-                activePlayers.append(red)
-            if blue not in activePlayers:
-                activePlayers.append(blue)
-            sortedPlayers = sorted(activePlayers, key=lambda x: x.elo, reverse=True)
+            if red not in sortedPlayers:
+                sortedPlayers.append(red)
+            if blue not in sortedPlayers:
+                sortedPlayers.append(blue)
+            sortedPlayers = sorted(sortedPlayers, key=lambda x: x.elo, reverse=True)
             redPosAfter = sortedPlayers.index(red)
             bluePosAfter = sortedPlayers.index(blue)
 
