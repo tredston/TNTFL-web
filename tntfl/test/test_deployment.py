@@ -4,6 +4,7 @@ import urlparse
 import json
 import os
 
+
 class Deployment(unittest.TestCase):
     urlBase = os.path.join('http://www/~tlr/', os.path.split(os.getcwd())[1]) + "/"
 
@@ -59,6 +60,7 @@ class Pages(Deployment):
     def _testResponse(self, response):
         super(Pages, self)._testResponse(response)
         self.assertTrue("<!DOCTYPE html>" in response)
+
 
 class DeletePage(Deployment):
     _username = None

@@ -5,37 +5,33 @@ from time import time
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
 from tntfl.game import Game
-from tntfl.web import serve_template
+from tntfl.web import serve_template, getString, getInt
 
+
+def deserialise(serialisedGames):
+    gameParts = serialisedGames.split(',')
+    games = []
+    for i in range(0, len(gameParts) / 4):
+        g = Game(gameParts[4 * i], gameParts[4 * i + 1], gameParts[4 * i + 3], gameParts[4 * i + 2], time())
+        games.append(g)
+        ladder.addGame(g)
+    return games
 
 form = cgi.FieldStorage()
-
 ladder = TableFootballLadder(Constants.ladderFilePath)
+serialisedSpecGames = form.getfirst('previousGames', '')
+games = deserialise(serialisedSpecGames)
 
-if "previousGames" in form:
-    serialisedSpecGames = form["previousGames"].value
-else:
-    serialisedSpecGames = ""
-
-gameParts = serialisedSpecGames.split(",")
-
-games = []
-
-for i in range(0, len(gameParts) / 4):
-    g = Game(gameParts[4 * i], gameParts[4 * i + 1], gameParts[4 * i + 3], gameParts[4 * i + 2], time())
+redPlayer = getString('redPlayer', form)
+bluePlayer = getString('bluePlayer', form)
+redScore = getInt('redScore', form)
+blueScore = getInt('blueScore', form)
+if redPlayer and bluePlayer and redScore and blueScore:
+    g = Game(redPlayer, redScore, bluePlayer, blueScore, time())
     games.append(g)
     ladder.addGame(g)
-
-if "bluePlayer" in form and "redPlayer" in form:
-    redScore = form["redScore"].value if "redScore" in form else 0
-    blueScore = form["blueScore"].value if "blueScore" in form else 0
-    g = Game(form["redPlayer"].value, redScore, form["bluePlayer"].value, blueScore, time())
-    games.append(g)
-    ladder.addGame(g)
-    serialisedSpecGames += ",{0},{1},{2},{3}".format(form["redPlayer"].value, redScore, blueScore, form["bluePlayer"].value)
-
-if serialisedSpecGames != "" and serialisedSpecGames[0] == ",":
-    serialisedSpecGames = serialisedSpecGames[1:]
+    serialisedSpecGames += ",{0},{1},{2},{3}".format(redPlayer, redScore, blueScore, bluePlayer)
+serialisedSpecGames.strip(',')
 
 games.reverse()
 serve_template("speculate.mako", ladder=ladder, games=games, serialisedSpecGames=serialisedSpecGames)
