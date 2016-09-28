@@ -209,7 +209,7 @@ rankChangeClass = "positive" if rankChange > 0 else "negative" if rankChange < 0
             <h2 class="panel-title">Recent Games</h2>
           </div>
           <div class="panel-body">
-            ${self.blocks.render("recent", base=self.attr.base, games=player.games, limit=5)}
+            ${self.blocks.render("recent", base=self.attr.base, ladder=ladder, games=player.games, limit=5)}
             <a class="pull-right" href="games/">See all games</a>
           </div>
         </div>

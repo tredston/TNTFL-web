@@ -111,7 +111,7 @@ totalActivePlayers = ladder.getNumActivePlayers()
                   <h2 class="panel-title">Recent Encounters</h2>
                 </div>
                 <div class="panel-body">
-                  ${self.blocks.render("recent", base=self.attr.base, games=sharedGames, limit=5)}
+                  ${self.blocks.render("recent", base=self.attr.base, ladder=ladder, games=sharedGames, limit=5)}
                   <a class="pull-right" href="games/">See all games</a>
                 </div>
               </div>

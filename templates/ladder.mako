@@ -1,4 +1,4 @@
-<%page args="sortCol=10, sortOrder=1, showInactive=0"/>
+<%page args="sortCol=10, sortOrder=1, showInactive=0, ladder=None"/>
 <%!
 import re
 from datetime import datetime
@@ -72,7 +72,8 @@ def getTrend(player):
 </%def>
 
 <%
-ladder = TableFootballLadder(Constants.ladderFilePath, timeRange=timeRange)
+if ladder is None:
+    ladder = TableFootballLadder(Constants.ladderFilePath, timeRange=timeRange)
 ranked = rankPlayers(ladder)
 totalActivePlayers = len([p for p in ladder.players.values() if ladder.isPlayerActive(p)])
 %>
@@ -99,4 +100,3 @@ totalActivePlayers = len([p for p in ladder.players.values() if ladder.isPlayerA
 % endfor
     </tbody>
   </table>
-  
