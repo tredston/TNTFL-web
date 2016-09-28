@@ -6,7 +6,7 @@ DAYS_INACTIVE = 60
 class Player(object):
     def __init__(self):
         self.elo = 0.0
-        self.lastPlayed = 0
+        self.activeTillTime = 0
 
 
 def getPlayer(players, name):
@@ -16,12 +16,13 @@ def getPlayer(players, name):
 
 
 def getActivePlayers(players, playedGames, time):
-    return [p for p in players.values() if (time - p.lastPlayed) < 60 * 60 * 24 * DAYS_INACTIVE]
+    return [p for p in players.values() if (p.activeTillTime - time) > 0]
 
 
 def do(games):
     players = {}
     playedGames = []
+    secondsInactive = 60 * 60 * 24 * DAYS_INACTIVE
     for game in games:
         if not game.isDeleted():
             red = getPlayer(players, game.redPlayer)
@@ -34,8 +35,9 @@ def do(games):
 
             red.elo -= game.skillChangeToBlue
             blue.elo += game.skillChangeToBlue
-            red.lastPlayed = game.time
-            blue.lastPlayed = game.time
+            activeTillTime = game.time + secondsInactive
+            red.activeTillTime = activeTillTime
+            blue.activeTillTime = activeTillTime
 
             if red not in sortedPlayers:
                 sortedPlayers.append(red)
