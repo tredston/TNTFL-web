@@ -9,7 +9,7 @@ class Player(object):
         self.name = name
         self.elo = 0.0
         self.games = []
-        self.lowestSkill = {"time": 0, "skill": 0}
+        self.lowestSkill = 0
         self.achievements = {}
 
         self._activeTillTime = 0
@@ -18,19 +18,14 @@ class Player(object):
         secondsInactive = 60 * 60 * 24 * DAYS_INACTIVE
         self._activeTillTime = game.time + secondsInactive
 
-        if self.name == game.redPlayer:
-            delta = -game.skillChangeToBlue
-        else:
-            delta = game.skillChangeToBlue
-        self.elo += delta
-
-        if (self.elo < self.lowestSkill["skill"]):
-            self.lowestSkill = {"time": game.time, "skill": self.elo}
+        self.elo += game.skillChangeToBlue if self.name == game.bluePlayer else -game.skillChangeToBlue
+        if self.elo < self.lowestSkill:
+            self.lowestSkill = self.elo
 
         self.games.append(game)
 
     def getSkillBounds(self):
-        return {"lowest": self.lowestSkill}
+        return {"lowest": {'skill': self.lowestSkill}}
 
     def wonGame(self, game):
         return (game.redPlayer == self.name and game.redScore > game.blueScore) or (game.bluePlayer == self.name and game.blueScore > game.redScore)
