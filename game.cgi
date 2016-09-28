@@ -20,8 +20,9 @@ if form.getfirst('method') == "add":
         else:
             redirect_302("../%.0f" % game.time)
 elif form.getfirst('method') == 'view':
-    gameTime = int(form.getfirst('game'))
+    gameTime = form.getfirst('game')
     if gameTime is not None:
+        gameTime = int(gameTime)
         try:
             game = next(g for g in ladder.games if g.time == gameTime)
             serve_template("wrappedGame.mako", game=game, ladder=ladder)
