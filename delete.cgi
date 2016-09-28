@@ -21,13 +21,10 @@ if gameTime is not None:
         else:
             fail_404()
     else:
-        found = False
-        for game in ladder.games:
-            if game.time == gameTime and not found:
-                found = True
-                serve_template("deleteGame.mako", ladder=ladder, game=game)
-        if not found:
+        try:
+            game = next(g for g in ladder.games if g.time == gameTime)
+            serve_template("deleteGame.mako", ladder=ladder, game=game)
+        except StopIteration:
             fail_404()
-            print
 else:
     fail_404()
