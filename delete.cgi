@@ -10,9 +10,10 @@ form = cgi.FieldStorage()
 
 
 ladder = TableFootballLadder(Constants.ladderFilePath)
-if "game" in form:
-    gameTime = int(form["game"].value)
-    if "deleteConfirm" in form and form["deleteConfirm"].value == "true":
+
+gameTime = form.getfirst('game')
+if gameTime is not None:
+    if form.getfirst('deleteConfirm') == "true":
         deletedBy = os.environ["REMOTE_USER"] if "REMOTE_USER" in os.environ else "Unknown"
         deleted = ladder.deleteGame(gameTime, deletedBy)
         if deleted:
