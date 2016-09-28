@@ -7,11 +7,10 @@ import tntfl.template_utils as utils
 
 form = cgi.FieldStorage()
 
-ladder = TableFootballLadder(Constants.ladderFilePath)
-
 player1 = form.getfirst('player1')
 player2 = form.getfirst('player2')
 if player1 and player2:
+    ladder = TableFootballLadder(Constants.ladderFilePath)
     player1 = ladder.getPlayer(player1)
     player2 = ladder.getPlayer(player2)
     if form.getfirst('method') == "games":
