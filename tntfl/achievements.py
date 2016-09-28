@@ -307,7 +307,7 @@ class TheDominator(Achievement):
             self.counts[pairing] += 1
         else:
             self.counts[pairing] = 0
-        return self.counts[pairing] == 10
+        return self.counts[pairing] > 0 and self.counts[pairing] % 10 == 0
 
 
 class Consistency(Achievement):

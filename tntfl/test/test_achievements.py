@@ -225,8 +225,8 @@ class TestTheDominator(unittest.TestCase):
         opponent = Player("bar")
         for i in range(0, 9):
             game = addGame(player, 10, opponent, 0, i, -1)
-            result = sut.applies(player, game, opponent, None)
-            self.assertFalse(result)
+            self.assertFalse(sut.applies(player, game, opponent, None))
+            self.assertFalse(sut.applies(opponent, game, player, None))
 
         baz = Player("baz")
         game = addGame(player, 10, baz, 0, 9, -1)
@@ -234,6 +234,22 @@ class TestTheDominator(unittest.TestCase):
         self.assertFalse(result)
 
         game = addGame(player, 10, opponent, 0, 10, -1)
+        result = sut.applies(player, game, opponent, None)
+        self.assertTrue(result)
+        result = sut.applies(opponent, game, player, None)
+        self.assertFalse(result)
+
+    def testDoubleDomination(self):
+        sut = TheDominator()
+        player = Player("foo")
+        opponent = Player("bar")
+        for i in range(0, 19):
+            game = addGame(player, 10, opponent, 0, i, -1)
+            result = sut.applies(player, game, opponent, None)
+            if i != 9:
+                self.assertFalse(result)
+
+        game = addGame(player, 10, opponent, 0, 20, -1)
         result = sut.applies(player, game, opponent, None)
         self.assertTrue(result)
         result = sut.applies(opponent, game, player, None)
