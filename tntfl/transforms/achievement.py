@@ -12,7 +12,12 @@ class Player(object):
         self.lowestSkill = {"time": 0, "skill": 0}
         self.achievements = {}
 
+        self._activeTillTime = 0
+
     def game(self, game):
+        secondsInactive = 60 * 60 * 24 * DAYS_INACTIVE
+        self._activeTillTime = game.time + secondsInactive
+
         if self.name == game.redPlayer:
             delta = -game.skillChangeToBlue
         else:
@@ -54,23 +59,13 @@ class TableFootballLadder:
 
         self.achievements.apply(red, game, blue, self)
 
-    def _getActivePlayers(self, atTime=None):
-        if atTime is None:
-            atTime = self._getTime()
-        if self._recentlyActivePlayers[0] != atTime:
-            self._recentlyActivePlayers = (atTime, [p for p in self.players.values() if self._isPlayerActive(p, atTime)])
+    def _getActivePlayers(self, time):
+        if self._recentlyActivePlayers[0] != time:
+            self._recentlyActivePlayers = (time, [p for p in self.players.values() if (p._activeTillTime - time) > 0])
         return self._recentlyActivePlayers[1]
 
-    def getNumActivePlayers(self, atTime=None):
-        return len(self._getActivePlayers(atTime))
-
-    def _isPlayerActive(self, player, atTime=None):
-        if atTime is None:
-            atTime = self._getTime()
-        for game in reversed(player.games):
-            if game.time <= atTime:
-                return (atTime - game.time) < (60 * 60 * 24 * DAYS_INACTIVE)
-        return False
+    def getNumActivePlayers(self, time):
+        return len(self._getActivePlayers(time))
 
     def _getPlayer(self, name):
         if name not in self.players:
