@@ -29,9 +29,13 @@ class Pages(Deployment):
         self._testPageReachable('index.cgi')
 
     def testAchievementsReachable(self):
+        if 'QUERY_STRING' in os.environ:
+            del(os.environ['QUERY_STRING'])
         self._testPageReachable('achievements.cgi')
 
     def testApiReachable(self):
+        if 'QUERY_STRING' in os.environ:
+            del(os.environ['QUERY_STRING'])
         self._testPageReachable('api.cgi')
 
     def testGameReachable(self):
