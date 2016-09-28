@@ -46,8 +46,8 @@ result = runner.run(unit_test_suite())
 
 if len(result.errors) == 0 and len(result.failures) == 0:
     print 'Running functional tests:'
-    runner.run(functional_test_suite())
+    result = runner.run(functional_test_suite())
 
 if len(result.errors) == 0 and len(result.failures) == 0:
     print 'Running integration tests:'
-    runner.run(integration_test_suite())
+    result = runner.run(integration_test_suite())
