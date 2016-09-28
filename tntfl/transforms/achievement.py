@@ -8,7 +8,6 @@ class Player(object):
     def __init__(self, name):
         self.name = name
         self.elo = 0.0
-        self.lastPlayed = 0
         self.games = []
         self.highestSkill = {"time": 0, "skill": 0}
         self.lowestSkill = {"time": 0, "skill": 0}
@@ -52,8 +51,8 @@ class TableFootballLadder:
 
     def addGame(self, game):
         self.games.append(game)
-        red = self.getPlayer(game.redPlayer)
-        blue = self.getPlayer(game.bluePlayer)
+        red = self._getPlayer(game.redPlayer)
+        blue = self._getPlayer(game.bluePlayer)
         red.game(game)
         blue.game(game)
 
@@ -63,13 +62,13 @@ class TableFootballLadder:
         if atTime is None:
             atTime = self._getTime()
         if self._recentlyActivePlayers[0] != atTime:
-            self._recentlyActivePlayers = (atTime, [p for p in self.players.values() if self.isPlayerActive(p, atTime)])
+            self._recentlyActivePlayers = (atTime, [p for p in self.players.values() if self._isPlayerActive(p, atTime)])
         return self._recentlyActivePlayers[1]
 
     def getNumActivePlayers(self, atTime=None):
         return len(self._getActivePlayers(atTime))
 
-    def isPlayerActive(self, player, atTime=None):
+    def _isPlayerActive(self, player, atTime=None):
         if atTime is None:
             atTime = self._getTime()
         for game in reversed(player.games):
@@ -77,7 +76,7 @@ class TableFootballLadder:
                 return (atTime - game.time) < (60 * 60 * 24 * DAYS_INACTIVE)
         return False
 
-    def getPlayer(self, name):
+    def _getPlayer(self, name):
         if name not in self.players:
             self.players[name] = Player(name)
         return self.players[name]
