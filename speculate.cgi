@@ -48,6 +48,5 @@ if game:
     speculativeGames.append(game)
     games.append(game)
 
-speculativeGames.reverse()
 speculativeladder = TableFootballLadder(Constants.ladderFilePath, games=games)
 serve_template("speculate.mako", ladder=speculativeladder, speculativeGames=speculativeGames)

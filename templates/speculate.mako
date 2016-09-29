@@ -42,7 +42,7 @@ def serialise(games):
           </form>
 % if len(speculativeGames) > 0:
           <hr />
-            ${self.blocks.render("gameList", ladder=ladder, games=speculativeGames, base=self.attr.base, speculative=True)}
+            ${self.blocks.render("gameList", ladder=ladder, games=reversed(speculativeGames), base=self.attr.base, speculative=True)}
           <hr />
           <a href=".">Reset speculation</a>
 % endif
