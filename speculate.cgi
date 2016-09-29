@@ -5,6 +5,9 @@ from time import time
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
 from tntfl.game import Game
+from tntfl.game_store import GameStore
+import tntfl.transforms.transformer as Transformer
+import tntfl.transforms.transforms as PresetTransforms
 from tntfl.web import serve_template, getString, getInt
 
 
@@ -17,10 +20,21 @@ def deserialise(serialisedGames):
         ladder.addGame(g)
     return games
 
+
+def baseGameLoader():
+    return GameStore(Constants.ladderFilePath).getGames()
+
+
+def loadLadderGames():
+    transforms = PresetTransforms.transforms_for_full_games({'now': True})
+    return Transformer.transform(baseGameLoader, transforms, False)
+
+
 form = cgi.FieldStorage()
-ladder = TableFootballLadder(Constants.ladderFilePath)
+games = loadLadderGames()
+
 serialisedSpecGames = form.getfirst('previousGames', '')
-games = deserialise(serialisedSpecGames)
+speculativeGames = deserialise(serialisedSpecGames)
 
 redPlayer = getString('redPlayer', form)
 bluePlayer = getString('bluePlayer', form)
@@ -28,10 +42,11 @@ redScore = getInt('redScore', form)
 blueScore = getInt('blueScore', form)
 if redPlayer and bluePlayer and redScore and blueScore:
     g = Game(redPlayer, redScore, bluePlayer, blueScore, time())
+    speculativeGames.append(g)
     games.append(g)
-    ladder.addGame(g)
     serialisedSpecGames += ",{0},{1},{2},{3}".format(redPlayer, redScore, blueScore, bluePlayer)
 serialisedSpecGames.strip(',')
 
-games.reverse()
-serve_template("speculate.mako", ladder=ladder, games=games, serialisedSpecGames=serialisedSpecGames)
+speculativeGames.reverse()
+speculativeladder = TableFootballLadder(Constants.ladderFilePath, games=games)
+serve_template("speculate.mako", ladder=speculativeladder, games=speculativeGames, serialisedSpecGames=serialisedSpecGames)
