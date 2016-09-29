@@ -10,11 +10,14 @@ class TestRunner(unittest.TestCase):
         pass
 
     @abc.abstractmethod
-    def _testPageReachable(self, page, query=None):
+    def _get(self, page, query):
         """
-        Get the page and pass to _testResponse
+        Return the page content.
         """
         pass
+
+    def _testPageReachable(self, page, query=None):
+        self._testResponse(self._get(page, query))
 
     def _testResponse(self, response):
         self.assertTrue("Traceback (most recent call last):" not in response)

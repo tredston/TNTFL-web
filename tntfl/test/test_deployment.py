@@ -9,17 +9,16 @@ import tntfl.test.bases as Bases
 class Deployment(unittest.TestCase):
     urlBase = os.path.join('http://www/~tlr/', os.path.split(os.getcwd())[1]) + "/"
 
+    def _getJsonFrom(self, page, query=None):
+        response = self._get(page, query)
+        self.assertTrue(len(response) > 0)
+        return json.loads(response)
+
     def _page(self, page, query=None):
         return urlparse.urljoin(self.urlBase, page) + ('?' + query) if (query is not None) else ''
 
-    def _getJsonFrom(self, page, query=None):
-        response = urllib2.urlopen(self._page(page, query))
-        self.assertTrue(len(response) > 0)
-        return json.load(response)
-
-    def _testPageReachable(self, page, query=None):
-        response = urllib2.urlopen(self._page(page, query))
-        self._testResponse(response.read())
+    def _get(self, page, query):
+        return urllib2.urlopen(self._page(page, query)).read()
 
 
 class Redirects(Deployment):

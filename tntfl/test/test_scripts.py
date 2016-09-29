@@ -10,22 +10,19 @@ class Deployment(Bases.TestRunner):
         if 'QUERY_STRING' in os.environ:
             del(os.environ['QUERY_STRING'])
 
-    def _page(self, page):
-        return os.path.join(os.getcwd(), page)
-
     def _getJsonFrom(self, page, query=None):
-        self._setQuery(query)
-        response = subprocess.check_output(['python', self._page(page)])
+        response = self._get(page, query)
         # Strip content type
         response = ''.join(response.split('\n')[2:])
         self.assertTrue(len(response) > 0)
         return json.loads(response)
 
-    def _testPageReachable(self, page, query=None):
+    def _page(self, page):
+        return os.path.join(os.getcwd(), page)
+
+    def _get(self, page, query):
         self._setQuery(query)
-        command = ['python', self._page(page)]
-        response = subprocess.check_output(command)
-        self._testResponse(response)
+        return subprocess.check_output(['python', self._page(page)])
 
     def _setQuery(self, query):
         if query is not None:
