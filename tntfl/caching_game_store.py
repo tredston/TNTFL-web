@@ -1,6 +1,7 @@
 import os
 from tntfl.game_store import GameStore
 from tntfl.transforms.transforms import Transforms
+import tntfl.transforms.transformer as Transformer
 
 
 class CachingGameStore(object):
@@ -9,31 +10,13 @@ class CachingGameStore(object):
         self._usingCache = useCache
 
     def loadGames(self, ladderTime, transforms):
-        cache = self._usingCache and ladderTime['now']
-        for t in transforms:
-            t.setUseCache(cache)
-            
-        games = None
-        transformsToRun = []
-        for t in reversed(transforms):
-            games = t.loadCached()
-            if games:
-                break
-            else:
-                transformsToRun.append(t)
+        self._ladderTime = ladderTime
+        return Transformer.transform(self._baseLoadGames, transforms, self._usingCache)
 
-        if games is None:
-            games = self._baseLoadGames(ladderTime)
-
-        for t in reversed(transformsToRun):
-            games = t.transform(games)
-
-        return games
-
-    def _baseLoadGames(self, ladderTime):
+    def _baseLoadGames(self):
         games = self._gameStore.getGames()
-        if not ladderTime['now']:
-            games = [g for g in games if ladderTime['range'][0] <= g.time and g.time <= ladderTime['range'][1]]
+        if not self._ladderTime['now']:
+            games = [g for g in games if self._ladderTime['range'][0] <= g.time and g.time <= self._ladderTime['range'][1]]
         return games
 
     def appendGame(self, game):
