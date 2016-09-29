@@ -25,7 +25,7 @@ def baseGameLoader():
 
 
 def loadLadderGames():
-    transforms = PresetTransforms.transforms_for_full_games({'now': True})
+    transforms = PresetTransforms.transforms_for_recent()
     return Transformer.transform(baseGameLoader, transforms, False)
 
 
