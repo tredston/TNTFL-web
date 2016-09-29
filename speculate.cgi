@@ -40,7 +40,7 @@ redPlayer = getString('redPlayer', form)
 bluePlayer = getString('bluePlayer', form)
 redScore = getInt('redScore', form)
 blueScore = getInt('blueScore', form)
-if redPlayer and bluePlayer and redScore and blueScore:
+if redPlayer is not None and bluePlayer is not None and redScore is not None and blueScore is not None:
     g = Game(redPlayer, redScore, bluePlayer, blueScore, time())
     speculativeGames.append(g)
     games.append(g)
