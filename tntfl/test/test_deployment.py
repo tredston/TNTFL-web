@@ -3,10 +3,10 @@ import unittest
 import urlparse
 import json
 import os
-import tntfl.test.bases as Bases
+import tntfl.test.shared_get as Get
 
 
-class Deployment(Bases.TestRunner):
+class Deployment(Get.TestRunner):
     urlBase = os.path.join('http://www/~tlr/', os.path.split(os.getcwd())[1]) + "/"
 
     def _getJson(self, page, query=None):
@@ -99,37 +99,37 @@ class DeletePage(Deployment):
         self.assertTrue("<!DOCTYPE html>" in response)
 
 
-class Pages(Deployment, Bases.Pages):
+class Pages(Deployment, Get.Pages):
     pass
 
 
-class SpeculatePage(Deployment, Bases.SpeculatePage):
+class SpeculatePage(Deployment, Get.SpeculatePage):
     pass
 
 
-class PageBits(Deployment, Bases.PageBits):
+class PageBits(Deployment, Get.PageBits):
     pass
 
 
-class PlayerApi(Deployment, Bases.PlayerApi):
+class PlayerApi(Deployment, Get.PlayerApi):
     pass
 
 
-class HeadToHeadApi(Deployment, Bases.HeadToHeadApi):
+class HeadToHeadApi(Deployment, Get.HeadToHeadApi):
     pass
 
 
-class RecentApi(Deployment, Bases.RecentApi):
+class RecentApi(Deployment, Get.RecentApi):
     pass
 
 
-class LadderApi(Deployment, Bases.LadderApi):
+class LadderApi(Deployment, Get.LadderApi):
     pass
 
 
-class GameApi(Deployment, Bases.GameApi):
+class GameApi(Deployment, Get.GameApi):
     pass
 
 
-class GamesApi(Deployment, Bases.GamesApi):
+class GamesApi(Deployment, Get.GamesApi):
     pass

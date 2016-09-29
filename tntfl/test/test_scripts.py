@@ -1,10 +1,10 @@
 import json
 import os
 import subprocess
-import tntfl.test.bases as Bases
+import tntfl.test.shared_get as Get
 
 
-class Deployment(Bases.TestRunner):
+class Deployment(Get.TestRunner):
     def setUp(self):
         if 'QUERY_STRING' in os.environ:
             del(os.environ['QUERY_STRING'])
@@ -28,35 +28,35 @@ class Deployment(Bases.TestRunner):
             os.environ['QUERY_STRING'] = query
 
 
-class Pages(Deployment, Bases.Pages):
+class Pages(Deployment, Get.Pages):
     pass
 
 
-class SpeculatePage(Deployment, Bases.SpeculatePage):
+class SpeculatePage(Deployment, Get.SpeculatePage):
     pass
 
 
-class PageBits(Deployment, Bases.PageBits):
+class PageBits(Deployment, Get.PageBits):
     pass
 
 
-class PlayerApi(Deployment, Bases.PlayerApi):
+class PlayerApi(Deployment, Get.PlayerApi):
     pass
 
 
-class HeadToHeadApi(Deployment, Bases.HeadToHeadApi):
+class HeadToHeadApi(Deployment, Get.HeadToHeadApi):
     pass
 
 
-class RecentApi(Deployment, Bases.RecentApi):
+class RecentApi(Deployment, Get.RecentApi):
     pass
 
 
-class LadderApi(Deployment, Bases.LadderApi):
+class LadderApi(Deployment, Get.LadderApi):
     pass
 
 
-class GameApi(Deployment, Bases.GameApi):
+class GameApi(Deployment, Get.GameApi):
     pass
 
 
