@@ -1,19 +1,22 @@
 <%!
 title = "Speculate | "
 base = "../"
+
+def serialise(games):
+    return ','.join(['%s,%s,%s,%s' % (g.redPlayer, g.redScore, g.blueScore, g.bluePlayer) for g in games])
 %>
 <%inherit file="html.mako" />
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-8">
-      <div class="panel panel-default ${"panel-warning" if len(games) > 0 else ""}">
-% if len(games) > 0:
+      <div class="panel panel-default ${"panel-warning" if len(speculativeGames) > 0 else ""}">
+% if len(speculativeGames) > 0:
         <div class="panel-heading">
           <h2 class="panel-title">Speculative Ladder</h2>
         </div>
 % endif
-        <div class="panel-body ${"speculative" if len(games) > 0 else ""}" id="ladderHolder">
-          ${self.blocks.render("ladder", base=self.attr.base, timeRange=None)}
+        <div class="panel-body ${"speculative" if len(speculativeGames) > 0 else ""}" id="ladderHolder">
+          ${self.blocks.render("ladder", base=self.attr.base)}
         </div>
       </div>
     </div>
@@ -33,13 +36,13 @@ base = "../"
                   $("#spec-blue-score").val(10 - $("#spec-red-score").val());
                 })
               </script>
-              <input type="hidden" name="previousGames" value="${serialisedSpecGames}" />
+              <input type="hidden" name="previousGames" value="${serialise(speculativeGames)}" />
             </div>
             <button type="submit" class="btn btn-default">Speculate <span class="glyphicon glyphicon-triangle-right"></span></button>
           </form>
-% if len(games) > 0:
+% if len(speculativeGames) > 0:
           <hr />
-            ${self.blocks.render("gameList", ladder=ladder, games=games, base=self.attr.base, speculative=True)}
+            ${self.blocks.render("gameList", ladder=ladder, games=reversed(speculativeGames), base=self.attr.base, speculative=True)}
           <hr />
           <a href=".">Reset speculation</a>
 % endif

@@ -1,4 +1,4 @@
-<%page args="sortCol=10, sortOrder=1, showInactive=0, ladder=None"/>
+<%page args="sortCol=10, sortOrder=1, showInactive=0, ladder=None, timeRange=None"/>
 <%!
 import re
 from datetime import datetime

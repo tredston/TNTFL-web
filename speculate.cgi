@@ -25,27 +25,28 @@ def baseGameLoader():
 
 
 def loadLadderGames():
-    transforms = PresetTransforms.transforms_for_full_games({'now': True})
+    transforms = PresetTransforms.transforms_for_recent()
     return Transformer.transform(baseGameLoader, transforms, False)
+
+
+def getAddedGame(form):
+    game = None
+    redPlayer = getString('redPlayer', form)
+    bluePlayer = getString('bluePlayer', form)
+    redScore = getInt('redScore', form)
+    blueScore = getInt('blueScore', form)
+    if redPlayer is not None and bluePlayer is not None and redScore is not None and blueScore is not None:
+        game = Game(redPlayer, redScore, bluePlayer, blueScore, time())
+    return game
 
 
 form = cgi.FieldStorage()
 games = loadLadderGames()
+speculativeGames = deserialise(form.getfirst('previousGames', ''))
+game = getAddedGame(form)
+if game:
+    speculativeGames.append(game)
+    games.append(game)
 
-serialisedSpecGames = form.getfirst('previousGames', '')
-speculativeGames = deserialise(serialisedSpecGames)
-
-redPlayer = getString('redPlayer', form)
-bluePlayer = getString('bluePlayer', form)
-redScore = getInt('redScore', form)
-blueScore = getInt('blueScore', form)
-if redPlayer is not None and bluePlayer is not None and redScore is not None and blueScore is not None:
-    g = Game(redPlayer, redScore, bluePlayer, blueScore, time())
-    speculativeGames.append(g)
-    games.append(g)
-    serialisedSpecGames += ",{0},{1},{2},{3}".format(redPlayer, redScore, blueScore, bluePlayer)
-serialisedSpecGames.strip(',')
-
-speculativeGames.reverse()
 speculativeladder = TableFootballLadder(Constants.ladderFilePath, games=games)
-serve_template("speculate.mako", ladder=speculativeladder, games=speculativeGames, serialisedSpecGames=serialisedSpecGames)
+serve_template("speculate.mako", ladder=speculativeladder, speculativeGames=speculativeGames)
