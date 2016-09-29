@@ -1,11 +1,11 @@
 <%!
 title = "Speculate | "
 base = "../"
+
+def serialise(games):
+    return ','.join(['%s,%s,%s,%s' % (g.redPlayer, g.redScore, g.blueScore, g.bluePlayer) for g in games])
 %>
 <%inherit file="html.mako" />
-<%
-serialisedSpecGames = ','.join(['%s,%s,%s,%s' % (g.redPlayer, g.redScore, g.blueScore, g.bluePlayer) for g in speculativeGames])
-%>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-8">
@@ -36,7 +36,7 @@ serialisedSpecGames = ','.join(['%s,%s,%s,%s' % (g.redPlayer, g.redScore, g.blue
                   $("#spec-blue-score").val(10 - $("#spec-red-score").val());
                 })
               </script>
-              <input type="hidden" name="previousGames" value="${serialisedSpecGames}" />
+              <input type="hidden" name="previousGames" value="${serialise(speculativeGames)}" />
             </div>
             <button type="submit" class="btn btn-default">Speculate <span class="glyphicon glyphicon-triangle-right"></span></button>
           </form>
