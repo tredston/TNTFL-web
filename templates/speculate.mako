@@ -16,7 +16,7 @@ serialisedSpecGames = ','.join(['%s,%s,%s,%s' % (g.redPlayer, g.redScore, g.blue
         </div>
 % endif
         <div class="panel-body ${"speculative" if len(speculativeGames) > 0 else ""}" id="ladderHolder">
-          ${self.blocks.render("ladder", base=self.attr.base, timeRange=None)}
+          ${self.blocks.render("ladder", base=self.attr.base)}
         </div>
       </div>
     </div>
