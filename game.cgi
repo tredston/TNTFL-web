@@ -3,6 +3,7 @@
 import cgi
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
+import tntfl.transforms.transforms as PresetTransforms
 from tntfl.web import redirect_302, fail_404, serve_template, getInt, getString
 
 form = cgi.FieldStorage()
@@ -14,7 +15,10 @@ if getString('method', form) == "add":
     redScore = getInt('redScore', form)
     blueScore = getInt('blueScore', form)
     if redPlayer and bluePlayer and redScore and blueScore:
-        ladder.addAndWriteGame(redPlayer, redScore, bluePlayer, blueScore)
+        ladder.appendGame(redPlayer, redScore, bluePlayer, blueScore)
+        # Invalidated, regenerate
+        # Tablet doesn't display achievements
+        ladder = TableFootballLadder(Constants.ladderFilePath, transforms=PresetTransforms.transforms_for_recent())
         if getString('view', form) == 'json':
             serve_template("wrappedGame.mako", game=game, ladder=ladder)
         else:

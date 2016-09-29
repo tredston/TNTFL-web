@@ -366,7 +366,7 @@ class TestEarlyBird(unittest.TestCase):
         player = Player("foo")
         opponent = Player("baz")
         game = addGame(opponent, 0, player, 10, 6000000003)
-        ladder.addGame(game)
+        ladder.games.append(game)
 
         sut = EarlyBird()
         result = sut.applies(player, game, opponent, ladder)
@@ -379,7 +379,7 @@ class TestEarlyBird(unittest.TestCase):
         player = Player("foo")
         opponent = Player("baz")
         game = addGame(opponent, 0, player, 10, 0)
-        ladder.addGame(game)
+        ladder.games.append(game)
 
         sut = EarlyBird()
         result = sut.applies(player, game, opponent, ladder)

@@ -28,3 +28,7 @@ class TransformWrapper(object):
         if self.getUseCache() and os.path.exists(self.getCacheName()):
             return pickle.load(open(self.getCacheName(), 'rb'))
         return None
+
+    def deleteCache(self):
+        if self.getUseCache() and os.path.exists(self.getCacheName()):
+            os.remove(self.getCacheName())
