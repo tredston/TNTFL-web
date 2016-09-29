@@ -14,7 +14,9 @@ if getString('method', form) == "add":
     redScore = getInt('redScore', form)
     blueScore = getInt('blueScore', form)
     if redPlayer and bluePlayer and redScore and blueScore:
-        ladder.addAndWriteGame(redPlayer, redScore, bluePlayer, blueScore)
+        ladder.appendGame(redPlayer, redScore, bluePlayer, blueScore)
+        # Invalidated, regenerate
+        ladder = TableFootballLadder(Constants.ladderFilePath)
         if getString('view', form) == 'json':
             serve_template("wrappedGame.mako", game=game, ladder=ladder)
         else:

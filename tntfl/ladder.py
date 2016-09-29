@@ -45,45 +45,6 @@ class TableFootballLadder(object):
             self.players[name] = Player(name)
         return self.players[name]
 
-    def addGame(self, game):
-        self.games.append(game)
-
-        if game.isDeleted():
-            return
-
-        red = self.getPlayer(game.redPlayer)
-        blue = self.getPlayer(game.bluePlayer)
-
-        self._skillChange.apply(red, game, blue)
-
-        activePlayers = {p.name: p for p in self._getActivePlayers(game.time - 1)}
-        before = activePlayers.values()
-        before = sorted(before, key=lambda x: x.elo, reverse=True)
-        redPosBefore = before.index(red) if red in before else -1
-        bluePosBefore = before.index(blue) if blue in before else -1
-
-        blue.game(game)
-        red.game(game)
-
-        activePlayers[red.name] = red
-        activePlayers[blue.name] = blue
-        self._recentlyActivePlayers = (game.time, activePlayers.values())
-        after = activePlayers.values()
-
-        after = sorted(after, key=lambda x: x.elo, reverse=True)
-        redPosAfter = after.index(red)
-        bluePosAfter = after.index(blue)
-
-        game.bluePosAfter = bluePosAfter + 1  # because it's zero-indexed here
-        game.redPosAfter = redPosAfter + 1
-
-        game.bluePosChange = bluePosBefore - bluePosAfter  # It's this way around because a rise in position is to a lower numbered rank.
-        game.redPosChange = redPosBefore - redPosAfter
-
-        if self._ladderTime['now']:
-            self.achievements.apply(red, game, blue, self)
-
-
     # returns blue's goal ratio
     def predict(self, red, blue):
         return self._skillChange.getBlueGoalRatio(red, blue)
@@ -140,15 +101,16 @@ class TableFootballLadder(object):
                 losing['streak'] = streaks['lose']
         return {'win': winning, 'lose': losing}
 
-    def addAndWriteGame(self, redPlayer, redScore, bluePlayer, blueScore):
+    def appendGame(self, redPlayer, redScore, bluePlayer, blueScore):
         game = None
         redScore = int(redScore)
         blueScore = int(blueScore)
         if redScore >= 0 and blueScore >= 0 and (redScore + blueScore) > 0:
             game = Game(redPlayer, redScore, bluePlayer, blueScore, int(time.time()))
-            self.addGame(game)
             self._gameStore.appendGame(game)
-        return game
+            # Invalidate
+            self.games = None
+            self.players = None
 
     def deleteGame(self, gameTime, deletedBy):
         return self._gameStore.deleteGame(gameTime, deletedBy)
