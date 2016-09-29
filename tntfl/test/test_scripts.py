@@ -58,9 +58,6 @@ class Pages(Deployment):
     def testHeadToHeadGamesReachable(self):
         self._testPageReachable('headtohead.cgi', 'player1=jrem&player2=sam&method=games')
 
-    def testSpeculateReachable(self):
-        self._testPageReachable('speculate.cgi')
-
     def testStatsReachable(self):
         self._testPageReachable('stats.cgi')
 
@@ -70,6 +67,28 @@ class Pages(Deployment):
     def _testResponse(self, response):
         super(Pages, self)._testResponse(response)
         self.assertTrue("<!DOCTYPE html>" in response)
+
+
+class SpeculatePage(Deployment):
+    def testReachable(self):
+        self._testPageReachable('speculate.cgi')
+
+    def testAGame(self):
+        self._testSpeculatePageReachable('speculate.cgi', 'redPlayer=tlr&redScore=10&blueScore=0&bluePlayer=cjm&previousGames=')
+
+    def testMultipleGames(self):
+        self._testSpeculatePageReachable('speculate.cgi', 'redPlayer=acas&redScore=10&blueScore=0&bluePlayer=epb&previousGames=tlr%2C10%2C0%2Ccjm%2Cjma%2C10%2C0%2Cmsh')
+
+    def _testSpeculatePageReachable(self, page, query):
+        self._setQuery(query)
+        command = ['python', self._page(page)]
+        response = subprocess.check_output(command)
+        self._testSpeculateResponse(response)
+
+    def _testSpeculateResponse(self, response):
+        self._testResponse(response)
+        self.assertTrue("<!DOCTYPE html>" in response)
+        self.assertTrue('Speculative Ladder' in response)
 
 
 class PageBits(Deployment):

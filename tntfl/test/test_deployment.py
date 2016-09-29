@@ -48,9 +48,6 @@ class Pages(Deployment):
     def testHeadToHeadGamesReachable(self):
         self._testPageReachable('headtohead/jrem/ndt/games/')
 
-    def testSpeculateReachable(self):
-        self._testPageReachable('speculate/')
-
     def testStatsReachable(self):
         self._testPageReachable('stats/')
 
@@ -60,6 +57,26 @@ class Pages(Deployment):
     def _testResponse(self, response):
         super(Pages, self)._testResponse(response)
         self.assertTrue("<!DOCTYPE html>" in response)
+
+
+class SpeculatePage(Deployment):
+    def testReachable(self):
+        self._testPageReachable('speculate/')
+
+    def testAGame(self):
+        self._testSpeculatePageReachable('speculate.cgi?redPlayer=tlr&redScore=10&blueScore=0&bluePlayer=cjm&previousGames=')
+
+    def testMultipleGames(self):
+        self._testSpeculatePageReachable('speculate.cgi?redPlayer=acas&redScore=10&blueScore=0&bluePlayer=epb&previousGames=tlr%2C10%2C0%2Ccjm%2Cjma%2C10%2C0%2Cmsh')
+
+    def _testSpeculatePageReachable(self, page):
+        response = urllib2.urlopen(self._page(page))
+        self._testSpeculateResponse(response.read())
+
+    def _testSpeculateResponse(self, response):
+        self._testResponse(response)
+        self.assertTrue("<!DOCTYPE html>" in response)
+        self.assertTrue('Speculative Ladder' in response)
 
 
 class DeletePage(Deployment):
