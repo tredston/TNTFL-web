@@ -1,5 +1,4 @@
-import os.path
-import cPickle as pickle
+import os
 import time
 from tntfl.achievements import Achievements
 from tntfl.player import Player, Streak

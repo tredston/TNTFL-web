@@ -1,4 +1,3 @@
-import os
 from tntfl.game_store import GameStore
 from tntfl.transforms.transforms import Transforms
 import tntfl.transforms.transformer as Transformer
