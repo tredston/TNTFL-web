@@ -1,5 +1,4 @@
-import os.path
-import cPickle as pickle
+import os
 import time
 from tntfl.achievements import Achievements
 from tntfl.player import Player, Streak
@@ -14,7 +13,7 @@ class TableFootballLadder(object):
     # Number of days inactivity after which players are considered inactive
     DAYS_INACTIVE = 60
 
-    def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None):
+    def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None, games=None):
         self.games = []
         self.players = {}
         self.achievements = Achievements()
@@ -24,12 +23,15 @@ class TableFootballLadder(object):
         self._ladderTime = {'now': timeRange is None, 'range': timeRange}
         self._theTime = time.time()
 
-        self._gameStore = CachingGameStore(ladderFilePath, useCache)
-        self._transforms = PresetTransforms.transforms_for_full_games(self._ladderTime) if transforms is None else transforms
-        self._loadGamesIntoLadder()
+        self._gameStore = None
+        if games is None:
+            self._gameStore = CachingGameStore(ladderFilePath, useCache)
+            transforms = PresetTransforms.transforms_for_full_games(self._ladderTime) if transforms is None else transforms
+            games = self._gameStore.loadGames(self._ladderTime, transforms)
+        self._loadGamesIntoLadder(games)
 
-    def _loadGamesIntoLadder(self):
-        self.games = self._gameStore.loadGames(self._ladderTime, self._transforms)
+    def _loadGamesIntoLadder(self, games):
+        self.games = games
         for game in [g for g in self.games if not g.isDeleted()]:
             red = self.getPlayer(game.redPlayer)
             blue = self.getPlayer(game.bluePlayer)
@@ -42,45 +44,6 @@ class TableFootballLadder(object):
         if name not in self.players:
             self.players[name] = Player(name)
         return self.players[name]
-
-    def addGame(self, game):
-        self.games.append(game)
-
-        if game.isDeleted():
-            return
-
-        red = self.getPlayer(game.redPlayer)
-        blue = self.getPlayer(game.bluePlayer)
-
-        self._skillChange.apply(red, game, blue)
-
-        activePlayers = {p.name: p for p in self._getActivePlayers(game.time - 1)}
-        before = activePlayers.values()
-        before = sorted(before, key=lambda x: x.elo, reverse=True)
-        redPosBefore = before.index(red) if red in before else -1
-        bluePosBefore = before.index(blue) if blue in before else -1
-
-        blue.game(game)
-        red.game(game)
-
-        activePlayers[red.name] = red
-        activePlayers[blue.name] = blue
-        self._recentlyActivePlayers = (game.time, activePlayers.values())
-        after = activePlayers.values()
-
-        after = sorted(after, key=lambda x: x.elo, reverse=True)
-        redPosAfter = after.index(red)
-        bluePosAfter = after.index(blue)
-
-        game.bluePosAfter = bluePosAfter + 1  # because it's zero-indexed here
-        game.redPosAfter = redPosAfter + 1
-
-        game.bluePosChange = bluePosBefore - bluePosAfter  # It's this way around because a rise in position is to a lower numbered rank.
-        game.redPosChange = redPosBefore - redPosAfter
-
-        if self._ladderTime['now']:
-            self.achievements.apply(red, game, blue, self)
-
 
     # returns blue's goal ratio
     def predict(self, red, blue):
@@ -138,15 +101,16 @@ class TableFootballLadder(object):
                 losing['streak'] = streaks['lose']
         return {'win': winning, 'lose': losing}
 
-    def addAndWriteGame(self, redPlayer, redScore, bluePlayer, blueScore):
+    def appendGame(self, redPlayer, redScore, bluePlayer, blueScore):
         game = None
         redScore = int(redScore)
         blueScore = int(blueScore)
         if redScore >= 0 and blueScore >= 0 and (redScore + blueScore) > 0:
             game = Game(redPlayer, redScore, bluePlayer, blueScore, int(time.time()))
-            self.addGame(game)
             self._gameStore.appendGame(game)
-        return game
+            # Invalidate
+            self.games = None
+            self.players = None
 
     def deleteGame(self, gameTime, deletedBy):
         return self._gameStore.deleteGame(gameTime, deletedBy)

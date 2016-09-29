@@ -13,7 +13,7 @@ ladder = TableFootballLadder(Constants.ladderFilePath)
     <div class="col-lg-8">
       <div class="panel panel-default">
         <div class="panel-body" id="ladderHolder">
-          ${self.blocks.render("ladder", ladder=ladder, base=self.attr.base, timeRange=None)}
+          ${self.blocks.render("ladder", ladder=ladder, base=self.attr.base)}
         </div>
       </div>
       ${self.blocks.render("ladder-info", base=self.attr.base)}

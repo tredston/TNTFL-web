@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 import cgi
-from tntfl.web import serve_template
+from tntfl.web import serve_template, getInt
 from datetime import date
 
 form = cgi.FieldStorage()
 
-if "gamesFrom" in form and "gamesTo" in form:
-    fromTime = int(form["gamesFrom"].value)
-    toTime = int(form["gamesTo"].value)
+fromTime = getInt('gamesFrom', form)
+toTime = getInt('gamesTo', form)
+if fromTime and toTime:
     timeRange = (fromTime, toTime)
 else:
     epoch = date.fromtimestamp(0)

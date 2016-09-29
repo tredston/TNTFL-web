@@ -4,6 +4,7 @@ import urlparse
 import json
 import os
 
+
 class Deployment(unittest.TestCase):
     urlBase = os.path.join('http://www/~tlr/', os.path.split(os.getcwd())[1]) + "/"
 
@@ -110,7 +111,7 @@ class PageBits(Deployment):
         self._testPageReachable('recent.cgi')
 
 
-class Api(Deployment):
+class PlayerApi(Deployment):
     def testPlayerJson(self):
         page = 'player/ndt/json'
         response = self._getJsonFrom(page)
@@ -132,11 +133,15 @@ class Api(Deployment):
         self.assertEqual(len(response), 490)
         self.assertEqual(response[0]['date'], 1392725064)
 
+
+class HeadToHeadApi(Deployment):
     def testHeadToHeadGamesJsonReachable(self):
         response = self._getJsonFrom('headtohead/cjm/ndt/games/json')
         self.assertEqual(len(response), 9)
         self.assertEqual(response[0]['date'], 1394037228)
 
+
+class RecentApi(Deployment):
     def testRecentJsonReachable(self):
         response = self._getJsonFrom('recent/json')
 
@@ -148,7 +153,6 @@ class LadderApi(Deployment):
     def testRange(self):
         page = 'ladder/?gamesFrom=1223308996&gamesTo=1223400000&view=json'
         response = self._getJsonFrom(page)
-
         self.assertEqual(len(response), 3)
         self.assertEqual(response[0]['rank'], 1)
         self.assertEqual(response[0]['name'], 'jrem')
@@ -164,7 +168,6 @@ class GameApi(Deployment):
     def test(self):
         page = 'game/1223308996/json'
         response = self._getJsonFrom(page)
-
         self.assertEqual(response['red']['name'], 'jrem')
         self.assertEqual(response['red']['href'], '../../player/jrem/json')
         self.assertEqual(urlparse.urljoin(self._page(page), response['red']['href']), urlparse.urljoin(self.urlBase, "player/jrem/json"))

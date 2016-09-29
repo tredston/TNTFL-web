@@ -3,28 +3,31 @@
 import cgi
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
-from tntfl.web import redirect_302, fail_404, serve_template
+import tntfl.transforms.transforms as PresetTransforms
+from tntfl.web import redirect_302, fail_404, serve_template, getInt, getString
 
 form = cgi.FieldStorage()
 
-if "method" in form:
-    ladder = TableFootballLadder(Constants.ladderFilePath)
-    if form["method"].value == "add":
-        if "bluePlayer" in form and "redPlayer" in form:
-            redScore = form["redScore"].value if "redScore" in form else 0
-            blueScore = form["blueScore"].value if "blueScore" in form else 0
-            game = ladder.addAndWriteGame(form["redPlayer"].value, redScore, form["bluePlayer"].value, blueScore)
-            if "view" in form and form["view"].value == "json":
-                serve_template("wrappedGame.mako", game=game, ladder=ladder)
-            else:
-                redirect_302("../%.0f" % game.time)
-    elif form["method"].value == "view" and "game" in form:
-        gameTime = int(form["game"].value)
-        found = False
-        for game in ladder.games:
-            if game.time == gameTime and not found:
-                serve_template("wrappedGame.mako", game=game, ladder=ladder)
-                found = True
-        if not found:
+ladder = TableFootballLadder(Constants.ladderFilePath)
+if getString('method', form) == "add":
+    redPlayer = getString('redPlayer', form)
+    bluePlayer = getString('bluePlayer', form)
+    redScore = getInt('redScore', form)
+    blueScore = getInt('blueScore', form)
+    if redPlayer and bluePlayer and redScore and blueScore:
+        ladder.appendGame(redPlayer, redScore, bluePlayer, blueScore)
+        # Invalidated, regenerate
+        # Tablet doesn't display achievements
+        ladder = TableFootballLadder(Constants.ladderFilePath, transforms=PresetTransforms.transforms_for_recent())
+        if getString('view', form) == 'json':
+            serve_template("wrappedGame.mako", game=game, ladder=ladder)
+        else:
+            redirect_302("../%.0f" % game.time)
+elif getString('method', form) == 'view':
+    gameTime = getInt('game', form)
+    if gameTime is not None:
+        try:
+            game = next(g for g in ladder.games if g.time == gameTime)
+            serve_template("wrappedGame.mako", game=game, ladder=ladder)
+        except StopIteration:
             fail_404()
-            print
