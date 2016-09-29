@@ -6,7 +6,7 @@ import os
 import tntfl.test.bases as Bases
 
 
-class Deployment(unittest.TestCase):
+class Deployment(Bases.TestRunner):
     urlBase = os.path.join('http://www/~tlr/', os.path.split(os.getcwd())[1]) + "/"
 
     def _getJsonFrom(self, page, query=None):
@@ -55,7 +55,7 @@ class Redirects(Deployment):
     def testHeadToHeadGamesJsonReachable(self):
         self._getJsonFrom('headtohead/cjm/ndt/games/json')
 
-    def testReachable(self):
+    def testSpeculateReachable(self):
         self._testPageReachable('speculate/')
 
     def testStatsReachable(self):

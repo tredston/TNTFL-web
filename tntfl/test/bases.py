@@ -7,6 +7,9 @@ class TestRunner(unittest.TestCase):
 
     @abc.abstractmethod
     def _getJsonFrom(self, page, query=None):
+        """
+        Return JSON content.
+        """
         pass
 
     @abc.abstractmethod
