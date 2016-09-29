@@ -9,7 +9,7 @@ class Deployment(Bases.TestRunner):
         if 'QUERY_STRING' in os.environ:
             del(os.environ['QUERY_STRING'])
 
-    def _getJsonFrom(self, page, query=None):
+    def _getJson(self, page, query=None):
         response = self._get(page, query)
         # Strip content type
         response = ''.join(response.split('\n')[2:])

@@ -9,7 +9,7 @@ import tntfl.test.bases as Bases
 class Deployment(Bases.TestRunner):
     urlBase = os.path.join('http://www/~tlr/', os.path.split(os.getcwd())[1]) + "/"
 
-    def _getJsonFrom(self, page, query=None):
+    def _getJson(self, page, query=None):
         response = self._get(page, query)
         self.assertTrue(len(response) > 0)
         return json.loads(response)
@@ -32,7 +32,7 @@ class Redirects(Deployment):
         self._testPageReachable('game/1223308996/')
 
     def testGameJsonReachable(self):
-        self._getJsonFrom('game/1223308996/json')
+        self._getJson('game/1223308996/json')
 
     def testHeadToHeadReachable(self):
         self._testPageReachable('headtohead/jrem/sam/')
@@ -41,19 +41,19 @@ class Redirects(Deployment):
         self._testPageReachable('player/jrem/')
 
     def testPlayerJsonReachable(self):
-        self._getJsonFrom('player/ndt/json')
+        self._getJson('player/ndt/json')
 
     def testPlayerGamesReachable(self):
         self._testPageReachable('player/jrem/games/')
 
     def testPlayerGamesJsonReachable(self):
-        self._getJsonFrom('player/ndt/games/json')
+        self._getJson('player/ndt/games/json')
 
     def testHeadToHeadGamesReachable(self):
         self._testPageReachable('headtohead/jrem/ndt/games/')
 
     def testHeadToHeadGamesJsonReachable(self):
-        self._getJsonFrom('headtohead/cjm/ndt/games/json')
+        self._getJson('headtohead/cjm/ndt/games/json')
 
     def testSpeculateReachable(self):
         self._testPageReachable('speculate/')
@@ -62,13 +62,13 @@ class Redirects(Deployment):
         self._testPageReachable('stats/')
 
     def testRecentJsonReachable(self):
-        self._getJsonFrom('recent/json')
+        self._getJson('recent/json')
 
     def testLadderJsonReachable(self):
-        self._getJsonFrom('ladder/json')
+        self._getJson('ladder/json')
 
     def testLadderRangeJsonReachable(self):
-        self._getJsonFrom('ladder/?gamesFrom=1223308996&gamesTo=1223400000&view=json')
+        self._getJson('ladder/?gamesFrom=1223308996&gamesTo=1223400000&view=json')
 
     def _testResponse(self, response):
         super(Pages, self)._testResponse(response)
