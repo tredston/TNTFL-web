@@ -43,7 +43,7 @@ class Pages(object):
         self._testPageReachable('player.cgi', 'player=jrem')
 
     def testPlayerGamesReachable(self):
-        self._testPageReachable('player.cgi', 'player=jrem&method=games')
+        self._testPageReachable('player.cgi', 'player=pwc&method=games')
 
     def testHeadToHeadReachable(self):
         self._testPageReachable('headtohead.cgi', 'player1=jrem&player2=sam')
