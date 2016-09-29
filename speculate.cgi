@@ -17,7 +17,6 @@ def deserialise(serialisedGames):
     for i in range(0, len(gameParts) / 4):
         g = Game(gameParts[4 * i], gameParts[4 * i + 1], gameParts[4 * i + 3], gameParts[4 * i + 2], time())
         games.append(g)
-        ladder.addGame(g)
     return games
 
 
