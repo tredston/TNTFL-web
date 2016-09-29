@@ -46,5 +46,4 @@ class CachingGameStore(object):
 
     def _deleteCache(self):
         for transform in Transforms.values():
-            if os.path.exists(transform.getCacheName()) and self._usingCache:
-                os.remove(transform.getCacheName())
+            transform.deleteCache()
