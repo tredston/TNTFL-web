@@ -29,18 +29,24 @@ def loadLadderGames():
     return Transformer.transform(baseGameLoader, transforms, False)
 
 
+def getAddedGame(form):
+    game = None
+    redPlayer = getString('redPlayer', form)
+    bluePlayer = getString('bluePlayer', form)
+    redScore = getInt('redScore', form)
+    blueScore = getInt('blueScore', form)
+    if redPlayer is not None and bluePlayer is not None and redScore is not None and blueScore is not None:
+        game = Game(redPlayer, redScore, bluePlayer, blueScore, time())
+    return game
+
+
 form = cgi.FieldStorage()
 games = loadLadderGames()
 speculativeGames = deserialise(form.getfirst('previousGames', ''))
-
-redPlayer = getString('redPlayer', form)
-bluePlayer = getString('bluePlayer', form)
-redScore = getInt('redScore', form)
-blueScore = getInt('blueScore', form)
-if redPlayer is not None and bluePlayer is not None and redScore is not None and blueScore is not None:
-    g = Game(redPlayer, redScore, bluePlayer, blueScore, time())
-    speculativeGames.append(g)
-    games.append(g)
+game = getAddedGame(form)
+if game:
+    speculativeGames.append(game)
+    games.append(game)
 
 speculativeGames.reverse()
 speculativeladder = TableFootballLadder(Constants.ladderFilePath, games=games)
