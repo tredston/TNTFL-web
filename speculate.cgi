@@ -31,9 +31,7 @@ def loadLadderGames():
 
 form = cgi.FieldStorage()
 games = loadLadderGames()
-
-serialisedSpecGames = form.getfirst('previousGames', '')
-speculativeGames = deserialise(serialisedSpecGames)
+speculativeGames = deserialise(form.getfirst('previousGames', ''))
 
 redPlayer = getString('redPlayer', form)
 bluePlayer = getString('bluePlayer', form)
@@ -43,9 +41,7 @@ if redPlayer is not None and bluePlayer is not None and redScore is not None and
     g = Game(redPlayer, redScore, bluePlayer, blueScore, time())
     speculativeGames.append(g)
     games.append(g)
-    serialisedSpecGames += ",{0},{1},{2},{3}".format(redPlayer, redScore, blueScore, bluePlayer)
-serialisedSpecGames.strip(',')
 
 speculativeGames.reverse()
 speculativeladder = TableFootballLadder(Constants.ladderFilePath, games=games)
-serve_template("speculate.mako", ladder=speculativeladder, games=speculativeGames, serialisedSpecGames=serialisedSpecGames)
+serve_template("speculate.mako", ladder=speculativeladder, speculativeGames=speculativeGames)
