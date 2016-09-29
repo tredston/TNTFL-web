@@ -13,7 +13,7 @@ class TableFootballLadder(object):
     # Number of days inactivity after which players are considered inactive
     DAYS_INACTIVE = 60
 
-    def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None):
+    def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None, games=None):
         self.games = []
         self.players = {}
         self.achievements = Achievements()
@@ -23,9 +23,12 @@ class TableFootballLadder(object):
         self._ladderTime = {'now': timeRange is None, 'range': timeRange}
         self._theTime = time.time()
 
-        self._gameStore = CachingGameStore(ladderFilePath, useCache)
-        transforms = PresetTransforms.transforms_for_full_games(self._ladderTime) if transforms is None else transforms
-        self._loadGamesIntoLadder(self._gameStore.loadGames(self._ladderTime, transforms))
+        self._gameStore = None
+        if games is None:
+            self._gameStore = CachingGameStore(ladderFilePath, useCache)
+            transforms = PresetTransforms.transforms_for_full_games(self._ladderTime) if transforms is None else transforms
+            games = self._gameStore.loadGames(self._ladderTime, transforms)
+        self._loadGamesIntoLadder(games)
 
     def _loadGamesIntoLadder(self, games):
         self.games = games
