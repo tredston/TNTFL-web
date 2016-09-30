@@ -1,6 +1,6 @@
 # Changelog
 
-## develop
+## 3.10.0
 * Add Travis CI
 * Add readme and changelog
 
