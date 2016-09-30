@@ -1,6 +1,7 @@
 import argparse
 import os
 import re
+import sys
 import unittest
 
 import tntfl.test.test_achievements as test_achievements
@@ -61,3 +62,6 @@ if __name__ == "__main__":
     if len(result.errors) == 0 and len(result.failures) == 0 and args.runIntegration:
         print 'Running integration tests:'
         result = runner.run(integrationTestSuite())
+
+    ok = len(result.errors) == 0 and len(result.failures) == 0
+    sys.exit(not ok)
