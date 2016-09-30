@@ -10,7 +10,7 @@ def getTimeRange(form):
     timeRange = None
     fromTime = getInt('gamesFrom', form)
     toTime = getInt('gamesTo', form)
-    if fromTime and toTime:
+    if fromTime is not None and toTime is not None:
         timeRange = (fromTime, toTime)
     return timeRange
 
