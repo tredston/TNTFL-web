@@ -43,7 +43,7 @@ class Pages(object):
         self._testPageReachable('player.cgi', 'player=jrem')
 
     def testPlayerGamesReachable(self):
-        self._testPageReachable('player.cgi', 'player=pwc&method=games')
+        self._testPageReachable('player.cgi', 'player=pely&method=games')
 
     def testHeadToHeadReachable(self):
         self._testPageReachable('headtohead.cgi', 'player1=jrem&player2=sam')
@@ -88,30 +88,30 @@ class PageBits(object):
 
 class PlayerApi(object):
     def testPlayerJson(self):
-        response = self._getJson('player.cgi', 'player=ndt&view=json')
-        self.assertEqual(response['name'], "ndt")
+        response = self._getJson('player.cgi', 'player=rc&view=json')
+        self.assertEqual(response['name'], "rc")
         self.assertEqual(response['rank'], -1)
         self.assertEqual(response['active'], False)
-        self.assertEqual(response['skill'], 65.7308777725)
-        self.assertEqual(response['overrated'], -20.2998078551)
-        self.assertEqual(response['total']['for'], 2895)
-        self.assertEqual(response['total']['against'], 2005)
-        self.assertEqual(response['total']['games'], 490)
-        self.assertEqual(response['total']['wins'], 286)
-        self.assertEqual(response['total']['losses'], 96)
+        self.assertEqual(response['skill'], 1.21917695737)
+        self.assertEqual(response['overrated'], 7.96406177142)
+        self.assertEqual(response['total']['for'], 59)
+        self.assertEqual(response['total']['against'], 142)
+        self.assertEqual(response['total']['games'], 20)
+        self.assertEqual(response['total']['wins'], 2)
+        self.assertEqual(response['total']['losses'], 16)
         self.assertEqual(response['total']['gamesToday'], 0)
 
     def testPlayerGamesJsonReachable(self):
-        response = self._getJson('player.cgi', 'player=ndt&method=games&view=json')
-        self.assertEqual(len(response), 490)
-        self.assertEqual(response[0]['date'], 1392725064)
+        response = self._getJson('player.cgi', 'player=rc&method=games&view=json')
+        self.assertEqual(len(response), 20)
+        self.assertEqual(response[0]['date'], 1278339173)
 
 
 class HeadToHeadApi(object):
     def testHeadToHeadGamesJsonReachable(self):
-        response = self._getJson('headtohead.cgi', 'player1=cjm&player2=ndt&method=games&view=json')
-        self.assertEqual(len(response), 9)
-        self.assertEqual(response[0]['date'], 1394037228)
+        response = self._getJson('headtohead.cgi', 'player1=jrem&player2=prc&method=games&view=json')
+        self.assertEqual(len(response), 11)
+        self.assertEqual(response[0]['date'], 1392832399)
 
 
 class RecentApi(object):
@@ -140,9 +140,9 @@ class GameApi(object):
         self.assertEqual(response['red']['name'], 'jrem')
         self.assertEqual(response['red']['href'], '../../player/jrem/json')
         self.assertEqual(response['red']['score'], 10)
-        self.assertEqual(response['red']['skillChange'], 14.8698309141)
-        self.assertEqual(response['red']['rankChange'], 0)
-        self.assertEqual(response['red']['newRank'], 15)
+        self.assertEqual(response['red']['skillChange'], 13.0065589336)
+        self.assertEqual(response['red']['rankChange'], 1)
+        self.assertEqual(response['red']['newRank'], 3)
         redAchievements = response['red']['achievements']
         self.assertEqual(len(redAchievements), 3)
         self.assertEqual(redAchievements[0]['name'], "Flawless Victory")
@@ -155,18 +155,16 @@ class GameApi(object):
         self.assertEqual(response['blue']['name'], 'kjb')
         self.assertEqual(response['blue']['href'], '../../player/kjb/json')
         self.assertEqual(response['blue']['score'], 0)
-        self.assertEqual(response['blue']['skillChange'], -14.8698309141)
-        self.assertEqual(response['blue']['rankChange'], 0)
-        self.assertEqual(response['blue']['newRank'], 14)
-        self.assertEqual(response['blue']['achievements'], [])
+        self.assertEqual(response['blue']['skillChange'], -13.0065589336)
+        self.assertEqual(response['blue']['rankChange'], -2)
+        self.assertEqual(response['blue']['newRank'], 5)
+        blueAchievements = response['blue']['achievements']
+        self.assertEqual(len(blueAchievements), 1)
+        self.assertEqual(blueAchievements[0]['name'], "The Worst")
+        self.assertEqual(blueAchievements[0]['description'], "Go last in the rankings")
 
-        self.assertEqual(response['positionSwap'], False)
-        self.assertEqual(response['date'], 1223308996)
-
-    def testPositionSwap(self):
-        response = self._getJson('game.cgi', 'method=view&game=1443785561&view=json')
         self.assertEqual(response['positionSwap'], True)
-        self.assertEqual(response['date'], 1443785561)
+        self.assertEqual(response['date'], 1223308996)
 
 
 class GamesApi(object):
