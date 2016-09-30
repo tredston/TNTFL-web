@@ -1,3 +1,4 @@
+import argparse
 import os
 import re
 import unittest
@@ -7,12 +8,19 @@ import tntfl.test.test_game_store as test_game_store
 import tntfl.test.test_ladder as test_ladder
 import tntfl.test.test_pundit as test_pundit
 import tntfl.test.test_scripts as test_scripts
+import tntfl.test.test_deployment as test_deployment
 import tntfl.test.transforms as transforms
 
-import tntfl.test.test_deployment as test_deployment
+
+def clearCache():
+    print 'Clearing cache'
+    cacheFile = '.cache.*'
+    for f in os.listdir('.'):
+        if re.search(cacheFile, f):
+            os.remove(f)
 
 
-def unit_test_suite():
+def unitTestSuite():
     test_suite = unittest.TestSuite()
     test_suite.addTest(unittest.findTestCases(test_achievements))
     test_suite.addTest(unittest.findTestCases(test_game_store))
@@ -22,32 +30,34 @@ def unit_test_suite():
     return test_suite
 
 
-def functional_test_suite():
+def functionalTestSuite():
     test_suite = unittest.TestSuite()
     test_suite.addTest(unittest.findTestCases(test_scripts))
     return test_suite
 
 
-def integration_test_suite():
+def integrationTestSuite():
     test_suite = unittest.TestSuite()
     test_suite.addTest(unittest.findTestCases(test_deployment))
     return test_suite
 
-print 'Clearing cache'
-cacheFile = '.cache.*'
-for f in os.listdir('.'):
-    if re.search(cacheFile, f):
-        os.remove(f)
 
-runner = unittest.TextTestRunner()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--integration', dest='runIntegration', action='store_true')
+    parser.set_defaults(runIntegration=False)
+    args = parser.parse_args()
 
-print 'Running unit tests:'
-result = runner.run(unit_test_suite())
+    clearCache()
+    runner = unittest.TextTestRunner()
 
-if len(result.errors) == 0 and len(result.failures) == 0:
-    print 'Running functional tests:'
-    result = runner.run(functional_test_suite())
+    print 'Running unit tests:'
+    result = runner.run(unitTestSuite())
 
-if len(result.errors) == 0 and len(result.failures) == 0:
-    print 'Running integration tests:'
-    result = runner.run(integration_test_suite())
+    if len(result.errors) == 0 and len(result.failures) == 0:
+        print 'Running functional tests:'
+        result = runner.run(functionalTestSuite())
+
+    if len(result.errors) == 0 and len(result.failures) == 0 and args.runIntegration:
+        print 'Running integration tests:'
+        result = runner.run(integrationTestSuite())
