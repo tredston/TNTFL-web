@@ -15,7 +15,10 @@ class Deployment(Get.TestRunner):
         return json.loads(response)
 
     def _page(self, page, query=None):
-        return urlparse.urljoin(self.urlBase, page) + ('?' + query) if (query is not None) else ''
+        url = urlparse.urljoin(self.urlBase, page)
+        if query is not None:
+            url += '?' + query
+        return url
 
     def _get(self, page, query):
         return urllib2.urlopen(self._page(page, query)).read()
@@ -71,8 +74,8 @@ class Redirects(Deployment):
         self._getJson('ladder/?gamesFrom=1223308996&gamesTo=1223400000&view=json')
 
     def _testResponse(self, response):
-        super(Pages, self)._testResponse(response)
-        self.assertFalse("<!DOCTYPE html>" in response)
+        super(Redirects, self)._testResponse(response)
+        self.assertTrue("<!DOCTYPE html>" in response)
 
 
 class DeletePage(Deployment):
