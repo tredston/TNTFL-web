@@ -33,6 +33,11 @@ class Deployment(unittest.TestCase):
             os.environ['QUERY_STRING'] = query
 
 
+class AddGame(Deployment):
+    def testAddGame(self):
+        self._testPageReachable('game.cgi', 'method=add&redPlayer=foo&redScore=5&bluePlayer=bar&blueScore=5')
+
+
 class Pages(Deployment):
     def testIndexReachable(self):
         self._testPageReachable('index.cgi')
