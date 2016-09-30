@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import subprocess
 import tntfl.test.shared_get as Get
 
@@ -8,6 +9,16 @@ class Deployment(Get.TestRunner):
     def setUp(self):
         if 'QUERY_STRING' in os.environ:
             del(os.environ['QUERY_STRING'])
+
+        if os.path.exists('ladder.txt'):
+            os.rename('ladder.txt', 'ladder.actual')
+        shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
+
+    def tearDown(self):
+        if os.path.exists('ladder.txt'):
+            os.remove('ladder.txt')
+        if os.path.exists('ladder.actual'):
+            os.rename('ladder.actual', 'ladder.txt')
 
     def _getJson(self, page, query=None):
         response = self._get(page, query)
