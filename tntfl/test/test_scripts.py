@@ -15,6 +15,8 @@ class Deployment(Get.TestRunner):
         shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
 
     def tearDown(self):
+        if os.path.exists('ladder.txt'):
+            os.remove('ladder.txt')
         if os.path.exists('ladder.actual'):
             os.rename('ladder.actual', 'ladder.txt')
 
