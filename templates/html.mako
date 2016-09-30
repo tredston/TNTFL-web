@@ -9,14 +9,14 @@ from datetime import datetime
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>${self.attr.title}Table Football Ladder 3.9.0</title>
+    <title>${self.attr.title}Table Football Ladder 3.10.0</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link href="${self.attr.base}css/ladder.css" rel="stylesheet">
     <link rel="stylesheet" href="${self.attr.base}js/ion.rangeSlider-2.1.2/css/ion.rangeSlider.css">
-    <link rel="stylesheet" href="${self.attr.base}js/ion.rangeSlider-2.1.2/css/ion.rangeSlider.skinModern.css">    
+    <link rel="stylesheet" href="${self.attr.base}js/ion.rangeSlider-2.1.2/css/ion.rangeSlider.skinModern.css">
 
     % if datetime.now().month == 12:
       <link href="${self.attr.base}css/christmas.css" rel="stylesheet">
@@ -29,7 +29,7 @@ from datetime import datetime
       <script type="text/javascript" src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script type="text/javascript" src="${self.attr.base}js/jquery.tablesorter.min.js"></script>
     <script type="text/javascript" src="${self.attr.base}js/jquery.flot.min.js"></script>
     <script type="text/javascript" src="${self.attr.base}js/jquery.flot.time.min.js"></script>
