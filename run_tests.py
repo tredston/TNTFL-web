@@ -1,3 +1,4 @@
+import argparse
 import os
 import re
 import unittest
@@ -42,6 +43,11 @@ def integrationTestSuite():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--integration', dest='runIntegration', action='store_true')
+    parser.set_defaults(runIntegration=False)
+    args = parser.parse_args()
+
     clearCache()
     runner = unittest.TextTestRunner()
 
@@ -52,6 +58,6 @@ if __name__ == "__main__":
         print 'Running functional tests:'
         result = runner.run(functionalTestSuite())
 
-    if len(result.errors) == 0 and len(result.failures) == 0:
+    if len(result.errors) == 0 and len(result.failures) == 0 and args.runIntegration:
         print 'Running integration tests:'
         result = runner.run(integrationTestSuite())
