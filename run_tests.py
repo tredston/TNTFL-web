@@ -55,13 +55,13 @@ if __name__ == "__main__":
     print 'Running unit tests:'
     result = runner.run(unitTestSuite())
 
-    if len(result.errors) == 0 and len(result.failures) == 0:
-        print 'Running functional tests:'
-        result = runner.run(functionalTestSuite())
-
-    if len(result.errors) == 0 and len(result.failures) == 0 and args.runIntegration:
-        print 'Running integration tests:'
-        result = runner.run(integrationTestSuite())
+    # if len(result.errors) == 0 and len(result.failures) == 0:
+    #     print 'Running functional tests:'
+    #     result = runner.run(functionalTestSuite())
+    #
+    # if len(result.errors) == 0 and len(result.failures) == 0 and args.runIntegration:
+    #     print 'Running integration tests:'
+    #     result = runner.run(integrationTestSuite())
 
     ok = len(result.errors) == 0 and len(result.failures) == 0
     sys.exit(not ok)
