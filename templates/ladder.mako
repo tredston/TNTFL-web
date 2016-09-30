@@ -6,6 +6,7 @@ import tntfl.constants as Constants
 from tntfl.player import Player
 from tntfl.ladder import TableFootballLadder
 import tntfl.template_utils as utils
+import tntfl.transforms.transforms as PresetTransforms
 
 def rankPlayers(ladder):
     ranked = []
@@ -73,7 +74,7 @@ def getTrend(player):
 
 <%
 if ladder is None:
-    ladder = TableFootballLadder(Constants.ladderFilePath, timeRange=timeRange)
+    ladder = TableFootballLadder(Constants.ladderFilePath, timeRange=timeRange, transforms=PresetTransforms.transforms_for_ladder())
 ranked = rankPlayers(ladder)
 totalActivePlayers = len([p for p in ladder.players.values() if ladder.isPlayerActive(p)])
 %>

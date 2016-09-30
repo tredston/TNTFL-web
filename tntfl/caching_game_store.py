@@ -10,7 +10,8 @@ class CachingGameStore(object):
 
     def loadGames(self, ladderTime, transforms):
         self._ladderTime = ladderTime
-        return Transformer.transform(self._baseLoadGames, transforms, self._usingCache)
+        useCache = self._usingCache and self._ladderTime['now']
+        return Transformer.transform(self._baseLoadGames, transforms, useCache)
 
     def _baseLoadGames(self):
         games = self._gameStore.getGames()
