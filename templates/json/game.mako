@@ -13,11 +13,15 @@ def isPositionSwap(game):
     return positionSwap
 
 
+def href(base, name):
+    return base + 'player/' + name + '/json'
+
+
 def toJson(game, base):
     asJson = {
         'red': {
             'name': game.redPlayer,
-            'href': base + 'player/' + game.redPlayer + '/json',
+            'href': href(base, game.redPlayer),
             'score': game.redScore,
             'skillChange': -game.skillChangeToBlue,
             'rankChange': game.redPosChange,
@@ -26,7 +30,7 @@ def toJson(game, base):
         },
         'blue': {
             'name': game.bluePlayer,
-            'href': base + 'player/' + game.bluePlayer + '/json',
+            'href': href(base, game.bluePlayer),
             'score': game.blueScore,
             'skillChange': game.skillChangeToBlue,
             'rankChange': game.bluePosChange,
