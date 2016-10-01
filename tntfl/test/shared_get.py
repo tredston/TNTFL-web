@@ -19,6 +19,8 @@ class TestRunner(unittest.TestCase):
         """
         pass
 
+
+class Tester(unittest.TestCase):
     def _testPageReachable(self, page, query=None):
         self._testResponse(self._get(page, query))
 
@@ -26,7 +28,7 @@ class TestRunner(unittest.TestCase):
         self.assertTrue("Traceback (most recent call last):" not in response)
 
 
-class Pages(object):
+class Pages(Tester):
     def testIndexReachable(self):
         self._testPageReachable('index.cgi')
 
@@ -65,7 +67,7 @@ class Pages(object):
         self.assertTrue("<!DOCTYPE html>" in response)
 
 
-class SpeculatePage(object):
+class SpeculatePage(Tester):
     def testAGame(self):
         self._testPageReachable('speculate.cgi', 'redPlayer=tlr&redScore=10&blueScore=0&bluePlayer=cjm&previousGames=')
 
@@ -78,7 +80,7 @@ class SpeculatePage(object):
         self.assertTrue('Speculative Ladder' in response)
 
 
-class PageBits(object):
+class PageBits(Tester):
     def testLadderReachable(self):
         self._testPageReachable('ladder.cgi')
 
@@ -86,7 +88,7 @@ class PageBits(object):
         self._testPageReachable('recent.cgi')
 
 
-class PlayerApi(object):
+class PlayerApi(Tester):
     def testPlayerJson(self):
         response = self._getJson('player.cgi', 'player=rc&view=json')
         self.assertEqual(response['name'], "rc")
@@ -107,19 +109,19 @@ class PlayerApi(object):
         self.assertEqual(response[0]['date'], 1278339173)
 
 
-class HeadToHeadApi(object):
+class HeadToHeadApi(Tester):
     def testHeadToHeadGamesJsonReachable(self):
         response = self._getJson('headtohead.cgi', 'player1=jrem&player2=prc&method=games&view=json')
         self.assertEqual(len(response), 11)
         self.assertEqual(response[0]['date'], 1392832399)
 
 
-class RecentApi(object):
+class RecentApi(Tester):
     def testRecentJsonReachable(self):
         response = self._getJson('recent.cgi', 'view=json')
 
 
-class LadderApi(object):
+class LadderApi(Tester):
     def testReachable(self):
         response = self._getJson('ladder.cgi', 'view=json')
 
@@ -134,7 +136,7 @@ class LadderApi(object):
         self.assertEqual(response[2]['skill'], -12.5)
 
 
-class GameApi(object):
+class GameApi(Tester):
     def test(self):
         response = self._getJson('game.cgi', 'method=view&game=1223308996&view=json')
         self.assertEqual(response['red']['name'], 'jrem')
@@ -173,7 +175,7 @@ class GameApi(object):
         self.assertEqual(response['deleted']['at'], 1430915500)
 
 
-class GamesApi(object):
+class GamesApi(Tester):
     def test(self):
         response = self._getJson('games.cgi', 'view=json&from=1120830176&to=1120840777')
         self.assertEqual(len(response), 3)

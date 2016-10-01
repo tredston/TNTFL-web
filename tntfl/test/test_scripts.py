@@ -44,37 +44,38 @@ class AddGame(Deployment):
         self._testPageReachable('game.cgi', 'method=add&redPlayer=foo&redScore=5&bluePlayer=bar&blueScore=5')
 
 
-class Pages(Deployment, Get.Pages):
+
+class Pages(Get.Pages, Deployment):
     pass
 
 
-class SpeculatePage(Deployment, Get.SpeculatePage):
+class SpeculatePage(Get.SpeculatePage, Deployment):
     pass
 
 
-class PageBits(Deployment, Get.PageBits):
+class PageBits(Get.LadderPage, Deployment):
     pass
 
 
-class PlayerApi(Deployment, Get.PlayerApi):
+class PlayerApi(Get.PlayerApi, Deployment):
     pass
 
 
-class HeadToHeadApi(Deployment, Get.HeadToHeadApi):
+class HeadToHeadApi(Get.HeadToHeadApi, Deployment):
     pass
 
 
-class RecentApi(Deployment, Get.RecentApi):
+class RecentApi(Get.RecentApi, Deployment):
     pass
 
 
-class LadderApi(Deployment, Get.LadderApi):
+class LadderApi(Get.LadderApi, Deployment):
     pass
 
 
-class GameApi(Deployment, Get.GameApi):
+class GameApi(Get.GameApi, Deployment):
     pass
 
 
-class GamesApi(Deployment):
+class GamesApi(Get.GamesApi, Deployment):
     pass
