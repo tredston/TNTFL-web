@@ -49,7 +49,7 @@ totalActivePlayers = ladder.getNumActivePlayers(game.time-1)
 <div class="game table-responsive container-fluid">
   <table class="table no-table-boder" style="margin-top: 20px;">
     <tbody>
-      ${self.blocks.render("game", game=game, base=self.attr.base, punditryAvailable=len(facts), totalActivePlayers=totalActivePlayers)}
+      ${self.blocks.render("components/game", game=game, base=self.attr.base, punditryAvailable=len(facts), totalActivePlayers=totalActivePlayers)}
     </tbody>
   </table>
   <div class="recent-game container-fluid">

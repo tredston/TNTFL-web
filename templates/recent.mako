@@ -14,5 +14,5 @@ import tntfl.transforms.transforms as PresetTransforms
     recentGames.reverse()
 %>
 <div class="container-fluid">
-    ${blocks.render("gameList", ladder=ladder, games=recentGames, base=base)}
+    ${blocks.render("components/gameList", ladder=ladder, games=recentGames, base=base)}
 </div>

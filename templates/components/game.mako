@@ -2,7 +2,7 @@
 <%!
 import tntfl.template_utils as utils
 %>
-<%namespace name="blocks" file="blocks.mako"/>
+<%namespace name="blocks" file="../blocks.mako"/>
 <%
 redsStripe = "yellow-stripe" if game.redScore == 10 and game.blueScore == 0 else ""
 bluesStripe = "yellow-stripe" if game.blueScore == 10 and game.redScore == 0 else ""
@@ -40,9 +40,9 @@ bluesStripe = "yellow-stripe" if game.blueScore == 10 and game.redScore == 0 els
       <td width="20%" class="player red-player ${redsStripe}">${playerName(game.redPlayer)}</td>
       <td width="10%" class="rank ${utils.getRankCSS(game.redPosAfter + game.redPosChange, totalActivePlayers)}">${game.redPosAfter + game.redPosChange}</td>
       <td width="10%" class="ach ${redsStripe}">${cups(game.redAchievements)}</td>
-      
+
       <td width="20%" class="score ${redsStripe} ${bluesStripe}">${game.redScore} - ${game.blueScore}</td>
-      
+
       <td width="10%" class="ach ${bluesStripe}">${cups(game.blueAchievements)}</td>
       <td width="10%" class="rank ${utils.getRankCSS(game.bluePosAfter + game.bluePosChange, totalActivePlayers)}">${game.bluePosAfter + game.bluePosChange}</td>
       <td width="20%" class="player blue-player ${bluesStripe}">${playerName(game.bluePlayer)}</td>
@@ -52,7 +52,7 @@ bluesStripe = "yellow-stripe" if game.blueScore == 10 and game.redScore == 0 els
       <td width="10%" class="rank-change red">${rankChange("red", game.redPosChange) if game.redPosChange != 0 else ""}</td>
       <td class="detail" colspan="3">
         %if not speculative:
-        ${blocks.render("gameLink", time=game.time, base=base)}
+        ${blocks.render("components/gameLink", time=game.time, base=base)}
         % if punditryAvailable:
           <img src="${base}img/headset16.png"/>
         % endif

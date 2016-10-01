@@ -70,9 +70,9 @@ plotData = getGamesPerDay(ladder)
         <div class="panel-body">
           <dl class="dl-horizontal">
             <dt>Highest ever skill</dt>
-            <dd><b>${"{:.3f}".format(skillBounds['highest']['skill'])}</b> (<a href="${self.attr.base}player/${skillBounds['highest']['player'].name}">${skillBounds['highest']['player'].name}</a>, ${self.blocks.render("gameLink", time=skillBounds['highest']['time'], base=self.attr.base)})</dd>
+            <dd><b>${"{:.3f}".format(skillBounds['highest']['skill'])}</b> (<a href="${self.attr.base}player/${skillBounds['highest']['player'].name}">${skillBounds['highest']['player'].name}</a>, ${self.blocks.render("components/gameLink", time=skillBounds['highest']['time'], base=self.attr.base)})</dd>
             <dt>Lowest ever skill</dt>
-            <dd><b>${"{:.3f}".format(skillBounds['lowest']['skill'])}</b> (<a href="${self.attr.base}player/${skillBounds['lowest']['player'].name}">${skillBounds['lowest']['player'].name}</a>, ${self.blocks.render("gameLink", time=skillBounds['lowest']['time'], base=self.attr.base)})</dd>
+            <dd><b>${"{:.3f}".format(skillBounds['lowest']['skill'])}</b> (<a href="${self.attr.base}player/${skillBounds['lowest']['player'].name}">${skillBounds['lowest']['player'].name}</a>, ${self.blocks.render("components/gameLink", time=skillBounds['lowest']['time'], base=self.attr.base)})</dd>
             <dt>Longest winning streak</dt>
             <dd><b>${streaks['win']['streak'].count}</b> (<a href="${self.attr.base}player/${streaks['win']['player'].name}">${streaks['win']['player'].name}</a>)</dd>
             <dt>Longest losing streak</dt>
@@ -87,7 +87,7 @@ plotData = getGamesPerDay(ladder)
           <h2 class="panel-title">Most Significant Games</h2>
         </div>
         <div class="panel-body">
-          ${self.blocks.render("gameList", ladder=ladder, games=mostSignificantGames[0:5], base=self.attr.base)}
+          ${self.blocks.render("components/gameList", ladder=ladder, games=mostSignificantGames[0:5], base=self.attr.base)}
         </div>
       </div>
     </div>
@@ -97,7 +97,7 @@ plotData = getGamesPerDay(ladder)
           <h2 class="panel-title">Least Significant Games</h2>
         </div>
         <div class="panel-body">
-          ${self.blocks.render("gameList", ladder=ladder, games=mostSignificantGames[-5:], base=self.attr.base)}
+          ${self.blocks.render("components/gameList", ladder=ladder, games=mostSignificantGames[-5:], base=self.attr.base)}
         </div>
       </div>
     </div>
@@ -117,5 +117,5 @@ plotData = getGamesPerDay(ladder)
       </div>
     </div>
   </div>
-  ${blocks.render("achievementList", achievements=sorted(ladder.getAchievements().iteritems(), reverse=True, key=lambda t: t[1]))}
+  ${blocks.render("components/achievementList", achievements=sorted(ladder.getAchievements().iteritems(), reverse=True, key=lambda t: t[1]))}
 </div>
