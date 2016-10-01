@@ -12,7 +12,7 @@ def serve_template(templatename, **kwargs):
 
 def get_template(templatename, **kwargs):
     form = cgi.FieldStorage()
-    if "view" in form and form["view"].value == "json":
+    if form.getfirst("view") == "json":
         template = "json/" + templatename
     else:
         template = templatename
