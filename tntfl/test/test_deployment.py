@@ -102,37 +102,41 @@ class DeletePage(Deployment):
         self.assertTrue("<!DOCTYPE html>" in response)
 
 
-class Pages(Deployment, Get.Pages):
+class Pages(Get.Pages, Deployment):
     pass
 
 
-class SpeculatePage(Deployment, Get.SpeculatePage):
+class SpeculatePage(Get.SpeculatePage, Deployment):
     pass
 
 
-class PageBits(Deployment, Get.PageBits):
+class LadderPage(Get.LadderPage, Deployment):
     pass
 
 
-class PlayerApi(Deployment, Get.PlayerApi):
+class RecentPage(Get.RecentPage, Deployment):
     pass
 
 
-class HeadToHeadApi(Deployment, Get.HeadToHeadApi):
+class PlayerApi(Get.PlayerApi, Deployment):
     pass
 
 
-class RecentApi(Deployment, Get.RecentApi):
+class HeadToHeadApi(Get.HeadToHeadApi, Deployment):
     pass
 
 
-class LadderApi(Deployment, Get.LadderApi):
+class RecentApi(Get.RecentApi, Deployment):
     pass
 
 
-class GameApi(Deployment, Get.GameApi):
+class LadderApi(Get.LadderApi, Deployment):
     pass
 
 
-class GamesApi(Deployment, Get.GamesApi):
+class GameApi(Get.GameApi, Deployment):
+    pass
+
+
+class GamesApi(Get.GamesApi, Deployment):
     pass
