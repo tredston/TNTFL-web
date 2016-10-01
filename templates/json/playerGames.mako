@@ -1,6 +1,4 @@
-<%!
-base = "../../../"
-%>
+<%! base = "../../../" %>
 <%inherit file="json.mako" />
 [
 % for game in games:
