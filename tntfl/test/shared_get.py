@@ -80,11 +80,36 @@ class SpeculatePage(Tester):
         self.assertTrue('Speculative Ladder' in response)
 
 
-class PageBits(Tester):
-    def testLadderReachable(self):
-        self._testPageReachable('ladder.cgi')
+class LadderPage(Tester):
+    def testRange(self):
+        self._testPageReachable('ladder.cgi', 'gamesFrom=1223308996&gamesTo=1223400000')
 
-    def testRecentReachable(self):
+    def _concat(self, thing):
+        return ''.join([l.strip() for l in thing.split('\n')])
+
+    def _testResponse(self, response):
+        super(LadderPage, self)._testResponse(response)
+        jrem = """
+        <td class="ladder-position ladder-first">1</td>
+        <td class="ladder-name"><a href="player/jrem/">jrem</a></td>
+        <td class="ladder-stat">2</td>
+        <td class="ladder-stat">2</td>
+        <td class="ladder-stat">0</td>
+        <td class="ladder-stat">0</td>
+        <td class="ladder-stat">17</td>
+        <td class="ladder-stat">3</td>
+        <td class="ladder-stat">5.667</td>
+        <td class="ladder-stat">0.000</td>
+        <td class="ladder-stat ladder-skill">16.503</td>
+        """
+        jrem = self._concat(jrem)
+        response = self._concat(response)
+        self.assertFalse("<!DOCTYPE html>" in response)
+        self.assertTrue(jrem in response)
+
+
+class RecentPage(Tester):
+    def testReachable(self):
         self._testPageReachable('recent.cgi')
 
 

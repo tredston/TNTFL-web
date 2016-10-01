@@ -55,7 +55,11 @@ class SpeculatePage(Get.SpeculatePage, Deployment):
     pass
 
 
-class PageBits(Get.LadderPage, Deployment):
+class LadderPage(Get.LadderPage, Deployment):
+    pass
+
+
+class RecentPage(Get.RecentPage, Deployment):
     pass
 
 
