@@ -166,6 +166,12 @@ class GameApi(object):
         self.assertEqual(response['positionSwap'], True)
         self.assertEqual(response['date'], 1223308996)
 
+    def testDeleted(self):
+        response = self._getJson('game.cgi', 'method=view&game=1430915499&view=json')
+        self.assertTrue('deleted' in response)
+        self.assertEqual(response['deleted']['by'], 'eu')
+        self.assertEqual(response['deleted']['at'], 1430915500)
+
 
 class GamesApi(object):
     def test(self):
