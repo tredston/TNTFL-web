@@ -1,8 +1,8 @@
-<%! title = "" %>
 <%!
 from datetime import datetime
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
+title = "" 
 %>
 <%inherit file="html.mako" />
 <%
