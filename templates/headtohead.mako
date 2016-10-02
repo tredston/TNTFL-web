@@ -37,6 +37,16 @@ def getHistograms(player1, player2, sharedGames):
 %>
 <%inherit file="html.mako" />
 
+<%def name="skillAt(skill, base)">
+  ${"{:.3f}".format(skill['skill'])}
+  <br />
+  % if skill['time'] > 0:
+    at <a href="${base}game/${skill['time']}/">${utils.formatTime(skill['time'])}</a>
+  % else:
+    before first game
+  % endif
+</%def>
+
 <%def name="headtoheadplayer(player, colour, totalActivePlayers)">
   <%
   skillBounds = player.getSkillBounds()
@@ -53,23 +63,11 @@ def getHistograms(player1, player2, sharedGames):
       <tr>
         <th>Highest ever skill</th>
         <td>
-          ${"{:.3f}".format(skillBounds['highest']['skill'])}
-          <br />
-          % if skillBounds['highest']['time'] > 0:
-            at <a href="${base}game/${skillBounds['highest']['time']}/">${utils.formatTime(skillBounds['highest']['time'])}</a>
-          % else:
-            before first game
-          % endif
+          ${skillAt(skillBounds['highest'], base)}
         </td>
         <th>Lowest ever skill</th>
         <td>
-          ${"{:.3f}".format(skillBounds['lowest']['skill'])}
-          <br />
-          % if skillBounds['lowest']['time'] > 0:
-            at <a href="${base}game/${skillBounds['lowest']['time']}/">${utils.formatTime(skillBounds['lowest']['time'])}</a>
-          % else:
-            before first game
-          % endif
+          ${skillAt(skillBounds['lowest'], base)}
         </td>
       </tr>
       </table>
