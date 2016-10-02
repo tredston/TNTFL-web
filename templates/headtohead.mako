@@ -113,7 +113,7 @@ def getHistograms(player1, player2, sharedGames):
           </tr>
           <tr>
             <td ${"class='red-player'" if player1wins >= player2wins else ""}>${player1wins}</td>
-            <th>Wins</small></th>
+            <th>Wins</th>
             <td ${"class='blue-player'" if player2wins >= player1wins else ""}>${player2wins}</td>
           </tr>
           <tr>
