@@ -75,6 +75,12 @@ def getHistograms(player1, player2, sharedGames):
   </div>
 </%def>
 
+<%def name="stat(statName, player1stat, p1highlight, player2stat, p2highlight)">
+  <td ${"class='red-player'" if p1highlight else ""}>${player1stat}</td>
+  <th>${statName}</th>
+  <td ${"class='blue-player'" if p2highlight else ""}>${player2stat}</td>
+</%def>
+
 <%def name="stats(player1, player2, sharedGames)">
   <%
       draws = len([g for g in sharedGames if g.redScore == g.blueScore])
@@ -95,42 +101,12 @@ def getHistograms(player1, player2, sharedGames):
       <div class="panel-body">
         <p>Matches played: ${len(sharedGames)} (${draws} draws)</p>
         <table class="table headtohead">
-          <tr>
-            <th>${player1.name}</th>
-            <td></td>
-            <th>${player2.name}</th>
-          </tr>
-          <tr>
-  %if swingToPlayer1 >= 0:
-            <td class="red-player">${"{:.3f}".format(swingToPlayer1)}</td>
-            <th>Points Swing</th>
-            <td></td>
-  %else:
-            <td></td>
-            <th>Points Swing</th>
-            <td class="blue-player">${"{:.3f}".format(-swingToPlayer1)}</td>
-  %endif
-          </tr>
-          <tr>
-            <td ${"class='red-player'" if player1wins >= player2wins else ""}>${player1wins}</td>
-            <th>Wins</th>
-            <td ${"class='blue-player'" if player2wins >= player1wins else ""}>${player2wins}</td>
-          </tr>
-          <tr>
-            <td ${"class='red-player'" if player1yellowStripes >= player2yellowStripes else ""}>${player1yellowStripes}</td>
-            <th>10-0 Wins</th>
-            <td ${"class='blue-player'" if player2yellowStripes >= player1yellowStripes else ""}>${player2yellowStripes}</td>
-          </tr>
-          <tr>
-            <td ${"class='red-player'" if player1goals >= player2goals else ""}>${player1goals}</td>
-            <th>Goals</th>
-            <td ${"class='blue-player'" if player2goals >= player1goals else ""}>${player2goals}</td>
-          </tr>
-          <tr>
-            <td class="red-player">${"{:.0f}".format(10 - predict)}</td>
-            <th>Predicted Result</th>
-            <td class="blue-player">${"{:.0f}".format(predict)}</td>
-          </tr>
+          <tr>${stat('', player1.name, false, player2.name, false)}</tr>
+          <tr>${stat('Points Swing', "{:.3f}".format(swingToPlayer1) if swingToPlayer1 >= 0 else '', swingToPlayer1 >= 0, "{:.3f}".format(-swingToPlayer1) if swingToPlayer1 < 0 else '', swingToPlayer1 < 0)}</tr>
+          <tr>${stat('Wins', player1wins, player1wins >= player2wins, player2wins, player1wins <= player2wins)}</tr>
+          <tr>${stat('10-0 Wins', player1yellowStripes, player1yellowStripes >= player2yellowStripes, player2yellowStripes, player1yellowStripes <= player2yellowStripes)}</tr>
+          <tr>${stat('Goals', player1goals, player1goals >= player2goals, player2goals, player1goals <= player2goals)}</tr>
+          <tr>${stat('Predicted Result', "{:.0f}".format(10 - predict), true, "{:.0f}".format(predict), true)}</tr>
         </table>
       </div>
     </div>
