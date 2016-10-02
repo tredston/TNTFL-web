@@ -49,12 +49,12 @@ def getHistograms(player1, player2, sharedGames):
 
 <%def name="headtoheadplayer(player, colour, totalActivePlayers)">
   <%
+  rank = ladder.getPlayerRank(player.name)
   skillBounds = player.getSkillBounds()
   %>
   <div class="panel panel-default headtohead">
     <h1 class="${colour}-player panel-title">${player.name}</h1>
     <div class="panel-body">
-    <% rank = ladder.getPlayerRank(player.name) %>
     <table class="player-stats">
       <tr>
         <th>Rank</th><td class="rank ${utils.getRankCSS(ladder.getPlayerRank(player.name), totalActivePlayers)}">${rank if rank != -1 else "-"}</td>
