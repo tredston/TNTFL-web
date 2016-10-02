@@ -1,7 +1,7 @@
-<%! base = "" %><%namespace name="blocks" file="blocks.mako" inheritable="True"/>Content-Type: text/html
 <%!
 from datetime import datetime
-%>
+base = ""
+%><%namespace name="blocks" file="blocks.mako" inheritable="True"/>Content-Type: text/html
 
 <!DOCTYPE html>
 <html lang="en">
