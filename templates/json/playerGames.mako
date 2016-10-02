@@ -1,7 +1,7 @@
-<%! base = "../../../" %>
+<%!
+import json
+from tntfl.template_utils import gameToJson
+base = "../../../"
+%>
 <%inherit file="json.mako" />
-[
-% for game in games:
-  ${self.blocks.render("game", game=game, base=self.attr.base)}${"," if loop.index < len(games) - 1 else ""}
-% endfor
-]
+${json.dumps([gameToJson(game, base) for game in games])}
