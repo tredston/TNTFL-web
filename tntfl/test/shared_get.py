@@ -32,9 +32,6 @@ class Pages(Tester):
     def testIndexReachable(self):
         self._testPageReachable('index.cgi')
 
-    def testAchievementsReachable(self):
-        self._testPageReachable('achievements.cgi')
-
     def testApiReachable(self):
         self._testPageReachable('api.cgi')
 
