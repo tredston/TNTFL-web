@@ -93,22 +93,20 @@ def getHistograms(player1, player2, sharedGames):
       swingToPlayer1 = getSkillChange(player1, sharedGames)
       predict = ladder.predict(player1, player2) * 10
   %>
-  <div class="col-md-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h2 class="panel-title">Statistics</h2>
-      </div>
-      <div class="panel-body">
-        <p>Matches played: ${len(sharedGames)} (${draws} draws)</p>
-        <table class="table headtohead">
-          <tr>${stat('', player1.name, false, player2.name, false)}</tr>
-          <tr>${stat('Points Swing', "{:.3f}".format(swingToPlayer1) if swingToPlayer1 >= 0 else '', swingToPlayer1 >= 0, "{:.3f}".format(-swingToPlayer1) if swingToPlayer1 < 0 else '', swingToPlayer1 < 0)}</tr>
-          <tr>${stat('Wins', player1wins, player1wins >= player2wins, player2wins, player1wins <= player2wins)}</tr>
-          <tr>${stat('10-0 Wins', player1yellowStripes, player1yellowStripes >= player2yellowStripes, player2yellowStripes, player1yellowStripes <= player2yellowStripes)}</tr>
-          <tr>${stat('Goals', player1goals, player1goals >= player2goals, player2goals, player1goals <= player2goals)}</tr>
-          <tr>${stat('Predicted Result', "{:.0f}".format(10 - predict), true, "{:.0f}".format(predict), true)}</tr>
-        </table>
-      </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Statistics</h2>
+    </div>
+    <div class="panel-body">
+      <p>Matches played: ${len(sharedGames)} (${draws} draws)</p>
+      <table class="table headtohead">
+        <tr>${stat('', player1.name, false, player2.name, false)}</tr>
+        <tr>${stat('Points Swing', "{:.3f}".format(swingToPlayer1) if swingToPlayer1 >= 0 else '', swingToPlayer1 >= 0, "{:.3f}".format(-swingToPlayer1) if swingToPlayer1 < 0 else '', swingToPlayer1 < 0)}</tr>
+        <tr>${stat('Wins', player1wins, player1wins >= player2wins, player2wins, player1wins <= player2wins)}</tr>
+        <tr>${stat('10-0 Wins', player1yellowStripes, player1yellowStripes >= player2yellowStripes, player2yellowStripes, player1yellowStripes <= player2yellowStripes)}</tr>
+        <tr>${stat('Goals', player1goals, player1goals >= player2goals, player2goals, player1goals <= player2goals)}</tr>
+        <tr>${stat('Predicted Result', "{:.0f}".format(10 - predict), true, "{:.0f}".format(predict), true)}</tr>
+      </table>
     </div>
   </div>
 </%def>
@@ -157,7 +155,9 @@ sharedGames = utils.getSharedGames(player1, player2)
               ${headtoheadplayer(player1, "red", totalActivePlayers)}
               ${recent(ladder, sharedGames, self.attr.base)}
             </div>
-            ${stats(player1, player2, sharedGames)}
+            <div class="col-md-4">
+              ${stats(player1, player2, sharedGames)}
+            </div>
             <div class="col-md-4">
               ${headtoheadplayer(player2, "blue", totalActivePlayers)}
               ${goalDistribution(getHistograms(player1, player2, sharedGames))}
