@@ -14,7 +14,7 @@ base = ""
     <!-- CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <link href="${self.attr.base}css/ladder.css" rel="stylesheet">
+    <link rel="stylesheet" href="${self.attr.base}css/ladder.css">
     <link rel="stylesheet" href="${self.attr.base}js/ion.rangeSlider-2.1.2/css/ion.rangeSlider.css">
     <link rel="stylesheet" href="${self.attr.base}js/ion.rangeSlider-2.1.2/css/ion.rangeSlider.skinModern.css">
 
@@ -22,14 +22,7 @@ base = ""
       <link href="${self.attr.base}css/christmas.css" rel="stylesheet">
     % endif
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script type="text/javascript" src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script type="text/javascript" src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script type="text/javascript" src="${self.attr.base}js/jquery.tablesorter.min.js"></script>
     <script type="text/javascript" src="${self.attr.base}js/jquery.flot.min.js"></script>
     <script type="text/javascript" src="${self.attr.base}js/jquery.flot.time.min.js"></script>
