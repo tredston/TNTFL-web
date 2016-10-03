@@ -36,3 +36,71 @@ def getRankCSS(rank, totalActivePlayers):
     elif rank <= totalActivePlayers * 0.3:
         ladderPositionCSS = ladderPositionCSS + " ladder-bronze"
     return ladderPositionCSS
+
+
+def isPositionSwap(game):
+    bluePosBefore = game.bluePosAfter + game.bluePosChange
+    redPosBefore = game.redPosAfter + game.redPosChange
+    positionSwap = False
+    if bluePosBefore > 0 and redPosBefore > 0:
+        if bluePosBefore == game.redPosAfter or redPosBefore == game.bluePosAfter:
+            positionSwap = True
+    return positionSwap
+
+
+def playerHref(base, name):
+    return base + 'player/' + name + '/json'
+
+
+def gameToJson(game, base):
+    asJson = {
+        'red': {
+            'name': game.redPlayer,
+            'href': playerHref(base, game.redPlayer),
+            'score': game.redScore,
+            'skillChange': -game.skillChangeToBlue,
+            'rankChange': game.redPosChange,
+            'newRank': game.redPosAfter,
+            'achievements': [{'name': a.name, 'description': a.description} for a in game.redAchievements],
+        },
+        'blue': {
+            'name': game.bluePlayer,
+            'href': playerHref(base, game.bluePlayer),
+            'score': game.blueScore,
+            'skillChange': game.skillChangeToBlue,
+            'rankChange': game.bluePosChange,
+            'newRank': game.bluePosAfter,
+            'achievements': [{'name': a.name, 'description': a.description} for a in game.blueAchievements],
+        },
+        'positionSwap': isPositionSwap(game),
+        'date': game.time,
+    }
+    if game.isDeleted():
+        asJson['deleted'] = {
+            'at': game.deletedAt,
+            'by': game.deletedBy
+        }
+    return asJson
+
+
+def playersToJson(players, base):
+    return [{'rank': i + 1, 'name': p.name, 'skill': p.elo, 'href': playerHref(base, p.name)} for i, p in enumerate(players)]
+
+
+def playertoJson(player, ladder):
+    return {
+        'name': player.name,
+        'rank': ladder.getPlayerRank(player.name),
+        'active': ladder.isPlayerActive(player),
+        'skill': player.elo,
+        'overrated': player.overrated(),
+        'total': {
+            'for': player.goalsFor,
+            'against': player.goalsAgainst,
+            'games': len(player.games),
+            'wins': player.wins,
+            'losses': player.losses,
+            'gamesToday': player.gamesToday,
+        },
+        'games': {'href': 'games/json'},
+    }
