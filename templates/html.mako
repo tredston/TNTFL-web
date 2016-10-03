@@ -30,6 +30,7 @@ from datetime import datetime
     <![endif]-->
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.4.2/showdown.min.js"></script>
     <script type="text/javascript" src="${self.attr.base}js/jquery.tablesorter.min.js"></script>
     <script type="text/javascript" src="${self.attr.base}js/jquery.flot.min.js"></script>
     <script type="text/javascript" src="${self.attr.base}js/jquery.flot.time.min.js"></script>
