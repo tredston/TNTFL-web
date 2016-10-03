@@ -39,7 +39,7 @@ class Deployment(Get.TestRunner):
             os.environ['QUERY_STRING'] = query
 
 
-class AddGame(Deployment, Get.Tester):
+class AddGame(Get.Tester, Deployment):
     def testAddGame(self):
         self._testPageReachable('game.cgi', 'method=add&redPlayer=foo&redScore=5&bluePlayer=bar&blueScore=5')
 

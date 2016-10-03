@@ -24,7 +24,7 @@ class Deployment(Get.TestRunner):
         return urllib2.urlopen(self._page(page, query)).read()
 
 
-class Redirects(Deployment):
+class Redirects(Get.Tester, Deployment):
     def testIndexReachable(self):
         self._testPageReachable('')
 
@@ -78,7 +78,7 @@ class Redirects(Deployment):
         self.assertTrue("<!DOCTYPE html>" in response)
 
 
-class DeletePage(Deployment):
+class DeletePage(Get.Tester, Deployment):
     _username = None
     _password = None
 
