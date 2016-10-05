@@ -44,7 +44,10 @@ class AddGame(Get.Tester, Deployment):
         self._testPageReachable('game.cgi', 'method=add&redPlayer=foo&redScore=5&bluePlayer=bar&blueScore=5')
 
     def testAddGameApi(self):
-        self._testPageReachable('game.cgi', 'method=add&view=json&redPlayer=foo&redScore=5&bluePlayer=bar&blueScore=5')
+        self._getJson('game.cgi', 'method=add&view=json&redPlayer=foo&redScore=5&bluePlayer=bar&blueScore=5')
+
+    def testAddYellowStripeApi(self):
+        self._getJson('game.cgi', 'method=add&view=json&redPlayer=foo&redScore=10&bluePlayer=bar&blueScore=0')
 
 
 class Pages(Get.Pages, Deployment):
