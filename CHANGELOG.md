@@ -3,6 +3,7 @@
 ## develop
 * Update API page
 * Fix adding yellow stripes
+* Improve responsiveness of UI when adding games
 
 ## 3.10.0
 * Add Travis CI
