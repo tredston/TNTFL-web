@@ -1,5 +1,9 @@
 # Changelog
 
+## develop
+* Update API page
+* Fix adding yellow stripes
+
 ## 3.10.0
 * Add Travis CI
 * Add readme and changelog
