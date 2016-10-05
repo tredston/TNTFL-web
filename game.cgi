@@ -21,7 +21,7 @@ if getString('method', form) == "add":
         ladder = TableFootballLadder(Constants.ladderFilePath, transforms=PresetTransforms.transforms_for_recent())
         game = ladder.games[-1]
         if getString('view', form) == 'json':
-            serve_template("wrappedGame.mako", game=game, ladder=ladder)
+            serve_template("game.mako", game=game, ladder=ladder)
         else:
             redirect_302("../%.0f" % game.time)
 elif getString('method', form) == 'view':
@@ -29,6 +29,6 @@ elif getString('method', form) == 'view':
     if gameTime is not None:
         try:
             game = next(g for g in ladder.games if g.time == gameTime)
-            serve_template("wrappedGame.mako", game=game, ladder=ladder)
+            serve_template("game.mako", game=game, ladder=ladder)
         except StopIteration:
             fail_404()
