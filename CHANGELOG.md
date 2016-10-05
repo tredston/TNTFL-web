@@ -1,6 +1,6 @@
 # Changelog
 
-## develop
+## 3.11.0
 * Update API page
 * Fix adding yellow stripes
 * Improve responsiveness of UI when adding games
