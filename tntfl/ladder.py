@@ -111,6 +111,8 @@ class TableFootballLadder(object):
             # Invalidate
             self.games = None
             self.players = None
+            return game.time
+        return None
 
     def deleteGame(self, gameTime, deletedBy):
         return self._gameStore.deleteGame(gameTime, deletedBy)

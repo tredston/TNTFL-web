@@ -1,8 +1,8 @@
-<%! title = "" %>
 <%!
 from datetime import datetime
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
+title = "" 
 %>
 <%inherit file="html.mako" />
 <%
@@ -16,7 +16,7 @@ ladder = TableFootballLadder(Constants.ladderFilePath)
           ${self.blocks.render("ladder", ladder=ladder, base=self.attr.base)}
         </div>
       </div>
-      ${self.blocks.render("ladder-info", base=self.attr.base)}
+      ${self.blocks.render("components/ladder-info", base=self.attr.base)}
     </div>
     <div class="col-lg-4">
       <div class="panel panel-default">

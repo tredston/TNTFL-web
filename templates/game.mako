@@ -1,63 +1,77 @@
-<%page args="game, base, totalActivePlayers, punditryAvailable=False, speculative=False"/>
 <%!
-import tntfl.template_utils as utils
-%>
-<%namespace name="blocks" file="blocks.mako"/>
-<%
-redsStripe = "yellow-stripe" if game.redScore == 10 and game.blueScore == 0 else ""
-bluesStripe = "yellow-stripe" if game.blueScore == 10 and game.redScore == 0 else ""
-%>
+title = ""
+base = "../../"
+from tntfl.pundit import Pundit
+from random import shuffle
 
-<%def name="playerName(name)">
-  <a href="${base}player/${name}/">${name}</a>
-</%def>
+def getPunditry(pundit, game, ladder):
+    red = ladder.getPlayer(game.redPlayer)
+    blue = ladder.getPlayer(game.bluePlayer)
+    redFacts = pundit.getAllForGame(red, game, blue)
+    blueFacts = pundit.getAllForGame(blue, game, red)
+    facts = redFacts + blueFacts
+    shuffle(facts)
+    return facts
+%>
+<%inherit file="html.mako" />
 
-<%def name="cups(achs)">
-  <div style="display:table;margin-left: auto;margin-right: auto;">
-    %for ach in achs:
-      <div style="display:table-cell;">
-        <img src="${base}img/trophy5_24.png" alt="Achievement unlocked!" title="Achievement unlocked!" style="width:100%;"/>
-      </div>
-    %endfor
+<%def name="achievement(ach)">
+  <div class="panel panel-default panel-achievement">
+    <div class="panel-heading">
+      <h3 class="panel-title">${ach.name}</h3>
+    </div>
+    <div class="panel-body achievement-${ach.__name__}">
+      ${ach.description}
+    </div>
   </div>
 </%def>
 
-<%def name="rankChange(colour, change)">
-  <span class='skill-change skill-change-${colour}' title='Ladder rank change'>
-    ${"{:+}".format(change)}
-  </span>
+<%def name="punditry(facts)">
+  <div class="panel panel-default ">
+    <div class="panel-heading">
+      <h3 class="panel-title">Punditry</h3>
+    </div>
+    <div class="panel-body">
+      % for fact in facts:
+        ${fact}
+        <br/>
+      % endfor
+    </div>
+  </div>
 </%def>
 
-<%def name="skillChange(colour, change)">
-  <span class='skill-change skill-change-${colour}' title='Skill change'>
-    ${"{:+.3f}".format(change)}
-  </span>
-</%def>
-  % if game.isDeleted():
-    <p class="bg-danger">This game was deleted by ${game.deletedBy} at ${utils.formatTime(game.deletedAt)}</p>
-  % endif
-    <tr class="recent-game-result">
-      <td width="20%" class="player red-player ${redsStripe}">${playerName(game.redPlayer)}</td>
-      <td width="10%" class="rank ${utils.getRankCSS(game.redPosAfter + game.redPosChange, totalActivePlayers)}">${game.redPosAfter + game.redPosChange}</td>
-      <td width="10%" class="ach ${redsStripe}">${cups(game.redAchievements)}</td>
-      
-      <td width="20%" class="score ${redsStripe} ${bluesStripe}">${game.redScore} - ${game.blueScore}</td>
-      
-      <td width="10%" class="ach ${bluesStripe}">${cups(game.blueAchievements)}</td>
-      <td width="10%" class="rank ${utils.getRankCSS(game.bluePosAfter + game.bluePosChange, totalActivePlayers)}">${game.bluePosAfter + game.bluePosChange}</td>
-      <td width="20%" class="player blue-player ${bluesStripe}">${playerName(game.bluePlayer)}</td>
-    </tr>
-    <tr class="game-changes">
-      <td width="20%" class="score-change red">${skillChange("red", -game.skillChangeToBlue) if game.skillChangeToBlue <= 0 else ""}</td>
-      <td width="10%" class="rank-change red">${rankChange("red", game.redPosChange) if game.redPosChange != 0 else ""}</td>
-      <td class="detail" colspan="3">
-        %if not speculative:
-        ${blocks.render("gameLink", time=game.time, base=base)}
-        % if punditryAvailable:
-          <img src="${base}img/headset16.png"/>
-        % endif
-        %endif
-      </td>
-      <td width="10%" class="rank-change blue">${rankChange("blue", game.bluePosChange) if game.bluePosChange != 0 else ""}</td>
-      <td width="20%" class="score-change blue">${skillChange("blue", game.skillChangeToBlue) if game.skillChangeToBlue > 0 else ""}</td>
-    </tr>
+<%
+pundit = Pundit()
+facts = getPunditry(pundit, game, ladder)
+totalActivePlayers = ladder.getNumActivePlayers(game.time-1)
+%>
+
+<div class="game table-responsive container-fluid">
+  <table class="table no-table-boder" style="margin-top: 20px;">
+    <tbody>
+      ${self.blocks.render("components/game", game=game, base=self.attr.base, punditryAvailable=len(facts), totalActivePlayers=totalActivePlayers)}
+    </tbody>
+  </table>
+  <div class="recent-game container-fluid">
+      <div class="row achievements">
+        <div class="col-md-4">
+        % for ach in game.redAchievements:
+          ${achievement(ach)}
+        % endfor
+        </div>
+        <div class="col-md-4 punditry">
+          ${punditry(facts) if len(facts) > 0 else ""}
+        </div>
+        <div class="col-md-4">
+        % for ach in game.blueAchievements:
+          ${achievement(ach)}
+        % endfor
+        </div>
+      </div>
+    </div>
+
+<p><a href="json">This game as JSON</a></p>
+% if not game.isDeleted():
+  <a href="delete" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-lock"></span> Delete game</a>
+% endif
+</div>
