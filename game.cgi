@@ -15,15 +15,15 @@ if getString('method', form) == "add":
     redScore = getInt('redScore', form)
     blueScore = getInt('blueScore', form)
     if redPlayer is not None and bluePlayer is not None and redScore is not None and blueScore is not None:
-        ladder.appendGame(redPlayer, redScore, bluePlayer, blueScore)
-        # Invalidated, regenerate
-        # Tablet doesn't display achievements
-        ladder = TableFootballLadder(Constants.ladderFilePath, transforms=PresetTransforms.transforms_for_recent())
-        game = ladder.games[-1]
+        newGameTime = ladder.appendGame(redPlayer, redScore, bluePlayer, blueScore)
         if getString('view', form) == 'json':
+            # Invalidated, regenerate
+            # Tablet doesn't display achievements
+            ladder = TableFootballLadder(Constants.ladderFilePath, transforms=PresetTransforms.transforms_for_recent())
+            game = ladder.games[-1]
             serve_template("game.mako", game=game, ladder=ladder)
         else:
-            redirect_302("../%.0f" % game.time)
+            redirect_302("../%.0f" % newGameTime)
 elif getString('method', form) == 'view':
     gameTime = getInt('game', form)
     if gameTime is not None:
