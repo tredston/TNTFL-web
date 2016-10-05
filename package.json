@@ -1,0 +1,28 @@
+{
+  "name": "tntfl",
+  "version": "1.0.0",
+  "description": "tntfl",
+  "main": "./ui/index.tsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tredston/TNTFL-web.git"
+  },
+  "author": "tlr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tredston/TNTFL-web/issues"
+  },
+  "homepage": "https://github.com/tredston/TNTFL-web#readme",
+  "dependencies": {
+    "@types/react": "^0.14.38",
+    "@types/react-dom": "^0.14.17",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.2",
+    "ts-loader": "^0.8.2",
+    "typescript": "^2.0.3",
+    "webpack": "^1.13.1"
+  }
+}
