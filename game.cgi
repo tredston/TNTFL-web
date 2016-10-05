@@ -14,7 +14,7 @@ if getString('method', form) == "add":
     bluePlayer = getString('bluePlayer', form)
     redScore = getInt('redScore', form)
     blueScore = getInt('blueScore', form)
-    if redPlayer and bluePlayer and redScore and blueScore:
+    if redPlayer is not None and bluePlayer is not None and redScore is not None and blueScore is not None:
         ladder.appendGame(redPlayer, redScore, bluePlayer, blueScore)
         # Invalidated, regenerate
         # Tablet doesn't display achievements
