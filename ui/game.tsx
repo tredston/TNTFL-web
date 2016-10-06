@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
+import { Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import * as request from 'request';
 
@@ -33,8 +34,8 @@ class GamePage extends Component<GamePageProps, GamePageState> {
   }
   render() {
     const { pageHeader, addURL, onGameAdded } = this.props;
+    //TODO
     const numActivePlayers = 0;
-    console.log(this.state.game);
     return (
       <div className="gamePage">
         <NavigationBar
@@ -42,14 +43,14 @@ class GamePage extends Component<GamePageProps, GamePageState> {
           addURL={addURL}
           onGameAdded={onGameAdded}
         />
-        <div className="container-fluid">
-          <div className="row">
+        <Grid fluid={true}>
+          <Row>
             {this.state.game ? <GameSummary game={this.state.game} base={"../../"} numActivePlayers={numActivePlayers} /> : "Loading"}
-          </div>
-          <div className="row">
+          </Row>
+          <Row>
             {this.state.game ? <GameDetails game={this.state.game} /> : "Loading"}
-          </div>
-        </div>
+          </Row>
+        </Grid>
       </div>
     );
   }

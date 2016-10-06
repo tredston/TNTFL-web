@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
+import { Grid, Panel, Row, Col } from 'react-bootstrap';
 
 import Achievement from '../model/achievement';
 import Game from '../model/game';
@@ -23,14 +24,11 @@ function AchievementItem(props: AchievementItemProps) {
   );
   return (
     <div className="achievement">
-      <div className="panel panel-default panel-achievement">
-        <div className="panel-heading">
-          <h3 className="panel-title">{achievement.name}</h3>
+      <Panel header={achievement.name}>
+        <div className={icon} style={{textAlign: 'center'}}>
+        {achievement.description}
         </div>
-        <div className={icon}>
-          {achievement.description}
-        </div>
-      </div>
+      </Panel>
     </div>
   );
 }
@@ -42,9 +40,9 @@ function AchievementList(props: AchievementListProps): JSX.Element {
   const { achievements } = props;
   return (
     <div className="achievements">
-      <div className="col-md-4">
-        {achievements.map((ach) => <AchievementItem achievement={ach} />)}
-      </div>
+      <Col md={4}>
+        {achievements.map((ach, i) => <AchievementItem achievement={ach} key={`achi${i}`}/>)}
+      </Col>
     </div>
   );
 }
@@ -69,14 +67,9 @@ function Punditry(props: PunditryProps): JSX.Element {
   const { facts } = props;
   return (
     <div className="punditry">
-      <div className="panel panel-default">
-        <div className="panel-heading">
-          <h3 className="panel-title">Punditry</h3>
-        </div>
-        <div className="panel-body">
-          {facts.map((fact) => <Fact fact={fact}/>)}
-        </div>
-      </div>
+      <Panel title={'Punditry'}>
+        {facts.map((fact) => <Fact fact={fact}/>)}
+      </Panel>
     </div>
   );
 }
@@ -88,15 +81,15 @@ export default function GameDetails(props: GameDetailsProps): JSX.Element {
   const { game } = props;
   return (
     <div className="gameDetails">
-      <div className="recent-game container-fluid">
-        <div className="row achievements">
+      <Grid fluid={true}>
+        <Row>
           <AchievementList achievements={game.red.achievements}/>
-          <div className="col-md-4">
+          <Col md={4}>
             {game.punditry && game.punditry.length ? <Punditry facts={game.punditry} /> : null}
-          </div>
+          </Col>
           <AchievementList achievements={game.blue.achievements}/>
-        </div>
-      </div>
+        </Row>
+      </Grid>
       <JsonLink/>
       {!game.deleted ? <a href="delete" className="btn btn-danger pull-right"><span className="glyphicon glyphicon-lock"></span> Delete game</a> : null}
     </div>
