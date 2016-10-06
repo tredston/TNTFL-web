@@ -2,7 +2,7 @@
   "name": "tntfl",
   "version": "1.0.0",
   "description": "tntfl",
-  "main": "./ui/index.tsx",
+  "main": "./ui/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,10 +17,17 @@
   },
   "homepage": "https://github.com/tredston/TNTFL-web#readme",
   "dependencies": {
+    "@types/classnames": "0.0.30",
+    "@types/moment": "^2.13.0",
     "@types/react": "^0.14.38",
     "@types/react-dom": "^0.14.17",
+    "@types/request": "0.0.31",
+    "classnames": "^2.2.5",
+    "json-loader": "^0.5.4",
+    "moment": "^2.15.1",
     "react": "^15.3.0",
     "react-dom": "^15.3.2",
+    "request": "^2.75.0",
     "ts-loader": "^0.8.2",
     "typescript": "^2.0.3",
     "webpack": "^1.13.1"
