@@ -3,6 +3,8 @@ import { Component, Props } from 'react';
 import { Grid, Navbar, Nav, NavItem, Form, FormGroup, FormControl, Button } from 'react-bootstrap';
 import * as request from 'request';
 
+import * as Palette from '../palette';
+
 export interface AddGameFormProps extends Props<AddGameForm> {
     addURL: string;
     onGameAdded: () => void;
@@ -43,6 +45,8 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
     this.setState({redPlayer: '', redScore: 0, bluePlayer: '', blueScore: 0});
   }
   render() {
+    const playerWidth = '6em';
+    const scoreWidth = '3em';
     return (
       <Form inline>
         <FormGroup>
@@ -52,7 +56,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             placeholder="Red"
             value={this.state.redPlayer}
             onChange={e => this.handleRedPlayerChange((e.target as any).value)}
-            style={{width: 60}}
+            style={{backgroundColor: Palette.redFade, width: playerWidth, textAlign: 'center'}}
           /> <FormControl
             type="text"
             name="redScore"
@@ -60,7 +64,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             placeholder="0"
             value={this.state.redScore}
             onChange={e => this.handleRedScoreChange((e.target as any).value)}
-            style={{width: 40}}
+            style={{backgroundColor: Palette.redFade, width: scoreWidth, textAlign: 'center'}}
           /> - <FormControl
             type="text"
             name="blueScore"
@@ -68,14 +72,14 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             placeholder="0"
             value={this.state.blueScore}
             onChange={e => this.handleBlueScoreChange((e.target as any).value)}
-            style={{width: 40}}
+            style={{backgroundColor: Palette.blueFade, width: scoreWidth, textAlign: 'center'}}
           /> <FormControl
             type="text"
             name="bluePlayer"
             placeholder="Blue"
             value={this.state.bluePlayer}
             onChange={e => this.handleBluePlayerChange((e.target as any).value)}
-            style={{width: 60}}
+            style={{backgroundColor: Palette.blueFade, width: playerWidth, textAlign: 'center'}}
           /> <Button type="submit" onClick={e => this.handleSubmit(e)}>
             Add game <span className="glyphicon glyphicon-triangle-right"/>
           </Button>
