@@ -4,6 +4,7 @@
   "description": "tntfl",
   "main": "./ui/index.js",
   "scripts": {
+    "start": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
