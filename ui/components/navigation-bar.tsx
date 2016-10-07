@@ -11,7 +11,7 @@ interface NavigationBarProps {
 export default function NavigationBar(props: NavigationBarProps): JSX.Element {
   const { header, addURL, onGameAdded } = props;
   return (
-    <Navbar>
+    <Navbar fluid={true}>
       <Navbar.Header>
         <Navbar.Brand>
           {'Table Football Ladder'}

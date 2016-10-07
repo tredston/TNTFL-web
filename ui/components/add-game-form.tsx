@@ -52,6 +52,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             placeholder="Red"
             value={this.state.redPlayer}
             onChange={e => this.handleRedPlayerChange((e.target as any).value)}
+            style={{width: 60}}
           /> <FormControl
             type="text"
             name="redScore"
@@ -59,6 +60,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             placeholder="0"
             value={this.state.redScore}
             onChange={e => this.handleRedScoreChange((e.target as any).value)}
+            style={{width: 40}}
           /> - <FormControl
             type="text"
             name="blueScore"
@@ -66,12 +68,14 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             placeholder="0"
             value={this.state.blueScore}
             onChange={e => this.handleBlueScoreChange((e.target as any).value)}
+            style={{width: 40}}
           /> <FormControl
             type="text"
             name="bluePlayer"
             placeholder="Blue"
             value={this.state.bluePlayer}
             onChange={e => this.handleBluePlayerChange((e.target as any).value)}
+            style={{width: 60}}
           /> <Button type="submit" onClick={e => this.handleSubmit(e)}>
             Add game <span className="glyphicon glyphicon-triangle-right"/>
           </Button>
