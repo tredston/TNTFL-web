@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Table } from 'react-bootstrap';
 import * as classNames from 'classnames';
 import * as moment from 'moment';
 
@@ -18,7 +18,6 @@ interface PlayerNameProps {
 function PlayerName(props: PlayerNameProps): JSX.Element {
   const { name, base, colour, yellow } = props;
   var className = classNames(
-    'playerName',
     colour,
     yellow ? 'yellow-stripe' : ''
   );
@@ -36,7 +35,6 @@ interface AchievementsSummaryProps {
 function AchievementsSummary(props: AchievementsSummaryProps): JSX.Element {
   const { achievements, yellow } = props;
   var className = classNames(
-    'achievementsSummary',
     yellow ? 'yellow-stripe' : ''
   );
   return (
@@ -56,7 +54,6 @@ interface GameScoreProps {
 function GameScore(props: GameScoreProps): JSX.Element {
   const { redScore, blueScore, yellow } = props;
   var className = classNames(
-    'gameScore',
     yellow ? 'yellow-stripe' : ''
   );
   return (
@@ -73,12 +70,11 @@ interface RankProps {
 function Rank(props: RankProps): JSX.Element {
   const { rank, numActivePlayers } = props;
   var classes = classNames(
-    'rank',
     "ladder-position",
     getLadderLeagueClass(rank, numActivePlayers)
   );
   return (
-    <div className={classes}>
+    <div className={classes} style={{width: '100%'}}>
       {rank}
     </div>
   );
@@ -91,7 +87,6 @@ interface SkillChangeProps {
 function SkillChange(props: SkillChangeProps): JSX.Element {
   const { skillChange, colour } = props;
   var classes = classNames(
-    'skillChange',
     skillChange <= 0 ? 'invisible' : ''
   );
   var inner = classNames(
@@ -114,7 +109,6 @@ interface RankChangeProps {
 function RankChange(props: RankChangeProps): JSX.Element {
   const { rankChange, colour } = props;
   var classes = classNames(
-    'rankChange',
     rankChange == 0 ? 'invisible' : ''
   );
   var inner = classNames(
@@ -140,29 +134,31 @@ export default function GameSummary(props: GameSummaryProps): JSX.Element {
   var redStripe = game.red.score == 10 && game.blue.score == 0;
   var blueStripe = game.red.score == 0 && game.blue.score == 10;
   return (
-    <div className="gameSummary recent-game">
+    <div className="recent-game">
       <Grid>
-      {game.deleted ? <p className="bg-danger">This game was deleted by {game.deleted.by} at {formatEpoch(game.deleted.at)}</p> : null}
-      <div className="recent-game-result">
-        <Row>
-          <Col md={2}> <PlayerName name={game.red.name} base={base} colour="red-player" yellow={redStripe} /> </Col>
-          <Col md={1}> <Rank rank={game.red.newRank + game.red.rankChange} numActivePlayers={numActivePlayers} /> </Col>
-          <Col md={1}> <AchievementsSummary achievements={game.red.achievements} yellow={redStripe} /> </Col>
-          <Col md={4}> <GameScore redScore={game.red.score} blueScore={game.blue.score} yellow={redStripe || blueStripe} /> </Col>
-          <Col md={1}> <AchievementsSummary achievements={game.blue.achievements} yellow={blueStripe} /> </Col>
-          <Col md={1}> <Rank rank={game.blue.newRank + game.blue.rankChange} numActivePlayers={numActivePlayers} /> </Col>
-          <Col md={2}> <PlayerName name={game.blue.name} base={base} colour="blue-player" yellow={blueStripe} /> </Col>
-        </Row>
-      </div>
-      <div className="game-changes">
-        <Row>
-          <Col md={2}> <SkillChange skillChange={game.red.skillChange} colour="skill-change-red" /> </Col>
-          <Col md={1}> <RankChange rankChange={game.red.rankChange} colour="skill-change-red" /> </Col>
-          <Col md={6}> <GameTime date={game.date} base={base} /> </Col>
-          <Col md={1}> <RankChange rankChange={game.blue.rankChange} colour="skill-change-blue" /> </Col>
-          <Col md={2}> <SkillChange skillChange={game.blue.skillChange} colour="skill-change-blue" /> </Col>
-        </Row>
-      </div>
+        {game.deleted ? <p className="bg-danger">This game was deleted by {game.deleted.by} at {formatEpoch(game.deleted.at)}</p> : null}
+        <Table>
+          <tbody style={{fontSize: 'x-large', textAlign: 'center'}}>
+            <tr>
+              <td style={{width: '20%'}}> <PlayerName name={game.red.name} base={base} colour="red-player" yellow={redStripe} /> </td>
+              <td style={{width: '10%'}}> <Rank rank={game.red.newRank + game.red.rankChange} numActivePlayers={numActivePlayers} /> </td>
+              <td style={{width: '10%'}}> <AchievementsSummary achievements={game.red.achievements} yellow={redStripe} /> </td>
+              <td style={{width: '20%'}}> <GameScore redScore={game.red.score} blueScore={game.blue.score} yellow={redStripe || blueStripe} /> </td>
+              <td style={{width: '10%'}}> <AchievementsSummary achievements={game.blue.achievements} yellow={blueStripe} /> </td>
+              <td style={{width: '10%'}}> <Rank rank={game.blue.newRank + game.blue.rankChange} numActivePlayers={numActivePlayers} /> </td>
+              <td style={{width: '20%'}}> <PlayerName name={game.blue.name} base={base} colour="blue-player" yellow={blueStripe} /> </td>
+            </tr>
+            <tr>
+              <td style={{width: '20%'}}> <SkillChange skillChange={game.red.skillChange} colour="skill-change-red" /> </td>
+              <td style={{width: '10%'}}> <RankChange rankChange={game.red.rankChange} colour="skill-change-red" /> </td>
+              <td style={{width: '10%'}}></td>
+              <td style={{width: '20%'}}> <GameTime date={game.date} base={base} /> </td>
+              <td style={{width: '10%'}}></td>
+              <td style={{width: '10%'}}> <RankChange rankChange={game.blue.rankChange} colour="skill-change-blue" /> </td>
+              <td style={{width: '20%'}}> <SkillChange skillChange={game.blue.skillChange} colour="skill-change-blue" /> </td>
+            </tr>
+          </tbody>
+        </Table>
       </Grid>
     </div>
   );

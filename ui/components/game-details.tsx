@@ -80,18 +80,18 @@ interface GameDetailsProps {
 export default function GameDetails(props: GameDetailsProps): JSX.Element {
   const { game } = props;
   return (
-    <div className="gameDetails">
-      <Grid fluid={true}>
-        <Row>
-          <AchievementList achievements={game.red.achievements}/>
-          <Col md={4}>
-            {game.punditry && game.punditry.length ? <Punditry facts={game.punditry} /> : null}
-          </Col>
-          <AchievementList achievements={game.blue.achievements}/>
-        </Row>
-      </Grid>
+    <Grid>
+      <Row>
+        <AchievementList achievements={game.red.achievements}/>
+        <Col md={4}>
+          {game.punditry && game.punditry.length ? <Punditry facts={game.punditry} /> : null}
+        </Col>
+        <AchievementList achievements={game.blue.achievements}/>
+      </Row>
+      <Row>
       <JsonLink/>
       {!game.deleted ? <a href="delete" className="btn btn-danger pull-right"><span className="glyphicon glyphicon-lock"></span> Delete game</a> : null}
-    </div>
+      </Row>
+    </Grid>
   );
 }
