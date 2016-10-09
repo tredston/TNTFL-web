@@ -10,7 +10,7 @@ import NavigationBar from './components/navigation-bar';
 import Game from './model/game';
 
 interface GamePageProps extends Props<GamePage> {
-  pageHeader: string;
+  root: string;
   source: string;
   addURL: string;
   onGameAdded: () => void;
@@ -33,13 +33,13 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     this.load();
   }
   render() {
-    const { pageHeader, addURL, onGameAdded } = this.props;
+    const { root, addURL, onGameAdded } = this.props;
     //TODO
     const numActivePlayers = 0;
     return (
       <div className="gamePage">
         <NavigationBar
-          header={pageHeader}
+          root={root}
           addURL={addURL}
           onGameAdded={onGameAdded}
         />
@@ -58,7 +58,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
 
 ReactDOM.render(
     <GamePage
-      pageHeader={'Game'}
+      root={'/~tlr/tntfl-test/'}
       source={'https://www.int.corefiling.com/~tlr/tntfl-test/game.cgi?method=view&view=json&game=1475674529'}
       addURL={'add'}
       onGameAdded={() => undefined}
