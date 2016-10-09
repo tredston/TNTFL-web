@@ -355,9 +355,7 @@ class BossFight(Achievement):
 
 class Achievements(object):
     def __init__(self):
-        self.achievements = []
-        for clz in Achievement.__subclasses__():
-            self.achievements.append(clz())
+        self.achievements = [clz() for clz in Achievement.__subclasses__()]
 
     def apply(self, red, game, blue, ladder):
         game.redAchievements = self._getAllForGame(red, game, blue, ladder)
