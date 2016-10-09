@@ -43,14 +43,17 @@ class GamePage extends Component<GamePageProps, GamePageState> {
           addURL={addURL}
           onGameAdded={onGameAdded}
         />
-        <Grid fluid={true}>
-          <Row>
-            {this.state.game ? <GameSummary game={this.state.game} base={"../../"} numActivePlayers={numActivePlayers} /> : "Loading"}
-          </Row>
-          <Row>
-            {this.state.game ? <GameDetails game={this.state.game} /> : "Loading"}
-          </Row>
-        </Grid>
+        {this.state.game ?
+          <Grid fluid={true}>
+            <Row>
+              <GameSummary game={this.state.game} base={"../../"} numActivePlayers={numActivePlayers} />
+            </Row>
+            <Row>
+              <GameDetails game={this.state.game} />
+            </Row>
+          </Grid>
+          : 'Loading...'
+        }
       </div>
     );
   }
