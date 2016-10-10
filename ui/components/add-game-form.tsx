@@ -1,9 +1,31 @@
 import * as React from 'react';
-import { Component, Props } from 'react';
+import { Component, Props, CSSProperties, FormEvent } from 'react';
 import { Grid, Navbar, Nav, NavItem, Form, FormGroup, FormControl, Button } from 'react-bootstrap';
 import 'whatwg-fetch';
 
 import * as Palette from '../palette';
+
+interface ScoreProps{
+  name: string;
+  value: string;
+  onChange: (e: FormEvent<any>) => void;
+  style: CSSProperties;
+}
+function Score(props:ScoreProps): JSX.Element {
+  const { name, value, onChange, style } = props;
+  const scoreWidth = '3em';
+  return (
+    <FormControl
+      type="text"
+      maxLength={2}
+      placeholder="0"
+      name={name}
+      value={value}
+      onChange={e => onChange(e)}
+      style={Object.assign({width: scoreWidth, textAlign: 'center'}, style)}
+    />
+  );
+}
 
 export interface AddGameFormProps extends Props<AddGameForm> {
     addURL: string;
@@ -57,7 +79,6 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
   }
   render() {
     const playerWidth = '6em';
-    const scoreWidth = '3em';
     return (
       <Form inline style={{padding: 8}}>
         <FormGroup>
@@ -68,22 +89,16 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             value={this.state.redPlayer}
             onChange={e => this.handleRedPlayerChange((e.target as any).value)}
             style={{backgroundColor: Palette.redFade, width: playerWidth, textAlign: 'center'}}
-          /> <FormControl
-            type="text"
-            name="redScore"
-            maxLength={2}
-            placeholder="0"
+          /> <Score
+            name={'redScore'}
             value={this.state.redScore}
             onChange={e => this.handleRedScoreChange((e.target as any).value)}
-            style={{backgroundColor: Palette.redFade, width: scoreWidth, textAlign: 'center'}}
-          /> - <FormControl
-            type="text"
-            name="blueScore"
-            maxLength={2}
-            placeholder="0"
+            style={{backgroundColor: Palette.redFade}}
+          /> - <Score
+            name={'blueScore'}
             value={this.state.blueScore}
             onChange={e => this.handleBlueScoreChange((e.target as any).value)}
-            style={{backgroundColor: Palette.blueFade, width: scoreWidth, textAlign: 'center'}}
+            style={{backgroundColor: Palette.blueFade}}
           /> <FormControl
             type="text"
             name="bluePlayer"
