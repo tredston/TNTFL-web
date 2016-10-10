@@ -45,13 +45,11 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
     body.append('redScore', +this.state.redScore);
     body.append('bluePlayer', this.state.bluePlayer);
     body.append('blueScore', +this.state.blueScore);
-    const mode: RequestMode = 'no-cors';
-    const credentials: RequestCredentials = 'omit';
-    const options = {
+    const options: RequestInit = {
       method: 'POST',
       body,
-      mode,
-      credentials,
+      mode: 'no-cors',
+      credentials: 'omit',
     };
     const r = await fetch(addURL, options);
     onGameAdded();
