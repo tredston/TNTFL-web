@@ -2,26 +2,10 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 import { Grid, Panel, Row, Col } from 'react-bootstrap';
 
+import AchievementPanel from './achievement-panel';
 import Achievement from '../model/achievement';
 import Game from '../model/game';
 
-interface AchievementItemProps {
-  achievement: Achievement;
-}
-function AchievementItem(props: AchievementItemProps) {
-  const { achievement } = props;
-  var icon = classNames(
-    "panel-body",
-    "achievement-" + achievement.name.replace(/ /g, '')
-  );
-  return (
-    <Panel header={achievement.name}>
-      <div className={icon} style={{textAlign: 'center'}}>
-      {achievement.description}
-      </div>
-    </Panel>
-  );
-}
 
 interface FactProps {
   fact: string;
@@ -57,13 +41,13 @@ export default function GameDetails(props: GameDetailsProps): JSX.Element {
     <Grid>
       <Row>
         <Col md={4}>
-          {game.red.achievements.map((ach, i) => <AchievementItem achievement={ach} key={`achr${i}`}/>)}
+          {game.red.achievements.map((ach, i) => <AchievementPanel achievement={ach} key={`achr${i}`}/>)}
         </Col>
         <Col md={4}>
           {game.punditry && game.punditry.length ? <Punditry facts={game.punditry} /> : null}
         </Col>
         <Col md={4}>
-          {game.blue.achievements.map((ach, i) => <AchievementItem achievement={ach} key={`achr${i}`}/>)}
+          {game.blue.achievements.map((ach, i) => <AchievementPanel achievement={ach} key={`achr${i}`}/>)}
         </Col>
       </Row>
       <Row>
