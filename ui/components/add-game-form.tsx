@@ -41,7 +41,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
     e.preventDefault();
     const { addURL, onGameAdded } = this.props;
     var game = {redPlayer: this.state.redPlayer, redScore: +this.state.redScore, bluePlayer: this.state.bluePlayer, blueScore: +this.state.blueScore}
-    request.post({url: addURL, form: {what: 'derp'}}, (e, r, b) => onGameAdded());
+    request.post({url: addURL, form: game}, (e, r, b) => onGameAdded());
     this.setState({redPlayer: '', redScore: '', bluePlayer: '', blueScore: ''});
   }
   render() {
