@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
 import { Grid, Navbar, Nav, NavItem, Form, FormGroup, FormControl, Button } from 'react-bootstrap';
-import * as request from 'request';
+import 'whatwg-fetch';
 
 import * as Palette from '../palette';
 
@@ -37,11 +37,24 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
   handleBlueScoreChange(e: string) {
     this.setState({blueScore: e} as AddGameFormState);
   }
-  handleSubmit(e: any) {
+  async handleSubmit(e: any) {
     e.preventDefault();
     const { addURL, onGameAdded } = this.props;
-    var game = {redPlayer: this.state.redPlayer, redScore: +this.state.redScore, bluePlayer: this.state.bluePlayer, blueScore: +this.state.blueScore}
-    request.post({url: addURL, form: game}, (e, r, b) => onGameAdded());
+    const  body: FormData = new FormData();
+    body.append('redPlayer', this.state.redPlayer);
+    body.append('redScore', +this.state.redScore);
+    body.append('bluePlayer', this.state.bluePlayer);
+    body.append('blueScore', +this.state.blueScore);
+    const mode: RequestMode = 'no-cors';
+    const credentials: RequestCredentials = 'omit';
+    const options = {
+      method: 'POST',
+      body,
+      mode,
+      credentials,
+    };
+    const r = await fetch(addURL, options);
+    onGameAdded();
     this.setState({redPlayer: '', redScore: '', bluePlayer: '', blueScore: ''});
   }
   render() {

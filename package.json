@@ -23,16 +23,20 @@
     "@types/react": "^0.14.38",
     "@types/react-bootstrap": "0.0.33",
     "@types/react-dom": "^0.14.17",
-    "@types/request": "0.0.31",
+    "@types/whatwg-fetch": "0.0.32",
     "classnames": "^2.2.5",
     "json-loader": "^0.5.4",
     "moment": "^2.15.1",
     "react": "^15.3.0",
     "react-bootstrap": "^0.30.5",
     "react-dom": "^15.3.2",
-    "request": "^2.75.0",
     "ts-loader": "^0.8.2",
     "typescript": "^2.0.3",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "whatwg-fetch": "^1.0.0"
+  },
+  "devDependencies": {
+    "exports-loader": "^0.6.3",
+    "imports-loader": "^0.6.5"
   }
 }

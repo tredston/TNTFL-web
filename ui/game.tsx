@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import * as request from 'request';
+import 'whatwg-fetch';
 
 import GameSummary from './components/game-summary';
 import GameDetails from './components/game-details';
@@ -25,9 +25,11 @@ class GamePage extends Component<GamePageProps, GamePageState> {
       game: undefined,
     };
   }
-  load() {
+  async load() {
     const { root, gameId } = this.props;
-    request.get(`${root}game.cgi?method=view&view=json&game=${gameId}`, (e, r, b) => this.setState({game: JSON.parse(b)}));
+    const url = `${root}game.cgi?method=view&view=json&game=${gameId}`;
+    const r = await fetch(url);
+    this.setState({game: await r.json()});
   }
   componentDidMount() {
     this.load();
