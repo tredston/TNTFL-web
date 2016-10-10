@@ -11,7 +11,7 @@ import Game from './model/game';
 
 interface GamePageProps extends Props<GamePage> {
   root: string;
-  source: string;
+  gameId: string;
   addURL: string;
   onGameAdded: () => void;
 }
@@ -26,8 +26,8 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     };
   }
   load() {
-    const { source } = this.props;
-    request.get(source, (e, r, b) => this.setState({game: JSON.parse(b)}));
+    const { root, gameId } = this.props;
+    request.get(`${root}game.cgi?method=view&view=json&game=${gameId}`, (e, r, b) => this.setState({game: JSON.parse(b)}));
   }
   componentDidMount() {
     this.load();
@@ -61,8 +61,8 @@ class GamePage extends Component<GamePageProps, GamePageState> {
 
 ReactDOM.render(
     <GamePage
-      root={'/~tlr/tntfl-test/'}
-      source={'https://www.int.corefiling.com/~tlr/tntfl-test/game.cgi?method=view&view=json&game=1475674529'}
+      root={'www/~tlr/tntfl-test/'}
+      gameId={'1475674529'}
       addURL={'add'}
       onGameAdded={() => undefined}
     />,
