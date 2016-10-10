@@ -1,7 +1,4 @@
 var path = require("path");
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-const extractCssPlugin = new ExtractTextPlugin('[name].css', { allChunks: true });
 
 module.exports = {
   entry: {
@@ -19,8 +16,7 @@ module.exports = {
       { test: /\.json$/, loader: 'json-loader'},
     ],
     loaders: [
-      { test: /\.tsx?$/, loader: 'ts-loader' },
-      { test: /\.css$/, loader: extractCssPlugin.extract('style-loader', 'css-loader?minimize') },
+      { test: /\.tsx?$/, loader: 'ts-loader'}
     ]
   },
   node: {
@@ -30,6 +26,5 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [
-    extractCssPlugin
   ]
 };
