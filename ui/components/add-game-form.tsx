@@ -11,38 +11,38 @@ export interface AddGameFormProps extends Props<AddGameForm> {
 }
 interface AddGameFormState {
   redPlayer: string;
-  redScore: number;
+  redScore: string;
   bluePlayer: string;
-  blueScore: number;
+  blueScore: string;
 }
 export default class AddGameForm extends Component<AddGameFormProps, AddGameFormState> {
   constructor(props: AddGameFormProps, context: any) {
     super(props, context)
     this.state = {
       redPlayer: '',
-      redScore: 0,
+      redScore: '',
       bluePlayer: '',
-      blueScore: 0,
+      blueScore: '',
     };
   }
   handleRedPlayerChange(e: string) {
     this.setState({redPlayer: e} as AddGameFormState);
   }
-  handleRedScoreChange(e: number) {
-    this.setState({redScore: e, blueScore: 10 - e} as AddGameFormState);
+  handleRedScoreChange(e: string) {
+    this.setState({redScore: e, blueScore: "" + (10 - +e)} as AddGameFormState);
   }
   handleBluePlayerChange(e: string) {
     this.setState({bluePlayer: e} as AddGameFormState);
   }
-  handleBlueScoreChange(e: number) {
+  handleBlueScoreChange(e: string) {
     this.setState({blueScore: e} as AddGameFormState);
   }
   handleSubmit(e: any) {
     e.preventDefault();
     const { addURL, onGameAdded } = this.props;
-    var game = {redPlayer: this.state.redPlayer, redScore: this.state.redScore, bluePlayer: this.state.bluePlayer, blueScore: this.state.blueScore}
+    var game = {redPlayer: this.state.redPlayer, redScore: +this.state.redScore, bluePlayer: this.state.bluePlayer, blueScore: +this.state.blueScore}
     request.post({url: addURL, form: {what: 'derp'}}, (e, r, b) => onGameAdded());
-    this.setState({redPlayer: '', redScore: 0, bluePlayer: '', blueScore: 0});
+    this.setState({redPlayer: '', redScore: '', bluePlayer: '', blueScore: ''});
   }
   render() {
     const playerWidth = '6em';
