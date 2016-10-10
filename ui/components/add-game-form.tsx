@@ -48,7 +48,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
     const playerWidth = '6em';
     const scoreWidth = '3em';
     return (
-      <Form inline>
+      <Form inline style={{padding: 8}}>
         <FormGroup>
           <FormControl
             type="text"
