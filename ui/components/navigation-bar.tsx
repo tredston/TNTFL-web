@@ -6,10 +6,9 @@ import AddGameForm from './add-game-form';
 interface NavigationBarProps {
   root: string;
   addURL: string;
-  onGameAdded: () => void;
 }
 export default function NavigationBar(props: NavigationBarProps): JSX.Element {
-  const { root, addURL, onGameAdded } = props;
+  const { root, addURL } = props;
   return (
     <Navbar fluid={true}>
       <Navbar.Header>
@@ -27,7 +26,6 @@ export default function NavigationBar(props: NavigationBarProps): JSX.Element {
       <Nav pullRight>
         <AddGameForm
           addURL={root + addURL}
-          onGameAdded={onGameAdded}
         />
       </Nav>
     </Navbar>

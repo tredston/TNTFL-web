@@ -29,7 +29,6 @@ function Score(props:ScoreProps): JSX.Element {
 
 export interface AddGameFormProps extends Props<AddGameForm> {
     addURL: string;
-    onGameAdded: () => void;
 }
 interface AddGameFormState {
   redPlayer: string;

@@ -13,7 +13,6 @@ interface GamePageProps extends Props<GamePage> {
   root: string;
   gameId: string;
   addURL: string;
-  onGameAdded: () => void;
 }
 interface GamePageState {
   game: Game;
@@ -35,7 +34,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     this.load();
   }
   render() {
-    const { root, addURL, onGameAdded } = this.props;
+    const { root, addURL } = this.props;
     //TODO
     const numActivePlayers = 0;
     return (
@@ -43,7 +42,6 @@ class GamePage extends Component<GamePageProps, GamePageState> {
         <NavigationBar
           root={root}
           addURL={addURL}
-          onGameAdded={onGameAdded}
         />
         {this.state.game ?
           <Grid fluid={true}>
@@ -66,7 +64,6 @@ ReactDOM.render(
       root={'http://www/~tlr/tntfl-test/'}
       gameId={'1463558082'}
       addURL={'game/add'}
-      onGameAdded={() => undefined}
     />,
     document.getElementById('entry')
 );
