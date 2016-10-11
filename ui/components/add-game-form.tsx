@@ -61,21 +61,14 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
   }
   async handleSubmit(e: any) {
     e.preventDefault();
-    const { addURL, onGameAdded } = this.props;
-    const  body: FormData = new FormData();
-    body.append('redPlayer', this.state.redPlayer);
-    body.append('redScore', +this.state.redScore);
-    body.append('bluePlayer', this.state.bluePlayer);
-    body.append('blueScore', +this.state.blueScore);
+    const { addURL } = this.props;
+    const url = `${addURL}?redPlayer=${this.state.redPlayer}&redScore=${+this.state.redScore}&bluePlayer=${this.state.bluePlayer}&blueScore=${+this.state.blueScore}`;
     const options: RequestInit = {
       method: 'POST',
-      body,
-      mode: 'no-cors',
+      mode: 'cors',
       credentials: 'omit',
     };
-    const r = await fetch(addURL, options);
-    onGameAdded();
-    this.setState({redPlayer: '', redScore: '', bluePlayer: '', blueScore: ''});
+    fetch(url, options);
   }
   render() {
     const playerWidth = '6em';
