@@ -28,3 +28,18 @@ function formatDate(date: moment.Moment) {
 export function formatEpoch(epoch: number) {
   return formatDate(moment.unix(epoch));
 }
+
+export function getParameterByName(name: string): string {
+  const url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+  if (!results) {
+    const split = url.split("/");
+    return split[split.length - 2];
+  }
+  if (!results[2]){
+    return '';
+  }
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}

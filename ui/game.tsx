@@ -8,11 +8,12 @@ import GameSummary from './components/game-summary';
 import GameDetails from './components/game-details';
 import NavigationBar from './components/navigation-bar';
 import Game from './model/game';
+import { getParameterByName } from './utils/utils';
 
 interface GamePageProps extends Props<GamePage> {
   root: string;
-  gameId: string;
   addURL: string;
+  gameId: string;
 }
 interface GamePageState {
   game: Game;
@@ -62,8 +63,8 @@ class GamePage extends Component<GamePageProps, GamePageState> {
 ReactDOM.render(
     <GamePage
       root={'http://www/~tlr/tntfl-test/'}
-      gameId={'1463558082'}
       addURL={'game/add'}
+      gameId={getParameterByName('game')}
     />,
     document.getElementById('entry')
 );
