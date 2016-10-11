@@ -10,13 +10,11 @@ interface GameListProps {
   base: string;
   numActivePlayers: number;
 }
-export function GameList(props: GameListProps): JSX.Element {
+export default function GameList(props: GameListProps): JSX.Element {
   const { games, base, numActivePlayers } = props;
   return (
-    <div className="gameList">
-      <Grid fluid={true}>
-        {games.map((game) => <GameSummary game={game} base={base} numActivePlayers={numActivePlayers}/> )}
-      </Grid>
-    </div>
+    <Grid fluid={true}>
+      {games.map((game) => <GameSummary game={game} base={base} numActivePlayers={numActivePlayers}/> )}
+    </Grid>
   );
 }
