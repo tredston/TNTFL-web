@@ -63,9 +63,9 @@ class GamePage extends Component<GamePageProps, GamePageState> {
 
 ReactDOM.render(
     <GamePage
-      root={'www/~tlr/tntfl-test/'}
-      gameId={'1475674529'}
-      addURL={'add'}
+      root={'http://www/~tlr/tntfl-test/'}
+      gameId={'1463558082'}
+      addURL={'game/add'}
       onGameAdded={() => undefined}
     />,
     document.getElementById('entry')
