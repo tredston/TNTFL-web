@@ -67,7 +67,10 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
       mode: 'cors',
       credentials: 'omit',
     };
-    fetch(url, options);
+    const r = await fetch(url, options);
+    if (r.status == 200){
+      window.location.href = r.url;
+    }
   }
   render() {
     const playerWidth = '6em';
