@@ -133,7 +133,7 @@ interface RecentGamesProps {
 }
 function RecentGames(props: RecentGamesProps): JSX.Element {
   const { games, numActivePlayers } = props;
-  const recentGames = Array.prototype.slice.call(games).reverse();
+  const recentGames = games.slice(games.length - 5).reverse();
   return (
     <Panel header={'Recent Games'}>
       <GameList games={recentGames} base={"../../"} numActivePlayers={numActivePlayers}/>
