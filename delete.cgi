@@ -27,4 +27,4 @@ if gameTime is not None:
         except StopIteration:
             fail_404()
 else:
-    fail_404()
+    fail_400()
