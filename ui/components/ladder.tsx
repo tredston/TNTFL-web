@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { VictoryLine } from 'victory';
 
 import LadderEntry from '../model/ladder-entry';
 import Player from '../model/player';
@@ -8,9 +9,11 @@ interface LadderProps {
   entries: LadderEntry[];
 }
 export default function Ladder(props: LadderProps): JSX.Element {
-  function trendChart(p: Player): JSX.Element {
+  function trendChart(trend: number[]): JSX.Element {
+    const data = trend.map((y, x) => {return {x, y}});
+    const colour = trend[0] < trend[trend.length - 1] ? "#0000FF" : "#FF0000"
     return (
-      <div/>
+      <VictoryLine data={data} style={{data: {stroke: colour}}}/>
     );
   }
   const { entries } = props;
@@ -27,6 +30,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       ratio: (e.player.total.wins / e.player.total.losses).toFixed(3),
       overrated: e.player.overrated.toFixed(3),
       skill: e.player.skill.toFixed(3),
+      trend: e.trend,
     }
   });
   return (
@@ -45,7 +49,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       <TableHeaderColumn dataField={'ratio'} dataSort={true} dataAlign={'center'}>Goal ratio</TableHeaderColumn>
       <TableHeaderColumn dataField={'overrated'} dataSort={true} dataAlign={'center'}>Overrated</TableHeaderColumn>
       <TableHeaderColumn dataField={'skill'} dataSort={true} dataAlign={'center'}>Skill</TableHeaderColumn>
-      <TableHeaderColumn dataField={'player'} dataAlign={'center'} dataFormat={(p: Player) => trendChart(p)}>Trend</TableHeaderColumn>
+      <TableHeaderColumn dataField={'trend'} dataFormat={(t: number[]) => trendChart(t)}>Trend</TableHeaderColumn>
     </BootstrapTable>
   );
 }
