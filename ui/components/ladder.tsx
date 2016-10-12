@@ -42,6 +42,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
     <BootstrapTable
       data={flattened}
       hover={true}
+      condensed={true}
     >
       <TableHeaderColumn dataField={'rank'} dataSort={true} dataAlign={'center'}>Pos</TableHeaderColumn>
       <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true}>Player</TableHeaderColumn>
