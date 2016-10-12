@@ -4,7 +4,7 @@ import cgi
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
 import tntfl.transforms.transforms as PresetTransforms
-from tntfl.web import redirect_302, fail_404, serve_template, getInt, getString
+from tntfl.web import redirect_302, fail_400, fail_404, serve_template, getInt, getString
 
 form = cgi.FieldStorage()
 
@@ -24,7 +24,9 @@ if getString('method', form) == "add":
             serve_template("game.mako", game=game, ladder=ladder)
         else:
             redirect_302("../%.0f" % newGameTime)
-elif getString('method', form) == 'view':
+    else:
+        fail_400()
+else:
     gameTime = getInt('game', form)
     if gameTime is not None:
         try:
@@ -32,3 +34,5 @@ elif getString('method', form) == 'view':
             serve_template("game.mako", game=game, ladder=ladder)
         except StopIteration:
             fail_404()
+    else:
+        fail_400()

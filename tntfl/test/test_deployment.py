@@ -135,7 +135,23 @@ class LadderApi(Get.LadderApi, Deployment):
 
 
 class GameApi(Get.GameApi, Deployment):
-    pass
+    def testNoGame(self):
+        with self.assertRaises(urllib2.HTTPError) as cm:
+            self._testPageReachable('game.cgi')
+        e = cm.exception
+        self.assertEqual(e.code, 400)
+
+    def testInvalidGame(self):
+        with self.assertRaises(urllib2.HTTPError) as cm:
+            self._testPageReachable('game.cgi?game=123')
+        e = cm.exception
+        self.assertEqual(e.code, 404)
+
+    def testInvalidAdd(self):
+        with self.assertRaises(urllib2.HTTPError) as cm:
+            self._testPageReachable('game.cgi?method=add')
+        e = cm.exception
+        self.assertEqual(e.code, 400)
 
 
 class GamesApi(Get.GamesApi, Deployment):

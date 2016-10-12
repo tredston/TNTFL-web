@@ -174,7 +174,7 @@ class LadderApi(Tester):
 
 class GameApi(Tester):
     def test(self):
-        response = self._getJson('game.cgi', 'method=view&game=1223308996&view=json')
+        response = self._getJson('game.cgi', 'game=1223308996&view=json')
         self.assertEqual(response['red']['name'], 'jrem')
         self.assertEqual(response['red']['href'], '../../player/jrem/json')
         self.assertEqual(response['red']['score'], 10)
@@ -205,7 +205,7 @@ class GameApi(Tester):
         self.assertEqual(response['date'], 1223308996)
 
     def testDeleted(self):
-        response = self._getJson('game.cgi', 'method=view&game=1430915499&view=json')
+        response = self._getJson('game.cgi', 'game=1430915499&view=json')
         self.assertTrue('deleted' in response)
         self.assertEqual(response['deleted']['by'], 'eu')
         self.assertEqual(response['deleted']['at'], 1430915500)
@@ -224,7 +224,7 @@ class GamesApi(Tester):
         response = self._getJson('games.cgi', 'view=json&from=1430402614&to=1430991615')
         self.assertEqual(len(response), 5)
         self.assertEqual(response[0]['date'], 1430402615)
-        self.assertDictEqualNoHref(response[0], self._getJson('game.cgi', 'method=view&game=1430402615&view=json'))
+        self.assertDictEqualNoHref(response[0], self._getJson('game.cgi', 'game=1430402615&view=json'))
         self.assertEqual(response[4]['date'], 1430991614)
 
     def testLimit(self):
