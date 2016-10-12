@@ -96,9 +96,6 @@ function PlayerStats(props: PlayerStatsProps): JSX.Element {
         {/*TODO <StatBox title="Longest winning streak">{get_template("durationStat.mako", value=winStreak.count, fromDate=winStreak.fromDate, toDate=winStreak.toDate, base=self.attr.base))</StatBox>*/}
         {/*TODO <StatBox title="Longest losing streak">{get_template("durationStat.mako", value=loseStreak.count, fromDate=loseStreak.fromDate, toDate=loseStreak.toDate, base=self.attr.base))</StatBox>*/}
       </Row>
-      <Row>
-        {/*TODO <StatBox title="Total achievements">{str(sum([len(g) for g in player.achievements.values()])) + '<div class="date"><a href="#achievements">See all</a></div>' )</StatBox>*/}
-      </Row>
     </Panel>
   );
 }
@@ -196,7 +193,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
               <Col md={4}>
                 <RecentGames games={this.state.games} numActivePlayers={numActivePlayers}/>
                 {/*TODO <Most significant />*/}
-                {/*TODO <least significant />*/}
+                {/*TODO <First game />*/}
                 {/*TODO <achievements />*/}
               </Col>
             </Row>
