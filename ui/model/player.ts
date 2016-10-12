@@ -6,7 +6,6 @@ interface Totals {
   wins: number;
   losses: number;
   gamesToday: number;
-  yellowStripes: number;
 }
 
 interface Player {
@@ -15,7 +14,7 @@ interface Player {
   active: boolean;
   skill: number;
   overrated: number;
-  totals: Totals;
+  total: Totals;
   games: {href: string},
 }
 export default Player;

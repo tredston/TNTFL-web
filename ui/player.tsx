@@ -20,7 +20,7 @@ function StatBox(props: StatBoxProps): JSX.Element {
   const { title, caption, children, classes, style } = props;
   return (
     <div className="col-sm-3 col-md-offset-0">
-      <Panel title={title}>
+      <Panel header={<h3>{title}</h3>}>
         {children}
       </Panel>
     </div>
@@ -29,15 +29,16 @@ function StatBox(props: StatBoxProps): JSX.Element {
 
 interface PlayerStatsProps {
   player: Player;
+  games: Game[];
   numActivePlayers: number;
 }
 function PlayerStats(props: PlayerStatsProps): JSX.Element {
   function sideStyle(player: Player): CSSProperties {
-    var redness = (player.totals.gamesAsRed / player.totals.games);
+    var redness = (player.total.gamesAsRed / player.total.games);
     return {backgroundColor: 'rgb(' + Math.round(redness * 255) + ', 0, '  + Math.round((1 - redness) * 255) + ')'};
   };
   function sidePreference(player: Player): string {
-    var redness = (player.totals.gamesAsRed / player.totals.games) * 100;
+    var redness = (player.total.gamesAsRed / player.total.games) * 100;
     return (redness >= 50) ? (redness.toFixed(2) + "% red") : ((100-redness).toFixed(2) + "% blue")
   };
   function getSkillChange(playerName: string, games: Game[]): number {
@@ -55,33 +56,32 @@ function PlayerStats(props: PlayerStatsProps): JSX.Element {
     }
     return change;
   };
-  const { player, numActivePlayers } = props;
-  const gamesToday = this.state.games.slice(this.state.games.length - player.totals.gamesToday);
+  const { player, numActivePlayers, games } = props;
+  const gamesToday = games.slice(games.length - player.total.gamesToday);
   const overrated = 0; //getOverrated(player.name, player.games);
-  const goalRatio = player.totals.for / player.totals.against;
+  const goalRatio = player.total.for / player.total.against;
   const skillChangeToday = getSkillChange(player.name, gamesToday);
   const rankChangeToday = getRankChange(player.name, gamesToday);
   return (
-    <Panel title={player.name}>
+    <Panel header={<h1>{player.name}</h1>}>
       <Row>
         <StatBox title="Current Ranking" classes={"ladder-position " + getLadderLeagueClass(player.rank, numActivePlayers)}>
-          {player.rank === -1 ? player.rank : '-'}
+          {player.rank !== -1 ? player.rank : '-'}
         </StatBox>
         <StatBox title="Skill">{player.skill.toFixed(3)}</StatBox>
         <StatBox title="Overrated" classes={overrated <= 0 ? "positive" : "negative"}>{overrated.toFixed(3)}</StatBox>
         <StatBox title="Side preference" classes="side-preference" style={sideStyle(player)}>{sidePreference(player)}</StatBox>
       </Row>
       <Row>
-        <StatBox title="Total games">{player.totals.games}</StatBox>
-        <StatBox title="Wins">{player.totals.wins}</StatBox>
-        <StatBox title="Losses">{player.totals.losses}</StatBox>
-        <StatBox title="Draws">{(player.totals.games - player.totals.wins - player.totals.losses)}</StatBox>
+        <StatBox title="Total games">{player.total.games}</StatBox>
+        <StatBox title="Wins">{player.total.wins}</StatBox>
+        <StatBox title="Losses">{player.total.losses}</StatBox>
+        <StatBox title="Draws">{(player.total.games - player.total.wins - player.total.losses)}</StatBox>
       </Row>
       <Row>
-        <StatBox title="Goals for">{player.totals.for}</StatBox>
-        <StatBox title="Goals against">{player.totals.against}</StatBox>
+        <StatBox title="Goals for">{player.total.for}</StatBox>
+        <StatBox title="Goals against">{player.total.against}</StatBox>
         <StatBox title="Goal ratio" classes={goalRatio > 1 ? "positive" : "negative"}>{goalRatio.toFixed(3)}</StatBox>
-        <StatBox title="10-0 wins">{this.state.player.totals.yellowStripes}</StatBox>
       </Row>
       <Row>
         <StatBox title="Games today">{gamesToday.length}</StatBox>
@@ -121,7 +121,7 @@ function SkillChart(props: SkillChartProps): JSX.Element {
   // }
 
   return (
-    <Panel title={'Skill Chart'}>
+    <Panel header={'Skill Chart'}>
       <div id="playerchart"></div>
     </Panel>
   );
@@ -135,7 +135,7 @@ function RecentGames(props: RecentGamesProps): JSX.Element {
   const { games, numActivePlayers } = props;
   const recentGames = Array.prototype.slice.call(games).reverse();
   return (
-    <Panel title={'Recent Games'}>
+    <Panel header={'Recent Games'}>
       <GameList games={recentGames} base={"../../"} numActivePlayers={numActivePlayers}/>
       <a className="pull-right" href="games/">See all games</a>
     </Panel>
@@ -156,14 +156,14 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
       super(props, context);
       this.state = {
         player: undefined,
-        games: undefined,
+        games: [],
       };
   }
   async load() {
     const { root, playerName } = this.props;
     const url = `${root}player.cgi?method=view&view=json&player=${playerName}`;
     const r = await fetch(url);
-    this.setState(Object.assign({player: await r.json()}, this.state));
+    this.setState({player: await r.json()} as PlayerPageState);
   }
   componentDidMount() {
     this.load();
@@ -182,7 +182,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
           <Grid fluid={true}>
             <Row>
               <Col md={8}>
-                <PlayerStats player={this.state.player} numActivePlayers={numActivePlayers}/>
+                <PlayerStats player={this.state.player} numActivePlayers={numActivePlayers} games={this.state.games}/>
                 <SkillChart playerName={this.state.player.name} games={this.state.games} />
                 {/*TODO <PerPlayerStats />*/}
               </Col>

@@ -98,6 +98,7 @@ def playertoJson(player, ladder):
             'for': player.goalsFor,
             'against': player.goalsAgainst,
             'games': len(player.games),
+            'gamesAsRed': player.gamesAsRed,
             'wins': player.wins,
             'losses': player.losses,
             'gamesToday': player.gamesToday,
