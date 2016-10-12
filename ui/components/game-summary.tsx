@@ -134,10 +134,10 @@ export default function GameSummary(props: GameSummaryProps): JSX.Element {
   var redStripe = game.red.score == 10 && game.blue.score == 0;
   var blueStripe = game.red.score == 0 && game.blue.score == 10;
   return (
-    <Grid>
+    <Grid fluid={true}>
       {game.deleted ? <p className="bg-danger">This game was deleted by {game.deleted.by} at {formatEpoch(game.deleted.at)}</p> : null}
       <Table id={'compactTable'}>
-        <tbody style={{fontSize: 'x-large', textAlign: 'center'}}>
+        <tbody>
           <tr className={'recent-game-result'}>
             <td style={{width: '20%'}}> <PlayerName name={game.red.name} base={base} colour="red-player" yellow={redStripe} /> </td>
             <td style={{width: '10%'}}> <Rank rank={game.red.newRank + game.red.rankChange} numActivePlayers={numActivePlayers} /> </td>
