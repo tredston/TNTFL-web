@@ -159,14 +159,21 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
         games: [],
       };
   }
-  async load() {
+  async loadSummary() {
     const { root, playerName } = this.props;
     const url = `${root}player.cgi?method=view&view=json&player=${playerName}`;
     const r = await fetch(url);
     this.setState({player: await r.json()} as PlayerPageState);
   }
+  async loadGames() {
+    const { root, playerName } = this.props;
+    const url = `${root}player.cgi?method=games&view=json&player=${playerName}`;
+    const r = await fetch(url);
+    this.setState({games: await r.json()} as PlayerPageState);
+  }
   componentDidMount() {
-    this.load();
+    this.loadSummary();
+    this.loadGames();
   }
   render() {
     const { root, addURL } = this.props;
