@@ -121,6 +121,7 @@ class PlayerApi(Tester):
         self.assertEqual(response['total']['for'], 59)
         self.assertEqual(response['total']['against'], 142)
         self.assertEqual(response['total']['games'], 20)
+        self.assertEqual(response['total']['gamesAsRed'], 15)
         self.assertEqual(response['total']['wins'], 2)
         self.assertEqual(response['total']['losses'], 16)
         self.assertEqual(response['total']['gamesToday'], 0)
@@ -156,6 +157,19 @@ class LadderApi(Tester):
         self.assertEqual(response[2]['rank'], 3)
         self.assertEqual(response[2]['name'], 'kjb')
         self.assertEqual(response[2]['skill'], -12.5)
+
+    def testInactive(self):
+        response = self._getJson('ladder.cgi', 'view=json&showInactive=1')
+        self.assertEqual(len(response), 33)
+
+    def testPlayers(self):
+        response = self._getJson('ladder.cgi', 'view=json&showInactive=1&players=1')
+        self.assertEqual(len(response), 33)
+        self.assertTrue('rank' in response[0])
+        self.assertTrue('name' in response[0])
+        self.assertTrue('player' in response[0])
+        self.assertTrue('trend' in response[0])
+        self.assertEqual(len(response[0]['trend']), 10)
 
 
 class GameApi(Tester):
