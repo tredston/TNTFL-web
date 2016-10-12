@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, Props, CSSProperties } from 'react';
-import { Panel, Grid, Row, Col } from 'react-bootstrap';
+import { Panel, Grid, Row, Col, Button } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
 import GameList from './components/game-list';
@@ -43,15 +43,22 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
       showInactive: false,
     }
   }
-  async load() {
+  async load(showInactive: boolean) {
     const { root } = this.props;
     let url = `${root}ladder.cgi?view=json&players=1`;
-    //TODO show inactive
+    if (showInactive === true) {
+      url += '&showInactive=1';
+    }
     const r = await fetch(url);
     this.setState({entries: await r.json()} as IndexPageState);
   }
   componentDidMount() {
-    this.load();
+    this.load(this.state.showInactive);
+  }
+  onShowInactive() {
+    const newState = !this.state.showInactive
+    this.setState({showInactive: newState} as IndexPageState);
+    this.load(newState);
   }
   render() {
     const { root, addURL } = this.props;
@@ -66,6 +73,9 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
             <Row>
               <Col lg={8}>
                 <Ladder entries={this.state.entries}/>
+                <Button onClick={() => this.onShowInactive()}>
+                  {this.state.showInactive ? 'Hide inactive' : 'Show inactive'}
+                </Button>
               </Col>
               <Col lg={4}>
                 <RecentGames games={this.state.recentGames} numActivePlayers={undefined}/>

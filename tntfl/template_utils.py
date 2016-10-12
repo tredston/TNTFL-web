@@ -85,7 +85,7 @@ def gameToJson(game, base):
 
 def ladderToJson(players, ladder, base, includePlayers):
     if includePlayers:
-        return [{'rank': i + 1, 'name': p.name, 'player': playerToJson(p, ladder)} for i, p in enumerate(players)]
+        return [{'rank': ladder.getPlayerRank(p.name), 'name': p.name, 'player': playerToJson(p, ladder)} for i, p in enumerate(players)]
     else:
         return [{'rank': i + 1, 'name': p.name, 'skill': p.elo, 'href': playerHref(base, p.name)} for i, p in enumerate(players)]
 

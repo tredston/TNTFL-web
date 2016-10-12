@@ -16,7 +16,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
   const { entries } = props;
   const flattened = entries.map(e => {
     return {
-      rank: e.rank,
+      rank: e.rank !== -1 ? e.rank : '-',
       name: e.name,
       games: e.player.total.games,
       wins: e.player.total.wins,
