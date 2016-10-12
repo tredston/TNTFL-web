@@ -10,11 +10,16 @@ interface LadderProps {
 }
 export default function Ladder(props: LadderProps): JSX.Element {
   function trendChart(trend: number[]): JSX.Element {
-    const data = trend.map((y, x) => {return {x, y}});
-    const colour = trend[0] < trend[trend.length - 1] ? "#0000FF" : "#FF0000"
-    return (
-      <VictoryLine data={data} style={{data: {stroke: colour}}}/>
-    );
+    if (trend.length >= 2) {
+      const data = trend.map((y, x) => {return {x, y}});
+      const colour = trend[0] < trend[trend.length - 1] ? "#0000FF" : "#FF0000"
+      return (
+        <VictoryLine data={data} style={{data: {stroke: colour}}}/>
+      );
+    }
+    else {
+      return <div/>;
+    }
   }
   const { entries } = props;
   const flattened = entries.map(e => {
@@ -27,7 +32,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       losses: e.player.total.losses,
       for: e.player.total.for,
       against: e.player.total.against,
-      ratio: (e.player.total.wins / e.player.total.losses).toFixed(3),
+      ratio: e.player.total.losses > 0 ? (e.player.total.wins / e.player.total.losses).toFixed(3) : 0,
       overrated: e.player.overrated.toFixed(3),
       skill: e.player.skill.toFixed(3),
       trend: e.trend,
