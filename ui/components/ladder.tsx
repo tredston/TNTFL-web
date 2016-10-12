@@ -2,6 +2,7 @@ import * as React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { VictoryLine } from 'victory';
 
+import PlayerNameLink from './player-name-link';
 import LadderEntry from '../model/ladder-entry';
 import Player from '../model/player';
 
@@ -45,7 +46,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       condensed={true}
     >
       <TableHeaderColumn dataField={'rank'} dataSort={true} dataAlign={'center'}>Pos</TableHeaderColumn>
-      <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true}>Player</TableHeaderColumn>
+      <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerNameLink base={''} name={n}/>}>Player</TableHeaderColumn>
       <TableHeaderColumn dataField={'games'} dataSort={true} dataAlign={'center'}>Games</TableHeaderColumn>
       <TableHeaderColumn dataField={'wins'} dataSort={true} dataAlign={'center'}>Wins</TableHeaderColumn>
       <TableHeaderColumn dataField={'draws'} dataSort={true} dataAlign={'center'}>Draws</TableHeaderColumn>
