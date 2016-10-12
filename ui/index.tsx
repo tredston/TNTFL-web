@@ -19,7 +19,7 @@ interface RecentGamesProps {
 function RecentGames(props: RecentGamesProps): JSX.Element {
   const { games, numActivePlayers } = props;
   return (
-    <Panel header={'Recent Games'}>
+    <Panel header={<h2>Recent Games</h2>}>
       <GameList games={games} base={"../../"} numActivePlayers={numActivePlayers}/>
     </Panel>
   );
