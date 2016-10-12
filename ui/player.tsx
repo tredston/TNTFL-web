@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component, Props, CSSProperties } from 'react';
 import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import { VictoryChart, VictoryLine, VictoryAxis } from 'victory';
 
 import GameList from './components/game-list';
 import NavigationBar from './components/navigation-bar';
@@ -104,25 +105,24 @@ function PlayerStats(props: PlayerStatsProps): JSX.Element {
 
 interface SkillChartProps {
   playerName: string;
-  games: any[];
+  games: Game[];
 }
 function SkillChart(props: SkillChartProps): JSX.Element {
-  // function plot() {
-  //   var getSkillHistory = function(playerName, games) {
-  //     var history = [];
-  //     var skill = 0;
-  //     for (var i = 0; i < games.length; i++) {
-  //       skill += games[i].red.name == playerName ? games[i].red.skillChange : games[i].blue.skillChange;
-  //       history.push([games[i].date * 1000, skill]);
-  //     }
-  //     return history;
-  //   };
-  //   plotPlayerSkill("#playerchart", [getSkillHistory(playerName, games)]);
-  // }
-
+  const { playerName, games } = props;
+  let skill = 0;
+  const data = games.map((game) => {
+    skill += game.red.name == playerName ? game.red.skillChange : game.blue.skillChange;
+    return {x: game.date * 1000, y: skill};
+  });
   return (
     <Panel header={'Skill Chart'}>
-      <div id="playerchart"></div>
+      {games.length >= 2 &&
+        <VictoryChart>
+          <VictoryAxis scale={'time'}/>
+          <VictoryAxis dependentAxis label={'Skill'}/>
+          <VictoryLine data={data} style={{data: {stroke: '#0000FF'}}}/>
+        </VictoryChart>
+      }
     </Panel>
   );
 }
