@@ -143,7 +143,7 @@ class RecentPage(Get.RecentPage, Deployment):
 class PlayerApi(Get.PlayerApi, Deployment):
     def testNoPlayer(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
-            self._testPageReachable('player.cgi?view=json')
+            self._testPageReachable('player')
         e = cm.exception
         self.assertEqual(e.code, 400)
 
@@ -179,19 +179,19 @@ class LadderApi(Get.LadderApi, Deployment):
 class GameApi(Get.GameApi, Deployment):
     def testNoGame(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
-            self._testPageReachable('game.cgi')
+            self._testPageReachable('game')
         e = cm.exception
         self.assertEqual(e.code, 400)
 
     def testInvalidGame(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
-            self._testPageReachable('game.cgi?game=123')
+            self._testPageReachable('game/123')
         e = cm.exception
         self.assertEqual(e.code, 404)
 
     def testInvalidAdd(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
-            self._testPageReachable('game.cgi?method=add')
+            self._testPageReachable('game/add')
         e = cm.exception
         self.assertEqual(e.code, 400)
 
