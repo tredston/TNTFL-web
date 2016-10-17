@@ -1,6 +1,8 @@
 import json
+from mimetools import Message
 import os
 import shutil
+from StringIO import StringIO
 import subprocess
 import tntfl.test.shared_get as Get
 
@@ -22,10 +24,11 @@ class Deployment(Get.TestRunner):
 
     def _getJson(self, page, query=None):
         response = self._get(page, query)
-        # Strip content type
-        response = ''.join(response.split('\n')[2:])
-        self.assertTrue(len(response) > 0)
-        return json.loads(response)
+        headers = Message(StringIO(response.split('\n')[0]))
+        self.assertEqual(headers['content-type'], 'application/json')
+        body = ''.join(response.split('\n')[2:])
+        self.assertTrue(len(body) > 0)
+        return json.loads(body)
 
     def _page(self, page):
         return os.path.join(os.getcwd(), page)
@@ -37,6 +40,11 @@ class Deployment(Get.TestRunner):
     def _setQuery(self, query):
         if query is not None:
             os.environ['QUERY_STRING'] = query
+
+    def _getStatus(self, page, query):
+        response = self._get(page, query)
+        headers = response.split('\n')[0]
+        return Message(StringIO(headers))['status']
 
 
 class AddGame(Get.Tester, Deployment):
@@ -67,11 +75,23 @@ class RecentPage(Get.RecentPage, Deployment):
 
 
 class PlayerApi(Get.PlayerApi, Deployment):
-    pass
+    def testNoPlayer(self):
+        status = self._getStatus('player.cgi', 'view=json')
+        self.assertEqual(status, '400 Bad Request')
+
+    def testMissingPlayer(self):
+        status = self._getStatus('player.cgi', 'view=json&player=missing')
+        self.assertEqual(status, '404 Not Found')
 
 
 class HeadToHeadApi(Get.HeadToHeadApi, Deployment):
-    pass
+    def testMissingPlayers(self):
+        status = self._getStatus('headtohead.cgi', 'view=json')
+        self.assertEqual(status, '400 Bad Request')
+
+    def testInvalidPlayer(self):
+        status = self._getStatus('headtohead.cgi', 'view=json&player1=jrem&player2=missing')
+        self.assertEqual(status, '404 Not Found')
 
 
 class RecentApi(Get.RecentApi, Deployment):
@@ -83,7 +103,17 @@ class LadderApi(Get.LadderApi, Deployment):
 
 
 class GameApi(Get.GameApi, Deployment):
-    pass
+    def testNoGame(self):
+        status = self._getStatus('game.cgi', 'view=json')
+        self.assertEqual(status, '400 Bad Request')
+
+    def testInvalidGame(self):
+        status = self._getStatus('game.cgi', 'view=json&game=123')
+        self.assertEqual(status, '404 Not Found')
+
+    def testInvalidAdd(self):
+        status = self._getStatus('game.cgi', 'view=json&method=add')
+        self.assertEqual(status, '400 Bad Request')
 
 
 class GamesApi(Get.GamesApi, Deployment):
