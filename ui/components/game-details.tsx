@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as classNames from 'classnames';
 import { Grid, Panel, Row, Col } from 'react-bootstrap';
 
 import AchievementPanel from './achievement-panel';
