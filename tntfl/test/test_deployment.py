@@ -3,11 +3,23 @@ import unittest
 import urlparse
 import json
 import os
+import shutil
 import tntfl.test.shared_get as Get
 
 
 class Deployment(Get.TestRunner):
     urlBase = os.path.join('http://www/~tlr/', os.path.split(os.getcwd())[1]) + "/"
+
+    def setUp(self):
+        if os.path.exists('ladder.txt'):
+            os.rename('ladder.txt', 'ladder.actual')
+        shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
+
+    def tearDown(self):
+        if os.path.exists('ladder.txt'):
+            os.remove('ladder.txt')
+        if os.path.exists('ladder.actual'):
+            os.rename('ladder.actual', 'ladder.txt')
 
     def _getJson(self, page, query=None):
         response = self._get(page, query)
