@@ -244,3 +244,13 @@ class GamesApi(Tester):
         response = self._getJson('games.cgi', 'view=json&from=1430402614&to=1430991615&includeDeleted=0')
         self.assertEqual(len(response), 5)
         self.assertEqual(response[3]['date'], 1430928939)
+
+
+class PunditApi(Tester):
+    def test(self):
+        response = self._getJson('pundit.cgi', 'game=1223308996')
+        self.assertListEqual(response, [
+            "That was jrem's 2nd most significant game.",
+            "That game featured jrem's 10th goal against kjb.",
+            "That was kjb's most significant game."
+        ])

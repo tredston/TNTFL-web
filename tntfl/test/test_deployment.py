@@ -85,6 +85,9 @@ class Redirects(Get.Tester, Deployment):
     def testLadderRangeJsonReachable(self):
         self._getJson('ladder/?gamesFrom=1223308996&gamesTo=1223400000&view=json')
 
+    def testPundit(self):
+        self._getJson('pundit/1223308996')
+
     def _testResponse(self, response):
         super(Redirects, self)._testResponse(response)
         self.assertTrue("<!DOCTYPE html>" in response)
@@ -209,4 +212,8 @@ class GameApi(Get.GameApi, Deployment):
 
 
 class GamesApi(Get.GamesApi, Deployment):
+    pass
+
+
+class PunditApi(Get.PunditApi, Deployment):
     pass
