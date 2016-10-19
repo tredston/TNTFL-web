@@ -20,11 +20,9 @@ interface StatBoxProps {
 function StatBox(props: StatBoxProps): JSX.Element {
   const { title, caption, children, classes, style } = props;
   return (
-    <div className="col-sm-3 col-md-offset-0">
-      <Panel header={<h3>{title}</h3>}>
-        {children}
-      </Panel>
-    </div>
+    <Panel header={<h3>{title}</h3>}>
+      {children}
+    </Panel>
   );
 }
 
@@ -59,35 +57,36 @@ function PlayerStats(props: PlayerStatsProps): JSX.Element {
   };
   const { player, numActivePlayers, games } = props;
   const gamesToday = games.slice(games.length - player.total.gamesToday);
-  const overrated = 0; //getOverrated(player.name, player.games);
   const goalRatio = player.total.for / player.total.against;
   const skillChangeToday = getSkillChange(player.name, gamesToday);
   const rankChangeToday = getRankChange(player.name, gamesToday);
   return (
     <Panel header={<h1>{player.name}</h1>}>
       <Row>
-        <StatBox title="Current Ranking" classes={"ladder-position " + getLadderLeagueClass(player.rank, numActivePlayers)}>
+        <Col sm={3}><StatBox title="Current Ranking" classes={"ladder-position " + getLadderLeagueClass(player.rank, numActivePlayers)}>
           {player.rank !== -1 ? player.rank : '-'}
-        </StatBox>
-        <StatBox title="Skill">{player.skill.toFixed(3)}</StatBox>
-        <StatBox title="Overrated" classes={overrated <= 0 ? "positive" : "negative"}>{overrated.toFixed(3)}</StatBox>
-        <StatBox title="Side preference" classes="side-preference" style={sideStyle(player)}>{sidePreference(player)}</StatBox>
+        </StatBox></Col>
+        <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
+        <Col sm={3}><StatBox title="Side preference" classes="side-preference" style={sideStyle(player)}>{sidePreference(player)}</StatBox></Col>
+        <Col sm={3}/>
       </Row>
       <Row>
-        <StatBox title="Total games">{player.total.games}</StatBox>
-        <StatBox title="Wins">{player.total.wins}</StatBox>
-        <StatBox title="Losses">{player.total.losses}</StatBox>
-        <StatBox title="Draws">{(player.total.games - player.total.wins - player.total.losses)}</StatBox>
+        <Col sm={3}><StatBox title="Total games">{player.total.games}</StatBox></Col>
+        <Col sm={3}><StatBox title="Wins">{player.total.wins}</StatBox></Col>
+        <Col sm={3}><StatBox title="Losses">{player.total.losses}</StatBox></Col>
+        <Col sm={3}><StatBox title="Draws">{(player.total.games - player.total.wins - player.total.losses)}</StatBox></Col>
       </Row>
       <Row>
-        <StatBox title="Goals for">{player.total.for}</StatBox>
-        <StatBox title="Goals against">{player.total.against}</StatBox>
-        <StatBox title="Goal ratio" classes={goalRatio > 1 ? "positive" : "negative"}>{goalRatio.toFixed(3)}</StatBox>
+        <Col sm={3}><StatBox title="Goals for">{player.total.for}</StatBox></Col>
+        <Col sm={3}><StatBox title="Goals against">{player.total.against}</StatBox></Col>
+        <Col sm={3}><StatBox title="Goal ratio" classes={goalRatio > 1 ? "positive" : "negative"}>{goalRatio.toFixed(3)}</StatBox></Col>
+        <Col sm={3}/>
       </Row>
       <Row>
-        <StatBox title="Games today">{gamesToday.length}</StatBox>
-        <StatBox title="Skill change today" classes={skillChangeToday >= 0 ? "positive" : "negative"}>{skillChangeToday.toFixed(3)}</StatBox>
-        <StatBox title="Rank change today" classes={rankChangeToday >= 0 ? "positive" : "negative"}>{rankChangeToday}</StatBox>
+        <Col sm={3}><StatBox title="Games today">{gamesToday.length}</StatBox></Col>
+        <Col sm={3}><StatBox title="Skill change today" classes={skillChangeToday >= 0 ? "positive" : "negative"}>{skillChangeToday.toFixed(3)}</StatBox></Col>
+        <Col sm={3}><StatBox title="Rank change today" classes={rankChangeToday >= 0 ? "positive" : "negative"}>{rankChangeToday}</StatBox></Col>
+        <Col sm={3}/>
         {/*TODO <StatBox title="Current streak">{get_template("durationStat.mako", value="{0} {1}".format(currentStreak.count, currentStreakType), fromDate=currentStreak.fromDate, toDate=currentStreak.toDate, base=self.attr.base))</StatBox>*/}
       </Row>
       <Row>
