@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { VictoryLine, VictoryPie } from 'victory';
+import { Line, Pie } from 'react-chartjs-2';
 
 import PlayerNameLink from './player-name-link';
 import LadderEntry from '../model/ladder-entry';
@@ -8,10 +8,27 @@ import Player, { Totals } from '../model/player';
 
 function TrendChart(trend: number[]): JSX.Element {
   if (trend.length >= 2) {
-    const data = trend.map((y, x) => {return {x, y}});
+    const trendLine = trend.map((y, x) => {return {x, y}});
+    const labels = trend.map((y, x) => '');
     const colour = trend[0] < trend[trend.length - 1] ? "#0000FF" : "#FF0000"
+    const data = {
+      datasets: [{
+        data: trendLine,
+        fill: false,
+        borderColor: colour,
+      }],
+      labels,
+    };
+    const options = {
+      scales: {
+        xAxes: [{display: false}],
+        yAxes: [{display: false}],
+      },
+      legend: {display: false},
+      tooltips: {enabled: false},
+    };
     return (
-      <VictoryLine data={data} style={{data: {stroke: colour}}}/>
+      <Line data={data} options={options}/>
     );
   }
   else {
@@ -20,29 +37,35 @@ function TrendChart(trend: number[]): JSX.Element {
 }
 
 function GamesChart(totals: Totals): JSX.Element {
-  const data = [
-    {x: 'Losses', y: totals.losses},
-    {x: 'Draws', y: totals.games - totals.wins - totals.losses},
-    {x: 'Wins', y: totals.wins},
-  ];
+  const draws = totals.games - totals.wins - totals.losses;
+  const data = {
+    labels: ['Losses', 'Draws', 'Wins'],
+    datasets: [{
+      data: [totals.losses, draws, totals.wins],
+      backgroundColor: ['#FF0000', '#FFC200', '#0000FF'],
+    }]
+  }
+  const options = {
+    legend: {display: false},
+  }
   return (
-    <VictoryPie
-      data={data}
-      colorScale={['#FF0000', '#FFC200', '#00FF00']}
-    />
+    <Pie data={data} options={options} />
   );
 }
 
 function GoalChart(totals: Totals): JSX.Element {
-  const data = [
-    {x: 'Against', y: totals.against},
-    {x: 'For', y: totals.for},
-  ];
+  const data = {
+    labels: ['Against', 'For'],
+    datasets: [{
+      data: [totals.against, totals.for],
+      backgroundColor: ['#FF0000', '#0000FF'],
+    }]
+  }
+  const options = {
+    legend: {display: false},
+  }
   return (
-    <VictoryPie
-      data={data}
-      colorScale={['#FF0000', '#00FF00']}
-    />
+    <Pie data={data} options={options} />
   );
 }
 
