@@ -93,7 +93,7 @@ function RankChange(props: RankChangeProps): JSX.Element {
     <div>
       {rankChange !== 0 &&
         <div className={'skill-change ' + colour}>
-          {rankChange}
+          <span style={{fontWeight: 'bold'}}>{rankChange > 0 ? '⬆' : '⬇'}</span>{Math.abs(rankChange)}
         </div>
       }
     </div>
