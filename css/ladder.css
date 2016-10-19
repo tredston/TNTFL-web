@@ -477,4 +477,5 @@ span.irs > span {
 
 #compactTable > tbody > tr > td {
   padding: 0;
+  border-top: 0;
 }

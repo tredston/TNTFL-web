@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, Panel, Row, Col } from 'react-bootstrap';
+import { Grid, Panel, Table } from 'react-bootstrap';
 
 import AchievementPanel from './achievement-panel';
 import Achievement from '../model/achievement';
@@ -25,7 +25,7 @@ interface PunditryProps {
 function Punditry(props: PunditryProps): JSX.Element {
   const { facts } = props;
   return (
-    <Panel title={'Punditry'}>
+    <Panel header={'Punditry'}>
       {facts.map((fact) => <Fact fact={fact}/>)}
     </Panel>
   );
@@ -38,22 +38,20 @@ interface GameDetailsProps {
 export default function GameDetails(props: GameDetailsProps): JSX.Element {
   const { game, punditry } = props;
   return (
-    <Grid>
-      <Row>
-        <Col md={4}>
-          {game.red.achievements.map((ach, i) => <AchievementPanel achievement={ach} key={`achr${i}`}/>)}
-        </Col>
-        <Col md={4}>
-          {punditry && punditry.length ? <Punditry facts={punditry} /> : null}
-        </Col>
-        <Col md={4}>
-          {game.blue.achievements.map((ach, i) => <AchievementPanel achievement={ach} key={`achr${i}`}/>)}
-        </Col>
-      </Row>
-      <Row>
-        <p><a href="json">This game as JSON</a></p>
-        {!game.deleted ? <a href="delete" className="btn btn-danger pull-right"><span className="glyphicon glyphicon-lock"></span> Delete game</a> : null}
-      </Row>
+    <Grid fluid={true}>
+      <Table id={'compactTable'}>
+        <tbody>
+          <tr>
+            <td style={{width: '30%'}}>{game.red.achievements.map((ach, i) => <AchievementPanel achievement={ach} key={`achr${i}`}/>)}</td>
+            <td style={{width: '10%'}}/>
+            <td style={{width: '20%'}}>{punditry && punditry.length ? <Punditry facts={punditry} /> : null}</td>
+            <td style={{width: '10%'}}/>
+            <td style={{width: '30%'}}>{game.blue.achievements.map((ach, i) => <AchievementPanel achievement={ach} key={`achr${i}`}/>)}</td>
+          </tr>
+        </tbody>
+      </Table>
+      <p><a href="json">This game as JSON</a></p>
+      {!game.deleted ? <a href="delete" className="btn btn-danger pull-right"><span className="glyphicon glyphicon-lock"></span> Delete game</a> : null}
     </Grid>
   );
 }
