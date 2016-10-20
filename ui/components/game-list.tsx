@@ -7,10 +7,11 @@ import GameSummary from './game-summary';
 interface GameListProps {
   games: Game[];
   base: string;
-  numActivePlayers: number;
 }
 export default function GameList(props: GameListProps): JSX.Element {
-  const { games, base, numActivePlayers } = props;
+  const { games, base } = props;
+  //TODO
+  const numActivePlayers = 0;
   return (
     <Grid fluid={true}>
       {games.map((game) => <GameSummary game={game} base={base} numActivePlayers={numActivePlayers} key={`game-${game.date}`}/> )}

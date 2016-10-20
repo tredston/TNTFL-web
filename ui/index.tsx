@@ -3,7 +3,7 @@ import { Component, Props, CSSProperties } from 'react';
 import { Panel, Grid, Row, Col, Button } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
-import GameList from './components/game-list';
+import RecentGames from './components/recent-game-list';
 import NavigationBar from './components/navigation-bar';
 import Game from './model/game';
 import Player from './model/player';
@@ -11,19 +11,6 @@ import { getParameterByName, getLadderLeagueClass } from './utils/utils';
 
 import Ladder from './components/ladder';
 import LadderEntry from './model/ladder-entry';
-
-interface RecentGamesProps {
-  games: Game[];
-  numActivePlayers: number;
-}
-function RecentGames(props: RecentGamesProps): JSX.Element {
-  const { games, numActivePlayers } = props;
-  return (
-    <Panel header={<h2>Recent Games</h2>}>
-      <GameList games={games} base={"../../"} numActivePlayers={numActivePlayers}/>
-    </Panel>
-  );
-}
 
 interface IndexPageProps extends Props<IndexPage> {
   root: string;
@@ -85,7 +72,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
                 </Button>
               </Col>
               <Col lg={4}>
-                <RecentGames games={this.state.recentGames} numActivePlayers={undefined}/>
+                <RecentGames games={this.state.recentGames} showAllGames={false}/>
               </Col>
             </Row>
           </Grid>

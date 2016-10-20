@@ -4,7 +4,7 @@ import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { Line } from 'react-chartjs-2';
 
-import GameList from './components/game-list';
+import RecentGames from './components/recent-game-list';
 import NavigationBar from './components/navigation-bar';
 import Game from './model/game';
 import Player from './model/player';
@@ -130,21 +130,6 @@ function SkillChart(props: SkillChartProps): JSX.Element {
   );
 }
 
-interface RecentGamesProps {
-  games: Game[];
-  numActivePlayers: number;
-}
-function RecentGames(props: RecentGamesProps): JSX.Element {
-  const { games, numActivePlayers } = props;
-  const recentGames = games.slice(games.length - 5).reverse();
-  return (
-    <Panel header={<h2>Recent Games</h2>}>
-      <GameList games={recentGames} base={"../../"} numActivePlayers={numActivePlayers}/>
-      <a className="pull-right" href="games/">See all games</a>
-    </Panel>
-  );
-}
-
 interface PlayerPageProps extends Props<PlayerPage> {
   root: string;
   addURL: string;
@@ -197,7 +182,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
                 {/*TODO <PerPlayerStats />*/}
               </Col>
               <Col md={4}>
-                <RecentGames games={this.state.games} numActivePlayers={numActivePlayers}/>
+                <RecentGames games={this.state.games.slice(this.state.games.length - 5).reverse()} showAllGames={true}/>
                 {/*TODO <Most significant />*/}
                 {/*TODO <First game />*/}
                 {/*TODO <achievements />*/}
