@@ -34,9 +34,10 @@ function Punditry(props: PunditryProps): JSX.Element {
 
 interface GameDetailsProps {
   game: Game;
+  punditry: string[];
 }
 export default function GameDetails(props: GameDetailsProps): JSX.Element {
-  const { game } = props;
+  const { game, punditry } = props;
   return (
     <Grid>
       <Row>
@@ -44,7 +45,7 @@ export default function GameDetails(props: GameDetailsProps): JSX.Element {
           {game.red.achievements.map((ach, i) => <AchievementPanel achievement={ach} key={`achr${i}`}/>)}
         </Col>
         <Col md={4}>
-          {game.punditry && game.punditry.length ? <Punditry facts={game.punditry} /> : null}
+          {punditry && punditry.length ? <Punditry facts={punditry} /> : null}
         </Col>
         <Col md={4}>
           {game.blue.achievements.map((ach, i) => <AchievementPanel achievement={ach} key={`achr${i}`}/>)}
