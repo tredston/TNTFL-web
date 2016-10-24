@@ -135,7 +135,7 @@ function RecentGames(props: RecentGamesProps): JSX.Element {
   const { games, numActivePlayers } = props;
   const recentGames = Array.prototype.slice.call(games).reverse();
   return (
-    <Panel header={'Recent Games'}>
+    <Panel header={<h2>Recent Games</h2>}>
       <GameList games={recentGames} base={"../../"} numActivePlayers={numActivePlayers}/>
       <a className="pull-right" href="games/">See all games</a>
     </Panel>

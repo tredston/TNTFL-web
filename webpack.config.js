@@ -3,6 +3,7 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: {
+    index: './ui/index.tsx',
     game: './ui/game.tsx',
     player: './ui/player.tsx'
   },

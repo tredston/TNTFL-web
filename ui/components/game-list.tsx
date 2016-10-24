@@ -14,7 +14,7 @@ export default function GameList(props: GameListProps): JSX.Element {
   const { games, base, numActivePlayers } = props;
   return (
     <Grid fluid={true}>
-      {games.map((game) => <GameSummary game={game} base={base} numActivePlayers={numActivePlayers}/> )}
+      {games.map((game) => <GameSummary game={game} base={base} numActivePlayers={numActivePlayers} key={`game-${game.date}`}/> )}
     </Grid>
   );
 }
