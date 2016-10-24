@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component, Props, CSSProperties } from 'react';
 import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import { VictoryChart, VictoryLine, VictoryAxis } from 'victory';
 
 import GameList from './components/game-list';
 import NavigationBar from './components/navigation-bar';
@@ -95,34 +96,30 @@ function PlayerStats(props: PlayerStatsProps): JSX.Element {
         {/*TODO <StatBox title="Longest winning streak">{get_template("durationStat.mako", value=winStreak.count, fromDate=winStreak.fromDate, toDate=winStreak.toDate, base=self.attr.base))</StatBox>*/}
         {/*TODO <StatBox title="Longest losing streak">{get_template("durationStat.mako", value=loseStreak.count, fromDate=loseStreak.fromDate, toDate=loseStreak.toDate, base=self.attr.base))</StatBox>*/}
       </Row>
-      <Row>
-        {/*TODO <StatBox title="Total achievements">{str(sum([len(g) for g in player.achievements.values()])) + '<div class="date"><a href="#achievements">See all</a></div>' )</StatBox>*/}
-      </Row>
     </Panel>
   );
 }
 
 interface SkillChartProps {
   playerName: string;
-  games: any[];
+  games: Game[];
 }
 function SkillChart(props: SkillChartProps): JSX.Element {
-  // function plot() {
-  //   var getSkillHistory = function(playerName, games) {
-  //     var history = [];
-  //     var skill = 0;
-  //     for (var i = 0; i < games.length; i++) {
-  //       skill += games[i].red.name == playerName ? games[i].red.skillChange : games[i].blue.skillChange;
-  //       history.push([games[i].date * 1000, skill]);
-  //     }
-  //     return history;
-  //   };
-  //   plotPlayerSkill("#playerchart", [getSkillHistory(playerName, games)]);
-  // }
-
+  const { playerName, games } = props;
+  let skill = 0;
+  const data = games.map((game) => {
+    skill += game.red.name == playerName ? game.red.skillChange : game.blue.skillChange;
+    return {x: game.date * 1000, y: skill};
+  });
   return (
     <Panel header={'Skill Chart'}>
-      <div id="playerchart"></div>
+      {games.length >= 2 &&
+        <VictoryChart>
+          <VictoryAxis scale={'time'}/>
+          <VictoryAxis dependentAxis label={'Skill'}/>
+          <VictoryLine data={data} style={{data: {stroke: '#0000FF'}}}/>
+        </VictoryChart>
+      }
     </Panel>
   );
 }
@@ -133,7 +130,7 @@ interface RecentGamesProps {
 }
 function RecentGames(props: RecentGamesProps): JSX.Element {
   const { games, numActivePlayers } = props;
-  const recentGames = Array.prototype.slice.call(games).reverse();
+  const recentGames = games.slice(games.length - 5).reverse();
   return (
     <Panel header={<h2>Recent Games</h2>}>
       <GameList games={recentGames} base={"../../"} numActivePlayers={numActivePlayers}/>
@@ -159,14 +156,21 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
         games: [],
       };
   }
-  async load() {
+  async loadSummary() {
     const { root, playerName } = this.props;
     const url = `${root}player.cgi?method=view&view=json&player=${playerName}`;
     const r = await fetch(url);
     this.setState({player: await r.json()} as PlayerPageState);
   }
+  async loadGames() {
+    const { root, playerName } = this.props;
+    const url = `${root}player.cgi?method=games&view=json&player=${playerName}`;
+    const r = await fetch(url);
+    this.setState({games: await r.json()} as PlayerPageState);
+  }
   componentDidMount() {
-    this.load();
+    this.loadSummary();
+    this.loadGames();
   }
   render() {
     const { root, addURL } = this.props;
@@ -189,7 +193,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
               <Col md={4}>
                 <RecentGames games={this.state.games} numActivePlayers={numActivePlayers}/>
                 {/*TODO <Most significant />*/}
-                {/*TODO <least significant />*/}
+                {/*TODO <First game />*/}
                 {/*TODO <achievements />*/}
               </Col>
             </Row>
