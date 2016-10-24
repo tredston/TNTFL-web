@@ -3,7 +3,8 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: {
-    game: './ui/game.tsx'
+    game: './ui/game.tsx',
+    player: './ui/player.tsx'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -27,6 +28,7 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin("commons.chunk.js")
     // new webpack.optimize.UglifyJsPlugin({compress:{warnings: false}})
   ]
 };
