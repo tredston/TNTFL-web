@@ -93,7 +93,7 @@ function RankChange(props: RankChangeProps): JSX.Element {
     <div>
       {rankChange !== 0 &&
         <div className={'skill-change ' + colour}>
-          {rankChange}
+          <span style={{fontWeight: 'bold'}}>{rankChange > 0 ? '⬆' : '⬇'}</span>{Math.abs(rankChange)}
         </div>
       }
     </div>
@@ -126,9 +126,9 @@ export default function GameSummary(props: GameSummaryProps): JSX.Element {
           <tr className={'game-changes'}>
             <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.red.skillChange} colour="skill-change-red" /> </td>
             <td style={{width: '10%'}} className={'rank-change red'}> <RankChange rankChange={game.red.rankChange} colour="skill-change-red" /> </td>
-            <td style={{width: '10%'}}></td>
+            <td style={{width: '10%'}}/>
             <td style={{width: '20%'}}> <GameTime date={game.date} base={base} /> </td>
-            <td style={{width: '10%'}}></td>
+            <td style={{width: '10%'}}/>
             <td style={{width: '10%'}} className={'rank-change blue'}> <RankChange rankChange={game.blue.rankChange} colour="skill-change-blue" /> </td>
             <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.blue.skillChange} colour="skill-change-blue" /> </td>
           </tr>
