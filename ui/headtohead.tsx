@@ -2,26 +2,64 @@ import * as React from 'react';
 import { Component, Props, CSSProperties } from 'react';
 import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { VictoryChart, VictoryLine } from 'victory';
+import { Line } from 'react-chartjs-2';
 
 import NavigationBar from './components/navigation-bar';
 import RecentGames from './components/recent-game-list';
 import Game from './model/game';
 import Player from './model/player';
-import { getParameterByName, getLadderLeagueClass } from './utils/utils';
+import { getParameterByName, getLadderLeagueClass, formatEpoch } from './utils/utils';
 
-interface PlayerStatsProps {
-  player: Player;
-  numActivePlayers: number;
+interface WinGraphProps {
+  player1: string;
+  player2: string;
+  games: Game[];
 }
-function PlayerStats(props: PlayerStatsProps): JSX.Element {
-  const { player } = this.props;
+function WinGraph(props: WinGraphProps): JSX.Element {
+  const { player1, player2, games } = props;
+  let player1Ahead = 0;
+  const player1WinsAheadLine = games.map((game: Game) => {
+    if (game.red.score !== game.blue.score) {
+      if (
+        (game.red.name == player1 && game.red.score > game.blue.score) ||
+        (game.blue.name == player1 && game.blue.score > game.red.score)
+      ) {
+        player1Ahead += 1;
+      }
+      else {
+        player1Ahead -= 1;
+      }
+    }
+    return {x: game.date * 1000, y: player1Ahead};
+  });
+  let points = 0;
+  const player1PointsAheadLine = games.map((game: Game) => {
+    points += game.red.name == player1 ? game.red.skillChange : game.blue.skillChange;
+    return {x: game.date * 1000, y: points};
+  });
+
+  const data = {datasets: [{
+    label: `${player1} wins ahead`,
+    data: player1WinsAheadLine,
+    fill: false,
+    borderColor: '#0000FF',
+  },
+  {
+    label: `${player1} points gained`,
+    data: player1PointsAheadLine,
+    fill: false,
+    borderColor: '#FF0000',
+  }]};
+  const options = {
+    scales: {xAxes: [{type: 'time'}]},
+    tooltips: {callbacks: {
+      title: (tooltip: any, point: any) => formatEpoch(tooltip[0].xLabel / 1000),
+      label: (tooltip: any, point: any) => tooltip.yLabel.toFixed(3),
+    }}
+  };
   return (
-    <Panel header={<h1>{player.name}</h1>}>
-      Rank
-      Skill
-      Highest ever skill
-      Lowest ever skill
+    <Panel header={<h1>{}</h1>}>
+      <Line data={data} options={options}/>
     </Panel>
   );
 }
@@ -109,14 +147,13 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
             <Panel header={'Head to Head'}>
               <Row>
                 <Col md={4}>
-                  <PlayerStats player={this.state.player1} numActivePlayers={numActivePlayers}/>
+                  <WinGraph player1={this.props.player1} player2={this.props.player2} games={this.state.games}/>
                   <RecentGames games={this.state.games} showAllGames={true}/>
                 </Col>
                 <Col md={4}>
                   <HeadToHeadStats player1={this.state.player1} player2={this.state.player2} games={this.state.games}/>
                 </Col>
                 <Col md={4}>
-                  <PlayerStats player={this.state.player2} numActivePlayers={numActivePlayers}/>
                   <GoalDistribution games={this.state.games}/>
                 </Col>
               </Row>
