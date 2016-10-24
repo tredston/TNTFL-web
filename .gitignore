@@ -1,6 +1,9 @@
-# Byte-compiled / optimized / DLL files
 *.py[cod]
 
-# And the rest
+/node_modules/
+/dist/
+/ui/**/*.js
+/ui/**/*.js.map
+
 /ladder.txt
 .cache.*

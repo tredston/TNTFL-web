@@ -128,18 +128,6 @@ div.ladder-trend {
   text-align: center;
 }
 
-.recent-game-result .col-md-2 {
-  padding: 0;
-  overflow: hidden;
-}
-
-.recent-game .red-player,
-.headtohead .red-player,
-.recent-game .blue-player,
-.headtohead .blue-player {
-  /*border-radius: 4px 0 0 4px;*/
-}
-
 .game-changes .skill-change {
   display: inline-block;
   padding: 1px 5px;
@@ -467,9 +455,6 @@ span.irs > span {
 /*
  * Ladder Adjustments
  */
-.ladder-position {
-
-}
 .controls.form {
   padding: 10px;
 }
@@ -488,4 +473,8 @@ span.irs > span {
 }
 #ladderHolder .table {
   margin-bottom: 0;
+}
+
+#compactTable > tbody > tr > td {
+  padding: 0;
 }
