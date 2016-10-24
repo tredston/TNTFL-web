@@ -9,7 +9,7 @@ RewriteRule (.*)/json$ $1?view=json
 RewriteRule ^game(.cgi)?/([^/]+)$  game/$2/   [R]
 RewriteRule ^game(.cgi)?/add/ game.cgi?method=add [QSA]
 RewriteRule ^game(.cgi)?/([0-9]+)/delete$ delete.cgi?&game=$2 [QSA]
-RewriteRule ^game(.cgi)?/([0-9]+)/ game.cgi?method=view&game=$2 [QSA]
+RewriteRule ^game(.cgi)?/([0-9]+)/ game.cgi?game=$2 [QSA]
 
 <Files "delete.cgi">
   AuthType                basic
@@ -26,9 +26,11 @@ RewriteRule ^player(.cgi)?/([a-zA-Z]+)/games/ player.cgi?player=$2&method=games 
 RewriteRule ^headtohead(.cgi)?/([a-zA-Z]+)/([a-zA-Z]+)/$ headtohead.cgi?player1=$2&player2=$3 [QSA]
 RewriteRule ^headtohead(.cgi)?/([a-zA-Z]+)/([a-zA-Z]+)/games/ headtohead.cgi?player1=$2&player2=$3&method=games [QSA]
 
-RewriteRule ^ladder(.cgi)?/? ladder.cgi 
-RewriteRule ^api(.cgi)?/ api.cgi 
-RewriteRule ^stats(.cgi)?/ stats.cgi 
+RewriteRule ^pundit(.cgi)?/([^/]+)$  pundit/$2/   [R]
+RewriteRule ^pundit(.cgi)?/([0-9]+)/ pundit.cgi?game=$2 [QSA]
+
+RewriteRule ^ladder(.cgi)?/? ladder.cgi
+RewriteRule ^api(.cgi)?/ api.cgi
+RewriteRule ^stats(.cgi)?/ stats.cgi
 RewriteRule ^recent(.cgi)?/ recent.cgi
 RewriteRule ^speculate(.cgi)?/ speculate.cgi
-

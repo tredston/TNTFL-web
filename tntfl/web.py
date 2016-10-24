@@ -34,6 +34,10 @@ def fail_404():
     print
 
 
+def fail_400():
+    print "Status: 400 Bad Request"
+
+
 def getString(key, form):
     value = form.getfirst(key)
     if value:

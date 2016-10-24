@@ -18,17 +18,19 @@
   },
   "homepage": "https://github.com/tredston/TNTFL-web#readme",
   "dependencies": {
-    "@types/classnames": "0.0.30",
     "@types/moment": "^2.13.0",
     "@types/react": "^0.14.38",
     "@types/react-bootstrap": "0.0.33",
+    "@types/react-bootstrap-table": "^2.3.31",
     "@types/react-dom": "^0.14.17",
+    "@types/victory": "^0.9.4",
     "@types/whatwg-fetch": "0.0.32",
-    "classnames": "^2.2.5",
     "moment": "^2.15.1",
     "react": "^15.3.0",
     "react-bootstrap": "^0.30.5",
+    "react-bootstrap-table": "^2.5.5",
     "react-dom": "^15.3.2",
+    "victory": "^0.12.1",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
