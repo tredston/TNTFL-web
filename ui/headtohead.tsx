@@ -4,34 +4,13 @@ import { Panel, Grid, Row, Col, Table } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
 import Graph from './components/head-to-head-graph';
+import Stats from './components/head-to-head-stats';
 import GoalDistribution from './components/goal-distribution';
 import NavigationBar from './components/navigation-bar';
 import RecentGames from './components/recent-game-list';
 import Game from './model/game';
 import { getParameterByName } from './utils/utils';
 
-interface HeadToHeadStatsProps {
-  player1: string;
-  player2: string;
-  games: Game[];
-}
-function HeadToHeadStats(props: HeadToHeadStatsProps): JSX.Element {
-  const { player1, player2 } = props;
-  return (
-    <Panel header={'Statistics'}>
-      <Table>
-        <tbody>
-        <tr><td>{player1}</td><td></td><td>{player2}</td></tr>
-        <tr><td></td><td>Points Swing</td><td></td></tr>
-        <tr><td></td><td>Wins</td><td></td></tr>
-        <tr><td></td><td>10-0 Wins</td><td></td></tr>
-        <tr><td></td><td>Goals</td><td></td></tr>
-        <tr><td></td><td>Predicted Result</td><td></td></tr>
-        </tbody>
-      </Table>
-    </Panel>
-  );
-}
 
 interface HeadToHeadPageProps extends Props<HeadToHeadPage> {
   root: string;
@@ -74,7 +53,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
             <Panel header={'Head to Head'}>
               <Row>
                 <Col md={8}>
-                  <HeadToHeadStats player1={player1} player2={player2} games={games}/>
+                  <Stats player1={player1} player2={player2} games={games}/>
                   <Graph player1={player1} player2={player2} games={games}/>
                 </Col>
                 <Col md={4}>
