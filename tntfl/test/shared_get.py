@@ -254,3 +254,17 @@ class PunditApi(Tester):
             "That game featured jrem's 10th goal against kjb.",
             "That was kjb's most significant game."
         ])
+
+
+class PredictApi(Tester):
+    def test(self):
+        response = self._getJson('predict.cgi', 'player1Elo=0&player2Elo=0')
+        self.assertEqual(response['blueGoalRatio'], 0.5)
+
+    def test2(self):
+        response = self._getJson('predict.cgi', 'player1Elo=10&player2Elo=95.882')
+        self.assertAlmostEqual(response['blueGoalRatio'], 0.75, 4)
+
+    def test2Mirrored(self):
+        response = self._getJson('predict.cgi', 'player1Elo=95.882&player2Elo=10')
+        self.assertAlmostEqual(response['blueGoalRatio'], 0.25, 4)
