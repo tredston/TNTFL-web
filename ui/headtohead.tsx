@@ -65,8 +65,6 @@ function WinGraph(props: WinGraphProps): JSX.Element {
 }
 
 interface HeadToHeadStatsProps {
-  player1: Player;
-  player2: Player;
   games: Game[];
 }
 function HeadToHeadStats(props: HeadToHeadStatsProps): JSX.Element {
@@ -97,30 +95,14 @@ interface HeadToHeadPageProps extends Props<HeadToHeadPage> {
   player2: string;
 }
 interface HeadToHeadPageState {
-  player1: Player;
-  player2: Player;
   games: Game[];
 }
 class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState> {
   constructor(props: HeadToHeadPageProps, context: any) {
       super(props, context);
       this.state = {
-        player1: undefined,
-        player2: undefined,
         games: [],
       };
-  }
-  async loadPlayer(player: string): Promise<any> {
-    const { root } = this.props;
-    const url = `${root}player.cgi?method=view&view=json&player=${player}`;
-    const r = await fetch(url);
-    return await r.json();
-  }
-  async loadPlayers() {
-    const { player1, player2 } = this.props;
-    const p1 = this.loadPlayer(player1);
-    const p2 = this.loadPlayer(player2);
-    this.setState({player1: await p1, player2: await p2} as HeadToHeadPageState);
   }
   async loadGames() {
     const { root, player1, player2 } = this.props;
@@ -129,11 +111,11 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
     this.setState({games: await r.json()} as HeadToHeadPageState);
   }
   componentDidMount() {
-    this.loadPlayers();
     this.loadGames();
   }
   render() {
-    const { root, addURL } = this.props;
+    const { root, addURL, player1, player2 } = this.props;
+    const { games } = this.state;
     const numActivePlayers = 0;
     // getTotalActivePlayers(this.state.playersStats)
     return (
@@ -142,19 +124,17 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
           root={root}
           addURL={addURL}
         />
-        {this.state.player1 && this.state.player2 ?
+        {games ?
           <Grid fluid={true}>
             <Panel header={'Head to Head'}>
               <Row>
-                <Col md={4}>
-                  <WinGraph player1={this.props.player1} player2={this.props.player2} games={this.state.games}/>
-                  <RecentGames games={this.state.games} showAllGames={true}/>
-                </Col>
-                <Col md={4}>
-                  <HeadToHeadStats player1={this.state.player1} player2={this.state.player2} games={this.state.games}/>
+                <Col md={8}>
+                  <HeadToHeadStats games={games}/>
+                  <WinGraph player1={player1} player2={player2} games={games}/>
                 </Col>
                 <Col md={4}>
                   <GoalDistribution games={this.state.games}/>
+                  <RecentGames games={games} showAllGames={true}/>
                 </Col>
               </Row>
             </Panel>
