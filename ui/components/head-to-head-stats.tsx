@@ -6,20 +6,22 @@ import Game from '../model/game';
 
 interface StatRowProps {
   name: string;
-  player1value: number;
-  player2value: number;
+  player1value: number | undefined;
+  player2value: number | undefined;
 }
 function StatRow(props: StatRowProps): JSX.Element {
   const { name, player1value, player2value } = props;
-  const v1formatted = Number.isInteger(player1value) ? player1value : player1value.toFixed(3);
-  const v2formatted = Number.isInteger(player2value) ? player2value : player2value.toFixed(3);
-  const redStyle = {backgroundColor: '#F00', color: 'white'};
-  const blueStyle = {backgroundColor: '#00F', color: 'white'};
+  const v1formatted = player1value && (Number.isInteger(player1value) ? player1value : player1value.toFixed(3));
+  const v2formatted = player2value && (Number.isInteger(player2value) ? player2value : player2value.toFixed(3));
+  const redAhead = (player2value === undefined) || (player1value > player2value);
+  const blueAhead = (player1value === undefined) || (player2value > player1value);
+  const redStyle = redAhead ? {backgroundColor: '#F00', color: 'white'} : undefined;
+  const blueStyle = blueAhead ? {backgroundColor: '#00F', color: 'white'} : undefined;
   return (
     <tr>
-      <td style={(player1value > player2value) ? redStyle : undefined}>{v1formatted}</td>
+      <td style={redStyle}>{v1formatted}</td>
       <td>{name}</td>
-      <td style={(player2value > player1value) ? blueStyle: undefined}>{v2formatted}</td>
+      <td style={blueStyle}>{v2formatted}</td>
     </tr>
   );
 }
@@ -58,7 +60,7 @@ export default function HeadToHeadStats(props: HeadToHeadStatsProps): JSX.Elemen
       <Table style={{textAlign: 'center'}}>
         <tbody>
         <tr><td>{player1}</td><td></td><td>{player2}</td></tr>
-        <StatRow name={'Point Swing'} player1value={p1swing} player2value={-p1swing}/>
+        <StatRow name={'Point Swing'} player1value={p1swing > 0 ? p1swing : undefined} player2value={(-p1swing) > 0 ? (-p1swing) : undefined}/>
         <StatRow name={'Wins'} player1value={p1wins} player2value={p2wins}/>
         <StatRow name={'10-0 Wins'} player1value={p1ys} player2value={p2ys}/>
         <StatRow name={'Goals'} player1value={p1goals} player2value={p2goals}/>
