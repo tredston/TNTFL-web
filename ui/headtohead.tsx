@@ -180,7 +180,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
                 </Col>
                 <Col md={4}>
                   <GoalDistribution player1={player1} player2={player2} games={games}/>
-                  <RecentGames games={games} showAllGames={true}/>
+                  <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true}/>
                 </Col>
               </Row>
             </Panel>
