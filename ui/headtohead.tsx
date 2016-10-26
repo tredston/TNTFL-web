@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component, Props, CSSProperties } from 'react';
 import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { Line } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 
 import NavigationBar from './components/navigation-bar';
 import RecentGames from './components/recent-game-list';
@@ -80,11 +80,57 @@ function HeadToHeadStats(props: HeadToHeadStatsProps): JSX.Element {
 }
 
 interface GoalDistributionProps {
+  player1: string;
+  player2: string;
   games: Game[];
 }
 function GoalDistribution(props: GoalDistributionProps): JSX.Element {
+  const { player1, player2, games } = props;
+  function inc(data: any, score: number) {
+    if (data[score] === undefined) {
+      data[score] = 0;
+    }
+    data[score] += 1;
+    return data;
+  }
+  let p1data: {[key: number]: number} = {};
+  let p2data: {[key: number]: number} = {};
+  games.forEach((game) => {
+    if (game.red.name === player1) {
+      p1data = inc(p1data, game.red.score)
+      p2data = inc(p2data, game.blue.score)
+    }
+    else {
+      p1data = inc(p1data, game.blue.score)
+      p2data = inc(p2data, game.red.score)
+    }
+  });
+  const maxGoals = games.reduce((pre, game) => Math.max(pre, game.red.score, game.blue.score), 0);
+  const labels = [...Array(maxGoals).keys()];
+  const p1hist = labels.map((score) => p1data[score] | 0);
+  const p2hist = labels.map((score) => -p2data[score] | 0);
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: player1,
+        data: p1hist,
+        backgroundColor: '#FF0000',
+      },
+      {
+        label: player2,
+        data: p2hist,
+        backgroundColor: '#0000FF',
+      },
+    ]
+  };
+  const options = {
+
+  };
   return (
-    <div/>
+    <Panel header={'Goal Distribution'}>
+      <Bar data={data} options={options}/>
+    </Panel>
   );
 }
 
@@ -133,7 +179,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
                   <WinGraph player1={player1} player2={player2} games={games}/>
                 </Col>
                 <Col md={4}>
-                  <GoalDistribution games={this.state.games}/>
+                  <GoalDistribution player1={player1} player2={player2} games={games}/>
                   <RecentGames games={games} showAllGames={true}/>
                 </Col>
               </Row>
