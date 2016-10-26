@@ -20,7 +20,7 @@ function StatRow(props: StatRowProps): JSX.Element {
   return (
     <tr>
       <td style={redStyle}>{v1formatted}</td>
-      <td>{name}</td>
+      <td style={{fontWeight: 'bold'}}>{name}</td>
       <td style={blueStyle}>{v2formatted}</td>
     </tr>
   );
