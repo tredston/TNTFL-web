@@ -18,9 +18,9 @@ function StatRow(props: StatRowProps): JSX.Element {
   const blueStyle = blueAhead ? {backgroundColor: '#00F', color: 'white'} : undefined;
   return (
     <tr>
-      <td style={redStyle}>{redValue}</td>
+      <td style={Object.assign({width: '30%'}, redStyle)}>{redValue}</td>
       <td style={{fontWeight: 'bold'}}>{name}</td>
-      <td style={blueStyle}>{blueValue}</td>
+      <td style={Object.assign({width: '30%'}, blueStyle)}>{blueValue}</td>
     </tr>
   );
 }
