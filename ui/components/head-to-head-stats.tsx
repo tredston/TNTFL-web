@@ -6,21 +6,21 @@ import Game from '../model/game';
 import Player from '../model/player';
 
 interface StatRowProps {
-  name: string;
-  player1value: number;
-  player2value: number;
+  name?: string;
+  redValue?: string | number;
+  blueValue?: string | number;
+  redAhead?: boolean;
+  blueAhead?: boolean;
 }
 function StatRow(props: StatRowProps): JSX.Element {
-  const { name, player1value, player2value } = props;
-  const redAhead = player1value > player2value;
-  const blueAhead = player2value > player1value;
+  const { name, redValue, blueValue, redAhead, blueAhead} = props;
   const redStyle = redAhead ? {backgroundColor: '#F00', color: 'white'} : undefined;
   const blueStyle = blueAhead ? {backgroundColor: '#00F', color: 'white'} : undefined;
   return (
     <tr>
-      <td style={redStyle}>{player1value}</td>
+      <td style={redStyle}>{redValue}</td>
       <td style={{fontWeight: 'bold'}}>{name}</td>
-      <td style={blueStyle}>{player2value}</td>
+      <td style={blueStyle}>{blueValue}</td>
     </tr>
   );
 }
@@ -34,14 +34,8 @@ function PointSwingRow(props: PointSwingRowProps): JSX.Element {
   const v2formatted = p1swing < 0 ? (-p1swing).toFixed(3) : undefined
   const redAhead = p1swing > 0
   const blueAhead = p1swing < 0;
-  const redStyle = redAhead ? {backgroundColor: '#F00', color: 'white'} : undefined;
-  const blueStyle = blueAhead ? {backgroundColor: '#00F', color: 'white'} : undefined;
   return (
-    <tr>
-      <td style={redStyle}>{v1formatted}</td>
-      <td style={{fontWeight: 'bold'}}>Point Swing</td>
-      <td style={blueStyle}>{v2formatted}</td>
-    </tr>
+    <StatRow name={'Point Swing'} redValue={v1formatted} blueValue={v2formatted} redAhead={redAhead} blueAhead={blueAhead}/>
   );
 }
 
@@ -78,20 +72,14 @@ class PredictRow extends Component<PredictRowProps, PredictRowState> {
   render(): JSX.Element {
     const { predictedBlueGoalRatio } = this.state;
     if (predictedBlueGoalRatio === undefined) {
-      return <tr></tr>
+      return <StatRow name={'Predicted Result'}/>
     }
     const blueScore = Math.round(predictedBlueGoalRatio * 10);
     const redScore = 10 - blueScore;
     const redAhead = redScore > blueScore;
     const blueAhead = blueScore > redScore;
-    const redStyle = redAhead ? {backgroundColor: '#F00', color: 'white'} : undefined;
-    const blueStyle = blueAhead ? {backgroundColor: '#00F', color: 'white'} : undefined;
     return (
-      <tr>
-        <td style={redStyle}>{redScore}</td>
-        <td style={{fontWeight: 'bold'}}>Predicted Result</td>
-        <td style={blueStyle}>{blueScore}</td>
-      </tr>
+      <StatRow name={'Predicted Result'} redValue={redScore} blueValue={blueScore} redAhead={redAhead} blueAhead={blueAhead}/>
     );
   }
 }
@@ -162,10 +150,10 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
       <Panel header={'Statistics'}>
         <Table style={{textAlign: 'center'}}>
           <tbody>
-            <tr><td>{player1}</td><td></td><td>{player2}</td></tr>
+            <StatRow redValue={player1} blueValue={player2}/>
             <PointSwingRow p1swing={p1swing}/>
-            {rows.map((row, i) =>
-              <StatRow name={row.name} player1value={row.p1} player2value={row.p2} key={`${i}`}/>
+            {rows.map(({name, p1, p2}, i) =>
+              <StatRow name={name} redValue={p1} blueValue={p2} redAhead={p1 > p2} blueAhead={p2 > p1} key={`${i}`}/>
             )}
             <PredictRow root={root} player1={this.state.player1} player2={this.state.player2}/>
           </tbody>
