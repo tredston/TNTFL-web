@@ -53,7 +53,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
             <Panel header={'Head to Head'}>
               <Row>
                 <Col md={8}>
-                  <Stats player1={player1} player2={player2} games={games}/>
+                  <Stats player1={player1} player2={player2} games={games} root={root}/>
                   <Graph player1={player1} player2={player2} games={games}/>
                 </Col>
                 <Col md={4}>
