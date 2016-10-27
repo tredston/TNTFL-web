@@ -72,7 +72,7 @@ class PredictRow extends Component<PredictRowProps, PredictRowState> {
   render(): JSX.Element {
     const { predictedBlueGoalRatio } = this.state;
     if (predictedBlueGoalRatio === undefined) {
-      return <StatRow name={'Predicted Result'}/>
+      return <StatRow name={'Predicted Result'} redValue={'Loading...'} blueValue={'Loading...'}/>
     }
     const blueScore = Math.round(predictedBlueGoalRatio * 10);
     const redScore = 10 - blueScore;
