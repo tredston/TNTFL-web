@@ -25,7 +25,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
   constructor(props: HeadToHeadPageProps, context: any) {
     super(props, context);
     this.state = {
-      games: [],
+      games: undefined,
     };
   }
   async loadGames() {

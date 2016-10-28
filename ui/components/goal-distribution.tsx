@@ -32,7 +32,7 @@ export default function GoalDistribution(props: GoalDistributionProps): JSX.Elem
     }
   });
   const maxGoals = games.reduce((pre, game) => Math.max(pre, game.red.score, game.blue.score), 0);
-  const labels = [...Array(maxGoals).keys()];
+  const labels = [...Array(maxGoals + 1).keys()];
   const p1hist = labels.map((score) => p1data[score] | 0);
   const p2hist = labels.map((score) => -p2data[score] | 0);
   const data = {
