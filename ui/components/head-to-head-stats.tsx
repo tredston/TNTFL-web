@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Panel, Grid, Row, Col, Table } from 'react-bootstrap';
 
+import PlayerName from './player-name';
+import Rank from './rank';
 import Game from '../model/game';
 import Player from '../model/player';
 
@@ -21,6 +23,49 @@ function StatRow(props: StatRowProps): JSX.Element {
       <td style={Object.assign({width: '30%'}, redStyle)}>{redValue}</td>
       <td style={{fontWeight: 'bold'}}>{name}</td>
       <td style={Object.assign({width: '30%'}, blueStyle)}>{blueValue}</td>
+    </tr>
+  );
+}
+
+interface PlayerRowProps {
+  player1Name: string;
+  player2Name: string;
+  player1?: Player;
+  player2?: Player;
+}
+function PlayerRow(props: PlayerRowProps): JSX.Element {
+  const { player1Name, player2Name, player1, player2 } = props;
+  const redValue = player1 ? player1.name : player1Name;
+  const blueValue = player2 ? player2.name : player2Name;
+  const columnStyle = {padding: 0};
+  const numActivePlayers = 0;
+  return (
+    <tr>
+      <td style={{width: '30%', padding: 0}}>
+        <Grid fluid={true}>
+          <Row>
+            <Col xs={8} style={columnStyle}>
+              <PlayerName name={player1Name} base={''}/>
+            </Col>
+            <Col xs={4} style={columnStyle}>
+              {player1 ? <Rank rank={player1.rank} numActivePlayers={numActivePlayers}/> : 'Loading...'}
+            </Col>
+          </Row>
+        </Grid>
+      </td>
+      <td/>
+      <td style={{width: '30%', padding: 0}}>
+        <Grid fluid={true}>
+          <Row>
+            <Col xs={4} style={columnStyle}>
+              {player2 ? <Rank rank={player2.rank} numActivePlayers={numActivePlayers}/> : 'Loading...'}
+            </Col>
+            <Col xs={8} style={columnStyle}>
+              <PlayerName name={player2Name} base={''}/>
+            </Col>
+          </Row>
+        </Grid>
+      </td>
     </tr>
   );
 }
@@ -150,7 +195,7 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
       <Panel header={'Statistics'}>
         <Table style={{textAlign: 'center'}}>
           <tbody>
-            <StatRow redValue={player1} blueValue={player2}/>
+            <PlayerRow player1Name={player1} player2Name={player2} player1={this.state.player1} player2={this.state.player2}/>
             <PointSwingRow p1swing={p1swing}/>
             {rows.map(({name, p1, p2}, i) =>
               <StatRow name={name} redValue={p1} blueValue={p2} redAhead={p1 > p2} blueAhead={p2 > p1} key={`${i}`}/>
