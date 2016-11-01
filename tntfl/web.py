@@ -49,3 +49,9 @@ def getInt(key, form, default=None):
     value = form.getfirst(key)
     value = int(value) if value else default
     return value
+
+
+def getFloat(key, form, default=None):
+    value = form.getfirst(key)
+    value = float(value) if value else default
+    return value

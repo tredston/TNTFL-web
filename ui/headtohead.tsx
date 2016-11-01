@@ -1,29 +1,16 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Panel, Grid, Row, Col } from 'react-bootstrap';
+import { Panel, Grid, Row, Col, Table } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
 import Graph from './components/head-to-head-graph';
+import Stats from './components/head-to-head-stats';
 import GoalDistribution from './components/goal-distribution';
 import NavigationBar from './components/navigation-bar';
 import RecentGames from './components/recent-game-list';
 import Game from './model/game';
 import { getParameterByName } from './utils/utils';
 
-interface HeadToHeadStatsProps {
-  games: Game[];
-}
-function HeadToHeadStats(props: HeadToHeadStatsProps): JSX.Element {
-  return (
-    <Panel header={'Statistics'}>
-      Points Swing
-      Wins
-      10-0 Wins
-      Goals
-      Predicted Result
-    </Panel>
-  );
-}
 
 interface HeadToHeadPageProps extends Props<HeadToHeadPage> {
   root: string;
@@ -66,7 +53,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
             <Panel header={'Head to Head'}>
               <Row>
                 <Col md={8}>
-                  <HeadToHeadStats games={games}/>
+                  <Stats player1={player1} player2={player2} games={games} root={root}/>
                   <Graph player1={player1} player2={player2} games={games}/>
                 </Col>
                 <Col md={4}>
