@@ -48,8 +48,18 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     return (game.red.score == 10 && game.blue.score == 0 && game.red.name == playerName) ||
       (game.blue.score == 10 && game.red.score == 0 && game.blue.name == playerName);
   }
+  function getOverrated(playerName: string, games: Game[]): number {
+    let skill = 0;
+    let total = 0;
+    games.slice(games.length - 10).forEach((game) => {
+      skill += game.red.name === playerName ? game.red.skillChange : game.blue.skillChange;
+      total += skill;
+    })
+    return skill - (total / 10);
+  }
   const { player, numActivePlayers, games } = props;
   const rank = player.rank !== -1 ? player.rank : '-';
+  const overrated = getOverrated(player.name, games);
   const gamesToday = games.slice(games.length - player.total.gamesToday);
   const goalRatio = player.total.for / player.total.against;
   const tenNils = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
@@ -62,7 +72,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
           {rank}
         </StatBox></Col>
         <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
-        <Col sm={3}/>
+        <Col sm={3}><StatBox title={'Overrated'}>{overrated.toFixed(3)}</StatBox></Col>
         <Col sm={3}><SidePreferenceStat player={player}/></Col>
       </Row>
       <Row>
