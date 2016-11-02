@@ -6,7 +6,7 @@ import { Line } from 'react-chartjs-2';
 
 import Game from '../model/game';
 import Player from '../model/player';
-import { getParameterByName, getLadderLeagueClass, formatEpoch } from '../utils/utils';
+import { getParameterByName, getLadderLeagueClass, formatEpoch, formatRankChange } from '../utils/utils';
 
 interface StatBoxProps {
   title: string;
@@ -80,7 +80,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
       <Row>
         <Col sm={3}><StatBox title="Games today">{gamesToday.length}</StatBox></Col>
         <Col sm={3}><StatBox title="Skill change today" classes={skillChangeToday >= 0 ? "positive" : "negative"}>{skillChangeToday.toFixed(3)}</StatBox></Col>
-        <Col sm={3}><StatBox title="Rank change today" classes={rankChangeToday >= 0 ? "positive" : "negative"}>{rankChangeToday}</StatBox></Col>
+        <Col sm={3}><StatBox title="Rank change today" classes={rankChangeToday >= 0 ? "positive" : "negative"}>{formatRankChange(rankChangeToday)}</StatBox></Col>
         <Col sm={3}/>
         {/*TODO <StatBox title="Current streak">{get_template("durationStat.mako", value="{0} {1}".format(currentStreak.count, currentStreakType), fromDate=currentStreak.fromDate, toDate=currentStreak.toDate, base=self.attr.base))</StatBox>*/}
       </Row>

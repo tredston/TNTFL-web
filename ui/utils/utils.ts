@@ -1,3 +1,4 @@
+import * as React from 'react';
 import * as moment from 'moment';
 
 export function getLadderLeagueClass(rank: number, numActivePlayers: number) {
@@ -42,4 +43,8 @@ export function getParameterByName(name: string): string {
     return '';
   }
   return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+export function formatRankChange(rankChange: number): string {
+  return (rankChange > 0 ? '⬆' : '⬇') + Math.abs(rankChange);
 }

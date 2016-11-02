@@ -7,7 +7,7 @@ import PlayerName from './player-name';
 import GameTime from './game-time';
 import Achievement from '../model/achievement';
 import Game from '../model/game';
-import { getLadderLeagueClass, formatEpoch } from '../utils/utils';
+import { getLadderLeagueClass, formatEpoch, formatRankChange } from '../utils/utils';
 
 interface AchievementsSummaryProps {
   achievements: Achievement[];
@@ -65,7 +65,7 @@ function RankChange(props: RankChangeProps): JSX.Element {
     <div>
       {rankChange !== 0 &&
         <div className={'skill-change ' + colour}>
-          <span style={{fontWeight: 'bold'}}>{rankChange > 0 ? '⬆' : '⬇'}</span>{Math.abs(rankChange)}
+          {formatRankChange(rankChange)}
         </div>
       }
     </div>
