@@ -42,22 +42,13 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     return (game.red.score == 10 && game.blue.score == 0 && game.red.name == playerName) ||
       (game.blue.score == 10 && game.red.score == 0 && game.blue.name == playerName);
   }
-  function getRankChange(playerName: string, games: Game[]): number {
-    var change = 0;
-    if (games.length > 0) {
-      var endRank = games[games.length - 1].red.name == playerName ? games[games.length - 1].red.newRank : games[games.length - 1].blue.newRank
-      var startRank = games[0].red.name == playerName ? games[0].red.newRank - games[0].red.rankChange : games[0].blue.newRank - games[0].blue.rankChange;
-      change = startRank - endRank;
-    }
-    return change;
-  };
   const { player, numActivePlayers, games } = props;
   const rank = player.rank !== -1 ? player.rank : '-';
   const gamesToday = games.slice(games.length - player.total.gamesToday);
   const goalRatio = player.total.for / player.total.against;
   const tenNils = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
   const skillChangeToday = gamesToday.reduce((skill, game) => skill += game.red.name == player.name ? game.red.skillChange : game.blue.skillChange, 0);
-  const rankChangeToday = getRankChange(player.name, gamesToday);
+  const rankChangeToday = gamesToday.reduce((change, game) => change += game.red.name == player.name ? game.red.rankChange : game.blue.rankChange, 0);
   return (
     <Panel header={<h1>{player.name}</h1>}>
       <Row>
