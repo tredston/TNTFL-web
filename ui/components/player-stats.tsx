@@ -38,12 +38,6 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     var redness = (player.total.gamesAsRed / player.total.games) * 100;
     return (redness >= 50) ? (redness.toFixed(2) + "% red") : ((100-redness).toFixed(2) + "% blue")
   };
-  function getSkillChange(playerName: string, games: Game[]): number {
-    var skill = 0;
-    for (var i = 0; i < games.length; i++)
-      skill += games[i].red.name == playerName ? games[i].red.skillChange : games[i].blue.skillChange;
-    return skill;
-  };
   function isTenNilWin(playerName: string, game: Game): boolean {
     return (game.red.score == 10 && game.blue.score == 0 && game.red.name == playerName) ||
       (game.blue.score == 10 && game.red.score == 0 && game.blue.name == playerName);
@@ -61,8 +55,8 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   const rank = player.rank !== -1 ? player.rank : '-';
   const gamesToday = games.slice(games.length - player.total.gamesToday);
   const goalRatio = player.total.for / player.total.against;
-  const skillChangeToday = getSkillChange(player.name, gamesToday);
   const tenNils = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
+  const skillChangeToday = gamesToday.reduce((skill, game) => skill += game.red.name == player.name ? game.red.skillChange : game.blue.skillChange, 0);
   const rankChangeToday = getRankChange(player.name, gamesToday);
   return (
     <Panel header={<h1>{player.name}</h1>}>
