@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import PlayerNameLink from './player-name-link';
-
 interface PlayerNameProps {
   name: string;
   base: string;
