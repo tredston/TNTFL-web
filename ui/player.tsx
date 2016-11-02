@@ -56,7 +56,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
       super(props, context);
       this.state = {
         player: undefined,
-        games: [],
+        games: undefined,
       };
   }
   async loadSummary() {
