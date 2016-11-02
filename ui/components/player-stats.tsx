@@ -44,6 +44,10 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
       skill += games[i].red.name == playerName ? games[i].red.skillChange : games[i].blue.skillChange;
     return skill;
   };
+  function isTenNilWin(playerName: string, game: Game): boolean {
+    return (game.red.score == 10 && game.blue.score == 0 && game.red.name == playerName) ||
+      (game.blue.score == 10 && game.red.score == 0 && game.blue.name == playerName);
+  }
   function getRankChange(playerName: string, games: Game[]): number {
     var change = 0;
     if (games.length > 0) {
@@ -57,6 +61,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   const gamesToday = games.slice(games.length - player.total.gamesToday);
   const goalRatio = player.total.for / player.total.against;
   const skillChangeToday = getSkillChange(player.name, gamesToday);
+  const tenNils = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
   const rankChangeToday = getRankChange(player.name, gamesToday);
   return (
     <Panel header={<h1>{player.name}</h1>}>
@@ -78,7 +83,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
         <Col sm={3}><StatBox title="Goals for">{player.total.for}</StatBox></Col>
         <Col sm={3}><StatBox title="Goals against">{player.total.against}</StatBox></Col>
         <Col sm={3}><StatBox title="Goal ratio" classes={goalRatio > 1 ? "positive" : "negative"}>{goalRatio.toFixed(3)}</StatBox></Col>
-        <Col sm={3}/>
+        <Col sm={3}><StatBox title='10-0 wins'>{tenNils}</StatBox></Col>
       </Row>
       <Row>
         <Col sm={3}><StatBox title="Games today">{gamesToday.length}</StatBox></Col>
