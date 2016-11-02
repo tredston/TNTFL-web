@@ -77,6 +77,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
   }
   render() {
     const { root, addURL } = this.props;
+    const { player, games } = this.state;
     const numActivePlayers = 0;
     // getTotalActivePlayers(this.state.playersStats)
     return (
@@ -85,16 +86,16 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
           root={root}
           addURL={addURL}
         />
-        {this.state.player ?
+        {player && games ?
           <Grid fluid={true}>
             <Row>
               <Col md={8}>
-                <PlayerStats player={this.state.player} numActivePlayers={numActivePlayers} games={this.state.games}/>
-                <SkillChart playerName={this.state.player.name} games={this.state.games} />
+                <PlayerStats player={player} numActivePlayers={numActivePlayers} games={games}/>
+                <SkillChart playerName={player.name} games={games} />
                 {/*TODO <PerPlayerStats />*/}
               </Col>
               <Col md={4}>
-                <RecentGames games={this.state.games.slice(this.state.games.length - 5).reverse()} showAllGames={true}/>
+                <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true}/>
                 {/*TODO <Most significant />*/}
                 {/*TODO <First game />*/}
                 {/*TODO <achievements />*/}
