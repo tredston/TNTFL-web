@@ -6,6 +6,7 @@ import { Line } from 'react-chartjs-2';
 
 import Game from '../model/game';
 import Player from '../model/player';
+import * as Palette from '../palette';
 import { getParameterByName, getLadderLeagueClass, formatEpoch, formatRankChange } from '../utils/utils';
 
 interface StatBoxProps {
@@ -57,6 +58,9 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     })
     return skill - (total / 10);
   }
+  function getBG(blue: boolean): CSSProperties {
+    return {backgroundColor: blue ? Palette.blueFade : Palette.redFade};
+  }
   const { player, numActivePlayers, games } = props;
   const rank = player.rank !== -1 ? player.rank : '-';
   const overrated = getOverrated(player.name, games);
@@ -72,7 +76,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
           {rank}
         </StatBox></Col>
         <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
-        <Col sm={3}><StatBox title={'Overrated'}>{overrated.toFixed(3)}</StatBox></Col>
+        <Col sm={3}><StatBox title={'Overrated'} style={getBG(overrated >= 0)}>{overrated.toFixed(3)}</StatBox></Col>
         <Col sm={3}><SidePreferenceStat player={player}/></Col>
       </Row>
       <Row>
@@ -84,13 +88,13 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
       <Row>
         <Col sm={3}><StatBox title="Goals for">{player.total.for}</StatBox></Col>
         <Col sm={3}><StatBox title="Goals against">{player.total.against}</StatBox></Col>
-        <Col sm={3}><StatBox title="Goal ratio" classes={goalRatio > 1 ? "positive" : "negative"}>{goalRatio.toFixed(3)}</StatBox></Col>
+        <Col sm={3}><StatBox title="Goal ratio" style={getBG(goalRatio > 1)}>{goalRatio.toFixed(3)}</StatBox></Col>
         <Col sm={3}><StatBox title='10-0 wins'>{tenNils}</StatBox></Col>
       </Row>
       <Row>
         <Col sm={3}><StatBox title="Games today">{gamesToday.length}</StatBox></Col>
-        <Col sm={3}><StatBox title="Skill change today" classes={skillChangeToday >= 0 ? "positive" : "negative"}>{skillChangeToday.toFixed(3)}</StatBox></Col>
-        <Col sm={3}><StatBox title="Rank change today" classes={rankChangeToday >= 0 ? "positive" : "negative"}>{formatRankChange(rankChangeToday)}</StatBox></Col>
+        <Col sm={3}><StatBox title="Skill change today" style={getBG(skillChangeToday >= 0)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
+        <Col sm={3}><StatBox title="Rank change today" style={getBG(rankChangeToday >= 0)}>{formatRankChange(rankChangeToday)}</StatBox></Col>
         <Col sm={3}/>
         {/*TODO <StatBox title="Current streak">{get_template("durationStat.mako", value="{0} {1}".format(currentStreak.count, currentStreakType), fromDate=currentStreak.fromDate, toDate=currentStreak.toDate, base=self.attr.base))</StatBox>*/}
       </Row>
