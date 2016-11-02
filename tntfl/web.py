@@ -34,6 +34,10 @@ def fail_404():
     print
 
 
+def fail_400():
+    print "Status: 400 Bad Request"
+
+
 def getString(key, form):
     value = form.getfirst(key)
     if value:
@@ -44,4 +48,10 @@ def getString(key, form):
 def getInt(key, form, default=None):
     value = form.getfirst(key)
     value = int(value) if value else default
+    return value
+
+
+def getFloat(key, form, default=None):
+    value = form.getfirst(key)
+    value = float(value) if value else default
     return value

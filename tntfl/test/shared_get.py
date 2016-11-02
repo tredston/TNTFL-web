@@ -121,6 +121,7 @@ class PlayerApi(Tester):
         self.assertEqual(response['total']['for'], 59)
         self.assertEqual(response['total']['against'], 142)
         self.assertEqual(response['total']['games'], 20)
+        self.assertEqual(response['total']['gamesAsRed'], 15)
         self.assertEqual(response['total']['wins'], 2)
         self.assertEqual(response['total']['losses'], 16)
         self.assertEqual(response['total']['gamesToday'], 0)
@@ -157,10 +158,23 @@ class LadderApi(Tester):
         self.assertEqual(response[2]['name'], 'kjb')
         self.assertEqual(response[2]['skill'], -12.5)
 
+    def testInactive(self):
+        response = self._getJson('ladder.cgi', 'view=json&showInactive=1')
+        self.assertEqual(len(response), 33)
+
+    def testPlayers(self):
+        response = self._getJson('ladder.cgi', 'view=json&showInactive=1&players=1')
+        self.assertEqual(len(response), 33)
+        self.assertTrue('rank' in response[0])
+        self.assertTrue('name' in response[0])
+        self.assertTrue('player' in response[0])
+        self.assertTrue('trend' in response[0])
+        self.assertEqual(len(response[0]['trend']), 10)
+
 
 class GameApi(Tester):
     def test(self):
-        response = self._getJson('game.cgi', 'method=view&game=1223308996&view=json')
+        response = self._getJson('game.cgi', 'game=1223308996&view=json')
         self.assertEqual(response['red']['name'], 'jrem')
         self.assertEqual(response['red']['href'], '../../player/jrem/json')
         self.assertEqual(response['red']['score'], 10)
@@ -191,7 +205,7 @@ class GameApi(Tester):
         self.assertEqual(response['date'], 1223308996)
 
     def testDeleted(self):
-        response = self._getJson('game.cgi', 'method=view&game=1430915499&view=json')
+        response = self._getJson('game.cgi', 'game=1430915499&view=json')
         self.assertTrue('deleted' in response)
         self.assertEqual(response['deleted']['by'], 'eu')
         self.assertEqual(response['deleted']['at'], 1430915500)
@@ -210,7 +224,7 @@ class GamesApi(Tester):
         response = self._getJson('games.cgi', 'view=json&from=1430402614&to=1430991615')
         self.assertEqual(len(response), 5)
         self.assertEqual(response[0]['date'], 1430402615)
-        self.assertDictEqualNoHref(response[0], self._getJson('game.cgi', 'method=view&game=1430402615&view=json'))
+        self.assertDictEqualNoHref(response[0], self._getJson('game.cgi', 'game=1430402615&view=json'))
         self.assertEqual(response[4]['date'], 1430991614)
 
     def testLimit(self):
@@ -230,3 +244,27 @@ class GamesApi(Tester):
         response = self._getJson('games.cgi', 'view=json&from=1430402614&to=1430991615&includeDeleted=0')
         self.assertEqual(len(response), 5)
         self.assertEqual(response[3]['date'], 1430928939)
+
+
+class PunditApi(Tester):
+    def test(self):
+        response = self._getJson('pundit.cgi', 'game=1223308996')
+        self.assertListEqual(response, [
+            "That was jrem's 2nd most significant game.",
+            "That game featured jrem's 10th goal against kjb.",
+            "That was kjb's most significant game."
+        ])
+
+
+class PredictApi(Tester):
+    def test(self):
+        response = self._getJson('predict.cgi', 'player1Elo=0&player2Elo=0')
+        self.assertEqual(response['blueGoalRatio'], 0.5)
+
+    def test2(self):
+        response = self._getJson('predict.cgi', 'player1Elo=10&player2Elo=95.882')
+        self.assertAlmostEqual(response['blueGoalRatio'], 0.75, 4)
+
+    def test2Mirrored(self):
+        response = self._getJson('predict.cgi', 'player1Elo=95.882&player2Elo=10')
+        self.assertAlmostEqual(response['blueGoalRatio'], 0.25, 4)

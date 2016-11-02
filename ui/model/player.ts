@@ -1,4 +1,4 @@
-interface Totals {
+export interface Totals {
   for: number;
   against: number;
   games: number;
@@ -17,4 +17,5 @@ interface Player {
   total: Totals;
   games: {href: string},
 }
+
 export default Player;

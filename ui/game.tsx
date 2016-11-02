@@ -17,22 +17,31 @@ interface GamePageProps extends Props<GamePage> {
 }
 interface GamePageState {
   game: Game;
+  punditry: string[];
 }
 class GamePage extends Component<GamePageProps, GamePageState> {
   constructor(props: GamePageProps, context: any) {
     super(props, context)
     this.state = {
       game: undefined,
+      punditry: undefined,
     };
   }
-  async load() {
+  async loadGame() {
     const { root, gameId } = this.props;
     const url = `${root}game.cgi?method=view&view=json&game=${gameId}`;
     const r = await fetch(url);
-    this.setState({game: await r.json()});
+    this.setState({game: await r.json()} as GamePageState);
+  }
+  async loadPunditry() {
+    const { root, gameId } = this.props;
+    const url = `${root}pundit.cgi?game=${gameId}`;
+    const r = await fetch(url);
+    this.setState({punditry: await r.json()} as GamePageState);
   }
   componentDidMount() {
-    this.load();
+    this.loadGame();
+    this.loadPunditry();
   }
   render() {
     const { root, addURL } = this.props;
@@ -50,7 +59,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
               <GameSummary game={this.state.game} base={"../../"} numActivePlayers={numActivePlayers} />
             </Row>
             <Row>
-              <GameDetails game={this.state.game} />
+              <GameDetails game={this.state.game} punditry={this.state.punditry}/>
             </Row>
           </Grid>
           : 'Loading...'

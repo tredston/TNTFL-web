@@ -3,7 +3,7 @@
 import cgi
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
-from tntfl.web import fail_404, serve_template, getString
+from tntfl.web import fail_404, fail_400, serve_template, getString
 
 
 form = cgi.FieldStorage()
@@ -19,3 +19,5 @@ if player:
             serve_template("player.mako", player=player, ladder=ladder)
     else:
         fail_404()
+else:
+    fail_400()

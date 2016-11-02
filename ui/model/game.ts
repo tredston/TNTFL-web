@@ -18,7 +18,6 @@ interface Game {
   red: Side;
   blue: Side;
   date: number;
-  punditry: string[];
   deleted?: DeletedInfo;
 }
 export default Game;

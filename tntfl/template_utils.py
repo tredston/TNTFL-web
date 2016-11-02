@@ -1,6 +1,20 @@
 from datetime import date, datetime, timedelta
 
 
+def getTrend(player):
+    trend = []
+    games = player.games[-10:] if len(player.games) >= 10 else player.games
+    skill = 0
+    for i, game in enumerate(games):
+        skill += game.skillChangeToBlue if game.bluePlayer == player.name else -game.skillChangeToBlue
+        trend.append([i, skill])
+    if len(trend) > 0:
+        trendColour = "#0000FF" if trend[0][1] < trend[len(games) - 1][1] else "#FF0000"
+    else:
+        trendColour = "#000000"
+    return {'trend': trend, 'colour': trendColour}
+
+
 def getNumYellowStripes(player, games):
     return len([g for g in games if (g.redPlayer == player.name and g.redScore == 10 and g.blueScore == 0) or (g.bluePlayer == player.name and g.blueScore == 10 and g.redScore == 0)])
 
@@ -83,11 +97,14 @@ def gameToJson(game, base):
     return asJson
 
 
-def playersToJson(players, base):
-    return [{'rank': i + 1, 'name': p.name, 'skill': p.elo, 'href': playerHref(base, p.name)} for i, p in enumerate(players)]
+def ladderToJson(players, ladder, base, includePlayers):
+    if includePlayers:
+        return [{'rank': ladder.getPlayerRank(p.name), 'name': p.name, 'player': playerToJson(p, ladder), 'trend': [s for i, s in getTrend(p)['trend']]} for i, p in enumerate(players)]
+    else:
+        return [{'rank': i + 1, 'name': p.name, 'skill': p.elo, 'href': playerHref(base, p.name)} for i, p in enumerate(players)]
 
 
-def playertoJson(player, ladder):
+def playerToJson(player, ladder):
     return {
         'name': player.name,
         'rank': ladder.getPlayerRank(player.name),

@@ -1,7 +1,7 @@
 <%!
 import json
-from tntfl.template_utils import playertoJson
+from tntfl.template_utils import playerToJson
 base = '../'
 %>
 <%inherit file='json.mako' />
-${json.dumps(playertoJson(player, ladder))}
+${json.dumps(playerToJson(player, ladder))}

@@ -49,17 +49,19 @@ if __name__ == "__main__":
     parser.set_defaults(runIntegration=False)
     args = parser.parse_args()
 
-    clearCache()
     runner = unittest.TextTestRunner()
 
+    clearCache()
     print 'Running unit tests:'
     result = runner.run(unitTestSuite())
 
     if len(result.errors) == 0 and len(result.failures) == 0:
+        clearCache()
         print 'Running functional tests:'
         result = runner.run(functionalTestSuite())
 
     if len(result.errors) == 0 and len(result.failures) == 0 and args.runIntegration:
+        clearCache()
         print 'Running integration tests:'
         result = runner.run(integrationTestSuite())
 

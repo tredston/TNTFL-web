@@ -3,8 +3,10 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: {
+    index: './ui/index.tsx',
     game: './ui/game.tsx',
-    player: './ui/player.tsx'
+    player: './ui/player.tsx',
+    headtohead: './ui/headtohead.tsx'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
