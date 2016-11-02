@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Line, Pie } from 'react-chartjs-2';
 
-import PlayerNameLink from './player-name-link';
+import PlayerName from './player-name';
 import LadderEntry from '../model/ladder-entry';
 import Player, { Totals } from '../model/player';
 
@@ -90,7 +90,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       condensed={true}
     >
       <TableHeaderColumn dataField={'rank'} dataSort={true} dataAlign={'center'}>Pos</TableHeaderColumn>
-      <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerNameLink base={''} name={n}/>}>Player</TableHeaderColumn>
+      <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerName base={''} name={n}/>}>Player</TableHeaderColumn>
       <TableHeaderColumn dataField={'totals'} dataFormat={(p) => GamesChart(p)}>Games</TableHeaderColumn>
       <TableHeaderColumn dataField={'totals'} dataFormat={(p) => GoalChart(p)}>Goal ratio</TableHeaderColumn>
       <TableHeaderColumn dataField={'skill'} dataSort={true} dataAlign={'center'}>Skill</TableHeaderColumn>

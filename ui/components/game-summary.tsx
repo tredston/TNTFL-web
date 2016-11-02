@@ -2,26 +2,12 @@ import * as React from 'react';
 import { Grid, Table } from 'react-bootstrap';
 import * as moment from 'moment';
 
+import Rank from './rank';
+import PlayerName from './player-name';
 import GameTime from './game-time';
-import PlayerNameLink from './player-name-link';
 import Achievement from '../model/achievement';
 import Game from '../model/game';
 import { getLadderLeagueClass, formatEpoch } from '../utils/utils';
-
-interface PlayerNameProps {
-  name: string;
-  base: string;
-  colour: string;
-  yellow: boolean;
-}
-function PlayerName(props: PlayerNameProps): JSX.Element {
-  const { name, base, colour, yellow } = props;
-  return (
-    <div className={`${colour} ${yellow ? 'yellow-stripe' : ''}`}>
-      <PlayerNameLink base={base} name={name} />
-    </div>
-  );
-}
 
 interface AchievementsSummaryProps {
   achievements: Achievement[];
@@ -48,20 +34,6 @@ function GameScore(props: GameScoreProps): JSX.Element {
   return (
     <div className={yellow ? 'yellow-stripe' : ''}>
       {redScore} - {blueScore}
-    </div>
-  );
-}
-
-interface RankProps {
-  rank: number;
-  numActivePlayers: number;
-}
-function Rank(props: RankProps): JSX.Element {
-  const { rank, numActivePlayers } = props;
-  const league = getLadderLeagueClass(rank, numActivePlayers);
-  return (
-    <div className={"ladder-position " + league} style={{width: '100%'}}>
-      {rank}
     </div>
   );
 }

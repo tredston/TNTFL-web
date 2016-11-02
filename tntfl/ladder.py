@@ -47,7 +47,7 @@ class TableFootballLadder(object):
 
     # returns blue's goal ratio
     def predict(self, red, blue):
-        return self._skillChange.getBlueGoalRatio(red, blue)
+        return self._skillChange.getBlueGoalRatio(red.elo, blue.elo)
 
     def _getActivePlayers(self, atTime=None):
         if atTime is None:
