@@ -56,8 +56,8 @@ function InstantStatBox(props: InstantStatBoxProps): JSX.Element {
 
 interface DurationStatBoxProps {
   title: string;
-  from: number;
-  to: number;
+  from?: number;
+  to?: number;
   children?: any;
 }
 function DurationStatBox(props: DurationStatBoxProps): JSX.Element {
@@ -65,8 +65,8 @@ function DurationStatBox(props: DurationStatBoxProps): JSX.Element {
   return (
     <StatBox title={title}>
       {children}
-      <div>From <GameTime date={from} base={''} /></div>
-      <div>To <GameTime date={to} base={''} /></div>
+      {from && <div>From <GameTime date={from} base={''} /></div>}
+      {to && <div>To <GameTime date={to} base={''} /></div>}
     </StatBox>
   );
 }
@@ -115,7 +115,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   }, [{date: preHistoric, skill: 0}]);
   const highestSkill = skillLine.reduce((highest, skill) => skill.skill > highest.skill ? skill : highest, {date: preHistoric, skill: 0});
   const lowestSkill = skillLine.reduce((lowest, skill) => skill.skill < lowest.skill ? skill : lowest, {date: preHistoric, skill: 0});
-  const streaks = games.reduce(({streaks, currentStreak}, game) => {
+  const { streaks, currentStreak } = games.reduce(({streaks, currentStreak}, game) => {
     const won = (game.red.name == player.name && game.red.score > game.blue.score) || (game.blue.name == player.name && game.blue.score > game.red.score);
     const lost = (game.red.name == player.name && game.red.score < game.blue.score) || (game.blue.name == player.name && game.blue.score < game.red.score);
     if ((won && currentStreak.win) || lost && !currentStreak.win) {
@@ -132,8 +132,8 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     }
     return {streaks, currentStreak};
   }, {streaks: [], currentStreak: {win: true, gameTimes: []}});
-  const winningStreak = streaks.streaks.reduce((winning, streak) => (streak.win && streak.gameTimes.length > winning.gameTimes.length) ? streak : winning , {win: true, gameTimes: []});
-  const losingStreak = streaks.streaks.reduce((losing, streak) => (!streak.win && streak.gameTimes.length > losing.gameTimes.length) ? streak : losing, {win: false, gameTimes: []});
+  const winningStreak = streaks.reduce((winning, streak) => (streak.win && streak.gameTimes.length > winning.gameTimes.length) ? streak : winning , {win: true, gameTimes: []});
+  const losingStreak = streaks.reduce((losing, streak) => (!streak.win && streak.gameTimes.length > losing.gameTimes.length) ? streak : losing, {win: false, gameTimes: []});
   return (
     <Panel header={<h1>{player.name}</h1>}>
       <Row>
@@ -161,7 +161,11 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
         <Col sm={3}><StatBox title="Skill change today" style={getBG(skillChangeToday >= 0)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
         <Col sm={3}><StatBox title="Rank change today" style={getBG(rankChangeToday >= 0)}>{formatRankChange(rankChangeToday)}</StatBox></Col>
         <Col sm={3}/>
-        {/*TODO <StatBox title="Current streak">{get_template("durationStat.mako", value="{0} {1}".format(currentStreak.count, currentStreakType), fromDate=currentStreak.fromDate, toDate=currentStreak.toDate, base=self.attr.base))</StatBox>*/}
+        <Col sm={3}>
+          <DurationStatBox title={'Current streak'} from={currentStreak.gameTimes[0]} to={currentStreak.gameTimes[currentStreak.gameTimes.length - 1]}>
+            {currentStreak.gameTimes.length + (currentStreak.win ? ' wins' : ' losses')}
+          </DurationStatBox>
+        </Col>
       </Row>
       <Row>
         <Col sm={3}><InstantStatBox title={'Highest ever skill'} at={highestSkill.date}>{highestSkill.skill.toFixed(3)}</InstantStatBox></Col>
