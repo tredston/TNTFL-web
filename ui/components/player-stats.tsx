@@ -58,6 +58,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     return change;
   };
   const { player, numActivePlayers, games } = props;
+  const rank = player.rank !== -1 ? player.rank : '-';
   const gamesToday = games.slice(games.length - player.total.gamesToday);
   const goalRatio = player.total.for / player.total.against;
   const skillChangeToday = getSkillChange(player.name, gamesToday);
@@ -67,7 +68,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     <Panel header={<h1>{player.name}</h1>}>
       <Row>
         <Col sm={3}><StatBox title="Current Ranking" classes={"ladder-position " + getLadderLeagueClass(player.rank, numActivePlayers)}>
-          {player.rank !== -1 ? player.rank : '-'}
+          {rank}
         </StatBox></Col>
         <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
         <Col sm={3}><StatBox title="Side preference" classes="side-preference" style={sideStyle(player)}>{sidePreference(player)}</StatBox></Col>
