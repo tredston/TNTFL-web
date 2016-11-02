@@ -4,6 +4,7 @@ import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { Line } from 'react-chartjs-2';
 
+import GameTime from './game-time';
 import Game from '../model/game';
 import Player from '../model/player';
 import * as Palette from '../palette';
@@ -38,6 +39,21 @@ function SidePreferenceStat(props: SidePreferenceStatProps): JSX.Element {
   )
 }
 
+interface InstantStatBoxProps {
+  title: string;
+  at: number;
+  children?: any;
+}
+function InstantStatBox(props: InstantStatBoxProps): JSX.Element {
+  const { title, at, children } = props;
+  return (
+    <StatBox title={title}>
+      {children}
+      <div>at <GameTime date={at} base={''} /></div>
+    </StatBox>
+  );
+}
+
 interface PlayerStatsProps {
   player: Player;
   games: Game[];
@@ -68,6 +84,15 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   const tenNils = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
   const skillChangeToday = gamesToday.reduce((skill, game) => skill += game.red.name == player.name ? game.red.skillChange : game.blue.skillChange, 0);
   const rankChangeToday = gamesToday.reduce((change, game) => change += game.red.name == player.name ? game.red.rankChange : game.blue.rankChange, 0);
+  const preHistoric = games.length > 0 ? games[0].date - 1 : 0;
+  const skillLine = games.reduce((skillLine, game) => {
+    const prevSkill = skillLine[skillLine.length - 1].skill;
+    const change = game.red.name == player.name ? game.red.skillChange : game.blue.skillChange;
+    skillLine.push({date: game.date, skill: (prevSkill + change)});
+    return skillLine;
+  }, [{date: preHistoric, skill: 0}]);
+  const highestSkill = skillLine.reduce((highest, skill) => skill.skill > highest.skill ? skill : highest, {date: preHistoric, skill: 0});
+  const lowestSkill = skillLine.reduce((lowest, skill) => skill.skill < lowest.skill ? skill : lowest, {date: preHistoric, skill: 0});
   return (
     <Panel header={<h1>{player.name}</h1>}>
       <Row>
@@ -98,8 +123,10 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
         {/*TODO <StatBox title="Current streak">{get_template("durationStat.mako", value="{0} {1}".format(currentStreak.count, currentStreakType), fromDate=currentStreak.fromDate, toDate=currentStreak.toDate, base=self.attr.base))</StatBox>*/}
       </Row>
       <Row>
-        {/*TODO <StatBox title="Highest ever skill">{get_template("pointInTimeStat.mako", skill=skillBounds['highest']['skill'], time=skillBounds['highest']['time'], base=self.attr.base))</StatBox>*/}
-        {/*TODO <StatBox title="Lowest ever skill">{get_template("pointInTimeStat.mako", skill=skillBounds['lowest']['skill'], time=skillBounds['lowest']['time'], base=self.attr.base))</StatBox>*/}
+        <Col sm={3}><InstantStatBox title={'Highest ever skill'} at={highestSkill.date}>{highestSkill.skill.toFixed(3)}</InstantStatBox></Col>
+        <Col sm={3}><InstantStatBox title={'Lowest ever skill'} at={lowestSkill.date}>{lowestSkill.skill.toFixed(3)}</InstantStatBox></Col>
+        <Col sm={3}/>
+        <Col sm={3}/>
         {/*TODO <StatBox title="Longest winning streak">{get_template("durationStat.mako", value=winStreak.count, fromDate=winStreak.fromDate, toDate=winStreak.toDate, base=self.attr.base))</StatBox>*/}
         {/*TODO <StatBox title="Longest losing streak">{get_template("durationStat.mako", value=loseStreak.count, fromDate=loseStreak.fromDate, toDate=loseStreak.toDate, base=self.attr.base))</StatBox>*/}
       </Row>
