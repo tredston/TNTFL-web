@@ -24,20 +24,26 @@ function StatBox(props: StatBoxProps): JSX.Element {
   );
 }
 
+interface SidePreferenceStatProps {
+  player: Player;
+}
+function SidePreferenceStat(props: SidePreferenceStatProps): JSX.Element {
+  const { player } = props;
+  const redness = (player.total.gamesAsRed / player.total.games);
+  const style = {backgroundColor: 'rgb(' + Math.round(redness * 255) + ', 0, '  + Math.round((1 - redness) * 255) + ')'};
+  const pc = redness * 100;
+  const preference = (pc >= 50) ? (pc.toFixed(2) + '% red') : ((100-pc).toFixed(2) + '% blue');
+  return (
+    <StatBox title='Side preference' classes='side-preference' style={style}>{preference}</StatBox>
+  )
+}
+
 interface PlayerStatsProps {
   player: Player;
   games: Game[];
   numActivePlayers: number;
 }
 export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
-  function sideStyle(player: Player): CSSProperties {
-    var redness = (player.total.gamesAsRed / player.total.games);
-    return {backgroundColor: 'rgb(' + Math.round(redness * 255) + ', 0, '  + Math.round((1 - redness) * 255) + ')'};
-  };
-  function sidePreference(player: Player): string {
-    var redness = (player.total.gamesAsRed / player.total.games) * 100;
-    return (redness >= 50) ? (redness.toFixed(2) + "% red") : ((100-redness).toFixed(2) + "% blue")
-  };
   function isTenNilWin(playerName: string, game: Game): boolean {
     return (game.red.score == 10 && game.blue.score == 0 && game.red.name == playerName) ||
       (game.blue.score == 10 && game.red.score == 0 && game.blue.name == playerName);
@@ -56,8 +62,8 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
           {rank}
         </StatBox></Col>
         <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
-        <Col sm={3}><StatBox title="Side preference" classes="side-preference" style={sideStyle(player)}>{sidePreference(player)}</StatBox></Col>
         <Col sm={3}/>
+        <Col sm={3}><SidePreferenceStat player={player}/></Col>
       </Row>
       <Row>
         <Col sm={3}><StatBox title="Total games">{player.total.games}</StatBox></Col>
