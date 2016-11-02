@@ -11,13 +11,12 @@ import { getParameterByName, getLadderLeagueClass, formatEpoch, formatRankChange
 
 interface StatBoxProps {
   title: string;
-  caption?: string;
   classes?: string;
   style?: CSSProperties;
   children?: any;
 }
 function StatBox(props: StatBoxProps): JSX.Element {
-  const { title, caption, children, classes, style } = props;
+  const { title, children, classes, style } = props;
   return (
     <Panel className={classes} header={<h3>{title}</h3>} style={Object.assign({width: 'auto'}, style)}>
       {children}
