@@ -162,16 +162,15 @@ class Player(object):
 
 
 class PerPlayerStat(object):
-    games = 0
-    goalsFor = 0
-    goalsAgainst = 0
-    skillChange = 0
-    wins = 0
-    losses = 0
-    draws = 0
-
     def __init__(self, opponent):
         self.opponent = opponent
+        self.games = 0
+        self.goalsFor = 0
+        self.goalsAgainst = 0
+        self.skillChange = 0
+        self.wins = 0
+        self.losses = 0
+        self.draws = 0
 
     def append(self, goalsFor, goalsAgainst, skillChange):
         self.games += 1

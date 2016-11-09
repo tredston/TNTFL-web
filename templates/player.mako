@@ -3,22 +3,8 @@ title = ""
 base = "../../"
 from tntfl.game import Game
 from tntfl.web import get_template
-from tntfl.player import PerPlayerStat
 from tntfl.pundit import Pundit
 import tntfl.template_utils as utils
-
-def getPerPlayerStats(player):
-    pps = {}
-    for game in player.games:
-        if game.redPlayer == player.name:
-            if game.bluePlayer not in pps:
-                pps[game.bluePlayer] = PerPlayerStat(game.bluePlayer)
-            pps[game.bluePlayer].append(game.redScore, game.blueScore, -game.skillChangeToBlue)
-        elif game.bluePlayer == player.name:
-            if game.redPlayer not in pps:
-                pps[game.redPlayer] = PerPlayerStat(game.redPlayer)
-            pps[game.redPlayer].append(game.blueScore, game.redScore, game.skillChangeToBlue)
-    return pps
 
 def getSkillHistory(player):
     skill = 0
@@ -44,7 +30,7 @@ currentStreakType = streaks['currentType']
 
 overratedClass = "positive" if player.overrated() <= 0 else "negative"
 tenNilWins = utils.getNumYellowStripes(player, player.games)
-pps = getPerPlayerStats(player)
+pps = utils.getPerPlayerStats(player)
 rank = ladder.getPlayerRank(player.name)
 redness = float(player.gamesAsRed) / len(player.games) if len(player.games) > 0 else 0
 sideStyle = "background-color: rgb(" + str(int(round(redness * 255))) + ", 0, "  + str(int(round((1 - redness) * 255))) + ")"
