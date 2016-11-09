@@ -194,13 +194,11 @@ class GameApi(Tester):
         self.assertEqual(response['red']['rankChange'], 1)
         self.assertEqual(response['red']['newRank'], 3)
         redAchievements = response['red']['achievements']
-        self.assertEqual(len(redAchievements), 3)
+        self.assertEqual(len(redAchievements), 2)
         self.assertEqual(redAchievements[0]['name'], "Flawless Victory")
         self.assertEqual(redAchievements[0]['description'], "Beat an opponent 10-0")
-        self.assertEqual(redAchievements[1]['name'], "Early Bird")
-        self.assertEqual(redAchievements[1]['description'], "Play and win the first game of the day")
-        self.assertEqual(redAchievements[2]['name'], "Pok&#233;Master")
-        self.assertEqual(redAchievements[2]['description'], "Collect all the scores")
+        self.assertEqual(redAchievements[1]['name'], "Pok&#233;Master")
+        self.assertEqual(redAchievements[1]['description'], "Collect all the scores")
 
         self.assertEqual(response['blue']['name'], 'kjb')
         self.assertEqual(response['blue']['href'], '../../player/kjb/json')
