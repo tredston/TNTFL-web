@@ -12,14 +12,13 @@ import { getParameterByName, getLadderLeagueClass, formatEpoch, formatRankChange
 
 interface StatBoxProps {
   title: string;
-  classes?: string;
   style?: CSSProperties;
   children?: any;
 }
 function StatBox(props: StatBoxProps): JSX.Element {
-  const { title, children, classes, style } = props;
+  const { title, children, style } = props;
   return (
-    <Panel className={classes} header={<h3>{title}</h3>} style={Object.assign({width: 'auto'}, style)}>
+    <Panel header={<h3>{title}</h3>} style={style}>
       {children}
     </Panel>
   );
@@ -31,11 +30,14 @@ interface SidePreferenceStatProps {
 function SidePreferenceStat(props: SidePreferenceStatProps): JSX.Element {
   const { player } = props;
   const redness = (player.total.gamesAsRed / player.total.games);
-  const style = {backgroundColor: 'rgb(' + Math.round(redness * 255) + ', 0, '  + Math.round((1 - redness) * 255) + ')'};
+  const style = {
+    backgroundColor: 'rgb(' + Math.round(redness * 255) + ', 0, '  + Math.round((1 - redness) * 255) + ')',
+    color: 'white',
+  };
   const pc = redness * 100;
   const preference = (pc >= 50) ? (pc.toFixed(2) + '% red') : ((100-pc).toFixed(2) + '% blue');
   return (
-    <StatBox title='Side preference' classes='side-preference' style={style}>{preference}</StatBox>
+    <StatBox title='Side preference' style={style}>{preference}</StatBox>
   )
 }
 
@@ -66,7 +68,7 @@ function DurationStatBox(props: DurationStatBoxProps): JSX.Element {
     <StatBox title={title}>
       {children}
       {from && <div>From <GameTime date={from} base={''} /></div>}
-      {to && <div>To <GameTime date={to} base={''} /></div>}
+      {to && <div>to <GameTime date={to} base={''} /></div>}
     </StatBox>
   );
 }
@@ -99,6 +101,10 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     return {backgroundColor: blue ? Palette.blueFade : Palette.redFade};
   }
   const { player, numActivePlayers, games } = props;
+  const positionStyle: CSSProperties = {
+    color: 'white',
+    backgroundColor: '#2A5B8D',
+  };
   const rank = player.rank !== -1 ? player.rank : '-';
   const overrated = getOverrated(player.name, games);
   const gamesToday = games.slice(games.length - player.total.gamesToday);
@@ -137,7 +143,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   return (
     <Panel header={<h1>{player.name}</h1>}>
       <Row>
-        <Col sm={3}><StatBox title="Current Ranking" classes={"ladder-position " + getLadderLeagueClass(player.rank, numActivePlayers)}>
+        <Col sm={3}><StatBox title="Current Ranking" style={positionStyle}>
           {rank}
         </StatBox></Col>
         <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
