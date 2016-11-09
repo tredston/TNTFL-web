@@ -126,14 +126,26 @@ class PlayerApi(Tester):
         self.assertEqual(response['total']['losses'], 16)
         self.assertEqual(response['total']['gamesToday'], 0)
 
-    def testPlayerGamesJsonReachable(self):
+    def testPlayerGamesJson(self):
         response = self._getJson('player.cgi', 'player=rc&method=games&view=json')
         self.assertEqual(len(response), 20)
         self.assertEqual(response[0]['date'], 1278339173)
 
+    def testPerPlayerStatsJson(self):
+        response = self._getJson('player.cgi', 'player=rc&method=perPlayerStats&view=json')
+        self.assertEqual(len(response), 1)
+        jrem = response[0]
+        self.assertEqual(jrem['opponent'], 'jrem')
+        self.assertEqual(jrem['games'], 20)
+        self.assertEqual(jrem['wins'], 2)
+        self.assertEqual(jrem['losses'], 16)
+        self.assertEqual(jrem['for'], 59)
+        self.assertEqual(jrem['against'], 142)
+        self.assertAlmostEqual(jrem['skillChange'], 1.219, 2)
+
 
 class HeadToHeadApi(Tester):
-    def testHeadToHeadGamesJsonReachable(self):
+    def testHeadToHeadGamesJson(self):
         response = self._getJson('headtohead.cgi', 'player1=jrem&player2=prc&method=games&view=json')
         self.assertEqual(len(response), 11)
         self.assertEqual(response[0]['date'], 1392832399)

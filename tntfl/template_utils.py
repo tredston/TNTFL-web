@@ -138,3 +138,14 @@ def getPerPlayerStats(player):
             pps[game.redPlayer].append(game.blueScore, game.redScore, game.skillChangeToBlue)
     return pps
 
+
+def perPlayerStatsToJson(stats):
+    return [{
+        'opponent': opponent,
+        'skillChange': stats[opponent].skillChange,
+        'for': stats[opponent].goalsFor,
+        'against': stats[opponent].goalsAgainst,
+        'games': stats[opponent].games,
+        'wins': stats[opponent].wins,
+        'losses': stats[opponent].losses,
+    } for opponent in stats.keys()]

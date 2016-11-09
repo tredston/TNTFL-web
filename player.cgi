@@ -13,8 +13,11 @@ if player:
     ladder = TableFootballLadder(Constants.ladderFilePath)
     if player in ladder.players:
         player = ladder.getPlayer(player)
-        if getString('method', form) == "games":
+        method = getString('method', form)
+        if method == "games":
             serve_template("playerGames.mako", pageTitle="%s's games" % player.name, games=player.games, ladder=ladder)
+        elif method == 'perplayerstats':
+            serve_template('perPlayerStats.mako', player=player, ladder=ladder)
         else:
             serve_template("player.mako", player=player, ladder=ladder)
     else:
