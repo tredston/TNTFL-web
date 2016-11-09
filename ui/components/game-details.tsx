@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Grid, Panel, Table } from 'react-bootstrap';
 
 import AchievementPanel from './achievement-panel';
-import Achievement from '../model/achievement';
 import Game from '../model/game';
 
 
