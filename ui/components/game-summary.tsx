@@ -7,7 +7,7 @@ import PlayerName from './player-name';
 import GameTime from './game-time';
 import Achievement from '../model/achievement';
 import Game from '../model/game';
-import { getLadderLeagueClass, formatEpoch } from '../utils/utils';
+import { getLadderLeagueClass, formatEpoch, formatRankChange } from '../utils/utils';
 
 interface AchievementsSummaryProps {
   achievements: Achievement[];
@@ -65,7 +65,7 @@ function RankChange(props: RankChangeProps): JSX.Element {
     <div>
       {rankChange !== 0 &&
         <div className={'skill-change ' + colour}>
-          <span style={{fontWeight: 'bold'}}>{rankChange > 0 ? '⬆' : '⬇'}</span>{Math.abs(rankChange)}
+          {formatRankChange(rankChange)}
         </div>
       }
     </div>
@@ -99,7 +99,7 @@ export default function GameSummary(props: GameSummaryProps): JSX.Element {
             <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.red.skillChange} colour="skill-change-red" /> </td>
             <td style={{width: '10%'}} className={'rank-change red'}> <RankChange rankChange={game.red.rankChange} colour="skill-change-red" /> </td>
             <td style={{width: '10%'}}/>
-            <td style={{width: '20%'}}> <GameTime date={game.date} base={base} /> </td>
+            <td style={{width: '20%', textAlign: 'center'}}> <GameTime date={game.date} base={base} /> </td>
             <td style={{width: '10%'}}/>
             <td style={{width: '10%'}} className={'rank-change blue'}> <RankChange rankChange={game.blue.rankChange} colour="skill-change-blue" /> </td>
             <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.blue.skillChange} colour="skill-change-blue" /> </td>
