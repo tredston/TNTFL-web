@@ -18,6 +18,8 @@ if player:
             serve_template("playerGames.mako", pageTitle="%s's games" % player.name, games=player.games, ladder=ladder)
         elif method == 'perplayerstats':
             serve_template('perPlayerStats.mako', player=player, ladder=ladder)
+        elif method == 'achievements':
+            serve_template('playerAchievements.mako', player=player)
         else:
             serve_template("player.mako", player=player, ladder=ladder)
     else:

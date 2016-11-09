@@ -143,6 +143,14 @@ class PlayerApi(Tester):
         self.assertEqual(jrem['against'], 142)
         self.assertAlmostEqual(jrem['skillChange'], 1.219, 2)
 
+    def testAchievements(self):
+        response = self._getJson('player.cgi', 'player=rc&method=achievements&view=json')
+        self.assertEqual(len(response), 25)
+        self.assertEqual(len([a for a in response if 'time' in a]), 5)
+        self.assertIn('name', response[0])
+        self.assertIn('description', response[0])
+        self.assertIn('time', response[0])
+
 
 class HeadToHeadApi(Tester):
     def testHeadToHeadGamesJson(self):
