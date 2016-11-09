@@ -1,4 +1,5 @@
 from datetime import date, datetime, timedelta
+from tntfl.player import PerPlayerStat
 
 
 def getTrend(player):
@@ -122,3 +123,29 @@ def playerToJson(player, ladder):
         },
         'games': {'href': 'games/json'},
     }
+
+
+def getPerPlayerStats(player):
+    pps = {}
+    for game in player.games:
+        if game.redPlayer == player.name:
+            if game.bluePlayer not in pps:
+                pps[game.bluePlayer] = PerPlayerStat(game.bluePlayer)
+            pps[game.bluePlayer].append(game.redScore, game.blueScore, -game.skillChangeToBlue)
+        elif game.bluePlayer == player.name:
+            if game.redPlayer not in pps:
+                pps[game.redPlayer] = PerPlayerStat(game.redPlayer)
+            pps[game.redPlayer].append(game.blueScore, game.redScore, game.skillChangeToBlue)
+    return pps
+
+
+def perPlayerStatsToJson(stats):
+    return [{
+        'opponent': opponent,
+        'skillChange': stats[opponent].skillChange,
+        'for': stats[opponent].goalsFor,
+        'against': stats[opponent].goalsAgainst,
+        'games': stats[opponent].games,
+        'wins': stats[opponent].wins,
+        'losses': stats[opponent].losses,
+    } for opponent in stats.keys()]

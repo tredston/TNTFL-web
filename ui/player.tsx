@@ -4,10 +4,12 @@ import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { Line } from 'react-chartjs-2';
 
+import PerPlayerStats from './components/per-player-stats';
 import PlayerStats from './components/player-stats';
 import RecentGames from './components/recent-game-list';
 import NavigationBar from './components/navigation-bar';
 import Game from './model/game';
+import PerPlayerStat from './model/per-player-stat';
 import Player from './model/player';
 import { getParameterByName, getLadderLeagueClass, formatEpoch } from './utils/utils';
 
@@ -50,6 +52,7 @@ interface PlayerPageProps extends Props<PlayerPage> {
 interface PlayerPageState {
   player: Player;
   games: Game[];
+  perPlayerStats: PerPlayerStat[];
 }
 class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
   constructor(props: PlayerPageProps, context: any) {
@@ -57,6 +60,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
       this.state = {
         player: undefined,
         games: undefined,
+        perPlayerStats: undefined,
       };
   }
   async loadSummary() {
@@ -71,13 +75,20 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
     const r = await fetch(url);
     this.setState({games: await r.json()} as PlayerPageState);
   }
+  async loadPerPlayerStats() {
+    const { root, playerName } = this.props;
+    const url = `${root}player.cgi?method=perplayerstats&view=json&player=${playerName}`;
+    const r = await fetch(url);
+    this.setState({perPlayerStats: await r.json()} as PlayerPageState);
+  }
   componentDidMount() {
     this.loadSummary();
     this.loadGames();
+    this.loadPerPlayerStats();
   }
   render() {
-    const { root, addURL } = this.props;
-    const { player, games } = this.state;
+    const { playerName, root, addURL } = this.props;
+    const { player, games, perPlayerStats } = this.state;
     const numActivePlayers = 0;
     // getTotalActivePlayers(this.state.playersStats)
     return (
@@ -92,7 +103,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
               <Col md={8}>
                 <PlayerStats player={player} numActivePlayers={numActivePlayers} games={games}/>
                 <SkillChart playerName={player.name} games={games} />
-                {/*TODO <PerPlayerStats />*/}
+                <PerPlayerStats playerName={playerName} stats={perPlayerStats}/>
               </Col>
               <Col md={4}>
                 <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true}/>
