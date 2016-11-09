@@ -87,7 +87,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
     this.loadPerPlayerStats();
   }
   render() {
-    const { root, addURL } = this.props;
+    const { playerName, root, addURL } = this.props;
     const { player, games, perPlayerStats } = this.state;
     const numActivePlayers = 0;
     // getTotalActivePlayers(this.state.playersStats)
@@ -103,7 +103,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
               <Col md={8}>
                 <PlayerStats player={player} numActivePlayers={numActivePlayers} games={games}/>
                 <SkillChart playerName={player.name} games={games} />
-                <PerPlayerStats stats={perPlayerStats}/>
+                <PerPlayerStats playerName={playerName} stats={perPlayerStats}/>
               </Col>
               <Col md={4}>
                 <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true}/>
