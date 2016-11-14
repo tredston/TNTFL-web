@@ -351,12 +351,12 @@ h3.statbox {
   padding-top: 48px !important;
 }
 
-.achievement-YellowStripe {
+.achievement-FlawlessVictory {
   background: url("../img/yellowstripe.png") top center no-repeat;
   padding-top: 48px !important;
 }
 
-.achievement-BeatANewbie {
+.achievement-FreshBlood {
   background: url("../img/blood17.png") top center no-repeat;
   padding-top: 48px !important;
 }
@@ -436,11 +436,25 @@ h3.statbox {
   padding-top: 48px !important;
 }
 
-.achievement-PokeMaster {
+.achievement-PokéMaster {
   background: url("../img/ball80.png") top center no-repeat;
   padding-top: 48px !important;
 }
 
+.achievement-UpUpAndAway {
+  background: url("../img/balloon.svg") top center no-repeat;
+  padding-top: 48px !important;
+}
+
+.achievement-Unstable {
+  background: url("../img/seesaw.svg") top center no-repeat;
+  padding-top: 48px !important;
+}
+
+.achievement-BossFight {
+  background: url("../img/boss.svg") top center no-repeat;
+  padding-top: 48px !important;
+}
 
 /*
  * "Slice" page rangeSlider
