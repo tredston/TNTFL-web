@@ -28,7 +28,7 @@ class FirstGame(Achievement):
         return len(player.games) == 1 and player.games[0] == game
 
 
-class BeatANewbie(Achievement):
+class FreshBlood(Achievement):
     name = "Fresh Blood"
     description = "Claim points from a new player on their first game"
 
@@ -39,7 +39,7 @@ class BeatANewbie(Achievement):
             return game.skillChangeToBlue > 0 and len(opponent.games) == 1
 
 
-class YellowStripe(Achievement):
+class FlawlessVictory(Achievement):
     name = "Flawless Victory"
     description = "Beat an opponent 10-0"
 
@@ -91,7 +91,7 @@ class Elite(Achievement):
 
 
 class AgainstTheOdds(Achievement):
-    name = "Against the Odds"
+    name = "Against The Odds"
     description = "Beat a player 50 or more skillpoints higher than you"
 
     def applies(self, player, game, opponent, ladder):
@@ -261,7 +261,7 @@ class EarlyBird(Achievement):
 
 
 class PokeMaster(Achievement):
-    name = "Pok&#233;Master"
+    name = "PokeMaster"
     description = "Collect all the scores"
 
     def __init__(self):
@@ -296,12 +296,12 @@ class TheDominator(Achievement):
         return self.counts[pairing] > 0 and self.counts[pairing] % 10 == 0
 
 
-class Consistency(Achievement):
-    name = "Nothing if not Consistent"
+class NothingIfNotConsistent(Achievement):
+    name = "Nothing If Not Consistent"
     description = "Finish 5 consecutive games with the same score"
 
     def __init__(self):
-        super(Consistency, self).__init__()
+        super(NothingIfNotConsistent, self).__init__()
         self.counts = defaultdict(list)
 
     def applies(self, player, game, opponent, ladder):

@@ -205,7 +205,7 @@ class GameApi(Tester):
         self.assertEqual(len(redAchievements), 2)
         self.assertEqual(redAchievements[0]['name'], "Flawless Victory")
         self.assertEqual(redAchievements[0]['description'], "Beat an opponent 10-0")
-        self.assertEqual(redAchievements[1]['name'], "Pok&#233;Master")
+        self.assertEqual(redAchievements[1]['name'], "PokeMaster")
         self.assertEqual(redAchievements[1]['description'], "Collect all the scores")
 
         self.assertEqual(response['blue']['name'], 'kjb')
