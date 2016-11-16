@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.12.0
+* Validate new game form client side
+* Speed up adding a new game
+
 ## 3.11.0
 * Update API page
 * Fix adding yellow stripes

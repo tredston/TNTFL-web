@@ -63,5 +63,7 @@ if __name__ == "__main__":
         print 'Running integration tests:'
         result = runner.run(integrationTestSuite())
 
+    clearCache()
+
     ok = len(result.errors) == 0 and len(result.failures) == 0
     sys.exit(not ok)
