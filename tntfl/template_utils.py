@@ -1,5 +1,6 @@
 from datetime import date, datetime, timedelta
 from tntfl.player import PerPlayerStat
+from tntfl.achievements import Achievement
 
 
 def getTrend(player):
@@ -149,3 +150,16 @@ def perPlayerStatsToJson(stats):
         'wins': stats[opponent].wins,
         'losses': stats[opponent].losses,
     } for opponent in stats.keys()]
+
+
+def getPlayerAchievementsJson(player):
+    achievements = [{
+        'name': a.name,
+        'description': a.description,
+        'time': player.achievements[a][0].time
+    } for a in player.achievements.keys()]
+    [achievements.append({
+        'name': clz.name,
+        'description': clz.description,
+    }) for clz in Achievement.__subclasses__() if clz not in player.achievements.keys()]
+    return achievements

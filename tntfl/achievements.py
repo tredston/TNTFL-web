@@ -4,14 +4,6 @@ import os.path
 import abc
 
 
-def oncePerPlayer(applies):
-    '''
-    Decorate an Achievement class' applies() function with oncePerPlayer to
-    limit the achievement to a maximum of once per player.
-    '''
-    return lambda self, p, g, o, l: False if self.__class__ in p.achievements.keys() else applies(self, p, g, o, l)
-
-
 class Achievement(object):
     __metaclass__ = abc.ABCMeta
 
@@ -36,7 +28,7 @@ class FirstGame(Achievement):
         return len(player.games) == 1 and player.games[0] == game
 
 
-class BeatANewbie(Achievement):
+class FreshBlood(Achievement):
     name = "Fresh Blood"
     description = "Claim points from a new player on their first game"
 
@@ -47,7 +39,7 @@ class BeatANewbie(Achievement):
             return game.skillChangeToBlue > 0 and len(opponent.games) == 1
 
 
-class YellowStripe(Achievement):
+class FlawlessVictory(Achievement):
     name = "Flawless Victory"
     description = "Beat an opponent 10-0"
 
@@ -99,7 +91,7 @@ class Elite(Achievement):
 
 
 class AgainstTheOdds(Achievement):
-    name = "Against the Odds"
+    name = "Against The Odds"
     description = "Beat a player 50 or more skillpoints higher than you"
 
     def applies(self, player, game, opponent, ladder):
@@ -124,7 +116,6 @@ class TheBest(Achievement):
     name = "The Best"
     description = "Go first in the rankings"
 
-    @oncePerPlayer
     def applies(self, player, game, opponent, ladder):
         rank = game.bluePosAfter if player.name == game.bluePlayer else game.redPosAfter
         return rank == 1
@@ -134,7 +125,6 @@ class TheWorst(Achievement):
     name = "The Worst"
     description = "Go last in the rankings"
 
-    @oncePerPlayer
     def applies(self, player, game, opponent, ladder):
         rank = game.bluePosAfter if player.name == game.bluePlayer else game.redPosAfter
         return rank == ladder.getNumActivePlayers(game.time)
@@ -144,7 +134,6 @@ class Improver(Achievement):
     name = "Improver"
     description = "Gain 100 skill points from your lowest point"
 
-    @oncePerPlayer
     def applies(self, player, game, opponent, ladder):
         threshold = player.getSkillBounds()['lowest']["skill"] + 100
         delta = game.skillChangeToBlue if player.name == game.bluePlayer else -game.skillChangeToBlue
@@ -232,7 +221,6 @@ class Dedication(Achievement):
     def __init__(self):
         self.streaks = {}
 
-    @oncePerPlayer
     def applies(self, player, game, opponent, ladder):
         if player.name in self.streaks:
             streak = self.streaks[player.name]
@@ -273,13 +261,12 @@ class EarlyBird(Achievement):
 
 
 class PokeMaster(Achievement):
-    name = "Pok&#233;Master"
+    name = "PokeMaster"
     description = "Collect all the scores"
 
     def __init__(self):
         self.pokedexes = defaultdict(set)
 
-    @oncePerPlayer
     def applies(self, player, game, opponent, ladder):
         if game.redScore + game.blueScore != 10:
             return False
@@ -297,7 +284,6 @@ class TheDominator(Achievement):
         super(TheDominator, self).__init__()
         self.counts = Counter()
 
-    @oncePerPlayer
     def applies(self, player, game, opponent, ladder):
         pairing = (player.name, opponent.name)
         playerIsBlue = player.name == game.bluePlayer
@@ -310,12 +296,12 @@ class TheDominator(Achievement):
         return self.counts[pairing] > 0 and self.counts[pairing] % 10 == 0
 
 
-class Consistency(Achievement):
-    name = "Nothing if not Consistent"
+class NothingIfNotConsistent(Achievement):
+    name = "Nothing If Not Consistent"
     description = "Finish 5 consecutive games with the same score"
 
     def __init__(self):
-        super(Consistency, self).__init__()
+        super(NothingIfNotConsistent, self).__init__()
         self.counts = defaultdict(list)
 
     def applies(self, player, game, opponent, ladder):
@@ -368,4 +354,4 @@ class Achievements(object):
         Identifies all achievements unlocked by player in game against opponent.
         This method should be called AFTER Player.game() has been called with game for BOTH players.
         '''
-        return [a.__class__ for a in self.achievements if a.applies(player, game, opponent, ladder)]
+        return [a.__class__ for a in self.achievements if a.__class__ not in player.achievements.keys() and a.applies(player, game, opponent, ladder)]

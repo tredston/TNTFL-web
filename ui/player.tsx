@@ -5,9 +5,11 @@ import * as ReactDOM from 'react-dom';
 import { Line } from 'react-chartjs-2';
 
 import PerPlayerStats from './components/per-player-stats';
+import PlayerAchievements from './components/player-achievements';
 import PlayerStats from './components/player-stats';
 import RecentGames from './components/recent-game-list';
 import NavigationBar from './components/navigation-bar';
+import Achievement from './model/achievement';
 import Game from './model/game';
 import PerPlayerStat from './model/per-player-stat';
 import Player from './model/player';
@@ -53,6 +55,7 @@ interface PlayerPageState {
   player: Player;
   games: Game[];
   perPlayerStats: PerPlayerStat[];
+  achievements: Achievement[];
 }
 class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
   constructor(props: PlayerPageProps, context: any) {
@@ -61,6 +64,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
         player: undefined,
         games: undefined,
         perPlayerStats: undefined,
+        achievements: undefined,
       };
   }
   async loadSummary() {
@@ -81,14 +85,21 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
     const r = await fetch(url);
     this.setState({perPlayerStats: await r.json()} as PlayerPageState);
   }
+  async loadAchievements() {
+    const { root, playerName } = this.props;
+    const url = `${root}player.cgi?method=achievements&view=json&player=${playerName}`;
+    const r = await fetch(url);
+    this.setState({achievements: await r.json()} as PlayerPageState);
+  }
   componentDidMount() {
     this.loadSummary();
     this.loadGames();
     this.loadPerPlayerStats();
+    this.loadAchievements();
   }
   render() {
     const { playerName, root, addURL } = this.props;
-    const { player, games, perPlayerStats } = this.state;
+    const { player, games, perPlayerStats, achievements } = this.state;
     const numActivePlayers = 0;
     // getTotalActivePlayers(this.state.playersStats)
     return (
@@ -109,7 +120,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
                 <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true}/>
                 {/*TODO <Most significant />*/}
                 {/*TODO <First game />*/}
-                {/*TODO <achievements />*/}
+                <PlayerAchievements achievements={achievements}/>
               </Col>
             </Row>
           </Grid>
