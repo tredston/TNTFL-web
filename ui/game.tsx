@@ -11,7 +11,7 @@ import Game from './model/game';
 import { getParameterByName } from './utils/utils';
 
 interface GamePageProps extends Props<GamePage> {
-  root: string;
+  base: string;
   addURL: string;
   gameId: string;
 }
@@ -28,14 +28,14 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     };
   }
   async loadGame() {
-    const { root, gameId } = this.props;
-    const url = `${root}game.cgi?method=view&view=json&game=${gameId}`;
+    const { base, gameId } = this.props;
+    const url = `${base}game.cgi?method=view&view=json&game=${gameId}`;
     const r = await fetch(url);
     this.setState({game: await r.json()} as GamePageState);
   }
   async loadPunditry() {
-    const { root, gameId } = this.props;
-    const url = `${root}pundit.cgi?game=${gameId}`;
+    const { base, gameId } = this.props;
+    const url = `${base}pundit.cgi?game=${gameId}`;
     const r = await fetch(url);
     this.setState({punditry: await r.json()} as GamePageState);
   }
@@ -44,13 +44,13 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     this.loadPunditry();
   }
   render() {
-    const { root, addURL } = this.props;
+    const { base, addURL } = this.props;
     //TODO
     const numActivePlayers = 0;
     return (
       <div className="gamePage">
         <NavigationBar
-          root={root}
+          base={base}
           addURL={addURL}
         />
         {this.state.game ?
@@ -71,7 +71,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
 
 ReactDOM.render(
     <GamePage
-      root={'http://www/~tlr/tntfl-test/'}
+      base={''}
       addURL={'game/add'}
       gameId={getParameterByName('game')}
     />,

@@ -85,7 +85,7 @@ function PointSwingRow(props: PointSwingRowProps): JSX.Element {
 }
 
 interface PredictRowProps extends Props<PredictRow> {
-  root: string;
+  base: string;
   player1: Player;
   player2: Player;
 }
@@ -100,9 +100,9 @@ class PredictRow extends Component<PredictRowProps, PredictRowState> {
     };
   }
   async loadPrediction(props: PredictRowProps) {
-    const { root, player1, player2 } = props;
+    const { base, player1, player2 } = props;
     if (player1 !== undefined && player2 !== undefined) {
-      const url = `${root}predict.cgi?player1Elo=${player1.skill}&player2Elo=${player2.skill}`;
+      const url = `${base}predict.cgi?player1Elo=${player1.skill}&player2Elo=${player2.skill}`;
       const r = await fetch(url);
       const j = await r.json();
       this.setState({predictedBlueGoalRatio: j.blueGoalRatio});
@@ -130,7 +130,7 @@ class PredictRow extends Component<PredictRowProps, PredictRowState> {
 }
 
 interface HeadToHeadStatsProps extends Props<HeadToHeadStats> {
-  root: string;
+  base: string;
   player1: string;
   player2: string;
   games: Game[];
@@ -148,8 +148,8 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
     };
   }
   async loadPlayer(playerName: string): Promise<Player> {
-    const { root } = this.props;
-    const url = `${root}player.cgi?method=view&view=json&player=${playerName}`;
+    const { base } = this.props;
+    const url = `${base}player.cgi?method=view&view=json&player=${playerName}`;
     const r = await fetch(url);
     return await r.json();
   }
@@ -163,7 +163,7 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
     this.loadPlayers();
   }
   render(): JSX.Element {
-    const { root, player1, player2, games } = this.props;
+    const { base, player1, player2, games } = this.props;
     let p1swing = 0;
     let p1wins = 0;
     let p2wins = 0;
@@ -200,7 +200,7 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
             {rows.map(({name, p1, p2}, i) =>
               <StatRow name={name} redValue={p1} blueValue={p2} redAhead={p1 > p2} blueAhead={p2 > p1} key={`${i}`}/>
             )}
-            <PredictRow root={root} player1={this.state.player1} player2={this.state.player2}/>
+            <PredictRow base={base} player1={this.state.player1} player2={this.state.player2}/>
           </tbody>
         </Table>
       </Panel>

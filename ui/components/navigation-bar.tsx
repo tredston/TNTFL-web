@@ -4,11 +4,11 @@ import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import AddGameForm from './add-game-form';
 
 interface NavigationBarProps {
-  root: string;
+  base: string;
   addURL: string;
 }
 export default function NavigationBar(props: NavigationBarProps): JSX.Element {
-  const { root, addURL } = props;
+  const { base, addURL } = props;
   return (
     <Navbar fluid={true}>
       <Navbar.Header>
@@ -17,15 +17,15 @@ export default function NavigationBar(props: NavigationBarProps): JSX.Element {
         </Navbar.Brand>
       </Navbar.Header>
       <Nav bsStyle={'pills'}>
-        <NavItem href={root}>Home</NavItem>
-        <NavItem href={root + 'stats/'}>Stats</NavItem>
-        <NavItem href={root + 'speculate/'}>Speculate</NavItem>
-        <NavItem href={root + 'api/'}>API</NavItem>
-        <NavItem href={root + 'historic.cgi'}>Slice</NavItem>
+        <NavItem href={base}>Home</NavItem>
+        <NavItem href={base + 'stats/'}>Stats</NavItem>
+        <NavItem href={base + 'speculate/'}>Speculate</NavItem>
+        <NavItem href={base + 'api/'}>API</NavItem>
+        <NavItem href={base + 'historic.cgi'}>Slice</NavItem>
       </Nav>
       <Nav pullRight>
         <AddGameForm
-          addURL={root + addURL}
+          addURL={addURL}
         />
       </Nav>
     </Navbar>
