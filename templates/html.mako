@@ -57,7 +57,7 @@ base = ""
               })
             })( jQuery );
             (function($){
-              $(".game-entry input").change(function() {
+              $(".game-entry input").keyup(function() {
                 checkGameSubmitForm();
               })
             })( jQuery );
