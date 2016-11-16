@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.12.1
+* More aggressive form checking
+
 ## 3.12.0
 * Validate new game form client side
 * Speed up adding a new game
