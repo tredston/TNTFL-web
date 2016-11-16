@@ -47,7 +47,7 @@ function SkillChart(props: SkillChartProps): JSX.Element {
 }
 
 interface PlayerPageProps extends Props<PlayerPage> {
-  root: string;
+  base: string;
   addURL: string;
   playerName: string;
 }
@@ -68,26 +68,26 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
       };
   }
   async loadSummary() {
-    const { root, playerName } = this.props;
-    const url = `${root}player.cgi?method=view&view=json&player=${playerName}`;
+    const { base, playerName } = this.props;
+    const url = `${base}player.cgi?method=view&view=json&player=${playerName}`;
     const r = await fetch(url);
     this.setState({player: await r.json()} as PlayerPageState);
   }
   async loadGames() {
-    const { root, playerName } = this.props;
-    const url = `${root}player.cgi?method=games&view=json&player=${playerName}`;
+    const { base, playerName } = this.props;
+    const url = `${base}player.cgi?method=games&view=json&player=${playerName}`;
     const r = await fetch(url);
     this.setState({games: await r.json()} as PlayerPageState);
   }
   async loadPerPlayerStats() {
-    const { root, playerName } = this.props;
-    const url = `${root}player.cgi?method=perplayerstats&view=json&player=${playerName}`;
+    const { base, playerName } = this.props;
+    const url = `${base}player.cgi?method=perplayerstats&view=json&player=${playerName}`;
     const r = await fetch(url);
     this.setState({perPlayerStats: await r.json()} as PlayerPageState);
   }
   async loadAchievements() {
-    const { root, playerName } = this.props;
-    const url = `${root}player.cgi?method=achievements&view=json&player=${playerName}`;
+    const { base, playerName } = this.props;
+    const url = `${base}player.cgi?method=achievements&view=json&player=${playerName}`;
     const r = await fetch(url);
     this.setState({achievements: await r.json()} as PlayerPageState);
   }
@@ -98,14 +98,14 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
     this.loadAchievements();
   }
   render() {
-    const { playerName, root, addURL } = this.props;
+    const { playerName, base, addURL } = this.props;
     const { player, games, perPlayerStats, achievements } = this.state;
     const numActivePlayers = 0;
     // getTotalActivePlayers(this.state.playersStats)
     return (
       <div className="playerPage">
         <NavigationBar
-          root={root}
+          base={base}
           addURL={addURL}
         />
         {player && games ?
@@ -114,10 +114,10 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
               <Col md={8}>
                 <PlayerStats player={player} numActivePlayers={numActivePlayers} games={games}/>
                 <SkillChart playerName={player.name} games={games} />
-                <PerPlayerStats playerName={playerName} stats={perPlayerStats}/>
+                <PerPlayerStats playerName={playerName} stats={perPlayerStats} base={base}/>
               </Col>
               <Col md={4}>
-                <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true}/>
+                <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true} base={base}/>
                 {/*TODO <Most significant />*/}
                 {/*TODO <First game />*/}
                 <PlayerAchievements achievements={achievements}/>
@@ -133,7 +133,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
 
 ReactDOM.render(
   <PlayerPage
-    root={'http://www/~tlr/tntfl-test/'}
+    base={'../../'}
     addURL={'game/add'}
     playerName={getParameterByName('player')}
   />,

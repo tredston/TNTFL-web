@@ -13,7 +13,7 @@ import Ladder from './components/ladder';
 import LadderEntry from './model/ladder-entry';
 
 interface IndexPageProps extends Props<IndexPage> {
-  root: string;
+  base: string;
   addURL: string;
 }
 interface IndexPageState {
@@ -31,8 +31,8 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
     }
   }
   async loadLadder(showInactive: boolean) {
-    const { root } = this.props;
-    let url = `${root}ladder.cgi?view=json&players=1`;
+    const { base } = this.props;
+    let url = `${base}ladder.cgi?view=json&players=1`;
     if (showInactive === true) {
       url += '&showInactive=1';
     }
@@ -40,8 +40,8 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
     this.setState({entries: await r.json()} as IndexPageState);
   }
   async loadRecent() {
-    const { root } = this.props;
-    const url = `${root}recent.cgi?view=json`;
+    const { base } = this.props;
+    const url = `${base}recent.cgi?view=json`;
     const r = await fetch(url);
     this.setState({recentGames: await r.json()} as IndexPageState);
   }
@@ -55,11 +55,11 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
     this.loadLadder(newState);
   }
   render() {
-    const { root, addURL } = this.props;
+    const { addURL, base } = this.props;
     return (
       <div className="ladderPage">
         <NavigationBar
-          root={root}
+          base={base}
           addURL={addURL}
         />
         {this.state.entries ?
@@ -72,7 +72,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
                 </Button>
               </Col>
               <Col lg={4}>
-                <RecentGames games={this.state.recentGames} showAllGames={false}/>
+                <RecentGames games={this.state.recentGames} showAllGames={false} base={base}/>
               </Col>
             </Row>
           </Grid>
@@ -85,7 +85,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
 
 ReactDOM.render(
   <IndexPage
-    root={'http://www/~tlr/tntfl-test/'}
+    base={''}
     addURL={'game/add'}
   />,
   document.getElementById('entry')

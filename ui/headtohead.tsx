@@ -13,7 +13,7 @@ import { getParameterByName } from './utils/utils';
 
 
 interface HeadToHeadPageProps extends Props<HeadToHeadPage> {
-  root: string;
+  base: string;
   addURL: string;
   player1: string;
   player2: string;
@@ -29,8 +29,8 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
     };
   }
   async loadGames() {
-    const { root, player1, player2 } = this.props;
-    const url = `${root}headtohead.cgi?method=games&view=json&player1=${player1}&player2=${player2}`;
+    const { base, player1, player2 } = this.props;
+    const url = `${base}headtohead.cgi?method=games&view=json&player1=${player1}&player2=${player2}`;
     const r = await fetch(url);
     this.setState({games: await r.json()} as HeadToHeadPageState);
   }
@@ -38,14 +38,14 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
     this.loadGames();
   }
   render() {
-    const { root, addURL, player1, player2 } = this.props;
+    const { base, addURL, player1, player2 } = this.props;
     const { games } = this.state;
     const numActivePlayers = 0;
     // getTotalActivePlayers(this.state.playersStats)
     return (
       <div className="playerPage">
         <NavigationBar
-          root={root}
+          base={base}
           addURL={addURL}
         />
         {games ?
@@ -53,12 +53,12 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
             <Panel header={'Head to Head'}>
               <Row>
                 <Col md={8}>
-                  <Stats player1={player1} player2={player2} games={games} root={root}/>
+                  <Stats player1={player1} player2={player2} games={games} base={base}/>
                   <Graph player1={player1} player2={player2} games={games}/>
                 </Col>
                 <Col md={4}>
                   <GoalDistribution player1={player1} player2={player2} games={games}/>
-                  <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true}/>
+                  <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true} base={base}/>
                 </Col>
               </Row>
             </Panel>
@@ -72,7 +72,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
 
 ReactDOM.render(
   <HeadToHeadPage
-    root={'http://www/~tlr/tntfl-test/'}
+    base={'../../../'}
     addURL={'game/add'}
     player1={getParameterByName('player1')}
     player2={getParameterByName('player2')}

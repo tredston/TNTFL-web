@@ -10,7 +10,7 @@ export default function GameTime(props: GameTimeProps): JSX.Element {
   const { date, base } = props;
   return (
     <span className="gameTime" style={{textAlign: 'center'}}>
-      <a href={base + "game/" + date}>
+      <a href={`${base}game/${date}/`}>
         {formatEpoch(date)}
       </a>
     </span>
