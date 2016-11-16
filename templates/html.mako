@@ -9,7 +9,7 @@ base = ""
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>${self.attr.title}Table Football Ladder 3.12.0</title>
+    <title>${self.attr.title}Table Football Ladder 3.12.1</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -57,7 +57,7 @@ base = ""
               })
             })( jQuery );
             (function($){
-              $(".game-entry input").change(function() {
+              $(".game-entry input").keyup(function() {
                 checkGameSubmitForm();
               })
             })( jQuery );
