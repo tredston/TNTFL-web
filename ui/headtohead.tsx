@@ -72,7 +72,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
 
 ReactDOM.render(
   <HeadToHeadPage
-    base={''}
+    base={'../../../'}
     addURL={'game/add'}
     player1={getParameterByName('player1')}
     player2={getParameterByName('player2')}

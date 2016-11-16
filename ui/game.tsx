@@ -71,7 +71,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
 
 ReactDOM.render(
     <GamePage
-      base={''}
+      base={'../../'}
       addURL={'game/add'}
       gameId={getParameterByName('game')}
     />,

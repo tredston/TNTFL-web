@@ -133,7 +133,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
 
 ReactDOM.render(
   <PlayerPage
-    base={''}
+    base={'../../'}
     addURL={'game/add'}
     playerName={getParameterByName('player')}
   />,

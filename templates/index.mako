@@ -1,49 +1,16 @@
-<%!
-from datetime import datetime
-import tntfl.constants as Constants
-from tntfl.ladder import TableFootballLadder
-title = "" 
-%>
-<%inherit file="html.mako" />
-<%
-ladder = TableFootballLadder(Constants.ladderFilePath)
-%>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-8">
-      <div class="panel panel-default">
-        <div class="panel-body" id="ladderHolder">
-          ${self.blocks.render("ladder", ladder=ladder, base=self.attr.base)}
-        </div>
-      </div>
-      ${self.blocks.render("components/ladder-info", base=self.attr.base)}
-    </div>
-    <div class="col-lg-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h2 class="panel-title">Recent Games</h2>
-        </div>
-        <div class="panel-body recentHolder" id="recentHolder">
-          ${self.blocks.render("recent", ladder=ladder, base=self.attr.base)}
-        </div>
-        <script type="text/javascript">
-          var sortOpts = getSortOptions("#ladder th");
-          var showInactive = isShowInactive();
+Content-Type: text/html
 
-          ladderTablePostProc(sortOpts, showInactive);
-
-          setInterval(
-            function() {
-              var sortOpts = getSortOptions("#ladder th");
-              var showInactive = isShowInactive();
-              $("#ladderHolder").load("ladder.cgi", function(){ladderTablePostProc(sortOpts, showInactive);})
-            },
-            600000
-          );
-          setInterval(function() {$("#recentHolder").load("recent.cgi")}, 600000);
-        </script>
-      </div>
-      <p class="text-right">Updated at ${datetime.now().strftime("%d-%b-%Y %H:%M:%S")}</p>
-    </div>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link href="css/ladder.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/2.5.5/react-bootstrap-table.min.css" integrity="sha384-VIXf7ijRNoaapcQEvARxuDSoSqHwZOTEXGpFw8r1dZ6PC0s3vOFhYUrOHO7SQRUl" crossorigin="anonymous">
+  </head>
+<body>
+  <div id="entry">Javascript disabled</div>
+  <script src="dist/commons.chunk.js"></script>
+  <script src="dist/index-bundle.js"></script>
+</body>
+</html>
