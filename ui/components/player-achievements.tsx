@@ -26,7 +26,7 @@ export default function PlayerAchievements(props: PlayerAchievementsProps): JSX.
   return (
     <Panel header={'Achievements'}>
       <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
-        {achievements.map((a) => <PlayerAchievement achievement={a}/>)}
+        {achievements.map((a, i) => <PlayerAchievement achievement={a} key={`${i}`}/>)}
       </div>
     </Panel>
   );
