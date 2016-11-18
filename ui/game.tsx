@@ -8,7 +8,7 @@ import GameSummary from './components/game-summary';
 import GameDetails from './components/game-details';
 import NavigationBar from './components/navigation-bar';
 import Game from './model/game';
-import { getParameterByName } from './utils/utils';
+import { getParameters } from './utils/utils';
 
 interface GamePageProps extends Props<GamePage> {
   base: string;
@@ -82,7 +82,7 @@ ReactDOM.render(
     <GamePage
       base={'../../'}
       addURL={'game/add'}
-      gameId={getParameterByName('game')}
+      gameId={getParameters(1)[0]}
     />,
     document.getElementById('entry')
 );
