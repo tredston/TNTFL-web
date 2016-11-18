@@ -57,16 +57,18 @@ interface PlayerPageState {
   games: Game[];
   perPlayerStats: PerPlayerStat[];
   achievements: Achievement[];
+  activePlayers: number;
 }
 class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
   constructor(props: PlayerPageProps, context: any) {
-      super(props, context);
-      this.state = {
-        player: undefined,
-        games: undefined,
-        perPlayerStats: undefined,
-        achievements: undefined,
-      };
+    super(props, context);
+    this.state = {
+      player: undefined,
+      games: undefined,
+      perPlayerStats: undefined,
+      achievements: undefined,
+      activePlayers: undefined,
+    };
   }
   async loadSummary() {
     const { base, playerName } = this.props;
@@ -92,17 +94,22 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
     const r = await fetch(url);
     this.setState({achievements: await r.json()} as PlayerPageState);
   }
+  async loadActivePlayers() {
+    const { base } = this.props;
+    const url = `${base}activePlayers.cgi`;
+    const r = await fetch(url);
+    this.setState({activePlayers: await r.json()} as PlayerPageState);
+  }
   componentDidMount() {
     this.loadSummary();
     this.loadGames();
     this.loadPerPlayerStats();
     this.loadAchievements();
+    this.loadActivePlayers();
   }
   render() {
     const { playerName, base, addURL } = this.props;
-    const { player, games, perPlayerStats, achievements } = this.state;
-    const numActivePlayers = 0;
-    // getTotalActivePlayers(this.state.playersStats)
+    const { player, games, perPlayerStats, achievements, activePlayers } = this.state;
     return (
       <div className="playerPage">
         <NavigationBar
@@ -113,7 +120,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
           <Grid fluid={true}>
             <Row>
               <Col md={8}>
-                <PlayerStats player={player} numActivePlayers={numActivePlayers} games={games}/>
+                <PlayerStats player={player} numActivePlayers={activePlayers} games={games}/>
                 <SkillChart playerName={player.name} games={games} />
                 <PerPlayerStats playerName={playerName} stats={perPlayerStats} base={base}/>
               </Col>

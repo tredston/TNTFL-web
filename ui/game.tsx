@@ -18,6 +18,7 @@ interface GamePageProps extends Props<GamePage> {
 interface GamePageState {
   game: Game;
   punditry: string[];
+  activePlayers: {[key: number]: number};
 }
 class GamePage extends Component<GamePageProps, GamePageState> {
   constructor(props: GamePageProps, context: any) {
@@ -25,6 +26,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     this.state = {
       game: undefined,
       punditry: undefined,
+      activePlayers: undefined,
     };
   }
   async loadGame() {
@@ -39,14 +41,21 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     const r = await fetch(url);
     this.setState({punditry: await r.json()} as GamePageState);
   }
+  async loadActivePlayers() {
+    const { base } = this.props;
+    const url = `${base}activePlayers.cgi`;
+    const r = await fetch(url);
+    this.setState({activePlayers: await r.json()} as GamePageState);
+  }
   componentDidMount() {
     this.loadGame();
     this.loadPunditry();
+    this.loadActivePlayers();
   }
   render() {
     const { base, addURL } = this.props;
-    //TODO
-    const numActivePlayers = 0;
+    const { activePlayers } = this.state;
+    const numActivePlayers: number = activePlayers && activePlayers[Number(Object.keys(activePlayers)[0])];
     return (
       <div className="gamePage">
         <NavigationBar

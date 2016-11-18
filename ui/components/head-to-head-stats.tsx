@@ -32,13 +32,13 @@ interface PlayerRowProps {
   player2Name: string;
   player1?: Player;
   player2?: Player;
+  numActivePlayers: number;
 }
 function PlayerRow(props: PlayerRowProps): JSX.Element {
-  const { player1Name, player2Name, player1, player2 } = props;
+  const { player1Name, player2Name, player1, player2, numActivePlayers } = props;
   const redValue = player1 ? player1.name : player1Name;
   const blueValue = player2 ? player2.name : player2Name;
   const columnStyle = {padding: 0};
-  const numActivePlayers = 0;
   return (
     <tr>
       <td style={{width: '30%', padding: 0}}>
@@ -138,6 +138,7 @@ interface HeadToHeadStatsProps extends Props<HeadToHeadStats> {
 interface HeadToHeadStatsState {
   player1: Player;
   player2: Player;
+  activePlayers: {[key: number]: number};
 }
 export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, HeadToHeadStatsState> {
   constructor(props: HeadToHeadStatsProps, context: any) {
@@ -145,6 +146,7 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
     this.state = {
       player1: undefined,
       player2: undefined,
+      activePlayers: undefined,
     };
   }
   async loadPlayer(playerName: string): Promise<Player> {
@@ -159,11 +161,20 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
     const p2 = this.loadPlayer(player2);
     this.setState({player1: await p1, player2: await p2} as HeadToHeadStatsState);
   }
+  async loadActivePlayers() {
+    const { base } = this.props;
+    const url = `${base}activePlayers.cgi`;
+    const r = await fetch(url);
+    this.setState({activePlayers: await r.json()} as HeadToHeadStatsState);
+  }
   componentDidMount() {
     this.loadPlayers();
+    this.loadActivePlayers();
   }
   render(): JSX.Element {
     const { base, player1, player2, games } = this.props;
+    const { activePlayers } = this.state;
+    const numActivePlayers: number = activePlayers && activePlayers[Number(Object.keys(activePlayers)[0])];
     let p1swing = 0;
     let p1wins = 0;
     let p2wins = 0;
@@ -195,7 +206,7 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
       <Panel header={'Statistics'}>
         <Table style={{textAlign: 'center'}}>
           <tbody>
-            <PlayerRow player1Name={player1} player2Name={player2} player1={this.state.player1} player2={this.state.player2}/>
+            <PlayerRow player1Name={player1} player2Name={player2} player1={this.state.player1} player2={this.state.player2} numActivePlayers={numActivePlayers}/>
             <PointSwingRow p1swing={p1swing}/>
             {rows.map(({name, p1, p2}, i) =>
               <StatRow name={name} redValue={p1} blueValue={p2} redAhead={p1 > p2} blueAhead={p2 > p1} key={`${i}`}/>

@@ -1,20 +1,43 @@
 import * as React from 'react';
+import { Component, Props } from 'react';
 import { Grid } from 'react-bootstrap';
 
 import Game from '../model/game';
 import GameSummary from './game-summary';
 
-interface GameListProps {
+interface GameListProps extends Props<GameList> {
   games: Game[];
   base: string;
 }
-export default function GameList(props: GameListProps): JSX.Element {
-  const { games, base } = props;
-  //TODO
-  const numActivePlayers = 0;
-  return (
-    <Grid fluid={true}>
-      {games.map((game) => <GameSummary game={game} base={base} numActivePlayers={numActivePlayers} key={`game-${game.date}`}/> )}
-    </Grid>
-  );
+interface State {
+  activePlayers: {[key: number]: number};
+}
+export default class GameList extends Component<GameListProps, State> {
+  constructor(props: GameListProps, context: any) {
+    super(props, context);
+    this.state = {
+      activePlayers: undefined,
+    };
+  }
+  async loadActivePlayers() {
+    const { base, games } = this.props;
+    const gameTimes = games.map((game) => game.date);
+    const url = `${base}activePlayers.cgi?at=${gameTimes.join(',')}`;
+    const r = await fetch(url);
+    this.setState({activePlayers: await r.json()} as State);
+  }
+  componentDidMount() {
+    this.loadActivePlayers();
+  }
+  render(): JSX.Element {
+    const { games, base } = this.props;
+    const { activePlayers } = this.state;
+    return (
+      <Grid fluid={true}>
+        {games.map((game) =>
+          <GameSummary game={game} base={base} numActivePlayers={activePlayers && activePlayers[game.date]} key={`${game.date}`}/>
+        )}
+      </Grid>
+    );
+  }
 }

@@ -5,11 +5,11 @@ export function getLadderLeagueClass(rank: number, numActivePlayers: number) {
   var league = "";
   if (rank == -1)
     league = "inactive";
-  if (rank == 1)
+  else if (rank == 1)
     league = "ladder-first";
-  if (1 < rank && rank <= numActivePlayers * 0.1)
+  else if (1 < rank && rank <= numActivePlayers * 0.1)
     league = "ladder-silver";
-  if (0.1 * numActivePlayers < rank && rank <= numActivePlayers * 0.3)
+  else if (0.1 * numActivePlayers < rank && rank <= numActivePlayers * 0.3)
     league = "ladder-bronze";
   return `ladder-position ${league}`;
 }

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Component, Props, CSSProperties } from 'react';
-import { Panel, Grid, Row, Col, Button } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 
 import GameList from './game-list';
 import Game from '../model/game';
