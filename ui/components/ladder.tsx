@@ -6,8 +6,10 @@ import ChartHolder from './chart-holder';
 import GamesChart from './games-chart';
 import GoalsChart from './goals-chart';
 import PlayerName from './player-name';
+import Rank from './rank';
 import LadderEntry from '../model/ladder-entry';
 import Player, { Totals } from '../model/player';
+import { getLadderLeagueClass } from '../utils/utils';
 
 function TrendChart(trend: number[]): JSX.Element {
   if (trend.length >= 2) {
@@ -56,13 +58,14 @@ export default function Ladder(props: LadderProps): JSX.Element {
       trend: e.trend,
     }
   });
+  const numActivePlayers = entries.length;
   return (
     <BootstrapTable
       data={flattened}
       hover={true}
       condensed={true}
     >
-      <TableHeaderColumn dataField={'rank'} dataSort={true} dataAlign={'center'}>Pos</TableHeaderColumn>
+      <TableHeaderColumn dataField={'rank'} dataSort={true} dataAlign={'center'} columnClassName={(r) => getLadderLeagueClass(r, numActivePlayers)}>Pos</TableHeaderColumn>
       <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerName base={''} name={n}/>}>Player</TableHeaderColumn>
       <TableHeaderColumn dataField={'totals'} dataFormat={(p) => GamesChart(p)}>Games</TableHeaderColumn>
       <TableHeaderColumn dataField={'totals'} dataFormat={(p) => GoalsChart(p)}>Goals</TableHeaderColumn>
