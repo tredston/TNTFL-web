@@ -11,7 +11,7 @@ export function getLadderLeagueClass(rank: number, numActivePlayers: number) {
     league = "ladder-silver";
   else if (0.1 * numActivePlayers < rank && rank <= numActivePlayers * 0.3)
     league = "ladder-bronze";
-  return league;
+  return `ladder-position ${league}`;
 }
 
 function formatDate(date: moment.Moment) {

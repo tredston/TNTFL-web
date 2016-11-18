@@ -14,6 +14,7 @@ export default function GoalsChart(totals: Totals): JSX.Element {
   }
   const options = {
     legend: {display: false},
+    animation: false,
   }
   return (
     <ChartHolder>
