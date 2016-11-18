@@ -15,6 +15,7 @@ export default function GamesChart(totals: Totals): JSX.Element {
   }
   const options = {
     legend: {display: false},
+    animation: false,
   }
   return (
     <ChartHolder>

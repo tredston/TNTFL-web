@@ -29,6 +29,7 @@ function TrendChart(trend: number[]): JSX.Element {
       },
       legend: {display: false},
       tooltips: {enabled: false},
+      animation: false,
     };
     return (
       <ChartHolder>
