@@ -13,7 +13,7 @@ import Achievement from './model/achievement';
 import Game from './model/game';
 import PerPlayerStat from './model/per-player-stat';
 import Player from './model/player';
-import { getParameterByName, getLadderLeagueClass, formatEpoch } from './utils/utils';
+import { getParameters, getLadderLeagueClass, formatEpoch } from './utils/utils';
 
 interface SkillChartProps {
   playerName: string;
@@ -143,7 +143,7 @@ ReactDOM.render(
   <PlayerPage
     base={'../../'}
     addURL={'game/add'}
-    playerName={getParameterByName('player')}
+    playerName={getParameters(1)[0]}
   />,
   document.getElementById('entry')
 );

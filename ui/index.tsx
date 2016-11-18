@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { Component, Props, CSSProperties } from 'react';
-import { Panel, Grid, Row, Col, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Button } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
 import RecentGames from './components/recent-game-list';
 import NavigationBar from './components/navigation-bar';
 import Game from './model/game';
-import Player from './model/player';
-import { getParameterByName, getLadderLeagueClass } from './utils/utils';
 
 import Ladder from './components/ladder';
 import LadderEntry from './model/ladder-entry';

@@ -9,7 +9,7 @@ import GoalDistribution from './components/goal-distribution';
 import NavigationBar from './components/navigation-bar';
 import RecentGames from './components/recent-game-list';
 import Game from './model/game';
-import { getParameterByName } from './utils/utils';
+import { getParameters } from './utils/utils';
 
 
 interface HeadToHeadPageProps extends Props<HeadToHeadPage> {
@@ -72,8 +72,8 @@ ReactDOM.render(
   <HeadToHeadPage
     base={'../../../'}
     addURL={'game/add'}
-    player1={getParameterByName('player1')}
-    player2={getParameterByName('player2')}
+    player1={getParameters(2)[0]}
+    player2={getParameters(2)[1]}
   />,
   document.getElementById('entry')
 );

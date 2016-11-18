@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { Component, Props, CSSProperties } from 'react';
-import { Panel, Grid, Row, Col } from 'react-bootstrap';
-import * as ReactDOM from 'react-dom';
-import { Line } from 'react-chartjs-2';
+import { CSSProperties } from 'react';
+import { Panel, Row, Col } from 'react-bootstrap';
 
 import GameTime from './game-time';
 import Game from '../model/game';
 import Player from '../model/player';
 import * as Palette from '../palette';
-import { getParameterByName, getLadderLeagueClass, formatEpoch, formatRankChange } from '../utils/utils';
+import { getLadderLeagueClass, formatRankChange } from '../utils/utils';
 
 interface StatBoxProps {
   title: string;
