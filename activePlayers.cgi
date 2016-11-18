@@ -1,25 +1,26 @@
 #!/usr/bin/env python
- 
+
 import cgi
+import json
+import time
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
 import tntfl.transforms.transforms as PresetTransforms
-from tntfl.web import getInt
 
 form = cgi.FieldStorage()
 
 
-def getTimeRange(form):
-    timeRange = None
-    toTime = getInt('gamesTo', form)
-    if toTime is not None:
-        timeRange = (0, toTime)
-    return timeRange
+def add(record, time, cur):
+    record[int(time)] = cur
 
-
-ladder = TableFootballLadder(Constants.ladderFilePath, timeRange=getTimeRange(form), transforms=PresetTransforms.transforms_for_ladder())
-totalActivePlayers = len([p for p in ladder.players.values() if ladder.isPlayerActive(p)])
+ladder = TableFootballLadder(Constants.ladderFilePath, transforms=PresetTransforms.transforms_for_ladder())
+times = form.getfirst('at')
+activePlayers = {}
+if times is not None:
+    [add(activePlayers, time, ladder.getNumActivePlayers(int(time))) for time in times.split(',')]
+else:
+    add(activePlayers, time.time(), ladder.getNumActivePlayers())
 
 print 'Content-Type: application/json'
 print
-print totalActivePlayers
+print json.dumps(activePlayers)
