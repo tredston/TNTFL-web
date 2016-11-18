@@ -13,15 +13,29 @@ import { getParameterByName, getLadderLeagueClass, formatEpoch, formatRankChange
 interface StatBoxProps {
   title: string;
   style?: CSSProperties;
+  classes?: string;
   children?: any;
 }
 function StatBox(props: StatBoxProps): JSX.Element {
-  const { title, children, style } = props;
+  const { title, children, style, classes } = props;
   return (
-    <Panel header={<h3>{title}</h3>} style={style}>
+    <Panel header={<h3>{title}</h3>} style={style} className={classes}>
       {children}
     </Panel>
   );
+}
+
+interface RankStatBoxProps {
+  rank: number;
+  numActivePlayers: number;
+}
+function RankStatBox(props: RankStatBoxProps): JSX.Element {
+  const { rank, numActivePlayers } = props;
+  const classes = getLadderLeagueClass(rank, numActivePlayers);
+  const prettyRank = rank !== -1 ? rank : '-';
+  return (
+    <StatBox title="Current Ranking" style={{width: '100%'}} classes={classes}>{prettyRank}</StatBox>
+  )
 }
 
 interface SidePreferenceStatProps {
@@ -101,12 +115,6 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     return {backgroundColor: blue ? Palette.blueFade : Palette.redFade};
   }
   const { player, numActivePlayers, games } = props;
-  //TODO
-  const positionStyle: CSSProperties = {
-    color: 'white',
-    backgroundColor: '#2A5B8D',
-  };
-  const rank = player.rank !== -1 ? player.rank : '-';
   const overrated = getOverrated(player.name, games);
   const gamesToday = games.slice(games.length - player.total.gamesToday);
   const goalRatio = player.total.for / player.total.against;
@@ -144,9 +152,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   return (
     <Panel header={<h1>{player.name}</h1>}>
       <Row>
-        <Col sm={3}><StatBox title="Current Ranking" style={positionStyle}>
-          {rank}
-        </StatBox></Col>
+        <Col sm={3}><RankStatBox rank={player.rank} numActivePlayers={numActivePlayers}/></Col>
         <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
         <Col sm={3}><StatBox title={'Overrated'} style={getBG(overrated >= 0)}>{overrated.toFixed(3)}</StatBox></Col>
         <Col sm={3}><SidePreferenceStat player={player}/></Col>
