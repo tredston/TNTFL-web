@@ -40,8 +40,6 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
   render() {
     const { base, addURL, player1, player2 } = this.props;
     const { games } = this.state;
-    const numActivePlayers = 0;
-    // getTotalActivePlayers(this.state.playersStats)
     return (
       <div className="playerPage">
         <NavigationBar
