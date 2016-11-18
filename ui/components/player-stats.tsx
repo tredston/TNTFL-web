@@ -101,6 +101,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     return {backgroundColor: blue ? Palette.blueFade : Palette.redFade};
   }
   const { player, numActivePlayers, games } = props;
+  //TODO
   const positionStyle: CSSProperties = {
     color: 'white',
     backgroundColor: '#2A5B8D',
