@@ -8,9 +8,8 @@ interface RankProps {
 }
 export default function Rank(props: RankProps): JSX.Element {
   const { rank, numActivePlayers } = props;
-  const league = getLadderLeagueClass(rank, numActivePlayers);
   return (
-    <div className={"ladder-position " + league} style={{width: '100%'}}>
+    <div className={getLadderLeagueClass(rank, numActivePlayers)} style={{width: '100%'}}>
       {rank}
     </div>
   );

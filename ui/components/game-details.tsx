@@ -25,7 +25,7 @@ function Punditry(props: PunditryProps): JSX.Element {
   const { facts } = props;
   return (
     <Panel header={'Punditry'}>
-      {facts.map((fact) => <Fact fact={fact}/>)}
+      {facts.map((fact, i) => <Fact fact={fact} key={`${i}`}/>)}
     </Panel>
   );
 }
