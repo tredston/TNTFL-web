@@ -151,10 +151,6 @@ class LadderPage(Get.LadderPage, Deployment):
     pass
 
 
-class RecentPage(Get.RecentPage, Deployment):
-    pass
-
-
 class PlayerApi(Get.PlayerApi, Deployment):
     def testNoPlayer(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
