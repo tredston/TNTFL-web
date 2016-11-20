@@ -45,13 +45,9 @@ Returns a game resource representing the added game.
 ### Ladder
 `ladder/json`
 
-Arguments:
+`ladder/<epoch>/<epoch>/json`
 
-* `gamesFrom` (optional) epoch to start at
-
-* `gamesTo` (optional) epoch to end at
-
-Specifying `gamesFrom` and `gamesTo` calculates a ladder for the given time range.
+Limits the ladder to the two dates provided.
 
 ### Recent Games
 `recent/json`
