@@ -6,7 +6,7 @@ RewriteBase /~tlr/tntfl
 
 RewriteRule (.*)/json$ $1?view=json
 
-RewriteRule ^game(.cgi)?/([^/]+)$  game/$2/   [R]
+RewriteRule ^game(.cgi)?/([^/]+)$ game/$2/ [R]
 RewriteRule ^game(.cgi)?/add/ game.cgi?method=add [QSA]
 RewriteRule ^game(.cgi)?/([0-9]+)/delete$ delete.cgi?&game=$2 [QSA]
 RewriteRule ^game(.cgi)?/([0-9]+)/ game.cgi?game=$2 [QSA]
@@ -18,17 +18,17 @@ RewriteRule ^games(.cgi)?/([0-9]+)/([0-9]+)/ games.cgi?from=$2&to=$3 [QSA]
   AuthName                "TNTFL Authentication (use CFL credentials)"
   AuthBasicProvider       ldap
   AuthLDAPURL             "ldaps://ldap-auth.int.corefiling.com ldap-auth1.int.corefiling.com ldap-auth2.int.corefiling.com/ou=People,dc=decisionsoft,dc=com?uid"
-  Require                  valid-user
+  Require                 valid-user
 </Files>
 
-RewriteRule ^player(.cgi)?/([^/]+)$  player/$2/   [R]
+RewriteRule ^player(.cgi)?/([^/]+)$ player/$2/ [R]
 RewriteRule ^player(.cgi)?/([a-zA-Z]+)/$ player.cgi?player=$2 [QSA]
 RewriteRule ^player(.cgi)?/([a-zA-Z]+)/games/ player.cgi?player=$2&method=games [QSA]
 
 RewriteRule ^headtohead(.cgi)?/([a-zA-Z]+)/([a-zA-Z]+)/$ headtohead.cgi?player1=$2&player2=$3 [QSA]
 RewriteRule ^headtohead(.cgi)?/([a-zA-Z]+)/([a-zA-Z]+)/games/ headtohead.cgi?player1=$2&player2=$3&method=games [QSA]
 
-RewriteRule ^pundit(.cgi)?/([^/]+)$  pundit/$2/   [R]
+RewriteRule ^pundit(.cgi)?/([^/]+)$ pundit/$2/ [R]
 RewriteRule ^pundit(.cgi)?/([0-9]+)/ pundit.cgi?game=$2 [QSA]
 
 RewriteRule ^ladder(.cgi)?/? ladder.cgi
