@@ -32,7 +32,7 @@ RewriteRule ^pundit(.cgi)?/([^/]+)$  pundit/$2/   [R]
 RewriteRule ^pundit(.cgi)?/([0-9]+)/ pundit.cgi?game=$2 [QSA]
 
 RewriteRule ^ladder(.cgi)?/? ladder.cgi
-RewriteRule ^ladder(.cgi)?/([0-9]+)/([0-9]+)/ ladder.cgi?gamesFrom=$2&gamesTo=$3
+RewriteRule ^ladder(.cgi)?/([0-9]+)/([0-9]+)/$ ladder.cgi?gamesFrom=$2&gamesTo=$3
 RewriteRule ^api(.cgi)?/ api.cgi
 RewriteRule ^stats(.cgi)?/ stats.cgi
 RewriteRule ^recent(.cgi)?/ recent.cgi
