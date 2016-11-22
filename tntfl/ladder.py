@@ -1,5 +1,6 @@
 import os
 import time
+from collections import Counter
 from tntfl.achievements import Achievements
 from tntfl.player import Player, Streak
 from tntfl.caching_game_store import CachingGameStore
@@ -127,10 +128,7 @@ class TableFootballLadder(object):
         return -1
 
     def getAchievements(self):
-        achievements = {}
-        for ach in self.achievements.achievements:
-            achievements[ach.__class__] = 0
-
+        achievements = Counter()
         for player in self.players.values():
             for name, games in player.achievements.iteritems():
                 achievements[name] += len(games)
