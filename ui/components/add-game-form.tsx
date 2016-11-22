@@ -72,6 +72,15 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
       window.location.href = r.url;
     }
   }
+  isValid(): boolean {
+    const { redPlayer, redScore, bluePlayer, blueScore } = this.state;
+    const scoreValid = function(score: number): boolean {
+      return !isNaN(score) && score >= 0
+    };
+    return redPlayer.length > 0 && redScore.length > 0 &&
+      bluePlayer.length > 0 && blueScore.length > 0 &&
+      scoreValid(+redScore) && scoreValid(+blueScore);
+  }
   render() {
     const playerWidth = '6em';
     return (
@@ -101,7 +110,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             value={this.state.bluePlayer}
             onChange={e => this.handleBluePlayerChange((e.target as any).value)}
             style={{backgroundColor: Palette.blueFade, width: playerWidth, textAlign: 'center'}}
-          /> <Button type="submit" onClick={e => this.handleSubmit(e)}>
+          /> <Button type="submit" onClick={e => this.handleSubmit(e)} disabled={!this.isValid()}>
             Add game <span className="glyphicon glyphicon-triangle-right"/>
           </Button>
         </FormGroup>
