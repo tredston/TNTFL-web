@@ -53,10 +53,16 @@ export default function Ladder(props: LadderProps): JSX.Element {
     return {
       rank: e.rank !== -1 ? e.rank : '-',
       name: e.name,
+      games: e.player.total.games,
+      wins: e.player.total.wins,
+      draws: e.player.total.games - e.player.total.wins - e.player.total.losses,
+      losses: e.player.total.losses,
+      for: e.player.total.for,
+      against: e.player.total.against,
       totals: e.player.total,
       skill: e.player.skill.toFixed(3),
       trend: e.trend,
-    }
+    };
   });
   const numActivePlayers = entries.length;
   return (
@@ -68,7 +74,13 @@ export default function Ladder(props: LadderProps): JSX.Element {
       <TableHeaderColumn dataField={'rank'} dataSort={true} dataAlign={'center'} columnClassName={(r) => getLadderLeagueClass(r, numActivePlayers)}>Pos</TableHeaderColumn>
       <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerName base={''} name={n}/>}>Player</TableHeaderColumn>
       <TableHeaderColumn dataField={'totals'} dataFormat={(p) => GamesChart(p)}>Games</TableHeaderColumn>
+      <TableHeaderColumn dataField={'games'} dataSort={true} dataAlign={'center'}>Games</TableHeaderColumn>
+      <TableHeaderColumn dataField={'wins'} dataSort={true} dataAlign={'center'}>Wins</TableHeaderColumn>
+      <TableHeaderColumn dataField={'draws'} dataSort={true} dataAlign={'center'}>Draws</TableHeaderColumn>
+      <TableHeaderColumn dataField={'losses'} dataSort={true} dataAlign={'center'}>Losses</TableHeaderColumn>
       <TableHeaderColumn dataField={'totals'} dataFormat={(p) => GoalsChart(p)}>Goals</TableHeaderColumn>
+      <TableHeaderColumn dataField={'for'} dataSort={true} dataAlign={'center'}>For</TableHeaderColumn>
+      <TableHeaderColumn dataField={'against'} dataSort={true} dataAlign={'center'}>Against</TableHeaderColumn>
       <TableHeaderColumn dataField={'skill'} dataSort={true} dataAlign={'center'}>Skill</TableHeaderColumn>
       <TableHeaderColumn dataField={'trend'} dataFormat={(t: number[]) => TrendChart(t)}>Trend</TableHeaderColumn>
     </BootstrapTable>
