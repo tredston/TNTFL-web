@@ -23,6 +23,8 @@ Where `gameid` is the epoch of when the game was played.
 ### Game list
 `games/<epoch>/<epoch>/json`
 
+Returns the list of games played between the two dates provided.
+
 Arguments:
 
 * `includeDeleted` (optional) specifies whether to include deleted games. Can be 0 or 1, defaults to 0
