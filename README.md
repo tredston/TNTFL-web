@@ -21,13 +21,9 @@ Contains full game data, rather than href links; because of this, responses coul
 Where `gameid` is the epoch of when the game was played.
 
 ### Game list
-`games.cgi?view=json&from=<time>&to=<time>`
+`games/<epoch>/<epoch>/json`
 
 Arguments:
-
-* `from` specifies the epoch to start at
-
-* `to` specifies the epoch to stop at
 
 * `includeDeleted` (optional) specifies whether to include deleted games. Can be 0 or 1, defaults to 0
 
@@ -49,13 +45,9 @@ Returns a game resource representing the added game.
 ### Ladder
 `ladder/json`
 
-Arguments:
+`ladder/<epoch>/<epoch>/json`
 
-* `gamesFrom` (optional) epoch to start at
-
-* `gamesTo` (optional) epoch to end at
-
-Specifying `gamesFrom` and `gamesTo` calculates a ladder for the given time range.
+Limits the ladder to the two dates provided.
 
 ### Recent Games
 `recent/json`

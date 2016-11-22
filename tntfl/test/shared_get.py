@@ -105,11 +105,6 @@ class LadderPage(Tester):
         self.assertTrue(jrem in response)
 
 
-class RecentPage(Tester):
-    def testReachable(self):
-        self._testPageReachable('recent.cgi')
-
-
 class PlayerApi(Tester):
     def testPlayerJson(self):
         response = self._getJson('player.cgi', 'player=rc&view=json')

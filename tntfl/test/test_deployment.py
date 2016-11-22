@@ -49,6 +49,9 @@ class Redirects(Get.Tester, Deployment):
     def testGameJsonReachable(self):
         self._getJson('game/1223308996/json')
 
+    def testGamesJsonReachable(self):
+        self._getJson('games/1223308996/1223400000/json')
+
     def testHeadToHeadReachable(self):
         self._testPageReachable('headtohead/jrem/sam/')
 
@@ -83,6 +86,9 @@ class Redirects(Get.Tester, Deployment):
         self._getJson('ladder/json')
 
     def testLadderRangeJsonReachable(self):
+        self._getJson('ladder/1223308996/1223400000/json')
+
+    def testLadderRangeRawJsonReachable(self):
         self._getJson('ladder/?gamesFrom=1223308996&gamesTo=1223400000&view=json')
 
     def testPundit(self):
@@ -148,10 +154,6 @@ class SpeculatePage(Get.SpeculatePage, Deployment):
 
 
 class LadderPage(Get.LadderPage, Deployment):
-    pass
-
-
-class RecentPage(Get.RecentPage, Deployment):
     pass
 
 
