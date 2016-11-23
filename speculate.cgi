@@ -47,6 +47,7 @@ game = getAddedGame(form)
 if game:
     speculativeGames.append(game)
     games.append(game)
+    games = Transformer.transform(lambda: games, PresetTransforms.transforms_for_recent(), False)
 
 speculativeladder = TableFootballLadder(Constants.ladderFilePath, games=games)
 serve_template("speculate.mako", ladder=speculativeladder, speculativeGames=speculativeGames)
