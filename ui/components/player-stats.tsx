@@ -32,7 +32,7 @@ function StatBox(props: StatBoxProps): JSX.Element {
 
 interface InstantStatBoxProps {
   title: string;
-  at: number;
+  at?: number;
   children?: any;
 }
 function InstantStatBox(props: InstantStatBoxProps): JSX.Element {
@@ -40,15 +40,17 @@ function InstantStatBox(props: InstantStatBoxProps): JSX.Element {
   return (
     <Panel header={<h3>{title}</h3>}>
       <div style={global}>{children}</div>
-      <div style={{textAlign: 'right'}}>at <GameTime date={at} base={''} /></div>
+      <div style={{textAlign: 'right'}}>
+        {at ? <span>at <GameTime date={at} base={''} /></span> : <span>before first game</span>}
+      </div>
     </Panel>
   );
 }
 
 interface DurationStatBoxProps {
   title: string;
-  from: number;
-  to: number;
+  from?: number;
+  to?: number;
   children?: any;
 }
 function DurationStatBox(props: DurationStatBoxProps): JSX.Element {
@@ -56,8 +58,8 @@ function DurationStatBox(props: DurationStatBoxProps): JSX.Element {
   return (
     <Panel header={<h3>{title}</h3>}>
       <div style={global}>{children}</div>
-      <div style={{textAlign: 'right'}}>From <GameTime date={from} base={''} /></div>
-      <div style={{textAlign: 'right'}}>to <GameTime date={to} base={''} /></div>
+      {from && <div style={{textAlign: 'right'}}>From <GameTime date={from} base={''} /></div>}
+      {to && <div style={{textAlign: 'right'}}>to <GameTime date={to} base={''} /></div>}
     </Panel>
   );
 }
@@ -92,9 +94,43 @@ function SidePreferenceStat(props: SidePreferenceStatProps): JSX.Element {
   )
 }
 
+function getSkillRecords(player: Player, games: Game[]) {
+  const skillLine = games.reduce((skillLine, game) => {
+    const prevSkill = skillLine[skillLine.length - 1].skill;
+    const change = game.red.name == player.name ? game.red.skillChange : game.blue.skillChange;
+    skillLine.push({date: game.date, skill: (prevSkill + change)});
+    return skillLine;
+  }, [{date: 0, skill: 0}]);
+  const highestSkill = skillLine.reduce((highest, skill) => skill.skill > highest.skill ? skill : highest, {date: 0, skill: 0});
+  const lowestSkill = skillLine.reduce((lowest, skill) => skill.skill < lowest.skill ? skill : lowest, {date: 0, skill: 0});
+  return {highestSkill, lowestSkill};
+}
+
 interface Streak {
   win: boolean;
   gameTimes: number[];
+}
+function getStreakRecords(player: Player, games: Game[]) {
+  const { streaks, currentStreak } = games.reduce(({streaks, currentStreak}, game) => {
+    const won = (game.red.name == player.name && game.red.score > game.blue.score) || (game.blue.name == player.name && game.blue.score > game.red.score);
+    const lost = (game.red.name == player.name && game.red.score < game.blue.score) || (game.blue.name == player.name && game.blue.score < game.red.score);
+    if ((won && currentStreak.win) || lost && !currentStreak.win) {
+      currentStreak.gameTimes.push(game.date);
+    }
+    else {
+      if (currentStreak.gameTimes.length > 0) {
+        streaks.push(currentStreak);
+      }
+      currentStreak = {win: won, gameTimes: []};
+      if (won || lost) {
+        currentStreak.gameTimes.push(game.date);
+      }
+    }
+    return {streaks, currentStreak};
+  }, {streaks: [], currentStreak: {win: true, gameTimes: []}});
+  const winningStreak = streaks.reduce((winning, streak) => (streak.win && streak.gameTimes.length > winning.gameTimes.length) ? streak : winning , {win: true, gameTimes: []});
+  const losingStreak = streaks.reduce((losing, streak) => (!streak.win && streak.gameTimes.length > losing.gameTimes.length) ? streak : losing, {win: false, gameTimes: []});
+  return {winningStreak, losingStreak, currentStreak};
 }
 
 interface PlayerStatsProps {
@@ -126,34 +162,8 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   const tenNils = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
   const skillChangeToday = gamesToday.reduce((skill, game) => skill += game.red.name == player.name ? game.red.skillChange : game.blue.skillChange, 0);
   const rankChangeToday = gamesToday.reduce((change, game) => change += game.red.name == player.name ? game.red.rankChange : game.blue.rankChange, 0);
-  const preHistoric = games.length > 0 ? games[0].date - 1 : 0;
-  const skillLine = games.reduce((skillLine, game) => {
-    const prevSkill = skillLine[skillLine.length - 1].skill;
-    const change = game.red.name == player.name ? game.red.skillChange : game.blue.skillChange;
-    skillLine.push({date: game.date, skill: (prevSkill + change)});
-    return skillLine;
-  }, [{date: preHistoric, skill: 0}]);
-  const highestSkill = skillLine.reduce((highest, skill) => skill.skill > highest.skill ? skill : highest, {date: preHistoric, skill: 0});
-  const lowestSkill = skillLine.reduce((lowest, skill) => skill.skill < lowest.skill ? skill : lowest, {date: preHistoric, skill: 0});
-  const { streaks, currentStreak } = games.reduce(({streaks, currentStreak}, game) => {
-    const won = (game.red.name == player.name && game.red.score > game.blue.score) || (game.blue.name == player.name && game.blue.score > game.red.score);
-    const lost = (game.red.name == player.name && game.red.score < game.blue.score) || (game.blue.name == player.name && game.blue.score < game.red.score);
-    if ((won && currentStreak.win) || lost && !currentStreak.win) {
-      currentStreak.gameTimes.push(game.date);
-    }
-    else {
-      if (currentStreak.gameTimes.length > 0) {
-        streaks.push(currentStreak);
-      }
-      currentStreak = {win: won, gameTimes: []};
-      if (won || lost) {
-        currentStreak.gameTimes.push(game.date);
-      }
-    }
-    return {streaks, currentStreak};
-  }, {streaks: [], currentStreak: {win: true, gameTimes: []}});
-  const winningStreak = streaks.reduce((winning, streak) => (streak.win && streak.gameTimes.length > winning.gameTimes.length) ? streak : winning , {win: true, gameTimes: []});
-  const losingStreak = streaks.reduce((losing, streak) => (!streak.win && streak.gameTimes.length > losing.gameTimes.length) ? streak : losing, {win: false, gameTimes: []});
+  const { highestSkill, lowestSkill } = getSkillRecords(player, games);
+  const { winningStreak, losingStreak, currentStreak } = getStreakRecords(player, games);
   return (
     <Panel header={<h1>{player.name}</h1>}>
       <Row>
@@ -181,7 +191,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
         <Col sm={3}/>
         <Col sm={3}>
           <DurationStatBox title={'Current streak'} from={currentStreak.gameTimes[0]} to={currentStreak.gameTimes[currentStreak.gameTimes.length - 1]}>
-            {currentStreak.gameTimes.length + (currentStreak.win ? ' wins' : ' losses')}
+            {currentStreak.gameTimes.length > 0 ? `${currentStreak.gameTimes.length} ${currentStreak.win ? 'wins' : 'losses'}` : '-'}
           </DurationStatBox>
         </Col>
       </Row>
@@ -190,12 +200,12 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
         <Col sm={3}><InstantStatBox title={'Lowest ever skill'} at={lowestSkill.date}>{lowestSkill.skill.toFixed(3)}</InstantStatBox></Col>
         <Col sm={3}>
           <DurationStatBox title={'Longest winning streak'} from={winningStreak.gameTimes[0]} to={winningStreak.gameTimes[winningStreak.gameTimes.length - 1]}>
-            {winningStreak.gameTimes.length}
+            {winningStreak.gameTimes.length || '-'}
           </DurationStatBox>
         </Col>
         <Col sm={3}>
           <DurationStatBox title={'Longest losing streak'} from={losingStreak.gameTimes[0]} to={losingStreak.gameTimes[losingStreak.gameTimes.length - 1]}>
-            {losingStreak.gameTimes.length}
+            {losingStreak.gameTimes.length || '-'}
           </DurationStatBox>
         </Col>
       </Row>
