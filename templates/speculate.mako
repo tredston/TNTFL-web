@@ -16,7 +16,7 @@ def serialise(games):
         </div>
 % endif
         <div class="panel-body ${"speculative" if len(speculativeGames) > 0 else ""}" id="ladderHolder">
-          ${self.blocks.render("ladder", base=self.attr.base)}
+          ${self.blocks.render("ladder", base=self.attr.base, ladder=ladder)}
         </div>
       </div>
     </div>
