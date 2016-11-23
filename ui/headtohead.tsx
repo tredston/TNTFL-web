@@ -5,7 +5,7 @@ import * as ReactDOM from 'react-dom';
 
 import Graph from './components/head-to-head-graph';
 import Stats from './components/head-to-head-stats';
-import GoalDistribution from './components/goal-distribution';
+import GoalDistributionChart from './components/goal-distribution-chart';
 import NavigationBar from './components/navigation-bar';
 import RecentGames from './components/recent-game-list';
 import Game from './model/game';
@@ -53,7 +53,9 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
               <Graph player1={player1} player2={player2} games={games}/>
             </Col>
             <Col md={4}>
-              <GoalDistribution player1={player1} player2={player2} games={games}/>
+              <Panel header={<h2>Goal Distribution</h2>}>
+                <GoalDistributionChart player1={player1} player2={player2} games={games}/>
+              </Panel>
               <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true} base={base}/>
             </Col>
           </Grid>
