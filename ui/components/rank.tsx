@@ -10,7 +10,7 @@ export default function Rank(props: RankProps): JSX.Element {
   const { rank, numActivePlayers } = props;
   return (
     <div className={getLadderLeagueClass(rank, numActivePlayers)} style={{width: '100%', padding: 5}}>
-      {rank}
+      {rank !== -1 ? rank : '-'}
     </div>
   );
 }
