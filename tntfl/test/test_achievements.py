@@ -296,9 +296,9 @@ class TestTheDominator(unittest.TestCase):
         self.assertFalse(result)
 
 
-class TestConsistency(unittest.TestCase):
+class TestNothingIfNotConsistent(unittest.TestCase):
     def test(self):
-        sut = Consistency()
+        sut = NothingIfNotConsistent()
         player = Player("foo")
         opponent = Player("bar")
         for i in range(0, 4):
@@ -310,7 +310,7 @@ class TestConsistency(unittest.TestCase):
         self.assertTrue(result)
 
     def testInterrupted(self):
-        sut = Consistency()
+        sut = NothingIfNotConsistent()
         player = Player("foo")
         opponent = Player("bar")
         for i in range(0, 4):
@@ -325,7 +325,7 @@ class TestConsistency(unittest.TestCase):
         self.assertFalse(result)
 
     def testCont(self):
-        sut = Consistency()
+        sut = NothingIfNotConsistent()
         player = Player("foo")
         opponent = Player("bar")
         for i in range(0, 4):
@@ -340,7 +340,7 @@ class TestConsistency(unittest.TestCase):
         self.assertFalse(result)
 
     def testTwice(self):
-        sut = Consistency()
+        sut = NothingIfNotConsistent()
         player = Player("foo")
         opponent = Player("bar")
         for i in range(0, 4):

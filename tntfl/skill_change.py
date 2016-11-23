@@ -14,11 +14,11 @@ class SkillChange(object):
 
 
 class Elo(SkillChange):
-    def getBlueGoalRatio(self, red, blue):
-        return 1 / (1 + 10 ** ((red.elo - blue.elo) / 180))
+    def getBlueGoalRatio(self, redElo, blueElo):
+        return 1 / (1 + 10 ** ((redElo - blueElo) / 180))
 
     def apply(self, red, game, blue):
-        predict = self.getBlueGoalRatio(red, blue)
+        predict = self.getBlueGoalRatio(red.elo, blue.elo)
         result = float(game.blueScore) / (game.blueScore + game.redScore)
         delta = 25 * (result - predict)
         game.skillChangeToBlue = delta

@@ -128,18 +128,6 @@ div.ladder-trend {
   text-align: center;
 }
 
-.recent-game-result .col-md-2 {
-  padding: 0;
-  overflow: hidden;
-}
-
-.recent-game .red-player,
-.headtohead .red-player,
-.recent-game .blue-player,
-.headtohead .blue-player {
-  /*border-radius: 4px 0 0 4px;*/
-}
-
 .game-changes .skill-change {
   display: inline-block;
   padding: 1px 5px;
@@ -363,12 +351,12 @@ h3.statbox {
   padding-top: 48px !important;
 }
 
-.achievement-YellowStripe {
+.achievement-FlawlessVictory {
   background: url("../img/yellowstripe.png") top center no-repeat;
   padding-top: 48px !important;
 }
 
-.achievement-BeatANewbie {
+.achievement-FreshBlood {
   background: url("../img/blood17.png") top center no-repeat;
   padding-top: 48px !important;
 }
@@ -453,6 +441,20 @@ h3.statbox {
   padding-top: 48px !important;
 }
 
+.achievement-UpUpAndAway {
+  background: url("../img/balloon.svg") top center no-repeat;
+  padding-top: 48px !important;
+}
+
+.achievement-Unstable {
+  background: url("../img/seesaw.svg") top center no-repeat;
+  padding-top: 48px !important;
+}
+
+.achievement-BossFight {
+  background: url("../img/boss.svg") top center no-repeat;
+  padding-top: 48px !important;
+}
 
 /*
  * "Slice" page rangeSlider
@@ -467,9 +469,6 @@ span.irs > span {
 /*
  * Ladder Adjustments
  */
-.ladder-position {
-
-}
 .controls.form {
   padding: 10px;
 }
@@ -488,4 +487,9 @@ span.irs > span {
 }
 #ladderHolder .table {
   margin-bottom: 0;
+}
+
+#compactTable > tbody > tr > td {
+  padding: 0;
+  border-top: 0;
 }
