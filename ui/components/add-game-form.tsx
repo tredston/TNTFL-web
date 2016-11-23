@@ -28,7 +28,8 @@ function Score(props:ScoreProps): JSX.Element {
 }
 
 export interface AddGameFormProps extends Props<AddGameForm> {
-    addURL: string;
+  base: string;
+  addURL: string;
 }
 interface AddGameFormState {
   redPlayer: string;
@@ -63,8 +64,8 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
   async handleSubmit(e: any) {
     this.setState({isBusy: true} as AddGameFormState);
     e.preventDefault();
-    const { addURL } = this.props;
-    const url = `${addURL}?redPlayer=${this.state.redPlayer}&redScore=${+this.state.redScore}&bluePlayer=${this.state.bluePlayer}&blueScore=${+this.state.blueScore}`;
+    const { base, addURL } = this.props;
+    const url = `${base}${addURL}?redPlayer=${this.state.redPlayer}&redScore=${+this.state.redScore}&bluePlayer=${this.state.bluePlayer}&blueScore=${+this.state.blueScore}`;
     const options: RequestInit = {
       method: 'POST',
       mode: 'cors',
@@ -85,6 +86,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
       scoreValid(+redScore) && scoreValid(+blueScore);
   }
   render() {
+    const { base } = this.props;
     const { isBusy } = this.state;
     const playerWidth = '6em';
     return (
@@ -116,7 +118,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             style={{backgroundColor: Palette.blueFade, width: playerWidth, textAlign: 'center'}}
           /> <Button type="submit" onClick={e => this.handleSubmit(e)} disabled={!this.isValid() && !isBusy}>
             {!isBusy && <span>Add game <span className="glyphicon glyphicon-triangle-right"/></span>}
-            {isBusy && <span><img src='img/spinner.gif'/></span>}
+            {isBusy && <span><img src={`${base}img/spinner.gif`}/></span>}
           </Button>
         </FormGroup>
       </Form>
