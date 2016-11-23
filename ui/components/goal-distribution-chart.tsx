@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Panel } from 'react-bootstrap';
 import { Bar } from 'react-chartjs-2';
 
 import Game from '../model/game';
@@ -12,12 +11,12 @@ function inc(data: any, score: number) {
   return data;
 }
 
-interface GoalDistributionProps {
+interface GoalDistributionChartProps {
   player1: string;
   player2: string;
   games: Game[];
 }
-export default function GoalDistribution(props: GoalDistributionProps): JSX.Element {
+export default function GoalDistributionChart(props: GoalDistributionChartProps): JSX.Element {
   const { player1, player2, games } = props;
   let p1data: {[key: number]: number} = {};
   let p2data: {[key: number]: number} = {};
@@ -54,8 +53,6 @@ export default function GoalDistribution(props: GoalDistributionProps): JSX.Elem
     scales: {xAxes: [{stacked: true}]},
   }
   return (
-    <Panel header={'Goal Distribution'}>
-      <Bar data={data} options={options}/>
-    </Panel>
+    <Bar data={data} options={options}/>
   );
 }

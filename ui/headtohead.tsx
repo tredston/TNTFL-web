@@ -3,9 +3,9 @@ import { Component, Props } from 'react';
 import { Panel, Grid, Row, Col, Table } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
-import Graph from './components/head-to-head-graph';
+import HeadToHeadChart from './components/head-to-head-chart';
 import Stats from './components/head-to-head-stats';
-import GoalDistribution from './components/goal-distribution';
+import GoalDistributionChart from './components/goal-distribution-chart';
 import NavigationBar from './components/navigation-bar';
 import RecentGames from './components/recent-game-list';
 import Game from './model/game';
@@ -41,25 +41,25 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
     const { base, addURL, player1, player2 } = this.props;
     const { games } = this.state;
     return (
-      <div className="playerPage">
+      <div>
         <NavigationBar
           base={base}
           addURL={addURL}
         />
         {games ?
           <Grid fluid={true}>
-            <Panel header={'Head to Head'}>
-              <Row>
-                <Col md={8}>
-                  <Stats player1={player1} player2={player2} games={games} base={base}/>
-                  <Graph player1={player1} player2={player2} games={games}/>
-                </Col>
-                <Col md={4}>
-                  <GoalDistribution player1={player1} player2={player2} games={games}/>
-                  <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true} base={base}/>
-                </Col>
-              </Row>
-            </Panel>
+            <Col md={8}>
+              <Stats player1={player1} player2={player2} games={games} base={base}/>
+              <Panel>
+                <HeadToHeadChart player1={player1} player2={player2} games={games}/>
+              </Panel>
+            </Col>
+            <Col md={4}>
+              <Panel header={<h2>Goal Distribution</h2>}>
+                <GoalDistributionChart player1={player1} player2={player2} games={games}/>
+              </Panel>
+              <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true} base={base}/>
+            </Col>
           </Grid>
           : 'Loading...'
         }

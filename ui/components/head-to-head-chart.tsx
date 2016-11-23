@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Panel } from 'react-bootstrap';
 import { Line } from 'react-chartjs-2';
 
 import Game from '../model/game';
@@ -44,12 +43,12 @@ function PointsAhead(player1: string, games: Game[]) {
   return pointsAhead;
 }
 
-interface GraphProps {
+interface HeadToHeadChartProps {
   player1: string;
   player2: string;
   games: Game[];
 }
-export default function Graph(props: GraphProps): JSX.Element {
+export default function HeadToHeadChart(props: HeadToHeadChartProps): JSX.Element {
   const { player1, player2, games } = props;
   const data = {datasets: [{
     label: `${player1} wins ahead`,
@@ -71,8 +70,6 @@ export default function Graph(props: GraphProps): JSX.Element {
     }}
   };
   return (
-    <Panel header={<h1>{}</h1>}>
-      <Line data={data} options={options}/>
-    </Panel>
+    <Line data={data} options={options}/>
   );
 }
