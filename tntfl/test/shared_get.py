@@ -281,3 +281,17 @@ class PredictApi(Tester):
     def test2Mirrored(self):
         response = self._getJson('predict.cgi', 'player1Elo=95.882&player2Elo=10')
         self.assertAlmostEqual(response['blueGoalRatio'], 0.25, 4)
+
+
+class ActivePlayersApi(Tester):
+    def test(self):
+        response = self._getJson('activePlayers.cgi')
+
+    def testAtDate(self):
+        response = self._getJson('activePlayers.cgi', 'at=1430402614')
+        self.assertEqual(response['1430402614'], 13)
+
+    def testAtDates(self):
+        response = self._getJson('activePlayers.cgi', 'at=1420000000,1430402614')
+        self.assertEqual(response['1420000000'], 6)
+        self.assertEqual(response['1430402614'], 13)
