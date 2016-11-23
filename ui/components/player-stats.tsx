@@ -8,6 +8,12 @@ import Player from '../model/player';
 import * as Palette from '../palette';
 import { getLadderLeagueClass, formatRankChange } from '../utils/utils';
 
+const global: CSSProperties = {
+  fontSize: 'x-large',
+  fontWeight: 'bold',
+  textAlign: 'center',
+};
+
 interface StatBoxProps {
   title: string;
   style?: CSSProperties;
@@ -16,9 +22,42 @@ interface StatBoxProps {
 }
 function StatBox(props: StatBoxProps): JSX.Element {
   const { title, children, style, classes } = props;
+  let mergedStyle = style ? Object.assign({}, global, style) : global;
   return (
-    <Panel header={<h3>{title}</h3>} style={style} className={classes}>
+    <Panel header={<h3>{title}</h3>} style={mergedStyle} className={classes}>
       {children}
+    </Panel>
+  );
+}
+
+interface InstantStatBoxProps {
+  title: string;
+  at: number;
+  children?: any;
+}
+function InstantStatBox(props: InstantStatBoxProps): JSX.Element {
+  const { title, at, children } = props;
+  return (
+    <Panel header={<h3>{title}</h3>}>
+      <div style={global}>{children}</div>
+      <div style={{textAlign: 'right'}}>at <GameTime date={at} base={''} /></div>
+    </Panel>
+  );
+}
+
+interface DurationStatBoxProps {
+  title: string;
+  from: number;
+  to: number;
+  children?: any;
+}
+function DurationStatBox(props: DurationStatBoxProps): JSX.Element {
+  const { title, from, to, children } = props;
+  return (
+    <Panel header={<h3>{title}</h3>}>
+      <div style={global}>{children}</div>
+      <div style={{textAlign: 'right'}}>From <GameTime date={from} base={''} /></div>
+      <div style={{textAlign: 'right'}}>to <GameTime date={to} base={''} /></div>
     </Panel>
   );
 }
@@ -51,38 +90,6 @@ function SidePreferenceStat(props: SidePreferenceStatProps): JSX.Element {
   return (
     <StatBox title='Side preference' style={style}>{preference}</StatBox>
   )
-}
-
-interface InstantStatBoxProps {
-  title: string;
-  at: number;
-  children?: any;
-}
-function InstantStatBox(props: InstantStatBoxProps): JSX.Element {
-  const { title, at, children } = props;
-  return (
-    <StatBox title={title}>
-      {children}
-      <div>at <GameTime date={at} base={''} /></div>
-    </StatBox>
-  );
-}
-
-interface DurationStatBoxProps {
-  title: string;
-  from?: number;
-  to?: number;
-  children?: any;
-}
-function DurationStatBox(props: DurationStatBoxProps): JSX.Element {
-  const { title, from, to, children } = props;
-  return (
-    <StatBox title={title}>
-      {children}
-      {from && <div>From <GameTime date={from} base={''} /></div>}
-      {to && <div>to <GameTime date={to} base={''} /></div>}
-    </StatBox>
-  );
 }
 
 interface Streak {
