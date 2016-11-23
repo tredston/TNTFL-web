@@ -41,7 +41,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
     const { base, addURL, player1, player2 } = this.props;
     const { games } = this.state;
     return (
-      <div className="playerPage">
+      <div>
         <NavigationBar
           base={base}
           addURL={addURL}

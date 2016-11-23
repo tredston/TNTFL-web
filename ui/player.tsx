@@ -41,7 +41,7 @@ function SkillChart(props: SkillChartProps): JSX.Element {
     animation: false,
   };
   return (
-    <Panel header={'Skill Chart'}>
+    <Panel header={<h2>Skill Chart</h2>}>
       <Line data={data} options={options}/>
     </Panel>
   );
@@ -111,7 +111,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
     const { playerName, base, addURL } = this.props;
     const { player, games, perPlayerStats, achievements, activePlayers } = this.state;
     return (
-      <div className="playerPage">
+      <div>
         <NavigationBar
           base={base}
           addURL={addURL}

@@ -55,7 +55,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   render() {
     const { addURL, base } = this.props;
     return (
-      <div className="ladderPage">
+      <div>
         <NavigationBar
           base={base}
           addURL={addURL}
