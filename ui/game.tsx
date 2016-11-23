@@ -31,13 +31,13 @@ class GamePage extends Component<GamePageProps, GamePageState> {
   }
   async loadGame() {
     const { base, gameId } = this.props;
-    const url = `${base}game.cgi?method=view&view=json&game=${gameId}`;
+    const url = `${base}game/${gameId}/json`;
     const r = await fetch(url);
     this.setState({game: await r.json()} as GamePageState);
   }
   async loadPunditry() {
     const { base, gameId } = this.props;
-    const url = `${base}pundit.cgi?game=${gameId}`;
+    const url = `${base}pundit/${gameId}/json`;
     const r = await fetch(url);
     this.setState({punditry: await r.json()} as GamePageState);
   }
