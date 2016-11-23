@@ -3,7 +3,7 @@ import { Component, Props } from 'react';
 import { Panel, Grid, Row, Col, Table } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
-import Graph from './components/head-to-head-graph';
+import HeadToHeadChart from './components/head-to-head-chart';
 import Stats from './components/head-to-head-stats';
 import GoalDistributionChart from './components/goal-distribution-chart';
 import NavigationBar from './components/navigation-bar';
@@ -50,7 +50,9 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
           <Grid fluid={true}>
             <Col md={8}>
               <Stats player1={player1} player2={player2} games={games} base={base}/>
-              <Graph player1={player1} player2={player2} games={games}/>
+              <Panel>
+                <HeadToHeadChart player1={player1} player2={player2} games={games}/>
+              </Panel>
             </Col>
             <Col md={4}>
               <Panel header={<h2>Goal Distribution</h2>}>
