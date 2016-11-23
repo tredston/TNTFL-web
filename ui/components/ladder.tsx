@@ -68,6 +68,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       data={flattened}
       hover={true}
       condensed={true}
+      bodyStyle={{fontSize: 20}}
     >
       <TableHeaderColumn dataField={'rank'} dataSort={true} dataAlign={'center'} columnClassName={(r) => getLadderLeagueClass(r, numActivePlayers)}>Pos</TableHeaderColumn>
       <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerName base={''} name={n}/>}>Player</TableHeaderColumn>
