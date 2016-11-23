@@ -28,13 +28,15 @@ function Score(props:ScoreProps): JSX.Element {
 }
 
 export interface AddGameFormProps extends Props<AddGameForm> {
-    addURL: string;
+  base: string;
+  addURL: string;
 }
 interface AddGameFormState {
   redPlayer: string;
   redScore: string;
   bluePlayer: string;
   blueScore: string;
+  isBusy: boolean;
 }
 export default class AddGameForm extends Component<AddGameFormProps, AddGameFormState> {
   constructor(props: AddGameFormProps, context: any) {
@@ -44,6 +46,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
       redScore: '',
       bluePlayer: '',
       blueScore: '',
+      isBusy: false,
     };
   }
   handleRedPlayerChange(e: string) {
@@ -59,9 +62,10 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
     this.setState({blueScore: e} as AddGameFormState);
   }
   async handleSubmit(e: any) {
+    this.setState({isBusy: true} as AddGameFormState);
     e.preventDefault();
-    const { addURL } = this.props;
-    const url = `${addURL}?redPlayer=${this.state.redPlayer}&redScore=${+this.state.redScore}&bluePlayer=${this.state.bluePlayer}&blueScore=${+this.state.blueScore}`;
+    const { base, addURL } = this.props;
+    const url = `${base}${addURL}?redPlayer=${this.state.redPlayer}&redScore=${+this.state.redScore}&bluePlayer=${this.state.bluePlayer}&blueScore=${+this.state.blueScore}`;
     const options: RequestInit = {
       method: 'POST',
       mode: 'cors',
@@ -72,7 +76,18 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
       window.location.href = r.url;
     }
   }
+  isValid(): boolean {
+    const { redPlayer, redScore, bluePlayer, blueScore } = this.state;
+    const scoreValid = function(score: number): boolean {
+      return !isNaN(score) && score >= 0
+    };
+    return redPlayer.length > 0 && redScore.length > 0 &&
+      bluePlayer.length > 0 && blueScore.length > 0 &&
+      scoreValid(+redScore) && scoreValid(+blueScore);
+  }
   render() {
+    const { base } = this.props;
+    const { isBusy } = this.state;
     const playerWidth = '6em';
     return (
       <Form inline style={{padding: 8}}>
@@ -101,8 +116,9 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             value={this.state.bluePlayer}
             onChange={e => this.handleBluePlayerChange((e.target as any).value)}
             style={{backgroundColor: Palette.blueFade, width: playerWidth, textAlign: 'center'}}
-          /> <Button type="submit" onClick={e => this.handleSubmit(e)}>
-            Add game <span className="glyphicon glyphicon-triangle-right"/>
+          /> <Button type="submit" onClick={e => this.handleSubmit(e)} disabled={!this.isValid() && !isBusy}>
+            {!isBusy && <span>Add game <span className="glyphicon glyphicon-triangle-right"/></span>}
+            {isBusy && <span><img src={`${base}img/spinner.gif`}/></span>}
           </Button>
         </FormGroup>
       </Form>

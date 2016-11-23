@@ -25,6 +25,7 @@ export default function NavigationBar(props: NavigationBarProps): JSX.Element {
       </Nav>
       <Nav pullRight>
         <AddGameForm
+          base={base}
           addURL={addURL}
         />
       </Nav>
