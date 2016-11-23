@@ -11,13 +11,17 @@ interface PlayerAchievementProps {
 function PlayerAchievement(props: PlayerAchievementProps): JSX.Element {
   const { achievement, base } = props;
   const icon = "achievement-" + achievement.name.replace(/ /g, '')
-  const opacity = achievement.time ? 1 : 0.5;
+  const opacity = achievement.time ? 1 : 0.3;
+  const iconStyle = {width: 100, textAlign: 'center', opacity}
   return (
-    <a href={`${base}game/${achievement.time}/`}>
-      <Panel title={`${achievement.name} - ${achievement.description}`}>
-        <div className={icon} style={{width: 100, textAlign: 'center', opacity}}/>
-      </Panel>
-    </a>
+    <Panel title={`${achievement.name} - ${achievement.description}`}>
+      {achievement.time
+        ? <a href={`${base}game/${achievement.time}/`}>
+            <div className={icon} style={iconStyle}/>
+          </a>
+        : <div className={icon} style={iconStyle}/>
+      }
+    </Panel>
   );
 }
 
