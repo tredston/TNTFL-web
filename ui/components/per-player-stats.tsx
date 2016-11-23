@@ -54,7 +54,7 @@ export default function PerPlayerStats(props: PerPlayerStatsProps): JSX.Element 
         hover={true}
         condensed={true}
       >
-        <TableHeaderColumn dataField={'opponent'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerName base={''} name={n}/>}>Opponent</TableHeaderColumn>
+        <TableHeaderColumn dataField={'opponent'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerName base={base} name={n}/>}>Opponent</TableHeaderColumn>
         <TableHeaderColumn dataField={'opponent'} dataFormat={(n) => <HeadToHeadLink player1={playerName} player2={n} base={base}/>}></TableHeaderColumn>
         <TableHeaderColumn dataField={'totals'} dataFormat={(p) => GamesChart(p)}>Games</TableHeaderColumn>
         <TableHeaderColumn dataField={'games'} dataSort={true} dataAlign={'center'}>Games</TableHeaderColumn>
