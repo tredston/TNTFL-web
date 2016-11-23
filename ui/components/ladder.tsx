@@ -2,7 +2,6 @@ import * as React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Line } from 'react-chartjs-2';
 
-import ChartHolder from './chart-holder';
 import GamesChart from './games-chart';
 import GoalsChart from './goals-chart';
 import PlayerName from './player-name';
@@ -32,11 +31,10 @@ function TrendChart(trend: number[]): JSX.Element {
       legend: {display: false},
       tooltips: {enabled: false},
       animation: false,
+      maintainAspectRatio: false,
     };
     return (
-      <ChartHolder>
-        <Line data={data} options={options}/>
-      </ChartHolder>
+      <Line data={data} options={options} width={50} height={50}/>
     );
   }
   else {

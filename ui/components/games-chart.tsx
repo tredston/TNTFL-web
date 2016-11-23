@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Pie } from 'react-chartjs-2';
 
-import ChartHolder from './chart-holder';
 import { Totals } from '../model/player';
 
 export default function GamesChart(totals: Totals): JSX.Element {
@@ -16,10 +15,9 @@ export default function GamesChart(totals: Totals): JSX.Element {
   const options = {
     legend: {display: false},
     animation: false,
+    maintainAspectRatio: false,
   }
   return (
-    <ChartHolder>
-      <Pie data={data} options={options} />
-    </ChartHolder>
+    <Pie data={data} options={options} width={50} height={50}/>
   );
 }
