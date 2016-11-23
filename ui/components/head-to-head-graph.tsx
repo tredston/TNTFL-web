@@ -71,7 +71,7 @@ export default function Graph(props: GraphProps): JSX.Element {
     }}
   };
   return (
-    <Panel header={<h1>{}</h1>}>
+    <Panel>
       <Line data={data} options={options}/>
     </Panel>
   );

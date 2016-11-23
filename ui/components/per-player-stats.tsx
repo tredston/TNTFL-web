@@ -48,7 +48,7 @@ export default function PerPlayerStats(props: PerPlayerStatsProps): JSX.Element 
     };
   });
   return (
-    <Panel>
+    <Panel header={<h2>Per-Player Stats</h2>}>
       <BootstrapTable
         data={flattened}
         hover={true}

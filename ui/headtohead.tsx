@@ -48,18 +48,14 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
         />
         {games ?
           <Grid fluid={true}>
-            <Panel header={'Head to Head'}>
-              <Row>
-                <Col md={8}>
-                  <Stats player1={player1} player2={player2} games={games} base={base}/>
-                  <Graph player1={player1} player2={player2} games={games}/>
-                </Col>
-                <Col md={4}>
-                  <GoalDistribution player1={player1} player2={player2} games={games}/>
-                  <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true} base={base}/>
-                </Col>
-              </Row>
-            </Panel>
+            <Col md={8}>
+              <Stats player1={player1} player2={player2} games={games} base={base}/>
+              <Graph player1={player1} player2={player2} games={games}/>
+            </Col>
+            <Col md={4}>
+              <GoalDistribution player1={player1} player2={player2} games={games}/>
+              <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true} base={base}/>
+            </Col>
           </Grid>
           : 'Loading...'
         }

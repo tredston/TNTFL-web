@@ -54,7 +54,7 @@ export default function GoalDistribution(props: GoalDistributionProps): JSX.Elem
     scales: {xAxes: [{stacked: true}]},
   }
   return (
-    <Panel header={'Goal Distribution'}>
+    <Panel header={<h2>Goal Distribution</h2>}>
       <Bar data={data} options={options}/>
     </Panel>
   );
