@@ -1,7 +1,7 @@
 <%!
 from datetime import datetime
 base = ""
-version = 3.12.1
+version = 3.12.2
 %><%namespace name="blocks" file="blocks.mako" inheritable="True"/>Content-Type: text/html
 
 <!DOCTYPE html>

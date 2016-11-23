@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.12.2
+* Fix speculating games
+
 ## 3.12.1
 * More aggressive form checking
 
