@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.0.0
+* Rwrite index, player and head to head pages in Typescript
+* Add pie charts for games and goals
+* Add chart for tracking wins and skill transfer between players
+* Add missing achievement icons
+* Improve API routing (fewer query parameters)
+* Improve error reporting
+* Award achievements once per player
+
 ## 3.12.2
 * Fix speculating games
 
