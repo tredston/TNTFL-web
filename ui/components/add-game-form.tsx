@@ -35,6 +35,7 @@ interface AddGameFormState {
   redScore: string;
   bluePlayer: string;
   blueScore: string;
+  isBusy: boolean;
 }
 export default class AddGameForm extends Component<AddGameFormProps, AddGameFormState> {
   constructor(props: AddGameFormProps, context: any) {
@@ -44,6 +45,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
       redScore: '',
       bluePlayer: '',
       blueScore: '',
+      isBusy: false,
     };
   }
   handleRedPlayerChange(e: string) {
@@ -59,6 +61,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
     this.setState({blueScore: e} as AddGameFormState);
   }
   async handleSubmit(e: any) {
+    this.setState({isBusy: true} as AddGameFormState);
     e.preventDefault();
     const { addURL } = this.props;
     const url = `${addURL}?redPlayer=${this.state.redPlayer}&redScore=${+this.state.redScore}&bluePlayer=${this.state.bluePlayer}&blueScore=${+this.state.blueScore}`;
@@ -82,6 +85,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
       scoreValid(+redScore) && scoreValid(+blueScore);
   }
   render() {
+    const { isBusy } = this.state;
     const playerWidth = '6em';
     return (
       <Form inline style={{padding: 8}}>
@@ -110,8 +114,9 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             value={this.state.bluePlayer}
             onChange={e => this.handleBluePlayerChange((e.target as any).value)}
             style={{backgroundColor: Palette.blueFade, width: playerWidth, textAlign: 'center'}}
-          /> <Button type="submit" onClick={e => this.handleSubmit(e)} disabled={!this.isValid()}>
-            Add game <span className="glyphicon glyphicon-triangle-right"/>
+          /> <Button type="submit" onClick={e => this.handleSubmit(e)} disabled={!this.isValid() && !isBusy}>
+            {!isBusy && <span>Add game <span className="glyphicon glyphicon-triangle-right"/></span>}
+            {isBusy && <span><img src='img/spinner.gif'/></span>}
           </Button>
         </FormGroup>
       </Form>
