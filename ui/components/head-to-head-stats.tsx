@@ -33,9 +33,10 @@ interface PlayerRowProps {
   player1?: Player;
   player2?: Player;
   numActivePlayers: number;
+  base: string;
 }
 function PlayerRow(props: PlayerRowProps): JSX.Element {
-  const { player1Name, player2Name, player1, player2, numActivePlayers } = props;
+  const { player1Name, player2Name, player1, player2, numActivePlayers, base } = props;
   const redValue = player1 ? player1.name : player1Name;
   const blueValue = player2 ? player2.name : player2Name;
   const columnStyle = {padding: 0};
@@ -45,7 +46,7 @@ function PlayerRow(props: PlayerRowProps): JSX.Element {
         <Grid fluid={true}>
           <Row>
             <Col xs={8} style={columnStyle}>
-              <PlayerName name={player1Name} base={''}/>
+              <PlayerName name={player1Name} base={base}/>
             </Col>
             <Col xs={4} style={columnStyle}>
               {player1 ? <Rank rank={player1.rank} numActivePlayers={numActivePlayers}/> : 'Loading...'}
@@ -61,7 +62,7 @@ function PlayerRow(props: PlayerRowProps): JSX.Element {
               {player2 ? <Rank rank={player2.rank} numActivePlayers={numActivePlayers}/> : 'Loading...'}
             </Col>
             <Col xs={8} style={columnStyle}>
-              <PlayerName name={player2Name} base={''}/>
+              <PlayerName name={player2Name} base={base}/>
             </Col>
           </Row>
         </Grid>
@@ -206,7 +207,14 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
       <Panel header={<h2>Statistics</h2>}>
         <Table style={{textAlign: 'center'}}>
           <tbody>
-            <PlayerRow player1Name={player1} player2Name={player2} player1={this.state.player1} player2={this.state.player2} numActivePlayers={numActivePlayers}/>
+            <PlayerRow
+              player1Name={player1}
+              player2Name={player2}
+              player1={this.state.player1}
+              player2={this.state.player2}
+              numActivePlayers={numActivePlayers}
+              base={base}
+            />
             <PointSwingRow p1swing={p1swing}/>
             {rows.map(({name, p1, p2}, i) =>
               <StatRow name={name} redValue={p1} blueValue={p2} redAhead={p1 > p2} blueAhead={p2 > p1} key={`${i}`}/>

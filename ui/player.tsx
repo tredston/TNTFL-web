@@ -88,7 +88,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
           <Grid fluid={true}>
             <Row>
               <Col md={8}>
-                <PlayerStats player={player} numActivePlayers={activePlayers} games={games}/>
+                <PlayerStats player={player} numActivePlayers={activePlayers} games={games} base={base}/>
                 <Panel header={<h2>Skill Chart</h2>}>
                   <PlayerSkillChart playerName={player.name} games={games} />
                 </Panel>
