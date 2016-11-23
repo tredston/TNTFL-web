@@ -96,9 +96,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
               </Col>
               <Col md={4}>
                 <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true} base={base}/>
-                {/*TODO <Most significant />*/}
-                {/*TODO <First game />*/}
-                <PlayerAchievements achievements={achievements}/>
+                <PlayerAchievements achievements={achievements} base={base}/>
               </Col>
             </Row>
           </Grid>
