@@ -122,3 +122,7 @@ class PunditApi(Get.PunditApi, Deployment):
 
 class PredictApi(Get.PredictApi, Deployment):
     pass
+
+
+class ActivePlayersApi(Get.ActivePlayersApi, Deployment):
+    pass

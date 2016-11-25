@@ -10,7 +10,7 @@ In the JSON returned, links to other resources are represented by an object with
 ### Player Info
 `player/<playername>/json`
 
-### Player games
+### Player Games
 `player/<playername>/games/json`
 
 Contains full game data, rather than href links; because of this, responses could be quite large.
@@ -20,7 +20,7 @@ Contains full game data, rather than href links; because of this, responses coul
 
 Where `gameid` is the epoch of when the game was played.
 
-### Game list
+### Game List
 `games/<epoch>/<epoch>/json`
 
 Returns the list of games played between the two dates provided.
@@ -57,3 +57,6 @@ Limits the ladder to the two dates provided.
 Arguments:
 
 * `limit` (optional) number of most recent games to return, defaults to 10.
+
+### Pundit
+`pundit/<epoch>/json`

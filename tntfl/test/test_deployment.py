@@ -210,15 +210,15 @@ class GameApi(Get.GameApi, Deployment):
         with self.assertRaises(urllib2.HTTPError) as cm:
             self._testPageReachable('game/123')
         e = cm.exception
-        self.assertEqual(e.code, 500)
-        # TODO
-        # self.assertEqual(e.code, 404)
+        self.assertEqual(e.code, 404)
 
     def testInvalidAdd(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
             self._testPageReachable('game/add')
         e = cm.exception
-        self.assertEqual(e.code, 400)
+        self.assertEqual(e.code, 500)
+        # TODO
+        # self.assertEqual(e.code, 400)
 
 
 class GamesApi(Get.GamesApi, Deployment):
@@ -230,4 +230,8 @@ class PunditApi(Get.PunditApi, Deployment):
 
 
 class PredictApi(Get.PredictApi, Deployment):
+    pass
+
+
+class ActivePlayersApi(Get.ActivePlayersApi, Deployment):
     pass
