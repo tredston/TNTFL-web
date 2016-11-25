@@ -42,8 +42,8 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     this.setState({punditry: await r.json()} as GamePageState);
   }
   async loadActivePlayers() {
-    const { base } = this.props;
-    const url = `${base}activePlayers.cgi`;
+    const { base, gameId } = this.props;
+    const url = `${base}activePlayers.cgi?at=${+gameId - 1}`;
     const r = await fetch(url);
     this.setState({activePlayers: await r.json()} as GamePageState);
   }

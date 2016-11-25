@@ -21,7 +21,7 @@ export default class GameList extends Component<GameListProps, State> {
   }
   async loadActivePlayers() {
     const { base, games } = this.props;
-    const gameTimes = games.map((game) => game.date);
+    const gameTimes = games.map((game) => game.date - 1);
     const url = `${base}activePlayers.cgi?at=${gameTimes.join(',')}`;
     const r = await fetch(url);
     this.setState({activePlayers: await r.json()} as State);
@@ -35,7 +35,7 @@ export default class GameList extends Component<GameListProps, State> {
     return (
       <Grid fluid={true}>
         {games.map((game) =>
-          <GameSummary game={game} base={base} numActivePlayers={activePlayers && activePlayers[game.date]} key={`${game.date}`}/>
+          <GameSummary game={game} base={base} numActivePlayers={activePlayers && activePlayers[game.date - 1]} key={`${game.date}`}/>
         )}
       </Grid>
     );
