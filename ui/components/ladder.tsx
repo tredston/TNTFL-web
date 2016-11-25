@@ -49,7 +49,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
   const { entries } = props;
   const flattened = entries.map(e => {
     return {
-      rank: e.rank !== -1 ? e.rank : '-',
+      rank: e.rank,
       name: e.name,
       games: e.player.total.games,
       wins: e.player.total.wins,
@@ -62,7 +62,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       trend: e.trend,
     };
   });
-  const numActivePlayers = entries.length;
+  const numActivePlayers = entries.filter((e) => e.rank >= 1).length;
   return (
     <BootstrapTable
       data={flattened}
@@ -70,7 +70,13 @@ export default function Ladder(props: LadderProps): JSX.Element {
       condensed={true}
       bodyStyle={{fontSize: 20}}
     >
-      <TableHeaderColumn dataField={'rank'} dataSort={true} dataAlign={'center'} columnClassName={(r) => getLadderLeagueClass(r, numActivePlayers)}>Pos</TableHeaderColumn>
+      <TableHeaderColumn
+        dataField={'rank'}
+        dataSort={true}
+        dataAlign={'center'}
+        columnClassName={(r) => getLadderLeagueClass(r, numActivePlayers)}
+        dataFormat={(r) => r !== -1 ? r : '-'}
+      >Pos</TableHeaderColumn>
       <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerName base={''} name={n}/>}>Player</TableHeaderColumn>
       <TableHeaderColumn dataField={'totals'} dataFormat={(p) => GamesChart(p)}>Games</TableHeaderColumn>
       <TableHeaderColumn dataField={'games'} dataSort={true} dataAlign={'center'}>Games</TableHeaderColumn>
