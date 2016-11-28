@@ -86,7 +86,55 @@ paths:
           description: A game resource representing the added game
           schema:
             $ref: '#/definitions/Game'
-
+  /games/{begin}/{end}/json:
+    get:
+      parameters:
+      - name: begin
+        description: Timestamp to filter from.
+        in: path
+        type: integer
+        required: true
+      - name: end
+        description: Timestamp to filter to.
+        in: path
+        type: integer
+        required: true
+      responses:
+        200:
+          description: Games played between given times
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Game'
+  /ladder/json:
+    get:
+      responses:
+        200:
+          description: Ladder
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LadderEntry'
+  /ladder/{begin}/{end}/json:
+    get:
+      parameters:
+      - name: begin
+        description: Timestamp to filter from.
+        in: path
+        type: integer
+        required: true
+      - name: end
+        description: Timestamp to filter to.
+        in: path
+        type: integer
+        required: true
+      responses:
+        200:
+          description: Ladder
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LadderEntry'
   /recent/json:
     get:
       parameters:
@@ -102,7 +150,21 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Game'
-
+  /pundit/{gameId}/json:
+    get:
+      parameters:
+      - name: gameId
+        in: path
+        type: integer
+        description: Timestamp of game
+        required: true
+      responses:
+        200:
+          description: Punditry for requested game
+          schema:
+            type: array
+            items:
+              type: string
 definitions:
   PlayerInfo:
     description: Resource representing information about a player
@@ -208,3 +270,18 @@ definitions:
         $ref: '#/definitions/Performance'
       red:
         $ref: '#/definitions/Performance'
+  LadderEntry:
+    type: object
+    properties:
+      rank:
+        description: Player's rank
+        type: integer
+      name:
+        description: Player's name
+        type: string
+      skill:
+        description: Player's skill
+        type: number
+      href:
+        description: Link to detailed player stats
+        type: string
