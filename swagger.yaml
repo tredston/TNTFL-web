@@ -1,107 +1,107 @@
 swagger: '2.0'
 info:
-  version: 1.0.0
+  version: 4.0.0
   title: TNTFL
-  description: |
-    AAA It's TNTFL
+  description: Table Football Ladder
 host: www.int.corefiling.com
 basePath: /~tlr/tntfl
 schemes:
-  - http
-  - https
+- http
+- https
 consumes:
-  - application/json
+- application/json
 produces:
-  - application/json
+- application/json
 paths:
   /player/{playerName}/json:
     get:
       parameters:
-        - name: playerName
-          in: path
-          type: string
-          description: ID of the player
-          required: true
+      - name: playerName
+        in: path
+        type: string
+        description: ID of the player
+        required: true
       responses:
         200:
           description: Player information
           schema:
-            $ref: "#/definitions/PlayerInfo"
+            $ref: '#/definitions/PlayerInfo'
   /player/{playerName}/games/json:
     get:
       parameters:
-        - name: playerName
-          in: path
-          type: string
-          description: ID of the player
-          required: true
+      - name: playerName
+        in: path
+        type: string
+        description: ID of the player
+        required: true
       responses:
         200:
           description: Games of the requested player
           schema:
             type: array
             items:
-              $ref: "#/definitions/Game"
+              $ref: '#/definitions/Game'
   /game/{gameId}/json:
     get:
       parameters:
-        - name: gameId
-          in: path
-          type: integer
-          description: Timestamp of the game
-          required: true
+      - name: gameId
+        in: path
+        type: integer
+        description: Timestamp of the game
+        required: true
       responses:
         200:
           description: Game resource
           schema:
-            $ref: "#/definitions/Game"
+            $ref: '#/definitions/Game'
   /game/add/json:
     post:
-      consumes: 
-        - application/x-www-form-urlencoded
+      consumes:
+      - application/x-www-form-urlencoded
       parameters:
-        - name: redPlayer
-          in: formData
-          type: string
-          description: "The player on red"
-          required: true
-        - name: redScore
-          in: formData
-          type: integer
-          format: int32
-          description: "The red team score"
-          required: true
-        - name: bluePlayer
-          in: formData
-          type: string
-          description: "The player on blue"
-          required: true
-        - name: blueScore
-          in: formData
-          type: integer
-          format: int32
-          description: "The blue team score"
-          required: true
+      - name: redPlayer
+        in: formData
+        type: string
+        description: 'The player on red'
+        required: true
+      - name: redScore
+        in: formData
+        type: integer
+        format: int32
+        description: 'The red team score'
+        required: true
+      - name: bluePlayer
+        in: formData
+        type: string
+        description: 'The player on blue'
+        required: true
+      - name: blueScore
+        in: formData
+        type: integer
+        format: int32
+        description: 'The blue team score'
+        required: true
       responses:
         200:
           description: A game resource representing the added game
           schema:
-            $ref: "#/definitions/Game"
+            $ref: '#/definitions/Game'
+
   /recent/json:
     get:
       parameters:
-        - name: limit
-          in: query
-          type: integer
-          description: Maximum number of games to return
-          required: false
+      - name: limit
+        in: query
+        type: integer
+        description: Maximum number of games to return
+        required: false
       responses:
         200:
           description: Recent games
           schema:
             type: array
             items:
-              $ref: "#/definitions/Game"
+              $ref: '#/definitions/Game'
 
 definitions:
   PlayerInfo:
@@ -184,7 +184,7 @@ definitions:
         description: Achievements earned during this performance
         type: array
         items:
-          $ref: "#/definitions/Achievement"
+          $ref: '#/definitions/Achievement'
   Achievement:
     type: object
     properties:
@@ -205,7 +205,6 @@ definitions:
         description: Whether or not the players swapped ladder position
         type: boolean
       blue:
-        $ref: "#/definitions/Performance"
+        $ref: '#/definitions/Performance'
       red:
-        $ref: "#/definitions/Performance"
-
+        $ref: '#/definitions/Performance'
