@@ -12,7 +12,7 @@
     "url": "git+https://github.com/tredston/TNTFL-web.git"
   },
   "author": "tlr",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/tredston/TNTFL-web/issues"
   },
