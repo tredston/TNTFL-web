@@ -99,9 +99,24 @@ def gameToJson(game, base):
     return asJson
 
 
+def getTrendWithDates(player):
+    trend = []
+    games = player.games[-10:] if len(player.games) >= 10 else player.games
+    skill = 0
+    for i, game in enumerate(games):
+        skill += game.skillChangeToBlue if game.bluePlayer == player.name else -game.skillChangeToBlue
+        trend.append((game.time, skill))
+    return trend
+
+
 def ladderToJson(players, ladder, base, includePlayers):
     if includePlayers:
-        return [{'rank': ladder.getPlayerRank(p.name), 'name': p.name, 'player': playerToJson(p, ladder), 'trend': [s for i, s in getTrend(p)['trend']]} for i, p in enumerate(players)]
+        return [{
+            'rank': ladder.getPlayerRank(p.name),
+            'name': p.name,
+            'player': playerToJson(p, ladder),
+            'trend': getTrendWithDates(p),
+        } for i, p in enumerate(players)]
     else:
         return [{'rank': i + 1, 'name': p.name, 'skill': p.elo, 'href': playerHref(base, p.name)} for i, p in enumerate(players)]
 

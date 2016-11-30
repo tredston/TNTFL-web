@@ -10,11 +10,11 @@ import LadderEntry from '../model/ladder-entry';
 import Player, { Totals } from '../model/player';
 import { getLadderLeagueClass } from '../utils/utils';
 
-function TrendChart(trend: number[]): JSX.Element {
+function TrendChart(trend: [number, number][]): JSX.Element {
   if (trend.length >= 2) {
-    const trendLine = trend.map((y, x) => {return {x, y}});
+    const trendLine = trend.map(([date, y], x) => {return {x, y}});
     const labels = trend.map((y, x) => '');
-    const colour = trend[0] < trend[trend.length - 1] ? "#0000FF" : "#FF0000"
+    const colour = trend[0][1] < trend[trend.length - 1][1] ? "#0000FF" : "#FF0000"
     const data = {
       datasets: [{
         data: trendLine,
@@ -42,6 +42,13 @@ function TrendChart(trend: number[]): JSX.Element {
   }
 }
 
+function getNearlyInactiveClass(trend: [number, number][], now: number): string {
+  const nearlyInactiveDays = 14;
+  const nearlyInactiveTime = (60 - nearlyInactiveDays) * 24 * 60 * 60;
+  const isNearlyInactive = now - trend[trend.length - 1][0] > nearlyInactiveTime;
+  return isNearlyInactive ? 'nearly-inactive' : '';
+}
+
 interface LadderProps {
   entries: LadderEntry[];
 }
@@ -63,12 +70,14 @@ export default function Ladder(props: LadderProps): JSX.Element {
     };
   });
   const numActivePlayers = entries.filter((e) => e.rank >= 1).length;
+  const now = (new Date()).getTime() / 1000;
   return (
     <BootstrapTable
       data={flattened}
       hover={true}
       condensed={true}
       bodyStyle={{fontSize: 20}}
+      trClassName={(row) => getNearlyInactiveClass(row.trend, now)}
     >
       <TableHeaderColumn
         dataField={'rank'}
@@ -87,7 +96,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       <TableHeaderColumn dataField={'for'} dataSort={true} dataAlign={'center'}>For</TableHeaderColumn>
       <TableHeaderColumn dataField={'against'} dataSort={true} dataAlign={'center'}>Against</TableHeaderColumn>
       <TableHeaderColumn dataField={'skill'} dataSort={true} dataAlign={'center'}>Skill</TableHeaderColumn>
-      <TableHeaderColumn dataField={'trend'} dataFormat={(t: number[]) => TrendChart(t)}>Trend</TableHeaderColumn>
+      <TableHeaderColumn dataField={'trend'} dataFormat={(t: [number, number][]) => TrendChart(t)}>Trend</TableHeaderColumn>
     </BootstrapTable>
   );
 }
