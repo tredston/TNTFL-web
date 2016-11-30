@@ -178,3 +178,9 @@ def getPlayerAchievementsJson(player):
         'description': clz.description,
     }) for clz in Achievement.__subclasses__() if clz not in player.achievements.keys()]
     return achievements
+
+
+def appendChristmas(links, base):
+    if datetime.now().month == 12:
+        links.append('<link href="%scss/christmas.css" rel="stylesheet">' % base)
+    return links

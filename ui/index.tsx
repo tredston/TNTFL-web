@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, Props, CSSProperties } from 'react';
-import { Grid, Row, Col, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Button, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
 import RecentGames from './components/recent-game-list';
@@ -64,10 +64,12 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
           <Grid fluid={true}>
             <Row>
               <Col lg={8}>
-                <Ladder entries={this.state.entries}/>
-                <Button onClick={() => this.onShowInactive()} style={{width: '100%'}}>
-                  {this.state.showInactive ? 'Hide inactive' : 'Show inactive'}
-                </Button>
+                <Panel>
+                  <Ladder entries={this.state.entries}/>
+                  <Button onClick={() => this.onShowInactive()} style={{width: '100%'}}>
+                    {this.state.showInactive ? 'Hide inactive' : 'Show inactive'}
+                  </Button>
+                </Panel>
               </Col>
               <Col lg={4}>
                 <RecentGames games={this.state.recentGames} showAllGames={false} base={base}/>
