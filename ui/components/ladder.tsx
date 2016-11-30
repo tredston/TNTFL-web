@@ -8,7 +8,7 @@ import PlayerName from './player-name';
 import Rank from './rank';
 import LadderEntry from '../model/ladder-entry';
 import Player, { Totals } from '../model/player';
-import { getLadderLeagueClass } from '../utils/utils';
+import { getLadderLeagueClass, getNearlyInactiveClass } from '../utils/utils';
 
 function TrendChart(trend: [number, number][]): JSX.Element {
   if (trend.length >= 2) {
@@ -42,13 +42,6 @@ function TrendChart(trend: [number, number][]): JSX.Element {
   }
 }
 
-function getNearlyInactiveClass(trend: [number, number][], now: number): string {
-  const nearlyInactiveDays = 14;
-  const nearlyInactiveTime = (60 - nearlyInactiveDays) * 24 * 60 * 60;
-  const isNearlyInactive = now - trend[trend.length - 1][0] > nearlyInactiveTime;
-  return isNearlyInactive ? 'nearly-inactive' : '';
-}
-
 interface LadderProps {
   entries: LadderEntry[];
 }
@@ -77,7 +70,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       hover={true}
       condensed={true}
       bodyStyle={{fontSize: 20}}
-      trClassName={(row) => getNearlyInactiveClass(row.trend, now)}
+      trClassName={(row) => getNearlyInactiveClass(row.trend[row.trend.length - 1][0], now)}
     >
       <TableHeaderColumn
         dataField={'rank'}

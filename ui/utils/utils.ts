@@ -39,3 +39,10 @@ export function getParameters(num: number): string[] {
 export function formatRankChange(rankChange: number): string {
   return (rankChange > 0 ? '⬆' : '⬇') + Math.abs(rankChange);
 }
+
+export function getNearlyInactiveClass(lastPlayed: number, now: number): string {
+  const nearlyInactiveDays = 14;
+  const nearlyInactiveTime = (60 - nearlyInactiveDays) * 24 * 60 * 60;
+  const isNearlyInactive = now - lastPlayed > nearlyInactiveTime;
+  return isNearlyInactive ? 'nearly-inactive' : '';
+}
