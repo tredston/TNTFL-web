@@ -13,6 +13,7 @@ export default function GoalsChart(totals: Totals): JSX.Element {
   }
   const options = {
     legend: {display: false},
+    tooltips: {enabled: false},
     animation: false,
     maintainAspectRatio: false,
   }

@@ -14,6 +14,7 @@ export default function GamesChart(totals: Totals): JSX.Element {
   }
   const options = {
     legend: {display: false},
+    tooltips: {enabled: false},
     animation: false,
     maintainAspectRatio: false,
   }
