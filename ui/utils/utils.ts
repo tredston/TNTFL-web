@@ -37,7 +37,7 @@ export function getParameters(num: number): string[] {
 }
 
 export function formatRankChange(rankChange: number): string {
-  return (rankChange > 0 ? '⬆' : '⬇') + Math.abs(rankChange);
+  return (rankChange > 0 ? '▲' : '▼') + Math.abs(rankChange);
 }
 
 export function getNearlyInactiveClass(lastPlayed: number, now: number): string {
