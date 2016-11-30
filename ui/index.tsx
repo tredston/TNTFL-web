@@ -65,7 +65,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
             <Row>
               <Col lg={8}>
                 <Ladder entries={this.state.entries}/>
-                <Button onClick={() => this.onShowInactive()}>
+                <Button onClick={() => this.onShowInactive()} style={{width: '100%'}}>
                   {this.state.showInactive ? 'Hide inactive' : 'Show inactive'}
                 </Button>
               </Col>
