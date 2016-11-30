@@ -4,6 +4,6 @@ interface LadderEntry {
   rank: number;
   name: string;
   player: Player;
-  trend: number[];
+  trend: [number, number][];
 }
 export default LadderEntry;

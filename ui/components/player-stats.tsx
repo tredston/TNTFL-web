@@ -6,7 +6,7 @@ import GameTime from './game-time';
 import Game from '../model/game';
 import Player from '../model/player';
 import * as Palette from '../palette';
-import { getLadderLeagueClass, formatRankChange } from '../utils/utils';
+import { getLadderLeagueClass, formatRankChange, getNearlyInactiveClass } from '../utils/utils';
 
 const global: CSSProperties = {
   fontSize: 'x-large',
@@ -69,13 +69,16 @@ function DurationStatBox(props: DurationStatBoxProps): JSX.Element {
 interface RankStatBoxProps {
   rank: number;
   numActivePlayers: number;
+  lastPlayed: number;
 }
 function RankStatBox(props: RankStatBoxProps): JSX.Element {
-  const { rank, numActivePlayers } = props;
-  const classes = getLadderLeagueClass(rank, numActivePlayers);
+  const { rank, numActivePlayers, lastPlayed } = props;
+  const now = (new Date()).getTime() / 1000;
+  const league = getLadderLeagueClass(rank, numActivePlayers);
+  const inactive = getNearlyInactiveClass(lastPlayed, now);
   const prettyRank = rank !== -1 ? rank : '-';
   return (
-    <StatBox title="Current Ranking" style={{width: '100%'}} classes={classes}>{prettyRank}</StatBox>
+    <StatBox title="Current Ranking" style={{width: '100%'}} classes={`${league} ${inactive}`}>{prettyRank}</StatBox>
   )
 }
 
@@ -170,7 +173,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   return (
     <Panel header={<h1>{player.name}</h1>}>
       <Row>
-        <Col sm={3}><RankStatBox rank={player.rank} numActivePlayers={numActivePlayers}/></Col>
+        <Col sm={3}><RankStatBox rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></Col>
         <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
         <Col sm={3}><StatBox title={'Overrated'} style={getBG(overrated >= 0)}>{overrated.toFixed(3)}</StatBox></Col>
         <Col sm={3}><SidePreferenceStat player={player}/></Col>

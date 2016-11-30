@@ -8,13 +8,13 @@ import PlayerName from './player-name';
 import Rank from './rank';
 import LadderEntry from '../model/ladder-entry';
 import Player, { Totals } from '../model/player';
-import { getLadderLeagueClass } from '../utils/utils';
+import { getLadderLeagueClass, getNearlyInactiveClass } from '../utils/utils';
 
-function TrendChart(trend: number[]): JSX.Element {
+function TrendChart(trend: [number, number][]): JSX.Element {
   if (trend.length >= 2) {
-    const trendLine = trend.map((y, x) => {return {x, y}});
+    const trendLine = trend.map(([date, y], x) => {return {x, y}});
     const labels = trend.map((y, x) => '');
-    const colour = trend[0] < trend[trend.length - 1] ? "#0000FF" : "#FF0000"
+    const colour = trend[0][1] < trend[trend.length - 1][1] ? "#0000FF" : "#FF0000"
     const data = {
       datasets: [{
         data: trendLine,
@@ -49,7 +49,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
   const { entries } = props;
   const flattened = entries.map(e => {
     return {
-      rank: e.rank !== -1 ? e.rank : '-',
+      rank: e.rank,
       name: e.name,
       games: e.player.total.games,
       wins: e.player.total.wins,
@@ -62,15 +62,23 @@ export default function Ladder(props: LadderProps): JSX.Element {
       trend: e.trend,
     };
   });
-  const numActivePlayers = entries.length;
+  const numActivePlayers = entries.filter((e) => e.rank >= 1).length;
+  const now = (new Date()).getTime() / 1000;
   return (
     <BootstrapTable
       data={flattened}
       hover={true}
       condensed={true}
       bodyStyle={{fontSize: 20}}
+      trClassName={(row) => getNearlyInactiveClass(row.trend[row.trend.length - 1][0], now)}
     >
-      <TableHeaderColumn dataField={'rank'} dataSort={true} dataAlign={'center'} columnClassName={(r) => getLadderLeagueClass(r, numActivePlayers)}>Pos</TableHeaderColumn>
+      <TableHeaderColumn
+        dataField={'rank'}
+        dataSort={true}
+        dataAlign={'center'}
+        columnClassName={(r) => getLadderLeagueClass(r, numActivePlayers)}
+        dataFormat={(r) => r !== -1 ? r : '-'}
+      >Pos</TableHeaderColumn>
       <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerName base={''} name={n}/>}>Player</TableHeaderColumn>
       <TableHeaderColumn dataField={'totals'} dataFormat={(p) => GamesChart(p)}>Games</TableHeaderColumn>
       <TableHeaderColumn dataField={'games'} dataSort={true} dataAlign={'center'}>Games</TableHeaderColumn>
@@ -81,7 +89,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       <TableHeaderColumn dataField={'for'} dataSort={true} dataAlign={'center'}>For</TableHeaderColumn>
       <TableHeaderColumn dataField={'against'} dataSort={true} dataAlign={'center'}>Against</TableHeaderColumn>
       <TableHeaderColumn dataField={'skill'} dataSort={true} dataAlign={'center'}>Skill</TableHeaderColumn>
-      <TableHeaderColumn dataField={'trend'} dataFormat={(t: number[]) => TrendChart(t)}>Trend</TableHeaderColumn>
+      <TableHeaderColumn dataField={'trend'} dataFormat={(t: [number, number][]) => TrendChart(t)}>Trend</TableHeaderColumn>
     </BootstrapTable>
   );
 }
