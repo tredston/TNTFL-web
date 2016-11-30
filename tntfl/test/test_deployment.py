@@ -3,6 +3,7 @@ import unittest
 import urlparse
 import json
 import os
+import re
 import shutil
 import tntfl.test.shared_get as Get
 
@@ -96,7 +97,7 @@ class Redirects(Get.Tester, Deployment):
 
     def _testResponse(self, response):
         super(Redirects, self)._testResponse(response)
-        self.assertTrue("<!DOCTYPE html>" in response)
+        self.assertTrue(re.search('<!DOCTYPE html>', response, re.IGNORECASE))
 
 
 class DeletePage(Get.Tester, Deployment):

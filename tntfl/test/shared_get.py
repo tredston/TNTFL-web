@@ -32,9 +32,6 @@ class Pages(Tester):
     def testIndexReachable(self):
         self._testPageReachable('index.cgi')
 
-    def testApiReachable(self):
-        self._testPageReachable('api.cgi')
-
     def testGameReachable(self):
         self._testPageReachable('game.cgi', 'method=view&game=1223308996')
 
