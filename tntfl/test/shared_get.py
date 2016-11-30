@@ -282,13 +282,13 @@ class PredictApi(Tester):
 
 class ActivePlayersApi(Tester):
     def test(self):
-        response = self._getJson('activePlayers.cgi')
+        response = self._getJson('activeplayers.cgi')
 
     def testAtDate(self):
-        response = self._getJson('activePlayers.cgi', 'at=1430402614')
+        response = self._getJson('activeplayers.cgi', 'at=1430402614')
         self.assertEqual(response['1430402614'], 13)
 
     def testAtDates(self):
-        response = self._getJson('activePlayers.cgi', 'at=1420000000,1430402614')
+        response = self._getJson('activeplayers.cgi', 'at=1420000000,1430402614')
         self.assertEqual(response['1420000000'], 6)
         self.assertEqual(response['1430402614'], 13)

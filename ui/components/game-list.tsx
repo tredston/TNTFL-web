@@ -22,7 +22,7 @@ export default class GameList extends Component<GameListProps, State> {
   async loadActivePlayers() {
     const { base, games } = this.props;
     const gameTimes = games.map((game) => game.date - 1);
-    const url = `${base}activePlayers.cgi?at=${gameTimes.join(',')}`;
+    const url = `${base}activeplayers.cgi?at=${gameTimes.join(',')}`;
     const r = await fetch(url);
     this.setState({activePlayers: await r.json()} as State);
   }
