@@ -164,7 +164,7 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
   }
   async loadActivePlayers() {
     const { base } = this.props;
-    const url = `${base}activePlayers.cgi`;
+    const url = `${base}activeplayers.cgi`;
     const r = await fetch(url);
     this.setState({activePlayers: await r.json()} as HeadToHeadStatsState);
   }

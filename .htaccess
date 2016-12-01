@@ -24,6 +24,8 @@ RewriteRule ^games(.cgi)?/([0-9]+)/([0-9]+)/ games.cgi?from=$2&to=$3 [QSA]
 RewriteRule ^player(.cgi)?/([^/]+)$ player/$2/ [R]
 RewriteRule ^player(.cgi)?/([a-zA-Z]+)/$ player.cgi?player=$2 [QSA]
 RewriteRule ^player(.cgi)?/([a-zA-Z]+)/games/ player.cgi?player=$2&method=games [QSA]
+RewriteRule ^player(.cgi)?/([a-zA-Z]+)/achievements/ player.cgi?player=$2&method=achievements [QSA]
+RewriteRule ^player(.cgi)?/([a-zA-Z]+)/perplayerstats/ player.cgi?player=$2&method=perplayerstats [QSA]
 
 RewriteRule ^headtohead(.cgi)?/([a-zA-Z]+)/([a-zA-Z]+)/$ headtohead.cgi?player1=$2&player2=$3 [QSA]
 RewriteRule ^headtohead(.cgi)?/([a-zA-Z]+)/([a-zA-Z]+)/games/ headtohead.cgi?player1=$2&player2=$3&method=games [QSA]
@@ -33,7 +35,9 @@ RewriteRule ^pundit(.cgi)?/([0-9]+)/ pundit.cgi?game=$2 [QSA]
 
 RewriteRule ^ladder(.cgi)?/? ladder.cgi
 RewriteRule ^ladder(.cgi)?/([0-9]+)/([0-9]+)/$ ladder.cgi?gamesFrom=$2&gamesTo=$3
+
 RewriteRule ^api(.cgi)?/ api.html
 RewriteRule ^stats(.cgi)?/ stats.cgi
 RewriteRule ^recent(.cgi)?/ recent.cgi
 RewriteRule ^speculate(.cgi)?/ speculate.cgi
+RewriteRule ^activeplayers(.cgi)?/ activeplayers.cgi
