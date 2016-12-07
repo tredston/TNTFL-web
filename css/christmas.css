@@ -26,13 +26,13 @@ body { background-color:#333; }
   0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
   50% {background-position: 500px 500px, 100px 200px, -100px 150px;}
   100% {background-position: 500px 1000px, 200px 400px, -100px 300px;}
-}  
+}
 
-.panel-body, .panel {
+.body.panel-body, .panel {
   background-color:rgba(255, 255, 255, 0.7);
 }
 
-.navbar-text.tntfl-header {
+.navbar-text.tntfl-header, .navbar-brand {
   background-image: url('../img/xmas/santa.png');
   background-repeat: no-repeat;
   background-size: 32px 32px;

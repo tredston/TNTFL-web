@@ -1,5 +1,6 @@
-import time
+from collections import defaultdict
 from datetime import date
+import time
 
 
 class Streak(object):
@@ -32,7 +33,7 @@ class Player(object):
         self.gamesAsRed = 0
         self.highestSkill = {"time": 0, "skill": 0}
         self.lowestSkill = {"time": 0, "skill": 0}
-        self.achievements = {}
+        self.achievements = defaultdict(list)
 
     def game(self, game):
         if self.name == game.redPlayer:
@@ -102,10 +103,7 @@ class Player(object):
 
     def achieve(self, achievements, game):
         for achievement in achievements:
-            if achievement in self.achievements.keys():
-                self.achievements[achievement].append(game)
-            else:
-                self.achievements[achievement] = [game]
+            self.achievements[achievement].append(game)
 
     def overrated(self):
         if len(self.games) >= 10:
@@ -162,16 +160,15 @@ class Player(object):
 
 
 class PerPlayerStat(object):
-    games = 0
-    goalsFor = 0
-    goalsAgainst = 0
-    skillChange = 0
-    wins = 0
-    losses = 0
-    draws = 0
-
     def __init__(self, opponent):
         self.opponent = opponent
+        self.games = 0
+        self.goalsFor = 0
+        self.goalsAgainst = 0
+        self.skillChange = 0
+        self.wins = 0
+        self.losses = 0
+        self.draws = 0
 
     def append(self, goalsFor, goalsAgainst, skillChange):
         self.games += 1

@@ -1,6 +1,7 @@
 <%!
 from datetime import datetime
 base = ""
+version = '4.0.0'
 %><%namespace name="blocks" file="blocks.mako" inheritable="True"/>Content-Type: text/html
 
 <!DOCTYPE html>
@@ -9,14 +10,14 @@ base = ""
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>${self.attr.title}Table Football Ladder 3.12.2</title>
+    <title>${self.attr.title}Table Football Ladder ${self.attr.version}</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" integrity="sha384-Nlo8b0yiGl7Dn+BgLn4mxhIIBU6We7aeeiulNCjHdUv/eKHx59s3anfSUjExbDxn" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.1.4/css/ion.rangeSlider.min.css" integrity="sha384-Wq9DAJUP5kU9Dk244QvEHs3ZXLGzxXxwU338D+D+czP5fUSWkRoF6VhjUPnMk6if" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.1.4/css/ion.rangeSlider.skinModern.min.css" integrity="sha384-7BZOVCgNHI0de9biH6OtG+p+ZGvcyLZTF2OyorTMm705uvbI1iWwxF2qUvGFrVNY" crossorigin="anonymous">
-    <link rel="stylesheet" href="${self.attr.base}css/ladder.css">
+    <link rel="stylesheet" href="${self.attr.base}css/ladder.css?v=${self.attr.version}">
 
     % if datetime.now().month == 12:
       <link href="${self.attr.base}css/christmas.css" rel="stylesheet">
@@ -31,7 +32,7 @@ base = ""
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js" integrity="sha384-iExPlOYmpYCl6QdVZIxpaVbrQEPIef7hPsjKoic/UIBkQdY4UYpP6j3C90Dx5G74" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.1.4/js/ion.rangeSlider.min.js" integrity="sha384-cLiwOQUID7syKYVMzMNdO6tstxjyBP/v4w9rr6/W9AwqOnHar+FKn+kHRZmFI/GF" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js" integrity="sha384-7pfELK0arQ3VANqV4kiPWPh5wOsrfitjFGF/NdyHXUJ3JJPy/rNhasPtdkaNKhul" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="${self.attr.base}js/ladder.js"></script>
+    <script type="text/javascript" src="${self.attr.base}js/ladder.js?v=${self.attr.version}"></script>
   </head>
   <body>
     <nav class="navbar navbar-default">

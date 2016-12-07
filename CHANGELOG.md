@@ -1,5 +1,18 @@
 # Changelog
 
+## 4.0.0
+* Add pie charts for game outcomes and goals scored
+* Add chart for tracking wins and skill transfer between players
+* Award achievements once per player
+* Add missing achievement icons
+* Add punditry, active players, player achievements and PvP API endpoint
+* Include achievements earned from recent games endpoint
+* Start updating UI to allow unicode
+* Show spinner when adding game
+* Improve API routing (fewer query parameters)
+* Improve API error reporting
+* Swaggerize API docs
+
 ## 3.12.2
 * Fix speculating games
 

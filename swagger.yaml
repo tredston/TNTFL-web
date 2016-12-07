@@ -1,0 +1,370 @@
+swagger: '2.0'
+info:
+  version: 4.0.0
+  title: TNTFL
+  description: Table Football Ladder
+host: www.int.corefiling.com
+basePath: /~tlr/tntfl
+schemes:
+- http
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /player/{playerName}/json:
+    get:
+      parameters:
+      - name: playerName
+        in: path
+        type: string
+        description: ID of the player
+        required: true
+      responses:
+        200:
+          description: Player information
+          schema:
+            $ref: '#/definitions/PlayerInfo'
+  /player/{playerName}/achievements/json:
+    get:
+      parameters:
+      - name: playerName
+        in: path
+        type: string
+        description: ID of the player
+        required: true
+      responses:
+        200:
+          description: Player achievements
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Achievement'
+  /player/{playerName}/perplayerstats/json:
+    get:
+      parameters:
+      - name: playerName
+        in: path
+        type: string
+        description: ID of the player
+        required: true
+      responses:
+        200:
+          description: Opponents information
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PerPlayerStat'
+  /player/{playerName}/games/json:
+    get:
+      parameters:
+      - name: playerName
+        in: path
+        type: string
+        description: ID of the player
+        required: true
+      responses:
+        200:
+          description: Games of the requested player
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Game'
+  /game/{gameId}/json:
+    get:
+      parameters:
+      - name: gameId
+        in: path
+        type: number
+        format: int64
+        description: Timestamp of the game
+        required: true
+      responses:
+        200:
+          description: Game resource
+          schema:
+            $ref: '#/definitions/Game'
+  /game/add/json:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: redPlayer
+        in: formData
+        type: string
+        description: 'The player on red'
+        required: true
+      - name: redScore
+        in: formData
+        type: integer
+        format: int32
+        description: 'The red team score'
+        required: true
+      - name: bluePlayer
+        in: formData
+        type: string
+        description: 'The player on blue'
+        required: true
+      - name: blueScore
+        in: formData
+        type: integer
+        format: int32
+        description: 'The blue team score'
+        required: true
+      responses:
+        200:
+          description: A game resource representing the added game
+          schema:
+            $ref: '#/definitions/Game'
+  /games/{begin}/{end}/json:
+    get:
+      parameters:
+      - name: begin
+        description: Timestamp to filter from.
+        in: path
+        type: number
+        format: int64
+        required: true
+      - name: end
+        description: Timestamp to filter to.
+        in: path
+        type: number
+        format: int64
+        required: true
+      responses:
+        200:
+          description: Games played between given times
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Game'
+  /ladder/json:
+    get:
+      responses:
+        200:
+          description: Ladder
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LadderEntry'
+  /ladder/{begin}/{end}/json:
+    get:
+      parameters:
+      - name: begin
+        description: Timestamp to filter from.
+        in: path
+        type: number
+        format: int64
+        required: true
+      - name: end
+        description: Timestamp to filter to.
+        in: path
+        type: number
+        format: int64
+        required: true
+      responses:
+        200:
+          description: Ladder
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LadderEntry'
+  /recent/json:
+    get:
+      parameters:
+      - name: limit
+        in: query
+        type: integer
+        description: Maximum number of games to return
+        required: false
+      responses:
+        200:
+          description: Recent games
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Game'
+  /pundit/{gameId}/json:
+    get:
+      parameters:
+      - name: gameId
+        in: path
+        type: number
+        format: int64
+        description: Timestamp of game
+        required: true
+      responses:
+        200:
+          description: Punditry for requested game
+          schema:
+            type: array
+            items:
+              type: string
+  /activeplayers/json:
+    get:
+      parameters:
+      - name: time
+        in: query
+        type: string
+        description: CSV of timestamps
+        required: false
+      responses:
+        200:
+          description: Number of active players
+          schema:
+            type: integer
+definitions:
+  PlayerInfo:
+    description: Resource representing information about a player
+    type: object
+    properties:
+      name:
+        description: Player's cfl username
+        type: string
+      rank:
+        description: Player's current ladder rank
+        type: integer
+        format: int32
+      games:
+        description: Link to get all games for this player
+        type: object
+        properties:
+          href:
+            type: string
+      overrated:
+        description: How overrated the system thinks the player is
+        type: number
+        format: double
+      active:
+        description: Whether or not the system considers the player active
+        type: boolean
+      skill:
+        description: The player's skill value in the ranking system
+        type: number
+        format: double
+      total:
+        description: Statistics for the player
+        type: object
+        properties:
+          for:
+            description: The total number of goals the player has scored
+            type: integer
+          against:
+            description: The total number of goals scored against the player
+            type: integer
+          wins:
+            description: The total number of games the player has won
+            type: integer
+          losses:
+            description: The total number of games the player has lost
+            type: integer
+          games:
+            description: The total number of games the player has played
+            type: integer
+          gamesToday:
+            description: The total number of games the player has played so far today
+            type: integer
+  Performance:
+    description: Resource representing how a player performed in a game
+    type: object
+    properties:
+      name:
+        description: Player's cfl username
+        type: string
+      score:
+        description: Goals scored by this player
+        type: integer
+        format: int32
+      skillChange:
+        description: Skill value change for this player
+        type: number
+        format: double
+      rankChange:
+        description: Ladder rank change for this player
+        type: integer
+        format: int32
+      newRank:
+        description: New ladder rank of this player
+        type: integer
+        format: int32
+      href:
+        description: Link to get player's information
+        type: string
+      achievements:
+        description: Achievements earned during this performance
+        type: array
+        items:
+          $ref: '#/definitions/Achievement'
+  Achievement:
+    type: object
+    properties:
+      name:
+        description: Name of the achievement
+        type: string
+      description:
+        description: A brief description of the achievement
+        type: string
+      time:
+        description: Timestamp of when the achievement was earned
+        type: integer
+        format: int64
+  Game:
+    type: object
+    properties:
+      date:
+        description: The unix timestamp of when the game was added
+        type: integer
+        format: int64
+      positionSwap:
+        description: Whether or not the players swapped ladder position
+        type: boolean
+      blue:
+        $ref: '#/definitions/Performance'
+      red:
+        $ref: '#/definitions/Performance'
+  LadderEntry:
+    type: object
+    properties:
+      rank:
+        description: Player's rank
+        type: integer
+      name:
+        description: Player's name
+        type: string
+      skill:
+        description: Player's skill
+        type: number
+      href:
+        description: Link to detailed player stats
+        type: string
+  PerPlayerStat:
+    type: object
+    properties:
+      opponent:
+        description: Opponent's ID
+        type: string
+      skillChange:
+        description: Skill transfer
+        type: number
+        format: double
+      for:
+        description: Goals scored
+        type: number
+        format: int32
+      against:
+        description: Goals conceded
+        type: number
+        format: int32
+      games:
+        description: Number of games
+        type: number
+        format: int32
+      wins:
+        description: Number of wins
+        type: number
+        format: int32
+      losses:
+        description: Number of losses
+        type: number
+        format: int32

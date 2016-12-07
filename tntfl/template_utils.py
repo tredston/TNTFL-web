@@ -1,4 +1,20 @@
 from datetime import date, datetime, timedelta
+from tntfl.player import PerPlayerStat
+from tntfl.achievements import Achievement
+
+
+def getTrend(player):
+    trend = []
+    games = player.games[-10:] if len(player.games) >= 10 else player.games
+    skill = 0
+    for i, game in enumerate(games):
+        skill += game.skillChangeToBlue if game.bluePlayer == player.name else -game.skillChangeToBlue
+        trend.append([i, skill])
+    if len(trend) > 0:
+        trendColour = "#0000FF" if trend[0][1] < trend[len(games) - 1][1] else "#FF0000"
+    else:
+        trendColour = "#000000"
+    return {'trend': trend, 'colour': trendColour}
 
 
 def getNumYellowStripes(player, games):
@@ -83,11 +99,29 @@ def gameToJson(game, base):
     return asJson
 
 
-def playersToJson(players, base):
-    return [{'rank': i + 1, 'name': p.name, 'skill': p.elo, 'href': playerHref(base, p.name)} for i, p in enumerate(players)]
+def getTrendWithDates(player):
+    trend = []
+    games = player.games[-10:] if len(player.games) >= 10 else player.games
+    skill = 0
+    for i, game in enumerate(games):
+        skill += game.skillChangeToBlue if game.bluePlayer == player.name else -game.skillChangeToBlue
+        trend.append((game.time, skill))
+    return trend
 
 
-def playertoJson(player, ladder):
+def ladderToJson(players, ladder, base, includePlayers):
+    if includePlayers:
+        return [{
+            'rank': ladder.getPlayerRank(p.name),
+            'name': p.name,
+            'player': playerToJson(p, ladder),
+            'trend': getTrendWithDates(p),
+        } for i, p in enumerate(players)]
+    else:
+        return [{'rank': i + 1, 'name': p.name, 'skill': p.elo, 'href': playerHref(base, p.name)} for i, p in enumerate(players)]
+
+
+def playerToJson(player, ladder):
     return {
         'name': player.name,
         'rank': ladder.getPlayerRank(player.name),
@@ -98,9 +132,55 @@ def playertoJson(player, ladder):
             'for': player.goalsFor,
             'against': player.goalsAgainst,
             'games': len(player.games),
+            'gamesAsRed': player.gamesAsRed,
             'wins': player.wins,
             'losses': player.losses,
             'gamesToday': player.gamesToday,
         },
         'games': {'href': 'games/json'},
     }
+
+
+def getPerPlayerStats(player):
+    pps = {}
+    for game in player.games:
+        if game.redPlayer == player.name:
+            if game.bluePlayer not in pps:
+                pps[game.bluePlayer] = PerPlayerStat(game.bluePlayer)
+            pps[game.bluePlayer].append(game.redScore, game.blueScore, -game.skillChangeToBlue)
+        elif game.bluePlayer == player.name:
+            if game.redPlayer not in pps:
+                pps[game.redPlayer] = PerPlayerStat(game.redPlayer)
+            pps[game.redPlayer].append(game.blueScore, game.redScore, game.skillChangeToBlue)
+    return pps
+
+
+def perPlayerStatsToJson(stats):
+    return [{
+        'opponent': opponent,
+        'skillChange': stats[opponent].skillChange,
+        'for': stats[opponent].goalsFor,
+        'against': stats[opponent].goalsAgainst,
+        'games': stats[opponent].games,
+        'wins': stats[opponent].wins,
+        'losses': stats[opponent].losses,
+    } for opponent in stats.keys()]
+
+
+def getPlayerAchievementsJson(player):
+    achievements = [{
+        'name': a.name,
+        'description': a.description,
+        'time': player.achievements[a][0].time
+    } for a in player.achievements.keys()]
+    [achievements.append({
+        'name': clz.name,
+        'description': clz.description,
+    }) for clz in Achievement.__subclasses__() if clz not in player.achievements.keys()]
+    return achievements
+
+
+def appendChristmas(links, base):
+    if datetime.now().month == 12:
+        links.append('<link href="%scss/christmas.css" rel="stylesheet">' % base)
+    return links

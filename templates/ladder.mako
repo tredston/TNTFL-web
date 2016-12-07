@@ -21,24 +21,11 @@ def rankPlayers(ladder):
 
 def idsafe(text):
   return re.sub("[^A-Za-z0-9\-_\:\.]", "_", text)
-
-def getTrend(player):
-    trend = []
-    games = player.games[-10:] if len(player.games) >= 10 else player.games
-    skill = 0
-    for i, game in enumerate(games):
-        skill += game.skillChangeToBlue if game.bluePlayer == player.name else -game.skillChangeToBlue
-        trend.append([i, skill])
-    if len(trend) > 0:
-      trendColour = "#0000FF" if trend[0][1] < trend[len(games) - 1][1] else "#FF0000";
-    else:
-      trendColour = "#000000"
-    return {'trend':trend, 'colour':trendColour}
 %>
 
 <%def name="ladderEntry(player, rank, totalActivePlayers)">
     <%
-    trend = getTrend(player)
+    trend = utils.getTrend(player)
 
     theDate = datetime.now() if ladder._ladderTime['now'] else datetime.fromtimestamp(ladder._ladderTime['range'][1])
     daysAgo = (theDate - player.games[-1].timeAsDatetime()).days

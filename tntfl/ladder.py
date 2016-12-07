@@ -1,5 +1,6 @@
 import os
 import time
+from collections import Counter
 from tntfl.achievements import Achievements
 from tntfl.player import Player, Streak
 from tntfl.caching_game_store import CachingGameStore
@@ -47,7 +48,7 @@ class TableFootballLadder(object):
 
     # returns blue's goal ratio
     def predict(self, red, blue):
-        return self._skillChange.getBlueGoalRatio(red, blue)
+        return self._skillChange.getBlueGoalRatio(red.elo, blue.elo)
 
     def _getActivePlayers(self, atTime=None):
         if atTime is None:
@@ -127,10 +128,7 @@ class TableFootballLadder(object):
         return -1
 
     def getAchievements(self):
-        achievements = {}
-        for ach in self.achievements.achievements:
-            achievements[ach.__class__] = 0
-
+        achievements = Counter()
         for player in self.players.values():
             for name, games in player.achievements.iteritems():
                 achievements[name] += len(games)

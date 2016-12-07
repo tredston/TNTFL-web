@@ -8,7 +8,7 @@ from tntfl.template_utils import gameToJson
 %>
 <%inherit file="json.mako" />
 <%
-  ladder = TableFootballLadder(Constants.ladderFilePath, transforms=PresetTransforms.transforms_for_recent())
+  ladder = TableFootballLadder(Constants.ladderFilePath)
   recentGames = [l for l in ladder.games if not l.isDeleted()][-limit:]
   recentGames.reverse()
 %>
