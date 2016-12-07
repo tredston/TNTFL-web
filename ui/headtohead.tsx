@@ -9,7 +9,7 @@ import GoalDistributionChart from './components/goal-distribution-chart';
 import NavigationBar from './components/navigation-bar';
 import RecentGames from './components/recent-game-list';
 import Game from './model/game';
-import { getParameters } from './utils/utils';
+import { getParameters, mostRecentGames } from './utils/utils';
 
 
 interface HeadToHeadPageProps extends Props<HeadToHeadPage> {
@@ -58,7 +58,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
               <Panel header={<h2>Goal Distribution</h2>}>
                 <GoalDistributionChart player1={player1} player2={player2} games={games}/>
               </Panel>
-              <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true} base={base}/>
+              <RecentGames games={mostRecentGames(games)} showAllGames={true} base={base}/>
             </Col>
           </Grid>
           : 'Loading...'

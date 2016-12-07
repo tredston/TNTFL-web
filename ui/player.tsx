@@ -13,7 +13,7 @@ import Achievement from './model/achievement';
 import Game from './model/game';
 import PerPlayerStat from './model/per-player-stat';
 import Player from './model/player';
-import { getParameters } from './utils/utils';
+import { getParameters, mostRecentGames } from './utils/utils';
 
 interface PlayerPageProps extends Props<PlayerPage> {
   base: string;
@@ -86,7 +86,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
                 <PerPlayerStats playerName={playerName} base={base}/>
               </Col>
               <Col md={4}>
-                <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true} base={base}/>
+                <RecentGames games={mostRecentGames(games)} showAllGames={true} base={base}/>
                 <PlayerAchievements achievements={achievements} base={base}/>
               </Col>
             </Row>

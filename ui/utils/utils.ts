@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as moment from 'moment';
 
+import Game from '../model/game';
+
 export function getLadderLeagueClass(rank: number, numActivePlayers: number) {
   var league = "";
   if (rank == -1)
@@ -45,4 +47,8 @@ export function getNearlyInactiveClass(lastPlayed: number, now: number): string 
   const nearlyInactiveTime = (60 - nearlyInactiveDays) * 24 * 60 * 60;
   const isNearlyInactive = now - lastPlayed > nearlyInactiveTime;
   return isNearlyInactive ? 'nearly-inactive' : '';
+}
+
+export function mostRecentGames(games: Game[]): Game[] {
+  return games.slice(games.length > 5 ? games.length - 5 : 0).reverse();
 }
