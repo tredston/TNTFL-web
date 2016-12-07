@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import 'whatwg-fetch';
 
@@ -64,12 +64,14 @@ class GamePage extends Component<GamePageProps, GamePageState> {
         />
         {this.state.game ?
           <Grid fluid={true}>
-            <Row>
-              <GameSummary game={this.state.game} base={"../../"} numActivePlayers={numActivePlayers} />
-            </Row>
-            <Row>
-              <GameDetails game={this.state.game} punditry={this.state.punditry}/>
-            </Row>
+            <Panel>
+              <Row>
+                <GameSummary game={this.state.game} base={"../../"} numActivePlayers={numActivePlayers} />
+              </Row>
+              <Row>
+                <GameDetails game={this.state.game} punditry={this.state.punditry}/>
+              </Row>
+            </Panel>
           </Grid>
           : 'Loading...'
         }
