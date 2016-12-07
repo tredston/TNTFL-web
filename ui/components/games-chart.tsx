@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Pie } from 'react-chartjs-2';
 
+import { TablePieChart } from './table-charts';
 import { Totals } from '../model/player';
 
 export default function GamesChart(totals: Totals): JSX.Element {
@@ -12,13 +13,7 @@ export default function GamesChart(totals: Totals): JSX.Element {
       backgroundColor: ['#FF0000', '#FFC200', '#0000FF'],
     }]
   }
-  const options = {
-    legend: {display: false},
-    tooltips: {enabled: false},
-    animation: false,
-    maintainAspectRatio: false,
-  }
   return (
-    <Pie data={data} options={options} width={50} height={50}/>
+    <TablePieChart data={data}/>
   );
 }

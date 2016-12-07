@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { Line } from 'react-chartjs-2';
 
 import GamesChart from './games-chart';
 import GoalsChart from './goals-chart';
 import PlayerName from './player-name';
 import Rank from './rank';
+import { TableLineChart } from './table-charts';
 import LadderEntry from '../model/ladder-entry';
 import Player, { Totals } from '../model/player';
 import { getLadderLeagueClass, getNearlyInactiveClass } from '../utils/utils';
@@ -23,18 +23,8 @@ function TrendChart(trend: [number, number][]): JSX.Element {
       }],
       labels,
     };
-    const options = {
-      scales: {
-        xAxes: [{display: false}],
-        yAxes: [{display: false}],
-      },
-      legend: {display: false},
-      tooltips: {enabled: false},
-      animation: false,
-      maintainAspectRatio: false,
-    };
     return (
-      <Line data={data} options={options} width={50} height={50}/>
+      <TableLineChart data={data}/>
     );
   }
   else {
