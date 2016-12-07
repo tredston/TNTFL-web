@@ -23,7 +23,6 @@ interface PlayerPageProps extends Props<PlayerPage> {
 interface PlayerPageState {
   player: Player;
   games: Game[];
-  perPlayerStats: PerPlayerStat[];
   achievements: Achievement[];
   activePlayers: number;
 }
@@ -33,7 +32,6 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
     this.state = {
       player: undefined,
       games: undefined,
-      perPlayerStats: undefined,
       achievements: undefined,
       activePlayers: undefined,
     };
@@ -50,12 +48,6 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
     const r = await fetch(url);
     this.setState({games: await r.json()} as PlayerPageState);
   }
-  async loadPerPlayerStats() {
-    const { base, playerName } = this.props;
-    const url = `${base}player.cgi?method=perplayerstats&view=json&player=${playerName}`;
-    const r = await fetch(url);
-    this.setState({perPlayerStats: await r.json()} as PlayerPageState);
-  }
   async loadAchievements() {
     const { base, playerName } = this.props;
     const url = `${base}player.cgi?method=achievements&view=json&player=${playerName}`;
@@ -71,13 +63,12 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
   componentDidMount() {
     this.loadSummary();
     this.loadGames();
-    this.loadPerPlayerStats();
     this.loadAchievements();
     this.loadActivePlayers();
   }
   render() {
     const { playerName, base, addURL } = this.props;
-    const { player, games, perPlayerStats, achievements, activePlayers } = this.state;
+    const { player, games, achievements, activePlayers } = this.state;
     return (
       <div>
         <NavigationBar
@@ -92,7 +83,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
                 <Panel header={<h2>Skill Chart</h2>}>
                   <PlayerSkillChart playerName={player.name} games={games} />
                 </Panel>
-                <PerPlayerStats playerName={playerName} stats={perPlayerStats} base={base}/>
+                <PerPlayerStats playerName={playerName} base={base}/>
               </Col>
               <Col md={4}>
                 <RecentGames games={games.slice(games.length - 5).reverse()} showAllGames={true} base={base}/>
