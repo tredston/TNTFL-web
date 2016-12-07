@@ -11,13 +11,12 @@ import { getLadderLeagueClass, formatEpoch, formatRankChange } from '../utils/ut
 
 interface AchievementsSummaryProps {
   achievements: Achievement[];
-  yellow: boolean;
   base: string;
 }
 function AchievementsSummary(props: AchievementsSummaryProps): JSX.Element {
-  const { achievements, yellow, base } = props;
+  const { achievements, base } = props;
   return (
-    <div className={yellow ? 'yellow-stripe' : ''} style={{display: 'table', marginLeft: 'auto', marginRight: 'auto'}}>
+    <div style={{display: 'table', marginLeft: 'auto', marginRight: 'auto'}}>
       {achievements.map((ach, i) =>
         <div style={{display: 'table-cell'}} key={`${i}`}>
           <img
@@ -35,12 +34,11 @@ function AchievementsSummary(props: AchievementsSummaryProps): JSX.Element {
 interface GameScoreProps {
   redScore: number;
   blueScore: number;
-  yellow: boolean;
 }
 function GameScore(props: GameScoreProps): JSX.Element {
-  const { redScore, blueScore, yellow } = props;
+  const { redScore, blueScore } = props;
   return (
-    <div className={yellow ? 'yellow-stripe' : ''}>
+    <div>
       {redScore} - {blueScore}
     </div>
   );
@@ -80,6 +78,10 @@ function RankChange(props: RankChangeProps): JSX.Element {
   );
 }
 
+function stripe(b: boolean): string {
+  return b ? 'yellow-stripe' : '';
+}
+
 interface GameSummaryProps {
   game: Game;
   base: string;
@@ -95,13 +97,13 @@ export default function GameSummary(props: GameSummaryProps): JSX.Element {
       <Table id={'compactTable'}>
         <tbody>
           <tr className={'recent-game-result'}>
-            <td style={{width: '20%'}}> <PlayerName name={game.red.name} base={base} colour="red-player" yellow={redStripe} /> </td>
-            <td style={{width: '10%'}}> <Rank rank={game.red.newRank + game.red.rankChange} numActivePlayers={numActivePlayers} /> </td>
-            <td style={{width: '10%'}}> <AchievementsSummary achievements={game.red.achievements} yellow={redStripe} base={base}/> </td>
-            <td style={{width: '20%'}}> <GameScore redScore={game.red.score} blueScore={game.blue.score} yellow={redStripe || blueStripe} /> </td>
-            <td style={{width: '10%'}}> <AchievementsSummary achievements={game.blue.achievements} yellow={blueStripe} base={base}/> </td>
-            <td style={{width: '10%'}}> <Rank rank={game.blue.newRank + game.blue.rankChange} numActivePlayers={numActivePlayers} /> </td>
-            <td style={{width: '20%'}}> <PlayerName name={game.blue.name} base={base} colour="blue-player" yellow={blueStripe} /> </td>
+            <td style={{width: '20%'}} className={stripe(redStripe)}> <PlayerName name={game.red.name} base={base} colour={redStripe ? 'yellow-stripe' : 'red-player'} /> </td>
+            <td style={{width: '10%'}} className={stripe(redStripe)}> <Rank rank={game.red.newRank + game.red.rankChange} numActivePlayers={numActivePlayers} /> </td>
+            <td style={{width: '10%'}} className={stripe(redStripe)}> <AchievementsSummary achievements={game.red.achievements} base={base}/> </td>
+            <td style={{width: '20%'}} className={stripe(redStripe || blueStripe)}> <GameScore redScore={game.red.score} blueScore={game.blue.score}/> </td>
+            <td style={{width: '10%'}} className={stripe(blueStripe)}> <AchievementsSummary achievements={game.blue.achievements} base={base}/> </td>
+            <td style={{width: '10%'}} className={stripe(blueStripe)}> <Rank rank={game.blue.newRank + game.blue.rankChange} numActivePlayers={numActivePlayers} /> </td>
+            <td style={{width: '20%'}} className={stripe(blueStripe)}> <PlayerName name={game.blue.name} base={base} colour={blueStripe ? 'yellow-stripe' : 'blue-player'} /> </td>
           </tr>
           <tr className={'game-changes'}>
             <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.red.skillChange} colour="skill-change-red" /> </td>
