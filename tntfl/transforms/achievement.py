@@ -5,12 +5,13 @@ DAYS_INACTIVE = 60
 
 
 class Player(object):
-    def __init__(self, name):
+    def __init__(self, name, achievements):
         self.name = name
         self.elo = 0.0
         self.games = []
         self.lowestSkill = 0
         self.achievements = {}
+        self.unachieved = achievements
 
         self._activeTillTime = 0
 
@@ -32,10 +33,10 @@ class Player(object):
 
     def achieve(self, achievements, game):
         for achievement in achievements:
-            if achievement in self.achievements.keys():
-                self.achievements[achievement].append(game)
-            else:
-                self.achievements[achievement] = [game]
+            self.achievements[achievement] = game
+            for a in self.unachieved:
+                if a.__class__ == achievement:
+                    self.unachieved.remove(a)
 
 
 class TableFootballLadder:
@@ -65,7 +66,7 @@ class TableFootballLadder:
 
     def _getPlayer(self, name):
         if name not in self.players:
-            self.players[name] = Player(name)
+            self.players[name] = Player(name, list(self.achievements.allAchievements))
         return self.players[name]
 
 

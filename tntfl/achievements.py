@@ -341,7 +341,7 @@ class BossFight(Achievement):
 
 class Achievements(object):
     def __init__(self):
-        self.achievements = [clz() for clz in Achievement.__subclasses__()]
+        self.allAchievements = [clz() for clz in Achievement.__subclasses__()]
 
     def apply(self, red, game, blue, ladder):
         game.redAchievements = self._getAllForGame(red, game, blue, ladder)
@@ -354,5 +354,5 @@ class Achievements(object):
         Identifies all achievements unlocked by player in game against opponent.
         This method should be called AFTER Player.game() has been called with game for BOTH players.
         '''
-        earned = player.achievements.keys()
-        return [a.__class__ for a in self.achievements if a.__class__ not in earned and a.applies(player, game, opponent, ladder)]
+        unachieved = player.unachieved
+        return [a.__class__ for a in unachieved if a.applies(player, game, opponent, ladder)]
