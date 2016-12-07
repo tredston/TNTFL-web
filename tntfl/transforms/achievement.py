@@ -1,7 +1,8 @@
 from tntfl.achievements import Achievements
 from tntfl.game import Game
 
-DAYS_INACTIVE = 60
+# DAYS_INACTIVE = 60
+secondsInactive = 60 * 60 * 24 * 60
 
 
 class Player(object):
@@ -16,7 +17,6 @@ class Player(object):
         self._activeTillTime = 0
 
     def game(self, game):
-        secondsInactive = 60 * 60 * 24 * DAYS_INACTIVE
         self._activeTillTime = game.time + secondsInactive
 
         self.elo += game.skillChangeToBlue if self.name == game.bluePlayer else -game.skillChangeToBlue
@@ -53,13 +53,16 @@ class TableFootballLadder:
         red.game(game)
         blue.game(game)
 
+        self._updateActive(red, blue, game.time)
+
+        self.achievements.apply(red, game, blue, self)
+
+    def _updateActive(self, red, blue, time):
         if red not in self._recentlyActivePlayers:
             self._recentlyActivePlayers.append(red)
         if blue not in self._recentlyActivePlayers:
             self._recentlyActivePlayers.append(blue)
-        self._recentlyActivePlayers = [p for p in self._recentlyActivePlayers if (p._activeTillTime - game.time) > 0]
-
-        self.achievements.apply(red, game, blue, self)
+        self._recentlyActivePlayers = [p for p in self._recentlyActivePlayers if (p._activeTillTime - time) > 0]
 
     def getNumActivePlayers(self, time):
         return len(self._recentlyActivePlayers)
