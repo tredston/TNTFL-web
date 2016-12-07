@@ -29,6 +29,7 @@
     "react-bootstrap-table": "2.5.8",
     "react-chartjs-2": "1.5.1",
     "react-dom": "15.4.0",
+    "react-lazy-load": "3.0.10",
     "typescript": "2.1.1",
     "whatwg-fetch": "2.0.1"
   },
