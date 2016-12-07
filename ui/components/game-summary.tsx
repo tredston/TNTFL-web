@@ -12,14 +12,22 @@ import { getLadderLeagueClass, formatEpoch, formatRankChange } from '../utils/ut
 interface AchievementsSummaryProps {
   achievements: Achievement[];
   yellow: boolean;
+  base: string;
 }
 function AchievementsSummary(props: AchievementsSummaryProps): JSX.Element {
-  const { achievements, yellow } = props;
+  const { achievements, yellow, base } = props;
   return (
-    <div className={yellow ? 'yellow-stripe' : ''}>
+    <div className={yellow ? 'yellow-stripe' : ''} style={{display: 'table', marginLeft: 'auto', marginRight: 'auto'}}>
       {achievements.map((ach, i) =>
-        <img src="/~tlr/tntfl-ui/img/trophy5_24.png" alt="Achievement unlocked!" title="Achievement unlocked!" key={`achcup${i}`}/> )
-      }
+        <div style={{display: 'table-cell'}} key={`${i}`}>
+          <img
+            src={`${base}img/trophy5_24.png`}
+            alt="Achievement unlocked!"
+            title="Achievement unlocked!"
+            style={{width: '100%'}}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -89,9 +97,9 @@ export default function GameSummary(props: GameSummaryProps): JSX.Element {
           <tr className={'recent-game-result'}>
             <td style={{width: '20%'}}> <PlayerName name={game.red.name} base={base} colour="red-player" yellow={redStripe} /> </td>
             <td style={{width: '10%'}}> <Rank rank={game.red.newRank + game.red.rankChange} numActivePlayers={numActivePlayers} /> </td>
-            <td style={{width: '10%'}}> <AchievementsSummary achievements={game.red.achievements} yellow={redStripe} /> </td>
+            <td style={{width: '10%'}}> <AchievementsSummary achievements={game.red.achievements} yellow={redStripe} base={base}/> </td>
             <td style={{width: '20%'}}> <GameScore redScore={game.red.score} blueScore={game.blue.score} yellow={redStripe || blueStripe} /> </td>
-            <td style={{width: '10%'}}> <AchievementsSummary achievements={game.blue.achievements} yellow={blueStripe} /> </td>
+            <td style={{width: '10%'}}> <AchievementsSummary achievements={game.blue.achievements} yellow={blueStripe} base={base}/> </td>
             <td style={{width: '10%'}}> <Rank rank={game.blue.newRank + game.blue.rankChange} numActivePlayers={numActivePlayers} /> </td>
             <td style={{width: '20%'}}> <PlayerName name={game.blue.name} base={base} colour="blue-player" yellow={blueStripe} /> </td>
           </tr>
