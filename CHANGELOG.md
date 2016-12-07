@@ -6,6 +6,7 @@
 * Award achievements once per player
 * Add missing achievement icons
 * Add punditry, active players, player achievements and PvP API endpoint
+* Include achievements earned from recent games endpoint
 * Start updating UI to allow unicode
 * Show spinner when adding game
 * Improve API routing (fewer query parameters)
