@@ -54,30 +54,33 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   }
   render() {
     const { addURL, base } = this.props;
+    const { entries, recentGames, showInactive } = this.state;
     return (
       <div>
         <NavigationBar
           base={base}
           addURL={addURL}
         />
-        {this.state.entries ?
-          <Grid fluid={true}>
-            <Row>
-              <Col lg={8}>
-                <Panel>
-                  <Ladder entries={this.state.entries}/>
-                  <Button onClick={() => this.onShowInactive()} style={{width: '100%'}}>
-                    {this.state.showInactive ? 'Hide inactive' : 'Show inactive'}
-                  </Button>
-                </Panel>
-              </Col>
-              <Col lg={4}>
-                <RecentGames games={this.state.recentGames} showAllGames={false} base={base}/>
-              </Col>
-            </Row>
-          </Grid>
-          : 'Loading...'
-        }
+        <Grid fluid={true}>
+          <Row>
+            <Col lg={8}>
+              <Panel>
+                {entries
+                  ? <div>
+                      <Ladder entries={entries}/>
+                      <Button onClick={() => this.onShowInactive()} style={{width: '100%'}}>
+                        {showInactive ? 'Hide inactive' : 'Show inactive'}
+                      </Button>
+                    </div>
+                  : 'Loading...'
+                }
+              </Panel>
+            </Col>
+            <Col lg={4}>
+              <RecentGames games={recentGames} showAllGames={false} base={base}/>
+            </Col>
+          </Row>
+        </Grid>
       </div>
     );
   }
