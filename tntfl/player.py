@@ -33,7 +33,7 @@ class Player(object):
         self.gamesAsRed = 0
         self.highestSkill = {"time": 0, "skill": 0}
         self.lowestSkill = {"time": 0, "skill": 0}
-        self.achievements = defaultdict(list)
+        self.achievements = {}
 
     def game(self, game):
         if self.name == game.redPlayer:
@@ -103,7 +103,7 @@ class Player(object):
 
     def achieve(self, achievements, game):
         for achievement in achievements:
-            self.achievements[achievement].append(game)
+            self.achievements[achievement] = game.time
 
     def overrated(self):
         if len(self.games) >= 10:

@@ -130,6 +130,6 @@ class TableFootballLadder(object):
     def getAchievements(self):
         achievements = Counter()
         for player in self.players.values():
-            for name, games in player.achievements.iteritems():
-                achievements[name] += len(games)
+            for ach in player.achievements.keys():
+                achievements[ach] += 1
         return achievements
