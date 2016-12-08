@@ -31,13 +31,13 @@ class Player(object):
         self.goalsFor = 0
         self.goalsAgainst = 0
         self.gamesAsRed = 0
-        self.highestSkill = {"time": 0, "skill": 0}
-        self.lowestSkill = {"time": 0, "skill": 0}
+        self.highestSkill = (0, 0)  # (time, skill)
+        self.lowestSkill = (0, 0)
         self.achievements = {}
 
     def game(self, game):
         if self.name == game.redPlayer:
-            delta = -game.skillChangeToBlue
+            self.elo += -game.skillChangeToBlue
             self.gamesAsRed += 1
             if game.redScore > game.blueScore:
                 self.wins += 1
@@ -45,28 +45,27 @@ class Player(object):
                 self.losses += 1
             self.goalsFor += game.redScore
             self.goalsAgainst += game.blueScore
-        elif self.name == game.bluePlayer:
-            delta = game.skillChangeToBlue
+        else:
+            self.elo += game.skillChangeToBlue
             if game.redScore < game.blueScore:
                 self.wins += 1
             elif game.redScore > game.blueScore:
                 self.losses += 1
             self.goalsFor += game.blueScore
             self.goalsAgainst += game.redScore
-        else:
-            return
-        self.elo += delta
 
-        if (self.elo > self.highestSkill["skill"]):
-            self.highestSkill = {"time": game.time, "skill": self.elo}
-
-        if (self.elo < self.lowestSkill["skill"]):
-            self.lowestSkill = {"time": game.time, "skill": self.elo}
+        if self.elo > self.highestSkill[1]:
+            self.highestSkill = (game.time, self.elo)
+        elif self.elo < self.lowestSkill[1]:
+            self.lowestSkill = (game.time, self.elo)
 
         self.games.append(game)
 
     def getSkillBounds(self):
-        return {"highest": self.highestSkill, "lowest": self.lowestSkill}
+        return {
+            'highest': {'time': self.highestSkill[0], 'skill': self.highestSkill[1]},
+            'lowest': {'time': self.lowestSkill[0], 'skill': self.lowestSkill[1]},
+        }
 
     def mostSignificantGame(self):
         mostSignificantGame = None
