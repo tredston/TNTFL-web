@@ -27,17 +27,19 @@ class TableFootballLadder(object):
             self._gameStore = CachingGameStore(ladderFilePath, useCache)
             transforms = PresetTransforms.transforms_for_full_games(self._ladderTime) if transforms is None else transforms
             games = self._gameStore.loadGames(self._ladderTime, transforms)
-        self._loadGamesIntoLadder(games)
+        withAchievements = 'achievement' in [t.getName() for t in transforms] if transforms is not None else True
+        self._loadGamesIntoLadder(games, withAchievements)
 
-    def _loadGamesIntoLadder(self, games):
+    def _loadGamesIntoLadder(self, games, withAchievements):
         self.games = games
         for game in [g for g in self.games if not g.isDeleted()]:
             red = self.getPlayer(game.redPlayer)
             blue = self.getPlayer(game.bluePlayer)
             blue.game(game)
             red.game(game)
-            red.achieve(game.redAchievements, game)
-            blue.achieve(game.blueAchievements, game)
+            if withAchievements:
+                red.achieve(game.redAchievements, game)
+                blue.achieve(game.blueAchievements, game)
 
     def getPlayer(self, name):
         if name not in self.players:
