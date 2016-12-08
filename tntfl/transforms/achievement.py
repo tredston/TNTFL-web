@@ -42,9 +42,9 @@ class Player(object):
 class TableFootballLadder:
     def __init__(self):
         self.games = []
-        self.players = {}
+        self._players = {}
         self._recentlyActivePlayers = []
-        self.allAchievements = [clz() for clz in Achievements.Achievement.__subclasses__()]
+        self._allAchievements = [clz() for clz in Achievements.Achievement.__subclasses__()]
 
     def addGame(self, game):
         self.games.append(game)
@@ -55,18 +55,14 @@ class TableFootballLadder:
 
         self._updateActive(red, blue, game.time)
 
-        game.redAchievements = self._getAllForGame(red, game, blue, self)
-        game.blueAchievements = self._getAllForGame(blue, game, red, self)
+        game.redAchievements = self._getAllForGame(red, game, blue)
+        game.blueAchievements = self._getAllForGame(blue, game, red)
         red.achieve(game.redAchievements, game)
         blue.achieve(game.blueAchievements, game)
 
-    def _getAllForGame(self, player, game, opponent, ladder):
-        '''
-        Identifies all achievements unlocked by player in game against opponent.
-        This method should be called AFTER Player.game() has been called with game for BOTH players.
-        '''
+    def _getAllForGame(self, player, game, opponent):
         unachieved = player.unachieved
-        return [a.__class__ for a in unachieved if a.applies(player, game, opponent, ladder)]
+        return [a.__class__ for a in unachieved if a.applies(player, game, opponent, self)]
 
     def _updateActive(self, red, blue, time):
         if red not in self._recentlyActivePlayers:
@@ -79,9 +75,9 @@ class TableFootballLadder:
         return len(self._recentlyActivePlayers)
 
     def _getPlayer(self, name):
-        if name not in self.players:
-            self.players[name] = Player(name, list(self.allAchievements))
-        return self.players[name]
+        if name not in self._players:
+            self._players[name] = Player(name, list(self._allAchievements))
+        return self._players[name]
 
 
 def do(games):
