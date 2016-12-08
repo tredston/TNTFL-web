@@ -57,6 +57,10 @@ class AddGame(Get.Tester, Deployment):
     def testAddYellowStripeApi(self):
         self._getJson('game.cgi', 'method=add&view=json&redPlayer=foo&redScore=10&bluePlayer=bar&blueScore=0')
 
+    def testNoSinglePlayer(self):
+        r = self._get('game.cgi', 'method=add&view=json&redPlayer=cxh&redScore=10&bluePlayer=cxh&blueScore=0')
+        self.assertEqual('Status: 400 Bad Request\n', r)
+
 
 class Pages(Get.Pages, Deployment):
     pass

@@ -14,7 +14,7 @@ if getString('method', form) == "add":
     bluePlayer = getString('bluePlayer', form)
     redScore = getInt('redScore', form)
     blueScore = getInt('blueScore', form)
-    if redPlayer is not None and bluePlayer is not None and redScore is not None and blueScore is not None:
+    if redPlayer is not None and bluePlayer is not None and redScore is not None and blueScore is not None and redPlayer != bluePlayer:
         ladder = TableFootballLadder(Constants.ladderFilePath, games=[])
         ladder._gameStore = CachingGameStore(Constants.ladderFilePath, False)
         newGameTime = ladder.appendGame(redPlayer, redScore, bluePlayer, blueScore)

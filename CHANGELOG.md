@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.1
+* Prevent entering games where both players are the same
+
 ## 4.0.0
 * Add pie charts for game outcomes and goals scored
 * Add chart for tracking wins and skill transfer between players
