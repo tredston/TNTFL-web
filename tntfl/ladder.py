@@ -1,7 +1,6 @@
 import os
 import time
 from collections import Counter
-from tntfl.achievements import Achievements
 from tntfl.player import Player, Streak
 from tntfl.caching_game_store import CachingGameStore
 from tntfl.game import Game
@@ -17,7 +16,6 @@ class TableFootballLadder(object):
     def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None, games=None):
         self.games = []
         self.players = {}
-        self.achievements = Achievements()
         self._skillChange = Elo()
         self._recentlyActivePlayers = (-1, [])
 

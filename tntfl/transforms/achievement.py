@@ -1,4 +1,4 @@
-from tntfl.achievements import Achievements
+import tntfl.achievements as Achievements
 from tntfl.game import Game
 
 # DAYS_INACTIVE = 60
@@ -43,8 +43,8 @@ class TableFootballLadder:
     def __init__(self):
         self.games = []
         self.players = {}
-        self.achievements = Achievements()
         self._recentlyActivePlayers = []
+        self.allAchievements = [clz() for clz in Achievements.Achievement.__subclasses__()]
 
     def addGame(self, game):
         self.games.append(game)
@@ -55,7 +55,18 @@ class TableFootballLadder:
 
         self._updateActive(red, blue, game.time)
 
-        self.achievements.apply(red, game, blue, self)
+        game.redAchievements = self._getAllForGame(red, game, blue, self)
+        game.blueAchievements = self._getAllForGame(blue, game, red, self)
+        red.achieve(game.redAchievements, game)
+        blue.achieve(game.blueAchievements, game)
+
+    def _getAllForGame(self, player, game, opponent, ladder):
+        '''
+        Identifies all achievements unlocked by player in game against opponent.
+        This method should be called AFTER Player.game() has been called with game for BOTH players.
+        '''
+        unachieved = player.unachieved
+        return [a.__class__ for a in unachieved if a.applies(player, game, opponent, ladder)]
 
     def _updateActive(self, red, blue, time):
         if red not in self._recentlyActivePlayers:
@@ -69,7 +80,7 @@ class TableFootballLadder:
 
     def _getPlayer(self, name):
         if name not in self.players:
-            self.players[name] = Player(name, list(self.achievements.allAchievements))
+            self.players[name] = Player(name, list(self.allAchievements))
         return self.players[name]
 
 
