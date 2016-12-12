@@ -3,10 +3,10 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: {
-    index: './ui/index.tsx',
-    game: './ui/game.tsx',
-    player: './ui/player.tsx',
-    headtohead: './ui/headtohead.tsx'
+    index: ['babel-polyfill', './ui/index.tsx'],
+    game: ['babel-polyfill', './ui/game.tsx'],
+    player: ['babel-polyfill', './ui/player.tsx'],
+    headtohead: ['babel-polyfill', './ui/headtohead.tsx'],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -20,7 +20,8 @@ module.exports = {
       { test: /\.json$/, loader: 'json-loader'},
     ],
     loaders: [
-      { test: /\.tsx?$/, loader: 'ts-loader'}
+      { test: /\.tsx?$/, loader: 'babel-loader?presets[]=es2015&presets[]=react!ts-loader', exclude: /node_modules/},
+      { test: /\.js$/, loader: 'babel', query: { presets: ['es2015', 'react']}, exclude: /node_modules/},
     ]
   },
   node: {
