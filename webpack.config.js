@@ -31,7 +31,7 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin("commons.chunk.js")
-    // new webpack.optimize.UglifyJsPlugin({compress:{warnings: false}})
+    new webpack.optimize.CommonsChunkPlugin("commons.chunk.js"),
+    new webpack.optimize.UglifyJsPlugin({compress:{warnings: false}}),
   ]
 };
