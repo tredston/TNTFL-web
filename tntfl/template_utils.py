@@ -171,7 +171,7 @@ def getPlayerAchievementsJson(player):
     achievements = [{
         'name': a.name,
         'description': a.description,
-        'time': player.achievements[a][0].time
+        'time': player.achievements[a]
     } for a in player.achievements.keys()]
     [achievements.append({
         'name': clz.name,

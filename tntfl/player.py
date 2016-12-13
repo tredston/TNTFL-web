@@ -31,13 +31,11 @@ class Player(object):
         self.goalsFor = 0
         self.goalsAgainst = 0
         self.gamesAsRed = 0
-        self.highestSkill = {"time": 0, "skill": 0}
-        self.lowestSkill = {"time": 0, "skill": 0}
-        self.achievements = defaultdict(list)
+        self.achievements = {}
 
     def game(self, game):
         if self.name == game.redPlayer:
-            delta = -game.skillChangeToBlue
+            self.elo -= game.skillChangeToBlue
             self.gamesAsRed += 1
             if game.redScore > game.blueScore:
                 self.wins += 1
@@ -45,28 +43,30 @@ class Player(object):
                 self.losses += 1
             self.goalsFor += game.redScore
             self.goalsAgainst += game.blueScore
-        elif self.name == game.bluePlayer:
-            delta = game.skillChangeToBlue
+        else:
+            self.elo += game.skillChangeToBlue
             if game.redScore < game.blueScore:
                 self.wins += 1
             elif game.redScore > game.blueScore:
                 self.losses += 1
             self.goalsFor += game.blueScore
             self.goalsAgainst += game.redScore
-        else:
-            return
-        self.elo += delta
-
-        if (self.elo > self.highestSkill["skill"]):
-            self.highestSkill = {"time": game.time, "skill": self.elo}
-
-        if (self.elo < self.lowestSkill["skill"]):
-            self.lowestSkill = {"time": game.time, "skill": self.elo}
-
         self.games.append(game)
 
     def getSkillBounds(self):
-        return {"highest": self.highestSkill, "lowest": self.lowestSkill}
+        elo = 0.0
+        highestSkill = (0, 0)  # (time, skill)
+        lowestSkill = (0, 0)
+        for game in self.games:
+            elo += game.skillChangeToBlue if self.name == game.bluePlayer else -game.skillChangeToBlue
+            if elo > highestSkill[1]:
+                highestSkill = (game.time, elo)
+            elif elo < lowestSkill[1]:
+                lowestSkill = (game.time, elo)
+        return {
+            'highest': {'time': highestSkill[0], 'skill': highestSkill[1]},
+            'lowest': {'time': lowestSkill[0], 'skill': lowestSkill[1]},
+        }
 
     def mostSignificantGame(self):
         mostSignificantGame = None
@@ -103,7 +103,7 @@ class Player(object):
 
     def achieve(self, achievements, game):
         for achievement in achievements:
-            self.achievements[achievement].append(game)
+            self.achievements[achievement] = game.time
 
     def overrated(self):
         if len(self.games) >= 10:
