@@ -204,7 +204,7 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
       {name: 'Goals', p1: p1goals, p2: p2goals},
     ];
     return (
-      <Panel header={<h2>Statistics</h2>}>
+      <Panel header={<h2>{`${player1} vs ${player2} (${games.length} games)`}</h2>}>
         <Table style={{textAlign: 'center'}}>
           <tbody>
             <PlayerRow
