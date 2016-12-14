@@ -5,7 +5,6 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 let LazyLoad = require('react-lazy-load');
 
 import GamesChart from './games-chart';
-import GoalsChart from './goals-chart';
 import PlayerName from './player-name';
 import PerPlayerStat from '../model/per-player-stat';
 
@@ -85,7 +84,6 @@ export default class PerPlayerStats extends Component<PerPlayerStatsProps, State
               <TableHeaderColumn dataField={'wins'} dataSort={true} dataAlign={'center'}>Wins</TableHeaderColumn>
               <TableHeaderColumn dataField={'draws'} dataSort={true} dataAlign={'center'}>Draws</TableHeaderColumn>
               <TableHeaderColumn dataField={'losses'} dataSort={true} dataAlign={'center'}>Losses</TableHeaderColumn>
-              <TableHeaderColumn dataField={'totals'} dataFormat={(p) => GoalsChart(p)}>Goals</TableHeaderColumn>
               <TableHeaderColumn dataField={'for'} dataSort={true} dataAlign={'center'}>For</TableHeaderColumn>
               <TableHeaderColumn dataField={'against'} dataSort={true} dataAlign={'center'}>Against</TableHeaderColumn>
               <TableHeaderColumn dataField={'skillChange'} dataSort={true} dataAlign={'center'}>Skill Change</TableHeaderColumn>

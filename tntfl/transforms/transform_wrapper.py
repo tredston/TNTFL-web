@@ -9,6 +9,9 @@ class TransformWrapper(object):
         self._enableCache = enableCache
         self._requestCache = enableCache
 
+    def getName(self):
+        return self._name
+
     def setUseCache(self, useCache):
         self._requestCache = useCache
 

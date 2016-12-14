@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.1.0
+* Use a faster custom bar chart instead of reactchartjs2 pie chart
+* Remove goal charts
+* Display number of games played on PvP page
+* Improve performance
+
 ## 4.0.1
 * Prevent entering games where both players are the same
 

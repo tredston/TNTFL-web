@@ -337,21 +337,3 @@ class BossFight(Achievement):
             won = game.blueScore > game.redScore if player.name == game.bluePlayer else game.redScore > game.blueScore
             return self.boss and self.boss == opponent.name and won
         return False
-
-
-class Achievements(object):
-    def __init__(self):
-        self.achievements = [clz() for clz in Achievement.__subclasses__()]
-
-    def apply(self, red, game, blue, ladder):
-        game.redAchievements = self._getAllForGame(red, game, blue, ladder)
-        game.blueAchievements = self._getAllForGame(blue, game, red, ladder)
-        red.achieve(game.redAchievements, game)
-        blue.achieve(game.blueAchievements, game)
-
-    def _getAllForGame(self, player, game, opponent, ladder):
-        '''
-        Identifies all achievements unlocked by player in game against opponent.
-        This method should be called AFTER Player.game() has been called with game for BOTH players.
-        '''
-        return [a.__class__ for a in self.achievements if a.__class__ not in player.achievements.keys() and a.applies(player, game, opponent, ladder)]
