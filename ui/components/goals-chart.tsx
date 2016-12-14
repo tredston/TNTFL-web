@@ -5,14 +5,13 @@ import { TablePieChart } from './table-charts';
 import { Totals } from '../model/player';
 
 export default function GoalsChart(totals: Totals): JSX.Element {
-  const data = {
-    labels: ['Against', 'For'],
-    datasets: [{
-      data: [totals.against, totals.for],
-      backgroundColor: ['#FF0000', '#0000FF'],
-    }]
-  }
+  const total = totals.for + totals.against;
+  const goalsFor = (totals.for / total) * 100;
+  const against = (totals.against / total) * 100;
   return (
-    <TablePieChart data={data}/>
+    <div style={{display: 'flex', border: '1px solid black', width: 75, height: 25}}>
+      <div style={{display: 'inline-block', height: '100%', backgroundColor: '#0000FF', width: `${goalsFor}%`}}/>
+      <div style={{display: 'inline-block', height: '100%', backgroundColor: '#FF0000', width: `${against}%`}}/>
+    </div>
   );
 }
