@@ -21,7 +21,12 @@ export default function PlayerSkillChart(props: PlayerSkillChartProps): JSX.Elem
     borderColor: '#0000FF',
   }]};
   const options = {
-    scales: {xAxes: [{type: 'time'}]},
+    scales: {xAxes: [{
+      type: 'time',
+      time: {
+        minUnit: 'minute',
+      }
+    }]},
     legend: {display: false},
     tooltips: {callbacks: {
       title: (tooltip: any, point: any) => formatEpoch(tooltip[0].xLabel / 1000),
@@ -29,7 +34,7 @@ export default function PlayerSkillChart(props: PlayerSkillChartProps): JSX.Elem
     }},
     animation: false,
   };
-  return (    
+  return (
     <Line data={data} options={options}/>
   );
 }

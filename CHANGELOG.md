@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.1.1
+* Improve chart performance
+
 ## 4.1.0
 * Use a faster custom bar chart instead of reactchartjs2 pie chart
 * Remove goal charts
