@@ -46,6 +46,10 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   componentDidMount() {
     this.loadLadder(this.state.showInactive);
     this.loadRecent();
+    setInterval(function() {
+      this.loadLadder(this.state.showInactive);
+      this.loadRecent();
+    }.bind(this), 600000);
   }
   onShowInactive() {
     const newState = !this.state.showInactive
