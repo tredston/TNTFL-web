@@ -87,7 +87,12 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
               </Col>
               <Col md={4}>
                 <RecentGames games={mostRecentGames(games)} showAllGames={true} base={base}/>
-                <PlayerAchievements achievements={achievements} base={base}/>
+                <Panel header={<h2>Achievements</h2>}>
+                  {achievements
+                    ? <PlayerAchievements achievements={achievements} base={base}/>
+                    : 'Loading...'
+                  }
+                </Panel>
               </Col>
             </Row>
           </Grid>

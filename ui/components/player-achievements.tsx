@@ -31,11 +31,9 @@ interface PlayerAchievementsProps {
 }
 export default function PlayerAchievements(props: PlayerAchievementsProps): JSX.Element {
   const { achievements, base } = props;
-  return (
-    <Panel header={<h2>Achievements</h2>}>
-      <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
-        {achievements.map((a, i) => <PlayerAchievement achievement={a} base={base} key={`${i}`}/>)}
-      </div>
-    </Panel>
+  return (    
+    <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+      {achievements.map((a, i) => <PlayerAchievement achievement={a} base={base} key={`${i}`}/>)}
+    </div>
   );
 }
