@@ -457,16 +457,6 @@ h3.statbox {
 }
 
 /*
- * "Slice" page rangeSlider
- */
-.irs {
-  margin: 0 0 30px;
-}
-span.irs > span {
-  font-size: 12px;
-}
-
-/*
  * Ladder Adjustments
  */
 .controls.form {
