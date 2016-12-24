@@ -19,7 +19,7 @@ if player1 and player2:
             pageTitle = "%s vs %s" % (player1.name, player2.name)
             serve_template("headtoheadgames.mako", pageTitle=pageTitle, games=games, ladder=ladder)
         else:
-            serve_template("headtohead.mako", ladder=ladder, player1=player1, player2=player2)
+            serve_template("headtohead.mako")
     else:
         fail_404()
 else:
