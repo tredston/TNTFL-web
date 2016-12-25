@@ -31,7 +31,6 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
   }
   async loadLadder(showInactive: boolean, games: Game[]) {
     const { base } = this.props;
-    const { speculated } = this.state;
     const serialised = games.map(g => `${g.red.name},${g.red.score},${g.blue.score},${g.blue.name}`).join(',');
     let url = `${base}speculate.cgi?view=json&games=${serialised}`;
     if (showInactive === true) {
@@ -42,7 +41,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
   }
   componentDidMount() {
     const { showInactive, speculated } = this.state;
-    this.loadLadder(showInactive, speculated.games);
+    this.loadLadder(showInactive, (speculated && speculated.games) || []);
   }
   onShowInactive() {
     const { showInactive, speculated } = this.state;
@@ -104,7 +103,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
                   isBusy={false}
                   onSubmit={(rp, rs, bp, bs) => this.addGame(rp, rs, bp, bs)}
                 />
-                <GameList games={speculated.games.slice().reverse()} base={base}/>
+                {speculated && <GameList games={speculated.games.slice().reverse()} base={base}/>}
                 <a href=".">Reset speculation</a>
               </Panel>
             </Col>
