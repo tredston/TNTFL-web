@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import 'whatwg-fetch';
 
 import AddGameForm from './add-game-form';
 
@@ -26,7 +27,19 @@ export default function NavigationBar(props: NavigationBarProps): JSX.Element {
       <Nav pullRight>
         <AddGameForm
           base={base}
-          addURL={addURL}
+          onSubmit={(redPlayer, redScore, bluePlayer, blueScore) => {
+            const url = `${base}${addURL}?redPlayer=${redPlayer}&redScore=${+redScore}&bluePlayer=${bluePlayer}&blueScore=${+blueScore}`;
+            const options: RequestInit = {
+              method: 'POST',
+              mode: 'cors',
+              credentials: 'omit',
+            };
+            fetch(url, options).then(r => {
+              if (r.status == 200){
+                window.location.href = r.url;
+              }
+            });
+          }}
         />
       </Nav>
     </Navbar>
