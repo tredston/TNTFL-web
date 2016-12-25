@@ -27,6 +27,7 @@ export default function NavigationBar(props: NavigationBarProps): JSX.Element {
       <Nav pullRight>
         <AddGameForm
           base={base}
+          isBusy={false}
           onSubmit={(redPlayer, redScore, bluePlayer, blueScore) => {
             const url = `${base}${addURL}?redPlayer=${redPlayer}&redScore=${+redScore}&bluePlayer=${bluePlayer}&blueScore=${+blueScore}`;
             const options: RequestInit = {

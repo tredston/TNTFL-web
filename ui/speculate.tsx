@@ -101,6 +101,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
               <Panel>
                 <AddGameForm
                   base={base}
+                  isBusy={false}
                   onSubmit={(rp, rs, bp, bs) => this.addGame(rp, rs, bp, bs)}
                 />
                 <GameList games={speculated.games.slice().reverse()} base={base}/>

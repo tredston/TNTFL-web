@@ -28,6 +28,7 @@ function Score(props:ScoreProps): JSX.Element {
 
 export interface AddGameFormProps extends Props<AddGameForm> {
   base: string;
+  isBusy: boolean;
   onSubmit: (redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) => void;
 }
 interface AddGameFormState {
@@ -35,7 +36,6 @@ interface AddGameFormState {
   redScore: string;
   bluePlayer: string;
   blueScore: string;
-  isBusy: boolean;
 }
 export default class AddGameForm extends Component<AddGameFormProps, AddGameFormState> {
   constructor(props: AddGameFormProps, context: any) {
@@ -45,7 +45,6 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
       redScore: '',
       bluePlayer: '',
       blueScore: '',
-      isBusy: false,
     };
   }
   handleRedPlayerChange(e: string) {
@@ -61,7 +60,6 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
     this.setState({blueScore: e} as AddGameFormState);
   }
   handleSubmit(e: any) {
-    this.setState({isBusy: true} as AddGameFormState);
     e.preventDefault();
     const { onSubmit } = this.props;
     const { redPlayer, redScore, bluePlayer, blueScore } = this.state;
@@ -77,8 +75,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
       scoreValid(+redScore) && scoreValid(+blueScore);
   }
   render() {
-    const { base } = this.props;
-    const { isBusy } = this.state;
+    const { base, isBusy } = this.props;
     const playerWidth = '6em';
     return (
       <Form inline style={{padding: 8}}>
