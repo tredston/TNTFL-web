@@ -236,3 +236,7 @@ class PredictApi(Get.PredictApi, Deployment):
 
 class ActivePlayersApi(Get.ActivePlayersApi, Deployment):
     pass
+
+
+class SpeculateApi(Get.SpeculateApi, Deployment):
+    pass

@@ -2,6 +2,7 @@
 import json
 from time import time
 from tntfl.ladder import TableFootballLadder
+import tntfl.constants as Constants
 from tntfl.game_store import GameStore
 import tntfl.transforms.transformer as Transformer
 import tntfl.transforms.transforms as PresetTransforms
@@ -20,8 +21,9 @@ if len(speculativeGames) > 0:
 ladder = TableFootballLadder(None, games=games)
 
 players = ladder.getPlayers() if showInactive else [p for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
+speculatedGames = ladder.games[-len(speculativeGames):] if len(speculativeGames) > 0 else []
 %>
 ${json.dumps({
     'entries': ladderToJson(players, ladder, base, includePlayers),
-    'games': [gameToJson(game, base) for game in ladder.games[-len(speculativeGames):]],
+    'games': [gameToJson(game, base) for game in speculatedGames],
 })}

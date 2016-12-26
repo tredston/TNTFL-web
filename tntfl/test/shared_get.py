@@ -292,3 +292,16 @@ class ActivePlayersApi(Tester):
         response = self._getJson('activeplayers.cgi', 'at=1420000000,1430402614')
         self.assertEqual(response['1420000000'], 6)
         self.assertEqual(response['1430402614'], 13)
+
+
+class SpeculateApi(Tester):
+    def testNoGames(self):
+        response = self._getJson('speculate.cgi', 'view=json')
+        self.assertTrue('entries' in response)
+        self.assertTrue('games' in response)
+        self.assertEqual(len(response['games']), 0)
+
+    def testGames(self):
+        response = self._getJson('speculate.cgi', 'view=json&previousGames=foo%2C10%2C0%2Cbar%2Cfoo%2C10%2C0%2Cbat')
+        self.assertEqual(len(response['entries']), 3)
+        self.assertEqual(len(response['games']), 2)
