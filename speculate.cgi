@@ -3,7 +3,7 @@
 import cgi
 from time import time
 from tntfl.game import Game
-from tntfl.web import serve_template
+from tntfl.web import serve_template, getInt
 
 
 def deserialise(serialisedGames):
@@ -18,4 +18,9 @@ def deserialise(serialisedGames):
 form = cgi.FieldStorage()
 speculativeGames = deserialise(form.getfirst('previousGames', ''))
 
-serve_template("speculate.mako", speculativeGames=speculativeGames)
+serve_template(
+    'speculate.mako',
+    speculativeGames=speculativeGames,
+    showInactive=getInt('showInactive', form, 0),
+    includePlayers=getInt('players', form, 0),
+)
