@@ -20,6 +20,7 @@ interface SpeculatePageState {
     games: Game[],
   },
   showInactive: boolean;
+  isBusy: boolean;
 }
 export default class SpeculatePage extends Component<SpeculatePageProps, SpeculatePageState> {
   constructor(props: SpeculatePageProps, context: any) {
@@ -27,6 +28,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     this.state = {
       speculated: undefined,
       showInactive: false,
+      isBusy: false,
     }
   }
   async loadLadder(showInactive: boolean, games: Game[]) {
@@ -50,6 +52,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     this.loadLadder(newState, speculated.games);
   }
   addGame(redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) {
+    this.setState({isBusy: true} as SpeculatePageState);
     const { showInactive, speculated } = this.state;
     speculated.games.push({
       red: {
@@ -70,11 +73,11 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
       },
       date: undefined,
     });
-    this.loadLadder(showInactive, speculated.games);
+    this.loadLadder(showInactive, speculated.games).then(() => this.setState({isBusy: false} as SpeculatePageState));
   }
   render() {
     const { addURL, base } = this.props;
-    const { speculated, showInactive } = this.state;
+    const { speculated, showInactive, isBusy } = this.state;
     return (
       <div>
         <NavigationBar
@@ -100,7 +103,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
               <Panel>
                 <AddGameForm
                   base={base}
-                  isBusy={false}
+                  isBusy={isBusy}
                   onSubmit={(rp, rs, bp, bs) => this.addGame(rp, rs, bp, bs)}
                 />
                 {speculated && <GameList games={speculated.games.slice().reverse()} base={base}/>}
