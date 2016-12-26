@@ -292,3 +292,26 @@ class ActivePlayersApi(Tester):
         response = self._getJson('activeplayers.cgi', 'at=1420000000,1430402614')
         self.assertEqual(response['1420000000'], 6)
         self.assertEqual(response['1430402614'], 13)
+
+
+class StatsApi(Tester):
+    def test(self):
+        response = self._getJson('stats.cgi', 'view=json')
+        self.assertIn('totals', response)
+        self.assertIn('games', response['totals'])
+        self.assertGreater(response['totals']['games'], 0)
+        self.assertIn('players', response['totals'])
+        self.assertGreater(response['totals']['players'], 0)
+        self.assertIn('activePlayers', response['totals'])
+        self.assertIn('achievements', response['totals'])
+        self.assertGreater(response['totals']['achievements'], 0)
+        self.assertIn('records', response)
+        self.assertIn('winningStreak', response['records'])
+        self.assertIn('player', response['records']['winningStreak'])
+        self.assertIn('count', response['records']['winningStreak'])
+        self.assertIn('mostSignificant', response['records'])
+        self.assertEqual(len(response['records']['mostSignificant']), 5)
+        self.assertIn('leastSignificant', response['records'])
+        self.assertEqual(len(response['records']['leastSignificant']), 5)
+        self.assertIn('gamesPerDay', response)
+        self.assertGreater(response['gamesPerDay'], 0)

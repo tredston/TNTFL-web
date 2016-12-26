@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from datetime import date, datetime, timedelta
 from tntfl.player import PerPlayerStat
 from tntfl.achievements import Achievement
@@ -184,3 +185,46 @@ def appendChristmas(links, base):
     if datetime.now().month == 12:
         links.append('<link href="%scss/christmas.css" rel="stylesheet">' % base)
     return links
+
+
+def totimestamp(dt, epoch=datetime(1970,1,1)):
+    td = dt - epoch
+    return int(td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 1e6
+
+
+def getGamesPerDay(ladder):
+    gamesPerDay = OrderedDict()
+    for game in ladder.games:
+        day = datetime.fromtimestamp(game.time).replace(hour=0, minute=0, second=0, microsecond=0)
+        if day not in gamesPerDay:
+          gamesPerDay[day] = 0
+        gamesPerDay[day] += 1
+    plotData = []
+    for day, tally in gamesPerDay.iteritems():
+        plotData.append([totimestamp(day), tally])
+    return plotData
+
+
+def getStatsJson(ladder, base):
+    winningStreak = ladder.getStreaks()['win']
+    mostSignificantGames = sorted([g for g in ladder.games if not g.isDeleted()], key=lambda x: abs(x.skillChangeToBlue), reverse=True)
+    return {
+        'totals': {
+            'games': len(ladder.games),
+            'players': len(ladder.players),
+            'activePlayers': ladder.getNumActivePlayers(),
+            'achievements': [[{
+                'name': a.name,
+                'description': a.description,
+            }, c] for a, c in sorted(ladder.getAchievements().iteritems(), reverse=True, key=lambda t: t[1])],
+        },
+        'records': {
+            'winningStreak': {
+                'player': winningStreak['player'].name,
+                'count': winningStreak['streak'].count,
+            },
+            'mostSignificant': [gameToJson(g, base) for g in mostSignificantGames[0:5]],
+            'leastSignificant': [gameToJson(g, base) for g in reversed(mostSignificantGames[-5:])],
+        },
+        'gamesPerDay': getGamesPerDay(ladder),
+    }
