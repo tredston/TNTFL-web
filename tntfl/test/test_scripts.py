@@ -66,10 +66,6 @@ class Pages(Get.Pages, Deployment):
     pass
 
 
-class SpeculatePage(Get.SpeculatePage, Deployment):
-    pass
-
-
 class LadderPage(Get.LadderPage, Deployment):
     pass
 

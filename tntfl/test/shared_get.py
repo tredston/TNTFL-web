@@ -61,19 +61,6 @@ class Pages(Tester):
         self.assertTrue("<!DOCTYPE html>" in response)
 
 
-class SpeculatePage(Tester):
-    def testAGame(self):
-        self._testPageReachable('speculate.cgi', 'redPlayer=tlr&redScore=10&blueScore=0&bluePlayer=cjm&previousGames=')
-
-    def testMultipleGames(self):
-        self._testPageReachable('speculate.cgi', 'redPlayer=acas&redScore=10&blueScore=0&bluePlayer=epb&previousGames=tlr%2C10%2C0%2Ccjm%2Cjma%2C10%2C0%2Cmsh')
-
-    def _testResponse(self, response):
-        super(SpeculatePage, self)._testResponse(response)
-        self.assertTrue("<!DOCTYPE html>" in response)
-        self.assertTrue('Speculative Ladder' in response)
-
-
 class LadderPage(Tester):
     def testRange(self):
         self._testPageReachable('ladder.cgi', 'gamesFrom=1223308996&gamesTo=1223400000')
