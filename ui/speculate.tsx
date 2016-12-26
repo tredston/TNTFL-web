@@ -119,7 +119,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
 
 ReactDOM.render(
   <SpeculatePage
-    base={''}
+    base={'../'}
     addURL={'game/add'}
   />,
   document.getElementById('entry')
