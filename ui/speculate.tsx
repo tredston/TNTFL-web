@@ -87,7 +87,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
         <Grid fluid={true}>
           <Row>
             <Col lg={8}>
-              <Panel>
+              <Panel header={'Speculative Ladder'}>
                 {speculated
                   ? <div>
                       <Ladder entries={speculated.entries}/>
@@ -100,7 +100,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
               </Panel>
             </Col>
             <Col lg={4}>
-              <Panel>
+              <Panel header={'Speculative Games'}>
                 <AddGameForm
                   base={base}
                   isBusy={isBusy}
