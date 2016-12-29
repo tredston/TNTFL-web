@@ -8,7 +8,7 @@ ReactDOM.render(
   <GamesPage
     base={'../../../../'}
     addURL={'game/add'}
-    getUrl={`headtohead.cgi?view=json&player1=${getParameters(3)[0]}&player2=${getParameters(3)[1]}&method=games`}
+    getUrl={`${window.location.href}/json`}
     title={`${getParameters(3)[0]} vs ${getParameters(3)[1]}`}
   />,
   document.getElementById('entry')
