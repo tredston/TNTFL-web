@@ -1,6 +1,7 @@
 <%!
-title = ""
-base = "../../../"
-%>
-<%inherit file="html.mako" />
-  ${self.blocks.render("components/gamesListPage", ladder=ladder, pageTitle=pageTitle, games=reversed(games), base=self.attr.base)}
+from tntfl.template_utils import appendChristmas
+base = '../../../'
+pageName = 'playergames'
+links = []
+appendChristmas(links, base)
+%><%inherit file="htmlts.mako" />

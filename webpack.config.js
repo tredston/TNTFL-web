@@ -7,6 +7,8 @@ module.exports = {
     game: ['babel-polyfill', './ui/game.tsx'],
     player: ['babel-polyfill', './ui/player.tsx'],
     headtohead: ['babel-polyfill', './ui/headtohead.tsx'],
+    playergames: ['babel-polyfill', './ui/playergames.tsx'],
+    headtoheadgames: ['babel-polyfill', './ui/headtoheadgames.tsx'],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
