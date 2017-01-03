@@ -148,7 +148,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
               <Panel>
                 {entries
                   ? <div>
-                      <Ladder entries={entries}/>
+                      <Ladder entries={entries} atDate={toTime}/>
                       <Button onClick={() => this.onShowInactive()} style={{width: '100%'}}>
                         {showInactive ? 'Hide inactive' : 'Show inactive'}
                       </Button>

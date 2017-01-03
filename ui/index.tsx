@@ -59,6 +59,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   render() {
     const { addURL, base } = this.props;
     const { entries, recentGames, showInactive } = this.state;
+    const now = (new Date()).getTime() / 1000;
     return (
       <div>
         <NavigationBar
@@ -71,7 +72,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
               <Panel>
                 {entries
                   ? <div>
-                      <Ladder entries={entries}/>
+                      <Ladder entries={entries} atDate={now}/>
                       <Button onClick={() => this.onShowInactive()} style={{width: '100%'}}>
                         {showInactive ? 'Hide inactive' : 'Show inactive'}
                       </Button>
