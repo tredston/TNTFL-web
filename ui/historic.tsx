@@ -124,7 +124,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     const { entries, showInactive } = this.state;
     const now = (new Date()).getUTCFullYear();
     const firstYear = 2005;
-    const years = Array.from(Array(now - firstYear).keys()).map(y => y + firstYear).reverse();
+    const years = Array.from(Array((now + 1) - firstYear).keys()).map(y => y + firstYear).reverse();
     const yearPanels = years.map((y, i) => <Year year={y} onClick={(d) => this.onMonthSelect(d)} key={i} />);
 
     const startOfMonth = new Date();
