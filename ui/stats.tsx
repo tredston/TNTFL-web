@@ -61,7 +61,7 @@ function GamesPerDay(props: GamesPerDayProps): JSX.Element {
     scales: {xAxes: [{
       type: 'time',
       time: {
-        minUnit: 'minute',
+        minUnit: 'day',
       }
     }]},
     legend: {display: false},
