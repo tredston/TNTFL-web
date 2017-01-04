@@ -47,48 +47,6 @@ function ladderTablePostProc(sortOpts, showInactive) {
   }
 }
 
-function reloadLadder(dates) {
-  var sortOpts = getSortOptions("#ladder th");
-  var showInactive = isShowInactive();
-
-  $("#ladderHolder").empty();
-  var spinner = new Spinner().spin();
-  $("#ladderHolder").append(spinner.el);
-  $("#ladderHolder").load("ladder.cgi" + dates,
-    function() {
-      ladderTablePostProc(sortOpts, showInactive);
-    }
-  );
-}
-
-function updateLadderTo(range) {
-  var dates = "?gamesFrom=" + range[0] + "&gamesTo=" + range[1];
-  window.history.pushState("object or string", "Title", dates);
-  reloadLadder(dates);
-  $("#rangeSlider").data("ionRangeSlider").update({from: range[0], to: range[1]});
-}
-
-function initHistorySlider(id, fromTime, toTime) {
-  $(id).ionRangeSlider({
-      type: "double",
-      grid: true,
-      force_edges: true,
-      min: moment(1120176000, 'X').format('X'),
-      max: moment().format('X'),
-      from: fromTime,
-      to: toTime,
-      prettify: function (num) {
-        return moment(num, 'X').format('LL');
-      },
-      onFinish: function (data) {
-        var dates = "?gamesFrom=" + data.from + "&gamesTo=" + data.to;
-        window.history.pushState("object or string", "Title", dates);
-        //window.location.href = "." + dates;
-        reloadLadder(dates);
-      }
-  });
-}
-
 function checkGameSubmitForm() {
   const allInputs = $(".game-entry input").map(function() { return $(this).val() !== ""}).get();
   var allFilled = true;

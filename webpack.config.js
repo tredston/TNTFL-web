@@ -7,6 +7,7 @@ module.exports = {
     game: ['babel-polyfill', './ui/game.tsx'],
     player: ['babel-polyfill', './ui/player.tsx'],
     headtohead: ['babel-polyfill', './ui/headtohead.tsx'],
+    historic: ['babel-polyfill', './ui/historic.tsx'],
     speculate: ['babel-polyfill', './ui/speculate.tsx'],
   },
   output: {
