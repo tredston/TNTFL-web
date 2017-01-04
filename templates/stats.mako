@@ -1,6 +1,6 @@
 <%!
 from tntfl.template_utils import appendChristmas
-base = ''
+base = '../'
 pageName = 'stats'
 links = []
 appendChristmas(links, base)
