@@ -63,6 +63,10 @@ function getEndOfMonth(startOfMonth: Date): Date {
   return new Date(endYear, endMonth, 1);
 }
 
+function dateToEpoch(d: Date): number {
+  return Math.round(d.getTime() / 1000);
+}
+
 interface HistoricPageProps extends Props<HistoricPage> {
   base: string;
   addURL: string;
@@ -108,8 +112,8 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     this.loadLadder(newState, gamesFrom, gamesTo);
   }
   onMonthSelect(d: Date) {
-    const gamesFrom = d.getTime() / 1000;
-    const gamesTo = getEndOfMonth(d).getTime() / 1000;
+    const gamesFrom = dateToEpoch(d);
+    const gamesTo = dateToEpoch(getEndOfMonth(d));
     this.onRangeChange(gamesFrom, gamesTo);
   }
   onRangeChange(gamesFrom: number, gamesTo: number) {
@@ -133,9 +137,8 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
 
     const startOfMonth = new Date();
     startOfMonth.setDate(1);
-    const endOfMonth = getEndOfMonth(startOfMonth);
-    const fromTime = this.state.gamesFrom || Math.round(startOfMonth.getTime() / 1000);
-    const toTime = this.state.gamesTo || endOfMonth.getTime() / 1000;
+    const fromTime = this.state.gamesFrom || dateToEpoch(startOfMonth);
+    const toTime = this.state.gamesTo || dateToEpoch(getEndOfMonth(startOfMonth));
 
     return (
       <div>
