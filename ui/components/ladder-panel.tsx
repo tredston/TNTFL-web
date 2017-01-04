@@ -9,11 +9,12 @@ interface Props {
   atDate: number;
   showInactive: boolean;
   onShowInactive: () => void;
+  bsStyle?: string;
 }
 export default function LadderPanel(props: Props): JSX.Element {
-  const { entries, atDate, showInactive, onShowInactive } = props;
+  const { entries, atDate, showInactive, onShowInactive, bsStyle } = props;
   return (
-    <Panel>
+    <Panel bsStyle={bsStyle}>
       {entries
         ? <div>
             <Ladder entries={entries} atDate={atDate}/>

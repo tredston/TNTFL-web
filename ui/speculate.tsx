@@ -85,6 +85,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
   render() {
     const { addURL, base } = this.props;
     const { speculated, showInactive, isBusy } = this.state;
+    const isSpeculating = speculated && speculated.games.length > 0;
     const entries = speculated && speculated.entries;
     const now = (new Date()).getTime() / 1000;
     return (
@@ -96,7 +97,13 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
         <Grid fluid={true}>
           <Row>
             <Col lg={8}>
-              <LadderPanel entries={entries} atDate={now} showInactive={showInactive} onShowInactive={() => this.onShowInactive()}/>
+              <LadderPanel
+                entries={entries}
+                atDate={now}
+                showInactive={showInactive}
+                onShowInactive={() => this.onShowInactive()}
+                bsStyle={isSpeculating ? 'warning' : undefined}
+              />
             </Col>
             <Col lg={4}>
               <Panel header={'Speculative Games'}>
