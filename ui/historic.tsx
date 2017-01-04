@@ -110,7 +110,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     this.onRangeChange(gamesFrom, gamesTo);
   }
   onRangeChange(gamesFrom: number, gamesTo: number) {
-    window.history.pushState("object or string", "Title", `?gamesFrom=${gamesFrom}&gamesTo=${gamesTo}`);
+    window.history.pushState('object or string', 'Title', `?gamesFrom=${gamesFrom}&gamesTo=${gamesTo}`);
 
     const { showInactive } = this.state;
     this.setState({
