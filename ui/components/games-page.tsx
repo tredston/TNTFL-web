@@ -41,7 +41,7 @@ export default class GamesPage extends Component<GamesPageProps, GamesPageState>
         />
         {games
           ? <Grid fluid={true}>
-              <Panel header={`<h2>${title}</h2>`}>
+              <Panel header={<h2>{title}</h2>}>
                 <GameList games={games} base={base}/>
               </Panel>
             </Grid>
