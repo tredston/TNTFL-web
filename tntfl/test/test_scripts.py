@@ -66,10 +66,6 @@ class Pages(Get.Pages, Deployment):
     pass
 
 
-class LadderPage(Get.LadderPage, Deployment):
-    pass
-
-
 class PlayerApi(Get.PlayerApi, Deployment):
     def testNoPlayer(self):
         status = self._getStatus('player.cgi', 'view=json')

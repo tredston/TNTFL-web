@@ -6,6 +6,6 @@ def stripNewlines(text):
 def collapseWhitespace(text):
   rex = re.compile(r' +')
   return rex.sub(' ', text)
-%><%namespace name="blocks" file="../blocks.mako" inheritable="True"/>Content-Type: application/json
+%>Content-Type: application/json
 
 ${capture(self.body) | stripNewlines, collapseWhitespace}

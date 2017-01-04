@@ -61,34 +61,6 @@ class Pages(Tester):
         self.assertTrue("<!DOCTYPE html>" in response)
 
 
-class LadderPage(Tester):
-    def testRange(self):
-        self._testPageReachable('ladder.cgi', 'gamesFrom=1223308996&gamesTo=1223400000')
-
-    def _concat(self, thing):
-        return ''.join([l.strip() for l in thing.split('\n')])
-
-    def _testResponse(self, response):
-        super(LadderPage, self)._testResponse(response)
-        jrem = """
-        <td class="ladder-position ladder-first">1</td>
-        <td class="ladder-name"><a href="player/jrem/">jrem</a></td>
-        <td class="ladder-stat">2</td>
-        <td class="ladder-stat">2</td>
-        <td class="ladder-stat">0</td>
-        <td class="ladder-stat">0</td>
-        <td class="ladder-stat">17</td>
-        <td class="ladder-stat">3</td>
-        <td class="ladder-stat">5.667</td>
-        <td class="ladder-stat">0.000</td>
-        <td class="ladder-stat ladder-skill">16.503</td>
-        """
-        jrem = self._concat(jrem)
-        response = self._concat(response)
-        self.assertFalse("<!DOCTYPE html>" in response)
-        self.assertTrue(jrem in response)
-
-
 class PlayerApi(Tester):
     def testPlayerJson(self):
         response = self._getJson('player.cgi', 'player=rc&view=json')
