@@ -76,6 +76,12 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     });
     this.loadLadder(showInactive, games).then(() => this.setState({isBusy: false} as SpeculatePageState));
   }
+  onReset(e: any) {
+    e.preventDefault();
+    const { showInactive } = this.state;
+    this.setState({isBusy: true} as SpeculatePageState);
+    this.loadLadder(showInactive, []).then(() => this.setState({isBusy: false} as SpeculatePageState));
+  }
   render() {
     const { addURL, base } = this.props;
     const { speculated, showInactive, isBusy } = this.state;
@@ -108,7 +114,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
                   onSubmit={(rp, rs, bp, bs) => this.onAddGame(rp, rs, bp, bs)}
                 />
                 {speculated && <GameList games={speculated.games.slice().reverse()} base={base}/>}
-                <a href=".">Reset speculation</a>
+                <a href='#' onClick={(e) => this.onReset(e)}>Reset speculation</a>
               </Panel>
             </Col>
           </Row>
