@@ -54,7 +54,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
   }
   render() {
     const { base, addURL } = this.props;
-    const { activePlayers } = this.state;
+    const { game, punditry, activePlayers } = this.state;
     const numActivePlayers: number = activePlayers && activePlayers[Number(Object.keys(activePlayers)[0])];
     return (
       <div className="gamePage">
@@ -62,14 +62,14 @@ class GamePage extends Component<GamePageProps, GamePageState> {
           base={base}
           addURL={addURL}
         />
-        {this.state.game ?
+        {game ?
           <Grid fluid={true}>
             <Panel>
               <Row>
-                <GameSummary game={this.state.game} base={"../../"} numActivePlayers={numActivePlayers} />
+                <GameSummary game={game} base={"../../"} numActivePlayers={numActivePlayers} />
               </Row>
               <Row>
-                <GameDetails game={this.state.game} punditry={this.state.punditry}/>
+                <GameDetails game={game} punditry={punditry}/>
               </Row>
             </Panel>
           </Grid>
