@@ -70,9 +70,10 @@ function GamesPerDay(props: GamesPerDayProps): JSX.Element {
       label: (tooltip: any, point: any) => tooltip.yLabel.toFixed(3),
     }},
     animation: false,
+    maintainAspectRatio: false,
   };
   return (
-    <Line data={data} options={options}/>
+    <Line data={data} options={options} height={200}/>
   );
 }
 
