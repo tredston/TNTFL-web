@@ -130,3 +130,7 @@ class ActivePlayersApi(Get.ActivePlayersApi, Deployment):
 
 class SpeculateApi(Get.SpeculateApi, Deployment):
     pass
+
+
+class StatsApi(Get.StatsApi, Deployment):
+    pass

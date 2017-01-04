@@ -9,6 +9,7 @@ module.exports = {
     headtohead: ['babel-polyfill', './ui/headtohead.tsx'],
     historic: ['babel-polyfill', './ui/historic.tsx'],
     speculate: ['babel-polyfill', './ui/speculate.tsx'],
+    stats: ['babel-polyfill', './ui/stats.tsx'],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
