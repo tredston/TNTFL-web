@@ -292,3 +292,4 @@ class SpeculateApi(Tester):
         response = self._getJson('speculate.cgi', 'view=json&previousGames=foo%2C10%2C0%2Cbar%2Cfoo%2C10%2C0%2Cbat')
         self.assertEqual(len(response['entries']), 3)
         self.assertEqual(len(response['games']), 2)
+        self.assertNotEqual(response['games'][0]['date'], response['games'][1]['date'])
