@@ -61,19 +61,6 @@ class Pages(Tester):
         self.assertTrue("<!DOCTYPE html>" in response)
 
 
-class SpeculatePage(Tester):
-    def testAGame(self):
-        self._testPageReachable('speculate.cgi', 'redPlayer=tlr&redScore=10&blueScore=0&bluePlayer=cjm&previousGames=')
-
-    def testMultipleGames(self):
-        self._testPageReachable('speculate.cgi', 'redPlayer=acas&redScore=10&blueScore=0&bluePlayer=epb&previousGames=tlr%2C10%2C0%2Ccjm%2Cjma%2C10%2C0%2Cmsh')
-
-    def _testResponse(self, response):
-        super(SpeculatePage, self)._testResponse(response)
-        self.assertTrue("<!DOCTYPE html>" in response)
-        self.assertTrue('Speculative Ladder' in response)
-
-
 class LadderPage(Tester):
     def testRange(self):
         self._testPageReachable('ladder.cgi', 'gamesFrom=1223308996&gamesTo=1223400000')
@@ -292,3 +279,17 @@ class ActivePlayersApi(Tester):
         response = self._getJson('activeplayers.cgi', 'at=1420000000,1430402614')
         self.assertEqual(response['1420000000'], 6)
         self.assertEqual(response['1430402614'], 13)
+
+
+class SpeculateApi(Tester):
+    def testNoGames(self):
+        response = self._getJson('speculate.cgi', 'view=json')
+        self.assertTrue('entries' in response)
+        self.assertTrue('games' in response)
+        self.assertEqual(len(response['games']), 0)
+
+    def testGames(self):
+        response = self._getJson('speculate.cgi', 'view=json&previousGames=foo%2C10%2C0%2Cbar%2Cfoo%2C10%2C0%2Cbat')
+        self.assertEqual(len(response['entries']), 3)
+        self.assertEqual(len(response['games']), 2)
+        self.assertNotEqual(response['games'][0]['date'], response['games'][1]['date'])

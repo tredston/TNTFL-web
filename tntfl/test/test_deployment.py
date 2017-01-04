@@ -150,10 +150,6 @@ class Pages(Get.Pages, Deployment):
     pass
 
 
-class SpeculatePage(Get.SpeculatePage, Deployment):
-    pass
-
-
 class LadderPage(Get.LadderPage, Deployment):
     pass
 
@@ -235,4 +231,8 @@ class PredictApi(Get.PredictApi, Deployment):
 
 
 class ActivePlayersApi(Get.ActivePlayersApi, Deployment):
+    pass
+
+
+class SpeculateApi(Get.SpeculateApi, Deployment):
     pass
