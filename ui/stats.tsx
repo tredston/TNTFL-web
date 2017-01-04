@@ -39,8 +39,10 @@ function RecordsSection(props: RecordsSectionProps): JSX.Element {
   const player = records.winningStreak.player;
   return (
     <Panel header={'Records'}>
-    <dt>Longest winning streak</dt>
-      <dd><b>{records.winningStreak.count}</b> (<a href={`${base}player/${player}`}>{player}</a>)</dd>
+      <dl className='dl-horizontal'>
+        <dt style={{whiteSpace: 'normal'}}>Longest winning streak</dt>
+        <dd><b>{records.winningStreak.count}</b> (<a href={`${base}player/${player}`}>{player}</a>)</dd>
+      </dl>
     </Panel>
   );
 }
