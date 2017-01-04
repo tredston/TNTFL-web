@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Component, Props, CSSProperties, FormEvent } from 'react';
 import { Grid, Navbar, Nav, NavItem, Form, FormGroup, FormControl, Button } from 'react-bootstrap';
-import 'whatwg-fetch';
 
 import * as Palette from '../palette';
 
@@ -29,14 +28,14 @@ function Score(props:ScoreProps): JSX.Element {
 
 export interface AddGameFormProps extends Props<AddGameForm> {
   base: string;
-  addURL: string;
+  isBusy: boolean;
+  onSubmit: (redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) => void;
 }
 interface AddGameFormState {
   redPlayer: string;
   redScore: string;
   bluePlayer: string;
   blueScore: string;
-  isBusy: boolean;
 }
 export default class AddGameForm extends Component<AddGameFormProps, AddGameFormState> {
   constructor(props: AddGameFormProps, context: any) {
@@ -46,7 +45,6 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
       redScore: '',
       bluePlayer: '',
       blueScore: '',
-      isBusy: false,
     };
   }
   handleRedPlayerChange(e: string) {
@@ -61,20 +59,11 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
   handleBlueScoreChange(e: string) {
     this.setState({blueScore: e} as AddGameFormState);
   }
-  async handleSubmit(e: any) {
-    this.setState({isBusy: true} as AddGameFormState);
+  handleSubmit(e: any) {
     e.preventDefault();
-    const { base, addURL } = this.props;
-    const url = `${base}${addURL}?redPlayer=${this.state.redPlayer}&redScore=${+this.state.redScore}&bluePlayer=${this.state.bluePlayer}&blueScore=${+this.state.blueScore}`;
-    const options: RequestInit = {
-      method: 'POST',
-      mode: 'cors',
-      credentials: 'omit',
-    };
-    const r = await fetch(url, options);
-    if (r.status == 200){
-      window.location.href = r.url;
-    }
+    const { onSubmit } = this.props;
+    const { redPlayer, redScore, bluePlayer, blueScore } = this.state;
+    onSubmit(redPlayer, +redScore, bluePlayer, +blueScore);
   }
   isValid(): boolean {
     const { redPlayer, redScore, bluePlayer, blueScore } = this.state;
@@ -86,8 +75,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
       scoreValid(+redScore) && scoreValid(+blueScore);
   }
   render() {
-    const { base } = this.props;
-    const { isBusy } = this.state;
+    const { base, isBusy } = this.props;
     const playerWidth = '6em';
     return (
       <Form inline style={{padding: 8}}>

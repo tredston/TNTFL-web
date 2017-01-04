@@ -32,6 +32,14 @@ export function formatEpoch(epoch: number) {
   return formatDate(moment.unix(epoch));
 }
 
+export function getMonthName(month: number): string {
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  return monthNames[month];
+}
+
+
 export function getParameters(num: number): string[] {
   const url = window.location.href;
   const split = url.split("/").filter((s) => s.length > 0);
