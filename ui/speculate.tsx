@@ -6,7 +6,7 @@ import * as ReactDOM from 'react-dom';
 import GameList from './components/game-list';
 import NavigationBar from './components/navigation-bar';
 import AddGameForm from './components/add-game-form';
-import Ladder from './components/ladder';
+import LadderPanel from './components/ladder-panel';
 import Game from './model/game';
 import LadderEntry from './model/ladder-entry';
 
@@ -85,6 +85,8 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
   render() {
     const { addURL, base } = this.props;
     const { speculated, showInactive, isBusy } = this.state;
+    const entries = speculated && speculated.entries;
+    const now = (new Date()).getTime() / 1000;
     return (
       <div>
         <NavigationBar
@@ -94,17 +96,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
         <Grid fluid={true}>
           <Row>
             <Col lg={8}>
-              <Panel header={'Speculative Ladder'}>
-                {speculated
-                  ? <div>
-                      <Ladder entries={speculated.entries}/>
-                      <Button onClick={() => this.onShowInactive()} style={{width: '100%'}}>
-                        {showInactive ? 'Hide inactive' : 'Show inactive'}
-                      </Button>
-                    </div>
-                  : 'Loading...'
-                }
-              </Panel>
+              <LadderPanel entries={entries} atDate={now} showInactive={showInactive} onShowInactive={() => this.onShowInactive()}/>
             </Col>
             <Col lg={4}>
               <Panel header={'Speculative Games'}>
