@@ -170,7 +170,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
 
 ReactDOM.render(
   <HistoricPage
-    base={''}
+    base={'./'}
     addURL={'game/add'}
     gamesFrom={+getParameters(2)[0]}
     gamesTo={+getParameters(2)[1]}
