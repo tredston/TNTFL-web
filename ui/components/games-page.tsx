@@ -24,8 +24,7 @@ export default class GamesPage extends Component<GamesPageProps, GamesPageState>
   }
   async load() {
     const { base, getUrl } = this.props;
-    const url = `${base}${getUrl}`;
-    const r = await fetch(url);
+    const r = await fetch(getUrl);
     this.setState({games: await r.json()});
   }
   componentDidMount() {

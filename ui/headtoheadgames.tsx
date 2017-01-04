@@ -8,7 +8,7 @@ ReactDOM.render(
   <GamesPage
     base={'../../../../'}
     addURL={'game/add'}
-    getUrl={`${window.location.href}/json`}
+    getUrl={`${window.location.href}json`}
     title={`${getParameters(3)[0]} vs ${getParameters(3)[1]}`}
   />,
   document.getElementById('entry')
