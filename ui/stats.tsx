@@ -11,10 +11,10 @@ import Game from './model/game';
 import Stats, { Totals, Records } from './model/stats';
 import { formatEpoch } from './utils/utils';
 
-interface StatsProps {
+interface StatsSectionProps {
   totals: Totals;
 }
-function Stats(props: StatsProps): JSX.Element {
+function StatsSection(props: StatsSectionProps): JSX.Element {
   const { totals } = props;
   return (
     <Panel header={'Stats'}>
@@ -30,11 +30,11 @@ function Stats(props: StatsProps): JSX.Element {
   );
 }
 
-interface RecordProps {
+interface RecordsSectionProps {
   records: Records;
   base: string;
 }
-function Records(props: RecordProps): JSX.Element {
+function RecordsSection(props: RecordsSectionProps): JSX.Element {
   const { records, base } = props;
   const player = records.winningStreak.player;
   return (
@@ -74,11 +74,11 @@ function GamesPerDay(props: GamesPerDayProps): JSX.Element {
   );
 }
 
-interface AchievementProps {
+interface AchievementPanelProps {
   achievement: Achievement;
   count: number;
 }
-function Achievement(props: AchievementProps): JSX.Element {
+function AchievementPanel(props: AchievementPanelProps): JSX.Element {
   const { achievement, count } = props;
   const icon = "achievement-" + achievement.name.replace(/ /g, '');
   const iconStyle = {width: 100, textAlign: 'center'};
@@ -97,7 +97,7 @@ function Achievements(props: AchievementsProps): JSX.Element {
   const { achievements } = props;
   return (
     <Panel header={'Achievements'}>
-      {achievements.map((a, i) => <Achievement achievement={a[0]} count={a[1]} key={`${i}`}/>)}
+      {achievements.map((a, i) => <AchievementPanel achievement={a[0]} count={a[1]} key={`${i}`}/>)}
     </Panel>
   );
 }
@@ -138,8 +138,8 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
           ? <Grid fluid={true}>
             <Row>
               <Col md={4}>
-                <Stats totals={stats.totals}/>
-                <Records records={stats.records} base={base}/>
+                <StatsSection totals={stats.totals}/>
+                <RecordsSection records={stats.records} base={base}/>
               </Col>
               <Col md={4}>
               </Col>
