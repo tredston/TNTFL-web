@@ -12,6 +12,7 @@ module.exports = {
     stats: ['babel-polyfill', './ui/stats.tsx'],
     playergames: ['babel-polyfill', './ui/playergames.tsx'],
     headtoheadgames: ['babel-polyfill', './ui/headtoheadgames.tsx'],
+    delete: ['babel-polyfill', './ui/delete.tsx'],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
