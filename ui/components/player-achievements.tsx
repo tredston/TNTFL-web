@@ -10,9 +10,9 @@ interface PlayerAchievementProps {
 }
 function PlayerAchievement(props: PlayerAchievementProps): JSX.Element {
   const { achievement, base } = props;
-  const icon = "achievement-" + achievement.name.replace(/ /g, '')
+  const icon = "achievement-" + achievement.name.replace(/ /g, '');
   const opacity = achievement.time ? 1 : 0.3;
-  const iconStyle = {width: 100, textAlign: 'center', opacity}
+  const iconStyle = {width: 100, textAlign: 'center', opacity};
   return (
     <Panel title={`${achievement.name} - ${achievement.description}`}>
       {achievement.time
@@ -31,7 +31,7 @@ interface PlayerAchievementsProps {
 }
 export default function PlayerAchievements(props: PlayerAchievementsProps): JSX.Element {
   const { achievements, base } = props;
-  return (    
+  return (
     <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
       {achievements.map((a, i) => <PlayerAchievement achievement={a} base={base} key={`${i}`}/>)}
     </div>
