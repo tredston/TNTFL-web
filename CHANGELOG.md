@@ -1,5 +1,8 @@
 # Changelog
 
+## develop
+* Allow speculating without reloading page
+
 ## 4.1.1
 * Improve chart performance
 
