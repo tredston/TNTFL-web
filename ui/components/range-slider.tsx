@@ -29,6 +29,10 @@ export default class RangeSlider extends Component<RangeSliderProps, {}> {
         }
     });
   }
+  componentDidUpdate() {
+    const { id, gamesFrom, gamesTo } = this.props;
+    $(`#${id}`).data('ionRangeSlider').update({from: gamesFrom, to: gamesTo}); 
+  }
   render(): JSX.Element {
     return (
       <input type="text" id={this.props.id} />
