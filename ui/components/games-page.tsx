@@ -19,7 +19,7 @@ export default class GamesPage extends Component<GamesPageProps, GamesPageState>
   constructor(props: GamesPageProps, context: any) {
     super(props, context);
     this.state = {
-      games: [],
+      games: undefined,
     }
   }
   async load() {
