@@ -39,11 +39,14 @@ export default class GamesPage extends Component<GamesPageProps, GamesPageState>
           base={base}
           addURL={addURL}
         />
-        <Grid fluid={true}>
-          <Panel header={`<h2>${title}</h2>`}>
-            <GameList games={games} base={base}/>
-          </Panel>
-        </Grid>
+        {games
+          ? <Grid fluid={true}>
+              <Panel header={`<h2>${title}</h2>`}>
+                <GameList games={games} base={base}/>
+              </Panel>
+            </Grid>
+          : 'Loading...'
+        }
       </div>
     );
   }
