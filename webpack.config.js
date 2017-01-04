@@ -10,6 +10,8 @@ module.exports = {
     historic: ['babel-polyfill', './ui/historic.tsx'],
     speculate: ['babel-polyfill', './ui/speculate.tsx'],
     stats: ['babel-polyfill', './ui/stats.tsx'],
+    playergames: ['babel-polyfill', './ui/playergames.tsx'],
+    headtoheadgames: ['babel-polyfill', './ui/headtoheadgames.tsx'],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
