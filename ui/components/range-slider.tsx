@@ -12,8 +12,8 @@ interface RangeSliderProps extends Props<RangeSlider> {
 }
 export default class RangeSlider extends Component<RangeSliderProps, {}> {
   componentDidMount() {
-    const { gamesFrom, gamesTo, onChange } = this.props;
-    $('#rangeSlider').ionRangeSlider({
+    const { id, gamesFrom, gamesTo, onChange } = this.props;
+    $(`#${id}`).ionRangeSlider({
         type: "double",
         grid: true,
         force_edges: true,
