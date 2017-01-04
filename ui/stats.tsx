@@ -142,10 +142,10 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
                 <RecordsSection records={stats.records} base={base}/>
               </Col>
               <Col md={4}>
+                <Panel header={'Most Significant Games'}>
+                  <GameList games={stats.records.mostSignificant} base={base} />
+                </Panel>
               </Col>
-              <Panel header={'Most Significant Games'}>
-                <GameList games={stats.records.mostSignificant} base={base} />
-              </Panel>
               <Col md={4}>
                 <Panel header={'Least Significant Games'}>
                   <GameList games={stats.records.leastSignificant} base={base} />
@@ -153,12 +153,16 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
               </Col>
             </Row>
             <Row>
-              <Panel header={'Games Per Day'}>
-                <GamesPerDay gamesPerDay={stats.gamesPerDay} />
-              </Panel>
+              <Col md={12}>
+                <Panel header={'Games Per Day'}>
+                  <GamesPerDay gamesPerDay={stats.gamesPerDay} />
+                </Panel>
+              </Col>
             </Row>
             <Row>
-              <Achievements achievements={stats.totals.achievements}/>
+              <Col md={12}>
+                <Achievements achievements={stats.totals.achievements}/>
+              </Col>
             </Row>
           </Grid>
         : 'Loading...'
