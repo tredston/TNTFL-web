@@ -114,6 +114,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
 
     const { showInactive } = this.state;
     this.setState({
+      entries: undefined,
       gamesFrom,
       gamesTo,
     } as HistoricPageState);
