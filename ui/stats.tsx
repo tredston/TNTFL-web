@@ -24,7 +24,7 @@ function StatsSection(props: StatsSectionProps): JSX.Element {
         <dt>Total players</dt>
         <dd>{totals.players}</dd>
         <dt>Active players</dt>
-        <dd>{`${totals.activePlayers} (${(totals.activePlayers / totals.players).toFixed(2)}%)`}</dd>
+        <dd>{`${totals.activePlayers} (${((totals.activePlayers / totals.players) * 100).toFixed(2)}%)`}</dd>
       </dl>
     </Panel>
   );
