@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, Props, CSSProperties } from 'react';
-import { Grid, Row, Col, Button, Panel } from 'react-bootstrap';
+import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
 import RangeSlider from './components/range-slider';
@@ -8,7 +8,7 @@ import RecentGames from './components/recent-game-list';
 import NavigationBar from './components/navigation-bar';
 import Game from './model/game';
 
-import Ladder from './components/ladder';
+import LadderPanel from './components/ladder-panel';
 import LadderEntry from './model/ladder-entry';
 import { getParameters, getMonthName } from './utils/utils';
 
@@ -146,17 +146,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
           </Panel>
           <Row>
             <Col lg={8}>
-              <Panel>
-                {entries
-                  ? <div>
-                      <Ladder entries={entries} atDate={toTime}/>
-                      <Button onClick={() => this.onShowInactive()} style={{width: '100%'}}>
-                        {showInactive ? 'Hide inactive' : 'Show inactive'}
-                      </Button>
-                    </div>
-                  : 'Loading...'
-                }
-              </Panel>
+              <LadderPanel entries={entries} atDate={toTime} showInactive={showInactive} onShowInactive={() => this.onShowInactive()}/>
             </Col>
             <Col lg={4}>
               <Panel header={'Monthly Rankings'}>
