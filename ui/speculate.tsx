@@ -51,7 +51,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     this.setState({showInactive: newState} as SpeculatePageState);
     this.loadLadder(newState, speculated.games);
   }
-  addGame(redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) {
+  onAddGame(redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) {
     this.setState({isBusy: true} as SpeculatePageState);
     const { showInactive, speculated } = this.state;
     const games = speculated.games.slice();
@@ -105,7 +105,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
                 <AddGameForm
                   base={base}
                   isBusy={isBusy}
-                  onSubmit={(rp, rs, bp, bs) => this.addGame(rp, rs, bp, bs)}
+                  onSubmit={(rp, rs, bp, bs) => this.onAddGame(rp, rs, bp, bs)}
                 />
                 {speculated && <GameList games={speculated.games.slice().reverse()} base={base}/>}
                 <a href=".">Reset speculation</a>
