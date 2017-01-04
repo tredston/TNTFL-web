@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component, Props, CSSProperties } from 'react';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import * as QueryString from 'query-string';
 
 import RangeSlider from './components/range-slider';
 import RecentGames from './components/recent-game-list';
@@ -10,7 +11,7 @@ import Game from './model/game';
 
 import LadderPanel from './components/ladder-panel';
 import LadderEntry from './model/ladder-entry';
-import { getParameters, getMonthName } from './utils/utils';
+import { getMonthName } from './utils/utils';
 
 interface MonthlyRankingProps {
   year: number;
@@ -70,8 +71,8 @@ function dateToEpoch(d: Date): number {
 interface HistoricPageProps extends Props<HistoricPage> {
   base: string;
   addURL: string;
-  gamesFrom: number;
-  gamesTo: number;
+  gamesFrom?: number;
+  gamesTo?: number;
 }
 interface HistoricPageState {
   entries: LadderEntry[];
@@ -85,8 +86,8 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     this.state = {
       entries: undefined,
       showInactive: false,
-      gamesFrom: undefined,
-      gamesTo: undefined,
+      gamesFrom: props.gamesFrom,
+      gamesTo: props.gamesTo,
     }
   }
   async loadLadder(showInactive: boolean, gamesFrom: number, gamesTo: number) {
@@ -129,7 +130,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
   }
   render() {
     const { addURL, base } = this.props;
-    const { entries, showInactive } = this.state;
+    const { entries, showInactive, gamesFrom, gamesTo } = this.state;
     const now = (new Date()).getUTCFullYear();
     const firstYear = 2005;
     const years = Array.from(Array((now + 1) - firstYear).keys()).map(y => y + firstYear).reverse();
@@ -137,8 +138,8 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
 
     const startOfMonth = new Date();
     startOfMonth.setDate(1);
-    const fromTime = this.state.gamesFrom || dateToEpoch(startOfMonth);
-    const toTime = this.state.gamesTo || dateToEpoch(getEndOfMonth(startOfMonth));
+    const fromTime = gamesFrom || dateToEpoch(startOfMonth);
+    const toTime = gamesTo || dateToEpoch(getEndOfMonth(startOfMonth));
 
     return (
       <div>
@@ -168,12 +169,20 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
   }
 }
 
+function getParameters(): [number | undefined, number | undefined] {
+  if (location.search !== '') {
+    const params = QueryString.parse(location.search);
+    return [+params['gamesFrom'], +params['gamesTo']];
+  }
+  return [undefined, undefined];
+}
+
 ReactDOM.render(
   <HistoricPage
     base={'./'}
     addURL={'game/add'}
-    gamesFrom={+getParameters(2)[0]}
-    gamesTo={+getParameters(2)[1]}
+    gamesFrom={getParameters()[0]}
+    gamesTo={getParameters()[1]}
   />,
   document.getElementById('entry')
 );
