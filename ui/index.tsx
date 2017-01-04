@@ -53,7 +53,10 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   }
   onShowInactive() {
     const newState = !this.state.showInactive;
-    this.setState({showInactive: newState} as IndexPageState);
+    this.setState({
+      entries: undefined,
+      showInactive: newState,
+    } as IndexPageState);
     this.loadLadder(newState);
   }
   render() {

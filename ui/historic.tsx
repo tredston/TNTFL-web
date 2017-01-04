@@ -101,7 +101,10 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
   onShowInactive() {
     const { showInactive, gamesFrom, gamesTo } = this.state;
     const newState = !showInactive;
-    this.setState({showInactive: newState} as HistoricPageState);
+    this.setState({
+      entries: undefined,
+      showInactive: newState,
+    } as HistoricPageState);
     this.loadLadder(newState, gamesFrom, gamesTo);
   }
   onMonthSelect(d: Date) {
