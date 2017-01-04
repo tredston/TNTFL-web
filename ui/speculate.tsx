@@ -54,7 +54,8 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
   addGame(redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) {
     this.setState({isBusy: true} as SpeculatePageState);
     const { showInactive, speculated } = this.state;
-    speculated.games.push({
+    const games = speculated.games.slice();
+    games.push({
       red: {
         name: redPlayer,
         score: redScore,
@@ -73,7 +74,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
       },
       date: undefined,
     });
-    this.loadLadder(showInactive, speculated.games).then(() => this.setState({isBusy: false} as SpeculatePageState));
+    this.loadLadder(showInactive, games).then(() => this.setState({isBusy: false} as SpeculatePageState));
   }
   render() {
     const { addURL, base } = this.props;
