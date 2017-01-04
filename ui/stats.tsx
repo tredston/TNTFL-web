@@ -81,11 +81,10 @@ interface AchievementPanelProps {
 function AchievementPanel(props: AchievementPanelProps): JSX.Element {
   const { achievement, count } = props;
   const icon = "achievement-" + achievement.name.replace(/ /g, '');
-  const iconStyle = {width: 100, textAlign: 'center'};
   return (
-    <Panel header={achievement.name}>
-      <div className={icon} style={iconStyle}/>
-      {`${achievement.description} - ${count}`}
+    <Panel header={achievement.name} style={{textAlign: 'center'}}>
+      <div className={icon} style={{margin: 'auto'}}/>
+      {achievement.description} - <b>{count}</b>
     </Panel>
   );
 }
@@ -97,7 +96,7 @@ function Achievements(props: AchievementsProps): JSX.Element {
   const { achievements } = props;
   return (
     <Panel header={'Achievements'}>
-      {achievements.map((a, i) => <AchievementPanel achievement={a[0]} count={a[1]} key={`${i}`}/>)}
+      {achievements.map((a, i) => <Col xs={3} key={`${i}`}><AchievementPanel achievement={a[0]} count={a[1]}/></Col>)}
     </Panel>
   );
 }
