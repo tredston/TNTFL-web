@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Line } from 'react-chartjs-2';
 
 import Game from '../model/game';
-import { formatEpoch } from '../utils/utils';
+import { options } from '../chart-config';
 
 function InsertOrigin(data: any, games: Game[]) {
   if (games.length > 0) {
@@ -62,19 +62,10 @@ export default function HeadToHeadChart(props: HeadToHeadChartProps): JSX.Elemen
     fill: false,
     borderColor: '#FF0000',
   }]};
-  const options = {
-    scales: {xAxes: [{
-      type: 'time',
-      time: {
-        minUnit: 'minute',
-      }
-    }]},
-    tooltips: {callbacks: {
-      title: (tooltip: any, point: any) => formatEpoch(tooltip[0].xLabel / 1000),
-      label: (tooltip: any, point: any) => tooltip.yLabel.toFixed(3),
-    }}
+  const localOptions = {
+    legend: {display: true},
   };
   return (
-    <Line data={data} options={options}/>
+    <Line data={data} options={Object.assign({}, options, localOptions)}/>
   );
 }

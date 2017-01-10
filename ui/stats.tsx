@@ -9,7 +9,7 @@ import NavigationBar from './components/navigation-bar';
 import Achievement from './model/achievement';
 import Game from './model/game';
 import Stats, { Totals, Records } from './model/stats';
-import { formatEpoch } from './utils/utils';
+import { options } from './chart-config';
 
 interface StatsSectionProps {
   totals: Totals;
@@ -57,23 +57,16 @@ function GamesPerDay(props: GamesPerDayProps): JSX.Element {
     fill: false,
     borderColor: '#0000FF',
   }]};
-  const options = {
+  const localOptions = {
+    maintainAspectRatio: false,
     scales: {xAxes: [{
-      type: 'time',
       time: {
         minUnit: 'day',
-      }
+      },
     }]},
-    legend: {display: false},
-    tooltips: {callbacks: {
-      title: (tooltip: any, point: any) => formatEpoch(tooltip[0].xLabel / 1000),
-      label: (tooltip: any, point: any) => tooltip.yLabel.toFixed(3),
-    }},
-    animation: false,
-    maintainAspectRatio: false,
   };
   return (
-    <Line data={data} options={options} height={200}/>
+    <Line data={data} options={Object.assign({}, options, localOptions)} height={200}/>
   );
 }
 
