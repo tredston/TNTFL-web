@@ -4,7 +4,7 @@ export const options = {
   scales: {xAxes: [{
     type: 'time',
     time: {
-      minUnit: 'minute',
+      minUnit: 'hour',
     }
   }]},
   legend: {display: false},
@@ -13,4 +13,12 @@ export const options = {
     label: (tooltip: any, point: any) => tooltip.yLabel.toFixed(3),
   }},
   animation: false,
+  elements: {
+    point: {
+      radius: 0,
+    },
+    line: {
+      tension: 0
+    },
+  },
 };
