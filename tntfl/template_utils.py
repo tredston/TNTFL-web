@@ -188,16 +188,15 @@ def appendChristmas(links, base):
 
 
 def getGamesPerDay(ladder):
-    gamesPerDay = OrderedDict()
+    if len(ladder.games) == 0:
+        return []
+    gamesPerDay = [[date.fromtimestamp(ladder.games[0].time).strftime('%s'), 0]]
     for game in ladder.games:
         day = date.fromtimestamp(game.time).strftime('%s')
-        if day not in gamesPerDay:
-            gamesPerDay[day] = 0
-        gamesPerDay[day] += 1
-    plotData = []
-    for day, tally in gamesPerDay.iteritems():
-        plotData.append([day, tally])
-    return plotData
+        if gamesPerDay[-1][0] != day:
+            gamesPerDay.append([day, 0])
+        gamesPerDay[-1][1] += 1
+    return gamesPerDay
 
 
 def getStatsJson(ladder, base):
