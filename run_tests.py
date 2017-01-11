@@ -15,7 +15,7 @@ import tntfl.test.transforms as transforms
 
 def clearCache():
     print 'Clearing cache'
-    cacheFile = '.cache.*'
+    cacheFile = '^\.cache\.'
     for f in os.listdir('.'):
         if re.search(cacheFile, f):
             os.remove(f)
