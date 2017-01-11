@@ -132,8 +132,18 @@ class Player(object):
         currentStreak = Streak()
 
         for game in games:
-            wonGame = self.wonGame(game)
-            lostGame = self.lostGame(game)
+            wonGame = False
+            lostGame = False
+            if game.redPlayer == self.name:
+                if game.redScore > game.blueScore:
+                    wonGame = True
+                elif game.redScore < game.blueScore:
+                    lostGame = True
+            else:
+                if game.redScore < game.blueScore:
+                    wonGame = True
+                elif game.redScore > game.blueScore:
+                    lostGame = True
             if (wonGame and currentStreak.win) or (lostGame and not currentStreak.win):
                 currentStreak.gameTimes.append(game.time)
             else:
