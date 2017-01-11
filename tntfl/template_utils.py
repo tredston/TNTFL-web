@@ -197,7 +197,7 @@ def getGamesPerDay(ladder):
     for game in ladder.games:
         day = datetime.fromtimestamp(game.time).replace(hour=0, minute=0, second=0, microsecond=0)
         if day not in gamesPerDay:
-          gamesPerDay[day] = 0
+            gamesPerDay[day] = 0
         gamesPerDay[day] += 1
     plotData = []
     for day, tally in gamesPerDay.iteritems():
