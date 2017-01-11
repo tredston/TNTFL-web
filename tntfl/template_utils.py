@@ -187,22 +187,16 @@ def appendChristmas(links, base):
     return links
 
 
-def totimestamp(dt, epoch=datetime(1970,1,1)):
-    td = dt - epoch
-    return int(td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 1e6
-
-
-def getGamesPerDay(ladder):
-    gamesPerDay = OrderedDict()
-    for game in ladder.games:
-        day = datetime.fromtimestamp(game.time).replace(hour=0, minute=0, second=0, microsecond=0)
-        if day not in gamesPerDay:
-          gamesPerDay[day] = 0
-        gamesPerDay[day] += 1
-    plotData = []
-    for day, tally in gamesPerDay.iteritems():
-        plotData.append([totimestamp(day), tally])
-    return plotData
+def getGamesPerDay(games):
+    if len(games) == 0:
+        return []
+    gamesPerDay = [[date.fromtimestamp(games[0].time).strftime('%s'), 0]]
+    for game in games:
+        day = date.fromtimestamp(game.time).strftime('%s')
+        if gamesPerDay[-1][0] != day:
+            gamesPerDay.append([day, 0])
+        gamesPerDay[-1][1] += 1
+    return gamesPerDay
 
 
 def getStatsJson(ladder, base):
@@ -226,5 +220,5 @@ def getStatsJson(ladder, base):
             'mostSignificant': [gameToJson(g, base) for g in mostSignificantGames[0:5]],
             'leastSignificant': [gameToJson(g, base) for g in reversed(mostSignificantGames[-5:])],
         },
-        'gamesPerDay': getGamesPerDay(ladder),
+        'gamesPerDay': getGamesPerDay(ladder.games),
     }
