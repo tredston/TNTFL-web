@@ -60,6 +60,7 @@ function GamesPerDay(props: GamesPerDayProps): JSX.Element {
   const localOptions = {
     maintainAspectRatio: false,
     scales: {xAxes: [{
+      type: 'time',
       time: {
         minUnit: 'day',
       },
