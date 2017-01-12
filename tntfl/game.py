@@ -19,12 +19,6 @@ class Game(object):
         self.deletedBy = None
         self.deletedAt = 0
 
-    def __str__(self):
-        return self.__repr__()
-
-    def __repr__(self):
-        return "{redPlayer} {redScore}-{blueScore} {bluePlayer}".format(redPlayer=self.redPlayer, bluePlayer=self.bluePlayer, redScore=self.redScore, blueScore=self.blueScore)
-
     def isDeleted(self):
         return self.deletedAt > 0
 
