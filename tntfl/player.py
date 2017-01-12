@@ -85,19 +85,19 @@ class Player(object):
         return self.gamesOn(today)
 
     def gamesOn(self, date):
-        return len([g for g in self.games if g.timeAsDatetime().date() == date])
+        return len([g for g in self.games if g.timeAsDate() == date])
 
     def skillChangeToday(self):
         today = date.today()
         skillChange = 0
-        for game in [g for g in self.games if g.timeAsDatetime().date() == today]:
+        for game in [g for g in self.games if g.timeAsDate() == today]:
             skillChange += game.skillChangeToBlue if game.bluePlayer == self.name else -game.skillChangeToBlue
         return skillChange
 
     def rankChangeToday(self):
         today = date.today()
         change = 0
-        for game in [g for g in self.games if g.timeAsDatetime().date() == today]:
+        for game in [g for g in self.games if g.timeAsDate() == today]:
             change += game.bluePosChange if game.bluePlayer == self.name else game.redPosChange
         return change
 

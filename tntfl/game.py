@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import date
+
 
 class Game(object):
 
@@ -27,5 +28,5 @@ class Game(object):
     def isDeleted(self):
         return self.deletedAt > 0
 
-    def timeAsDatetime(self):
-        return datetime.fromtimestamp(self.time)
+    def timeAsDate(self):
+        return date.fromtimestamp(self.time)
