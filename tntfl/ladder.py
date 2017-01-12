@@ -107,7 +107,7 @@ class TableFootballLadder(object):
         redScore = int(redScore)
         blueScore = int(blueScore)
         if redScore >= 0 and blueScore >= 0 and (redScore + blueScore) > 0:
-            game = Game(redPlayer, redScore, bluePlayer, blueScore, int(time.time()))
+            game = Game(redPlayer.lower(), redScore, bluePlayer.lower(), blueScore, int(time.time()))
             self._gameStore.appendGame(game)
             # Invalidate
             self.games = None

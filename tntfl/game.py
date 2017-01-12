@@ -4,11 +4,11 @@ from datetime import date
 class Game(object):
 
     def __init__(self, redPlayer, redScore, bluePlayer, blueScore, time):
-        self.redPlayer = redPlayer.lower()
+        self.redPlayer = redPlayer
         self.redScore = int(redScore)
         self.redPosChange = 0
         self.redPosAfter = -1
-        self.bluePlayer = bluePlayer.lower()
+        self.bluePlayer = bluePlayer
         self.blueScore = int(blueScore)
         self.bluePosChange = 0
         self.bluePosAfter = -1
