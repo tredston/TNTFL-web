@@ -15,7 +15,7 @@ class GameStore(object):
                 numParts = len(gameLine)
                 # Red player, red score, blue player, blue score, time[, deletedBy, deletedAt]
                 if numParts == 5 or numParts == 7:
-                    game = Game(gameLine[0], gameLine[1], gameLine[2], gameLine[3], int(gameLine[4]))
+                    game = Game(gameLine[0], gameLine[1], gameLine[2], gameLine[3], gameLine[4])
                     games.append(game)
                     if numParts == 7:
                         game.deletedBy = gameLine[5]
