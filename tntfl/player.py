@@ -33,7 +33,7 @@ class Player(object):
         self.gamesAsRed = 0
         self.achievements = {}
 
-    def game(self, game):
+    def playGame(self, game):
         if self.name == game.redPlayer:
             self.elo -= game.skillChangeToBlue
             self.gamesAsRed += 1

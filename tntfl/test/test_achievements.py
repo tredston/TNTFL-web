@@ -11,8 +11,8 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 def addGame(red, redScore, blue, blueScore, time, skillChangeToBlue=0):
     game = Game(red.name, redScore, blue.name, blueScore, time)
     game.skillChangeToBlue = skillChangeToBlue
-    red.game(game)
-    blue.game(game)
+    red.playGame(game)
+    blue.playGame(game)
     return game
 
 
