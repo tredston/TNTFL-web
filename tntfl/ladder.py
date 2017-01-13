@@ -35,8 +35,8 @@ class TableFootballLadder(object):
         for game in [g for g in self.games if not g.isDeleted()]:
             red = self.getPlayer(game.redPlayer)
             blue = self.getPlayer(game.bluePlayer)
-            blue.game(game)
-            red.game(game)
+            blue.playGame(game)
+            red.playGame(game)
             if withAchievements:
                 red.achieve(game.redAchievements, game)
                 blue.achieve(game.blueAchievements, game)
@@ -107,7 +107,7 @@ class TableFootballLadder(object):
         redScore = int(redScore)
         blueScore = int(blueScore)
         if redScore >= 0 and blueScore >= 0 and (redScore + blueScore) > 0:
-            game = Game(redPlayer, redScore, bluePlayer, blueScore, int(time.time()))
+            game = Game(redPlayer.lower(), redScore, bluePlayer.lower(), blueScore, int(time.time()))
             self._gameStore.appendGame(game)
             # Invalidate
             self.games = None

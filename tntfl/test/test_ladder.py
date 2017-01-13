@@ -7,6 +7,7 @@ import os
 
 from tntfl.ladder import TableFootballLadder
 from unittest import TestCase
+import tntfl.transforms.transforms as PresetTransforms
 
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -65,3 +66,9 @@ class Test(TestCase):
         self.assertEqual(1, ladder.games[1].redPosChange)
         self.assertEqual(2, ladder.games[1].bluePosAfter)
         self.assertEqual(-1, ladder.games[1].bluePosChange)
+
+    def testActivePlayers(self):
+        ladder = TableFootballLadder(os.path.join(__location__, "test_active.txt"), False, transforms=PresetTransforms.no_transforms())
+        self.assertEqual(3, ladder.getNumActivePlayers(5000000003))
+        self.assertEqual(0, ladder.getNumActivePlayers(6000000002))
+        self.assertEqual(2, ladder.getNumActivePlayers(6000000004))
