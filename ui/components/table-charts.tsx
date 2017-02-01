@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Line } from 'react-chartjs-2';
 
-const SIZE = 40;
 const options = {
   legend: {display: false},
   tooltips: {enabled: false},
   animation: false,
   maintainAspectRatio: false,
+  responsive: false,
+  title: false,
 }
 
 interface TapleLineChartProps {
@@ -14,6 +15,7 @@ interface TapleLineChartProps {
 }
 export function TableLineChart(props: TapleLineChartProps): JSX.Element {
   const { data } = props;
+  const width = 54;
   const sup = {
     scales: {
       xAxes: [{display: false}],
@@ -21,6 +23,8 @@ export function TableLineChart(props: TapleLineChartProps): JSX.Element {
     },
   }
   return (
-    <Line data={data} options={Object.assign({}, options, sup)} width={SIZE} height={SIZE}/>
+    <div style={{width, margin: 'auto'}}>
+      <Line data={data} options={Object.assign({}, options, sup)} width={width} height={42}/>
+    </div>
   );
 }
