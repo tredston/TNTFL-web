@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Line, Pie } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 
 const SIZE = 40;
 const options = {
@@ -9,20 +9,10 @@ const options = {
   maintainAspectRatio: false,
 }
 
-interface TaplePieChartProps {
-  data: any;
-}
-export function TablePieChart(props: TaplePieChartProps): JSX.Element {
-  const { data } = props;
-  return (
-    <Pie data={data} options={options} width={SIZE} height={SIZE}/>
-  );
-}
-
 interface TapleLineChartProps {
   data: any;
 }
-export function TableLineChart(props: TaplePieChartProps): JSX.Element {
+export function TableLineChart(props: TapleLineChartProps): JSX.Element {
   const { data } = props;
   const sup = {
     scales: {

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Pie } from 'react-chartjs-2';
 
-import { TablePieChart } from './table-charts';
 import { Totals } from '../model/player';
 
 export default function GoalsChart(totals: Totals): JSX.Element {
