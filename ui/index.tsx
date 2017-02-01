@@ -28,12 +28,9 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
       showInactive: false,
     }
   }
-  async loadLadder(showInactive: boolean) {
+  async loadLadder() {
     const { base } = this.props;
-    let url = `${base}ladder.cgi?view=json&players=1`;
-    if (showInactive === true) {
-      url += '&showInactive=1';
-    }
+    let url = `${base}ladder.cgi?view=json&players=1&showInactive=1`;
     const r = await fetch(url);
     this.setState({entries: await r.json()} as IndexPageState);
   }
@@ -44,10 +41,10 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
     this.setState({recentGames: await r.json()} as IndexPageState);
   }
   componentDidMount() {
-    this.loadLadder(this.state.showInactive);
+    this.loadLadder();
     this.loadRecent();
     setInterval(function() {
-      this.loadLadder(this.state.showInactive);
+      this.loadLadder();
       this.loadRecent();
     }.bind(this), 600000);
   }
@@ -57,7 +54,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
       entries: undefined,
       showInactive: newState,
     } as IndexPageState);
-    this.loadLadder(newState);
+    this.loadLadder();
   }
   render() {
     const { addURL, base } = this.props;

@@ -17,7 +17,7 @@ export default function LadderPanel(props: Props): JSX.Element {
     <Panel bsStyle={bsStyle}>
       {entries
         ? <div>
-            <Ladder entries={entries} atDate={atDate}/>
+            <Ladder entries={entries} atDate={atDate} showInactive={showInactive}/>
             <Button onClick={onShowInactive} style={{width: '100%'}}>
               {showInactive ? 'Hide inactive' : 'Show inactive'}
             </Button>

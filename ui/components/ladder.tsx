@@ -34,9 +34,14 @@ function TrendChart(trend: [number, number][]): JSX.Element {
 interface LadderProps {
   entries: LadderEntry[];
   atDate: number;
+  showInactive: boolean;
 }
 export default function Ladder(props: LadderProps): JSX.Element {
-  const { entries, atDate } = props;
+  let { entries } = props;
+  const { atDate, showInactive } = props;
+  if (!showInactive) {
+    entries = entries.filter(e => e.rank >= 1);
+  }
   const flattened = entries.map(e => {
     return {
       rank: e.rank,
