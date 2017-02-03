@@ -33,16 +33,6 @@ function WinsAhead(player1: string, games: Game[]) {
   return winsAhead;
 }
 
-function PointsAhead(player1: string, games: Game[]) {
-  let points = 0;
-  let pointsAhead = games.map((game: Game) => {
-    points += game.red.name == player1 ? game.red.skillChange : game.blue.skillChange;
-    return {x: game.date * 1000, y: points};
-  });
-  pointsAhead = InsertOrigin(pointsAhead, games);
-  return pointsAhead;
-}
-
 interface HeadToHeadChartProps {
   player1: string;
   player2: string;
@@ -55,12 +45,6 @@ export default function HeadToHeadChart(props: HeadToHeadChartProps): JSX.Elemen
     data: WinsAhead(player1, games),
     fill: false,
     borderColor: '#0000FF',
-  },
-  {
-    label: `${player1} points gained`,
-    data: PointsAhead(player1, games),
-    fill: false,
-    borderColor: '#FF0000',
   }]};
   const localOptions = {
     legend: {display: true},
