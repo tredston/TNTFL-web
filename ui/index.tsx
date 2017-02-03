@@ -17,7 +17,6 @@ interface IndexPageProps extends Props<IndexPage> {
 interface IndexPageState {
   entries: LadderEntry[];
   recentGames: Game[];
-  showInactive: boolean;
 }
 export default class IndexPage extends Component<IndexPageProps, IndexPageState> {
   constructor(props: IndexPageProps, context: any) {
@@ -25,7 +24,6 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
     this.state = {
       entries: undefined,
       recentGames: [],
-      showInactive: false,
     }
   }
   async loadLadder() {
@@ -48,17 +46,9 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
       this.loadRecent();
     }.bind(this), 600000);
   }
-  onShowInactive() {
-    const newState = !this.state.showInactive;
-    this.setState({
-      entries: undefined,
-      showInactive: newState,
-    } as IndexPageState);
-    this.loadLadder();
-  }
   render() {
     const { addURL, base } = this.props;
-    const { entries, recentGames, showInactive } = this.state;
+    const { entries, recentGames } = this.state;
     const now = (new Date()).getTime() / 1000;
     return (
       <div>
@@ -69,7 +59,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
         <Grid fluid={true}>
           <Row>
             <Col lg={8}>
-              <LadderPanel entries={entries} atDate={now} showInactive={showInactive} onShowInactive={() => this.onShowInactive()}/>
+              <LadderPanel entries={entries} atDate={now} />
             </Col>
             <Col lg={4}>
               <RecentGames games={recentGames} showAllGames={false} base={base}/>
