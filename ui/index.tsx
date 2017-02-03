@@ -17,7 +17,6 @@ interface IndexPageProps extends Props<IndexPage> {
 interface IndexPageState {
   entries: LadderEntry[];
   recentGames: Game[];
-  showInactive: boolean;
 }
 export default class IndexPage extends Component<IndexPageProps, IndexPageState> {
   constructor(props: IndexPageProps, context: any) {
@@ -25,15 +24,11 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
     this.state = {
       entries: undefined,
       recentGames: [],
-      showInactive: false,
     }
   }
-  async loadLadder(showInactive: boolean) {
+  async loadLadder() {
     const { base } = this.props;
-    let url = `${base}ladder.cgi?view=json&players=1`;
-    if (showInactive === true) {
-      url += '&showInactive=1';
-    }
+    let url = `${base}ladder.cgi?view=json&players=1&showInactive=1`;
     const r = await fetch(url);
     this.setState({entries: await r.json()} as IndexPageState);
   }
@@ -44,24 +39,16 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
     this.setState({recentGames: await r.json()} as IndexPageState);
   }
   componentDidMount() {
-    this.loadLadder(this.state.showInactive);
+    this.loadLadder();
     this.loadRecent();
     setInterval(function() {
-      this.loadLadder(this.state.showInactive);
+      this.loadLadder();
       this.loadRecent();
     }.bind(this), 600000);
   }
-  onShowInactive() {
-    const newState = !this.state.showInactive;
-    this.setState({
-      entries: undefined,
-      showInactive: newState,
-    } as IndexPageState);
-    this.loadLadder(newState);
-  }
   render() {
     const { addURL, base } = this.props;
-    const { entries, recentGames, showInactive } = this.state;
+    const { entries, recentGames } = this.state;
     const now = (new Date()).getTime() / 1000;
     return (
       <div>
@@ -72,7 +59,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
         <Grid fluid={true}>
           <Row>
             <Col lg={8}>
-              <LadderPanel entries={entries} atDate={now} showInactive={showInactive} onShowInactive={() => this.onShowInactive()}/>
+              <LadderPanel entries={entries} atDate={now} />
             </Col>
             <Col lg={4}>
               <RecentGames games={recentGames} showAllGames={false} base={base}/>

@@ -76,7 +76,6 @@ interface HistoricPageProps extends Props<HistoricPage> {
 }
 interface HistoricPageState {
   entries: LadderEntry[];
-  showInactive: boolean;
   gamesFrom: number;
   gamesTo: number;
 }
@@ -85,32 +84,19 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     super(props, context);
     this.state = {
       entries: undefined,
-      showInactive: false,
       gamesFrom: props.gamesFrom,
       gamesTo: props.gamesTo,
     }
   }
-  async loadLadder(showInactive: boolean, gamesFrom: number, gamesTo: number) {
+  async loadLadder(gamesFrom: number, gamesTo: number) {
     const { base } = this.props;
-    let url = `${base}ladder.cgi?view=json&players=1&gamesFrom=${gamesFrom}&gamesTo=${gamesTo}`;
-    if (showInactive === true) {
-      url += '&showInactive=1';
-    }
+    let url = `${base}ladder.cgi?view=json&players=1&gamesFrom=${gamesFrom}&gamesTo=${gamesTo}&showInactive=1`;
     const r = await fetch(url);
     this.setState({entries: await r.json()} as HistoricPageState);
   }
   componentDidMount() {
-    const { showInactive, gamesFrom, gamesTo } = this.state;
-    this.loadLadder(showInactive, gamesFrom, gamesTo);
-  }
-  onShowInactive() {
-    const { showInactive, gamesFrom, gamesTo } = this.state;
-    const newState = !showInactive;
-    this.setState({
-      entries: undefined,
-      showInactive: newState,
-    } as HistoricPageState);
-    this.loadLadder(newState, gamesFrom, gamesTo);
+    const { gamesFrom, gamesTo } = this.state;
+    this.loadLadder(gamesFrom, gamesTo);
   }
   onMonthSelect(d: Date) {
     const gamesFrom = dateToEpoch(d);
@@ -120,17 +106,16 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
   onRangeChange(gamesFrom: number, gamesTo: number) {
     window.history.pushState('object or string', 'Title', `?gamesFrom=${gamesFrom}&gamesTo=${gamesTo}`);
 
-    const { showInactive } = this.state;
     this.setState({
       entries: undefined,
       gamesFrom,
       gamesTo,
     } as HistoricPageState);
-    this.loadLadder(showInactive, gamesFrom, gamesTo);
+    this.loadLadder(gamesFrom, gamesTo);
   }
   render() {
     const { addURL, base } = this.props;
-    const { entries, showInactive, gamesFrom, gamesTo } = this.state;
+    const { entries, gamesFrom, gamesTo } = this.state;
     const now = (new Date()).getUTCFullYear();
     const firstYear = 2005;
     const years = Array.from(Array((now + 1) - firstYear).keys()).map(y => y + firstYear).reverse();
@@ -153,7 +138,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
           </Panel>
           <Row>
             <Col lg={8}>
-              <LadderPanel entries={entries} atDate={toTime} showInactive={showInactive} onShowInactive={() => this.onShowInactive()}/>
+              <LadderPanel entries={entries} atDate={toTime} />
             </Col>
             <Col lg={4}>
               <Panel header={'Monthly Rankings'}>

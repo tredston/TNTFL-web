@@ -19,7 +19,6 @@ interface SpeculatePageState {
     entries: LadderEntry[],
     games: Game[],
   },
-  showInactive: boolean;
   isBusy: boolean;
 }
 export default class SpeculatePage extends Component<SpeculatePageProps, SpeculatePageState> {
@@ -27,33 +26,23 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     super(props, context);
     this.state = {
       speculated: undefined,
-      showInactive: false,
       isBusy: false,
     }
   }
-  async loadLadder(showInactive: boolean, games: Game[]) {
+  async loadLadder(games: Game[]) {
     const { base } = this.props;
     const serialised = games.map(g => `${g.red.name},${g.red.score},${g.blue.score},${g.blue.name}`).join(',');
-    let url = `${base}speculate.cgi?view=json&players=1&previousGames=${serialised}`;
-    if (showInactive === true) {
-      url += '&showInactive=1';
-    }
+    let url = `${base}speculate.cgi?view=json&players=1&previousGames=${serialised}&showInactive=1`;
     const r = await fetch(url);
     this.setState({speculated: await r.json()} as SpeculatePageState);
   }
   componentDidMount() {
-    const { showInactive, speculated } = this.state;
-    this.loadLadder(showInactive, (speculated && speculated.games) || []);
-  }
-  onShowInactive() {
-    const { showInactive, speculated } = this.state;
-    const newState = !showInactive;
-    this.setState({showInactive: newState} as SpeculatePageState);
-    this.loadLadder(newState, speculated.games);
+    const { speculated } = this.state;
+    this.loadLadder((speculated && speculated.games) || []);
   }
   onAddGame(redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) {
     this.setState({isBusy: true} as SpeculatePageState);
-    const { showInactive, speculated } = this.state;
+    const { speculated } = this.state;
     const games = speculated.games.slice();
     games.push({
       red: {
@@ -74,17 +63,16 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
       },
       date: undefined,
     });
-    this.loadLadder(showInactive, games).then(() => this.setState({isBusy: false} as SpeculatePageState));
+    this.loadLadder(games).then(() => this.setState({isBusy: false} as SpeculatePageState));
   }
   onReset(e: any) {
     e.preventDefault();
-    const { showInactive } = this.state;
     this.setState({isBusy: true} as SpeculatePageState);
-    this.loadLadder(showInactive, []).then(() => this.setState({isBusy: false} as SpeculatePageState));
+    this.loadLadder([]).then(() => this.setState({isBusy: false} as SpeculatePageState));
   }
   render() {
     const { addURL, base } = this.props;
-    const { speculated, showInactive, isBusy } = this.state;
+    const { speculated, isBusy } = this.state;
     const isSpeculating = speculated && speculated.games.length > 0;
     const entries = speculated && speculated.entries;
     const now = (new Date()).getTime() / 1000;
@@ -100,8 +88,6 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
               <LadderPanel
                 entries={entries}
                 atDate={now}
-                showInactive={showInactive}
-                onShowInactive={() => this.onShowInactive()}
                 bsStyle={isSpeculating ? 'warning' : undefined}
               />
             </Col>
