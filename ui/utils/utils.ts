@@ -47,6 +47,9 @@ export function getParameters(num: number): string[] {
 }
 
 export function formatRankChange(rankChange: number): string {
+  if (rankChange == 0) {
+    return '-';
+  }
   return (rankChange > 0 ? '▲' : '▼') + Math.abs(rankChange);
 }
 

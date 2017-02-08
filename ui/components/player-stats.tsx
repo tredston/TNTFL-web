@@ -158,8 +158,11 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     })
     return skill - (total / 10);
   }
-  function getBG(blue: boolean): CSSProperties {
-    return {backgroundColor: blue ? Palette.blueFade : Palette.redFade};
+  function getBG(blue: number): CSSProperties {
+    if (blue == 0) {
+      return {};
+    }
+    return {backgroundColor: blue > 0 ? Palette.blueFade : Palette.redFade};
   }
   const { player, numActivePlayers, games, base } = props;
   const overrated = getOverrated(player.name, games);
@@ -175,7 +178,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
       <Row>
         <Col sm={3}><RankStatBox rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></Col>
         <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
-        <Col sm={3}><StatBox title={'Overrated'} style={getBG(overrated >= 0)}>{overrated.toFixed(3)}</StatBox></Col>
+        <Col sm={3}><StatBox title={'Overrated'} style={getBG(overrated)}>{overrated.toFixed(3)}</StatBox></Col>
         <Col sm={3}><SidePreferenceStat player={player}/></Col>
       </Row>
       <Row>
@@ -192,8 +195,8 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
       </Row>
       <Row>
         <Col sm={3}><StatBox title="Games today">{gamesToday.length}</StatBox></Col>
-        <Col sm={3}><StatBox title="Skill change today" style={getBG(skillChangeToday >= 0)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
-        <Col sm={3}><StatBox title="Rank change today" style={getBG(rankChangeToday >= 0)}>{formatRankChange(rankChangeToday)}</StatBox></Col>
+        <Col sm={3}><StatBox title="Skill change today" style={getBG(skillChangeToday)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
+        <Col sm={3}><StatBox title="Rank change today" style={getBG(rankChangeToday)}>{formatRankChange(rankChangeToday)}</StatBox></Col>
         <Col sm={3}/>
         <Col sm={3}>
           <DurationStatBox title={'Current streak'}
