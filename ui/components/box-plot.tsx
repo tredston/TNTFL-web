@@ -17,6 +17,9 @@ export default function BoxPlot(props: Props): JSX.Element {
     title: {
       text: '',
     },
+    xAxis: {
+      categories: [''],
+    },
     yAxis: {
       title: {
         text: 'Skill',
@@ -24,6 +27,10 @@ export default function BoxPlot(props: Props): JSX.Element {
     },
     legend: {
       enabled: false
+    },
+    tooltip: {
+      headerFormat: '',
+      valueDecimals: 3,
     },
     series: [{
       data: [[whiskerLow, quartile1, quartile2, quartile3, whiskerHigh]],
