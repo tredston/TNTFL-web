@@ -198,10 +198,8 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
         <Col sm={3}><StatBox title='10-0 wins'>{tenNils}</StatBox></Col>
       </Row>
       <Row>
-        <Col sm={3}><StatBox title="Games today">{gamesToday.length}</StatBox></Col>
         <Col sm={3}><StatBox title="Skill change today" style={getBG(skillChangeToday)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
         <Col sm={3}><StatBox title="Rank change today" style={getBG(rankChangeToday)}>{formatRankChange(rankChangeToday)}</StatBox></Col>
-        <Col sm={3}/>
         <Col sm={3}>
           <DurationStatBox title={'Current streak'}
             from={currentStreak.gameTimes[0]}
