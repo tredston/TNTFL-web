@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { CSSProperties } from 'react';
 import { Panel, Row, Col } from 'react-bootstrap';
+import { Pie } from 'react-chartjs-2';
 
 import GameTime from './game-time';
 import Game from '../model/game';
@@ -87,15 +88,18 @@ interface SidePreferenceStatProps {
 }
 function SidePreferenceStat(props: SidePreferenceStatProps): JSX.Element {
   const { player } = props;
-  const redness = (player.total.gamesAsRed / player.total.games);
-  const style = {
-    backgroundColor: 'rgb(' + Math.round(redness * 255) + ', 0, '  + Math.round((1 - redness) * 255) + ')',
-    color: 'white',
+  const data = {
+    labels: ['Red', 'Blue'],
+    datasets: [{
+      data: [player.total.gamesAsRed, player.total.games - player.total.gamesAsRed],
+      backgroundColor: ['red', 'blue'],
+    }],
   };
-  const pc = redness * 100;
-  const preference = (pc >= 50) ? (pc.toFixed(2) + '% red') : ((100-pc).toFixed(2) + '% blue');
+  const options = {
+    legend: {display: false},
+  };
   return (
-    <StatBox title='Side preference' style={style}>{preference}</StatBox>
+    <StatBox title='Side preference'><Pie data={data} options={options}/></StatBox>
   )
 }
 
@@ -186,15 +190,32 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
         <Col sm={3}><SidePreferenceStat player={player}/></Col>
       </Row>
       <Row>
-        <Col sm={3}><StatBox title="Total games">{player.total.games}</StatBox></Col>
-        <Col sm={3}><StatBox title="Wins">{player.total.wins}</StatBox></Col>
-        <Col sm={3}><StatBox title="Losses">{player.total.losses}</StatBox></Col>
-        <Col sm={3}><StatBox title="Draws">{(player.total.games - player.total.wins - player.total.losses)}</StatBox></Col>
-      </Row>
-      <Row>
-        <Col sm={3}><StatBox title="Goals for">{player.total.for}</StatBox></Col>
-        <Col sm={3}><StatBox title="Goals against">{player.total.against}</StatBox></Col>
-        <Col sm={3}><StatBox title="Goal ratio" style={getBG(goalRatio > 1)}>{goalRatio.toFixed(3)}</StatBox></Col>
+        <Col sm={3}><StatBox title="Games">
+          {player.total.games} games
+          <Pie
+            data={{
+              labels: ['Wins', 'Draws', 'Losses'],
+              datasets: [{
+                data: [player.total.wins, player.total.games - player.total.wins - player.total.losses, player.total.losses],
+                backgroundColor: ['blue', 'rgb(255, 194, 0)', 'red'],
+              }],
+            }}
+            options={{legend: {display: false}}}
+          />
+        </StatBox></Col>
+        <Col sm={3}><StatBox title="Goals">
+          {player.total.for + player.total.against} goals
+          <Pie
+            data={{
+              labels: ['For', 'Against'],
+              datasets: [{
+                data: [player.total.for, player.total.against],
+                backgroundColor: ['blue', 'red'],
+              }],
+            }}
+            options={{legend: {display: false}}}
+          />
+        </StatBox></Col>
         <Col sm={3}><StatBox title='10-0 wins'>{tenNils}</StatBox></Col>
       </Row>
       <Row>
