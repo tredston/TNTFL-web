@@ -26,6 +26,50 @@ function RankStatBox(props: RankStatBoxProps): JSX.Element {
   )
 }
 
+interface GamesStatProps {
+  player: Player;
+}
+function GamesStat(props: GamesStatProps): JSX.Element {
+  const { player } = props;
+  return (
+    <StatBox title="Games">
+      {player.total.games} games
+      <Pie
+        data={{
+          labels: ['Wins', 'Draws', 'Losses'],
+          datasets: [{
+            data: [player.total.wins, player.total.games - player.total.wins - player.total.losses, player.total.losses],
+            backgroundColor: ['blue', 'rgb(255, 194, 0)', 'red'],
+          }],
+        }}
+        options={{legend: {display: false}}}
+      />
+    </StatBox>
+  );
+}
+
+interface GoalsStatProps {
+  player: Player;
+}
+function GoalsStat(props: GoalsStatProps): JSX.Element {
+  const { player } = props;
+  return (
+    <StatBox title="Goals">
+      {player.total.for + player.total.against} goals
+      <Pie
+        data={{
+          labels: ['For', 'Against'],
+          datasets: [{
+            data: [player.total.for, player.total.against],
+            backgroundColor: ['blue', 'red'],
+          }],
+        }}
+        options={{legend: {display: false}}}
+      />
+    </StatBox>
+  );
+}
+
 interface SidePreferenceStatProps {
   player: Player;
 }
@@ -142,32 +186,8 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
         <Col sm={3}><SidePreferenceStat player={player}/></Col>
       </Row>
       <Row>
-        <Col sm={3}><StatBox title="Games">
-          {player.total.games} games
-          <Pie
-            data={{
-              labels: ['Wins', 'Draws', 'Losses'],
-              datasets: [{
-                data: [player.total.wins, player.total.games - player.total.wins - player.total.losses, player.total.losses],
-                backgroundColor: ['blue', 'rgb(255, 194, 0)', 'red'],
-              }],
-            }}
-            options={{legend: {display: false}}}
-          />
-        </StatBox></Col>
-        <Col sm={3}><StatBox title="Goals">
-          {player.total.for + player.total.against} goals
-          <Pie
-            data={{
-              labels: ['For', 'Against'],
-              datasets: [{
-                data: [player.total.for, player.total.against],
-                backgroundColor: ['blue', 'red'],
-              }],
-            }}
-            options={{legend: {display: false}}}
-          />
-        </StatBox></Col>
+        <Col sm={3}><GamesStat player={player} /></Col>
+        <Col sm={3}><GoalsStat player={player} /></Col>
         <Col sm={3}><StatBox title='Flawless Victories'>{flawlessVictories}</StatBox></Col>
       </Row>
       <Row>
