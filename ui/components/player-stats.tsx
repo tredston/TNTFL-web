@@ -183,7 +183,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   const overrated = getOverrated(player.name, games);
   const gamesToday = games.slice(games.length - player.total.gamesToday);
   const goalRatio = player.total.for / player.total.against;
-  const tenNils = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
+  const flawlessVictories = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
   const skillChangeToday = gamesToday.reduce((skill, game) => skill += game.red.name == player.name ? game.red.skillChange : game.blue.skillChange, 0);
   const rankChangeToday = gamesToday.reduce((change, game) => change += game.red.name == player.name ? game.red.rankChange : game.blue.rankChange, 0);
   const { highestSkill, lowestSkill } = getSkillRecords(player, games);
@@ -226,7 +226,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
             options={{legend: {display: false}}}
           />
         </StatBox></Col>
-        <Col sm={3}><StatBox title='10-0 wins'>{tenNils}</StatBox></Col>
+        <Col sm={3}><StatBox title='Flawless Victories'>{flawlessVictories}</StatBox></Col>
       </Row>
       <Row>
         <Col sm={3}><StatBox title="Skill change today" style={getBG(skillChangeToday)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
