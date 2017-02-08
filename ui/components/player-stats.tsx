@@ -3,6 +3,7 @@ import { CSSProperties } from 'react';
 import { Panel, Row, Col } from 'react-bootstrap';
 import { Pie } from 'react-chartjs-2';
 
+import BoxPlot from './box-plot';
 import GameTime from './game-time';
 import Game from '../model/game';
 import Player from '../model/player';
@@ -119,6 +120,12 @@ function getSkillRecords(player: Player, games: Game[]) {
   return {highestSkill, lowestSkill};
 }
 
+// Get skill history for last 30 days
+function getRecentSkillHistory(player: Player, games: Game[]) {
+  const cutoff = Math.floor((new Date()).getTime() / 1000) - 2.592e+6;
+  return getSkillHistory(player, games).filter(d => d.date >= cutoff);
+}
+
 interface Streak {
   win: boolean;
   gameTimes: number[];
@@ -183,6 +190,9 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   const { winningStreak, losingStreak, currentStreak } = getStreakRecords(player, games);
   return (
     <Panel header={<h1>{player.name}</h1>}>
+      <StatBox title={'Recent Skill'}>
+        <BoxPlot data={getRecentSkillHistory(player, games).map(d => d.skill)}/>
+      </StatBox>
       <Row>
         <Col sm={3}><RankStatBox rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></Col>
         <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
