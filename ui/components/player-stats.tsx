@@ -176,18 +176,10 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   const { winningStreak, losingStreak, currentStreak } = getStreakRecords(player, games);
   return (
     <Panel header={<h1>{player.name}</h1>}>
-      <Col sm={3}>
-        <StatBox title={'Recent Skill'}>
-          <BoxPlot data={getRecentSkillHistory(player, games).map(d => d.skill)}/>
-        </StatBox>
-      </Col>
+      <Col sm={3}><StatBox title={'Recent Skill'}><BoxPlot data={getRecentSkillHistory(player, games).map(d => d.skill)}/></StatBox></Col>
       <Col sm={3}><RankStatBox rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></Col>
       <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
       <Col sm={3}><StatBox title={'Overrated'} style={getBG(overrated)}>{overrated.toFixed(3)}</StatBox></Col>
-      <Col sm={3}><StatBox title='Flawless Victories'>{flawlessVictories}</StatBox></Col>
-      <Col sm={3}><GamesStat player={player} /></Col>
-      <Col sm={3}><GoalsStat player={player} /></Col>
-      <Col sm={3}><SidePreferenceStat player={player}/></Col>
       <Col sm={3}><StatBox title="Skill change today" style={getBG(skillChangeToday)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
       <Col sm={3}><StatBox title="Rank change today" style={getBG(rankChangeToday)}>{formatRankChange(rankChangeToday)}</StatBox></Col>
       <Col sm={3}>
@@ -199,6 +191,11 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
           {currentStreak.gameTimes.length > 0 ? `${currentStreak.gameTimes.length} ${currentStreak.win ? 'wins' : 'losses'}` : '-'}
         </DurationStatBox>
       </Col>
+
+      <Col sm={3}><StatBox title='Flawless Victories'>{flawlessVictories}</StatBox></Col>
+      <Col sm={3}><GamesStat player={player} /></Col>
+      <Col sm={3}><GoalsStat player={player} /></Col>
+      <Col sm={3}><SidePreferenceStat player={player}/></Col>
       <Col sm={3}><InstantStatBox title={'Highest ever skill'} at={highestSkill.date} base={base}>{highestSkill.skill.toFixed(3)}</InstantStatBox></Col>
       <Col sm={3}><InstantStatBox title={'Lowest ever skill'} at={lowestSkill.date} base={base}>{lowestSkill.skill.toFixed(3)}</InstantStatBox></Col>
       <Col sm={3}>
