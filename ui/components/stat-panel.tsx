@@ -35,7 +35,7 @@ interface InstantStatBoxProps {
 export function InstantStatBox(props: InstantStatBoxProps): JSX.Element {
   const { title, at, children, base } = props;
   return (
-    <Panel header={<h3>{title}</h3>}>
+    <Panel header={<h3>{title}</h3>} style={{textAlign: 'center'}}>
       <div style={statStyle}>{children}</div>
       <div style={{textAlign: 'right'}}>
         {at ? <span>at <GameTime date={at} base={base} /></span> : <span>before first game</span>}
@@ -54,7 +54,7 @@ interface DurationStatBoxProps {
 export function DurationStatBox(props: DurationStatBoxProps): JSX.Element {
   const { title, from, to, children, base } = props;
   return (
-    <Panel header={<h3>{title}</h3>}>
+    <Panel header={<h3>{title}</h3>} style={{textAlign: 'center'}}>
       <div style={statStyle}>{children}</div>
       {from && <div style={{textAlign: 'right'}}>From <GameTime date={from} base={base} /></div>}
       {to && <div style={{textAlign: 'right'}}>to <GameTime date={to} base={base} /></div>}
