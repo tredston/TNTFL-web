@@ -99,13 +99,17 @@ function SidePreferenceStat(props: SidePreferenceStatProps): JSX.Element {
   )
 }
 
-function getSkillRecords(player: Player, games: Game[]) {
-  const skillLine = games.reduce((skillLine, game) => {
+function getSkillHistory(player: Player, games: Game[]) {
+  return games.reduce((skillLine, game) => {
     const prevSkill = skillLine[skillLine.length - 1].skill;
     const change = game.red.name == player.name ? game.red.skillChange : game.blue.skillChange;
     skillLine.push({date: game.date, skill: (prevSkill + change)});
     return skillLine;
   }, [{date: 0, skill: 0}]);
+}
+
+function getSkillRecords(player: Player, games: Game[]) {
+  const skillLine = getSkillHistory(player, games);
   const highestSkill = skillLine.reduce((highest, skill) => skill.skill > highest.skill ? skill : highest, {date: 0, skill: 0});
   const lowestSkill = skillLine.reduce((lowest, skill) => skill.skill < lowest.skill ? skill : lowest, {date: 0, skill: 0});
   return {highestSkill, lowestSkill};
