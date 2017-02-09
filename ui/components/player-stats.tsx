@@ -8,7 +8,7 @@ import { StatBox, DurationStatBox, InstantStatBox } from './stat-panel';
 import Game from '../model/game';
 import Player from '../model/player';
 import * as Palette from '../palette';
-import { getLadderLeagueClass, formatRankChange, getNearlyInactiveClass } from '../utils/utils';
+import { getLadderLeagueClass, formatRankChange, getNearlyInactiveClass, skillChange } from '../utils/utils';
 
 interface RankStatBoxProps {
   rank: number;
@@ -93,8 +93,7 @@ function SidePreferenceStat(props: SidePreferenceStatProps): JSX.Element {
 function getSkillHistory(player: Player, games: Game[]) {
   return games.reduce((skillLine, game) => {
     const prevSkill = skillLine[skillLine.length - 1].skill;
-    const change = game.red.name == player.name ? game.red.skillChange : game.blue.skillChange;
-    skillLine.push({date: game.date, skill: (prevSkill + change)});
+    skillLine.push({date: game.date, skill: (prevSkill + skillChange(game, player))});
     return skillLine;
   }, [{date: 0, skill: 0}]);
 }
@@ -164,7 +163,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   const gamesToday = games.slice(games.length - player.total.gamesToday);
   const goalRatio = player.total.for / player.total.against;
   const flawlessVictories = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
-  const skillChangeToday = gamesToday.reduce((skill, game) => skill += game.red.name == player.name ? game.red.skillChange : game.blue.skillChange, 0);
+  const skillChangeToday = gamesToday.reduce((skill, game) => skill += skillChange(game, player), 0);
   const rankChangeToday = gamesToday.reduce((change, game) => change += game.red.name == player.name ? game.red.rankChange : game.blue.rankChange, 0);
   const { highestSkill, lowestSkill } = getSkillRecords(player, games);
   const { winningStreak, losingStreak, currentStreak } = getStreakRecords(player, games);
