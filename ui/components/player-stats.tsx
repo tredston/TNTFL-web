@@ -106,12 +106,6 @@ function getSkillRecords(player: Player, games: Game[]) {
   return {highestSkill, lowestSkill};
 }
 
-// Get skill history for last 30 days
-function getRecentSkillHistory(player: Player, games: Game[]) {
-  const cutoff = Math.floor((new Date()).getTime() / 1000) - 2.592e+6;
-  return getSkillHistory(player, games).filter(d => d.date >= cutoff);
-}
-
 interface Streak {
   win: boolean;
   gameTimes: number[];
@@ -174,9 +168,10 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   const rankChangeToday = gamesToday.reduce((change, game) => change += game.red.name == player.name ? game.red.rankChange : game.blue.rankChange, 0);
   const { highestSkill, lowestSkill } = getSkillRecords(player, games);
   const { winningStreak, losingStreak, currentStreak } = getStreakRecords(player, games);
+  const monthAgo = Math.floor((new Date()).getTime() / 1000) - 2.592e+6;
   return (
     <Panel header={<h1>{player.name}</h1>}>
-      <Col sm={3}><StatBox title={'Recent Skill'}><BoxPlot data={getRecentSkillHistory(player, games).map(d => d.skill)}/></StatBox></Col>
+      <Col sm={3}><StatBox title={'Recent Skill'}><BoxPlot data={getSkillHistory(player, games).filter(d => d.date >= monthAgo).map(d => d.skill)}/></StatBox></Col>
       <Col sm={3}><RankStatBox rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></Col>
       <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
       <Col sm={3}><StatBox title={'Overrated'} style={getBG(overrated)}>{overrated.toFixed(3)}</StatBox></Col>
