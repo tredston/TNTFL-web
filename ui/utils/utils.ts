@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as moment from 'moment';
 
 import Game from '../model/game';
+import Player from '../model/player';
 
 export function getLadderLeagueClass(rank: number, numActivePlayers: number) {
   var league = "";
@@ -47,6 +48,9 @@ export function getParameters(num: number): string[] {
 }
 
 export function formatRankChange(rankChange: number): string {
+  if (rankChange == 0) {
+    return '-';
+  }
   return (rankChange > 0 ? '▲' : '▼') + Math.abs(rankChange);
 }
 
@@ -59,4 +63,8 @@ export function getNearlyInactiveClass(lastPlayed: number, now: number): string 
 
 export function mostRecentGames(games: Game[]): Game[] {
   return games.slice(games.length > 5 ? games.length - 5 : 0).reverse();
+}
+
+export function skillChange(game: Game, player: Player): number {
+  return game.red.name == player.name ? game.red.skillChange : game.blue.skillChange;
 }

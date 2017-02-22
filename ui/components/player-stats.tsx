@@ -1,70 +1,14 @@
 import * as React from 'react';
 import { CSSProperties } from 'react';
 import { Panel, Row, Col } from 'react-bootstrap';
+import { Pie } from 'react-chartjs-2';
 
-import GameTime from './game-time';
+import BoxPlot from './box-plot';
+import { StatBox, DurationStatBox, InstantStatBox } from './stat-panel';
 import Game from '../model/game';
 import Player from '../model/player';
 import * as Palette from '../palette';
-import { getLadderLeagueClass, formatRankChange, getNearlyInactiveClass } from '../utils/utils';
-
-const statStyle: CSSProperties = {
-  fontSize: 'x-large',
-  fontWeight: 'bold',
-  textAlign: 'center',
-};
-
-interface StatBoxProps {
-  title: string;
-  style?: CSSProperties;
-  classes?: string;
-  children?: any;
-}
-function StatBox(props: StatBoxProps): JSX.Element {
-  const { title, children, style, classes } = props;
-  const mergedStyle = style ? Object.assign({}, statStyle, style) : statStyle;
-  return (
-    <Panel header={<h3>{title}</h3>} style={mergedStyle} className={classes}>
-      {children}
-    </Panel>
-  );
-}
-
-interface InstantStatBoxProps {
-  title: string;
-  at?: number;
-  children?: any;
-  base: string;
-}
-function InstantStatBox(props: InstantStatBoxProps): JSX.Element {
-  const { title, at, children, base } = props;
-  return (
-    <Panel header={<h3>{title}</h3>}>
-      <div style={statStyle}>{children}</div>
-      <div style={{textAlign: 'right'}}>
-        {at ? <span>at <GameTime date={at} base={base} /></span> : <span>before first game</span>}
-      </div>
-    </Panel>
-  );
-}
-
-interface DurationStatBoxProps {
-  title: string;
-  from?: number;
-  to?: number;
-  children?: any;
-  base: string;
-}
-function DurationStatBox(props: DurationStatBoxProps): JSX.Element {
-  const { title, from, to, children, base } = props;
-  return (
-    <Panel header={<h3>{title}</h3>}>
-      <div style={statStyle}>{children}</div>
-      {from && <div style={{textAlign: 'right'}}>From <GameTime date={from} base={base} /></div>}
-      {to && <div style={{textAlign: 'right'}}>to <GameTime date={to} base={base} /></div>}
-    </Panel>
-  );
-}
+import { getLadderLeagueClass, formatRankChange, getNearlyInactiveClass, skillChange } from '../utils/utils';
 
 interface RankStatBoxProps {
   rank: number;
@@ -82,30 +26,80 @@ function RankStatBox(props: RankStatBoxProps): JSX.Element {
   )
 }
 
+interface GamesStatProps {
+  player: Player;
+}
+function GamesStat(props: GamesStatProps): JSX.Element {
+  const { player } = props;
+  return (
+    <StatBox title="Games">
+      {player.total.games} games
+      <Pie
+        data={{
+          labels: ['Wins', 'Draws', 'Losses'],
+          datasets: [{
+            data: [player.total.wins, player.total.games - player.total.wins - player.total.losses, player.total.losses],
+            backgroundColor: ['blue', 'rgb(255, 194, 0)', 'red'],
+          }],
+        }}
+        options={{legend: {display: false}}}
+      />
+    </StatBox>
+  );
+}
+
+interface GoalsStatProps {
+  player: Player;
+}
+function GoalsStat(props: GoalsStatProps): JSX.Element {
+  const { player } = props;
+  return (
+    <StatBox title="Goals">
+      {player.total.for + player.total.against} goals
+      <Pie
+        data={{
+          labels: ['For', 'Against'],
+          datasets: [{
+            data: [player.total.for, player.total.against],
+            backgroundColor: ['blue', 'red'],
+          }],
+        }}
+        options={{legend: {display: false}}}
+      />
+    </StatBox>
+  );
+}
+
 interface SidePreferenceStatProps {
   player: Player;
 }
 function SidePreferenceStat(props: SidePreferenceStatProps): JSX.Element {
   const { player } = props;
-  const redness = (player.total.gamesAsRed / player.total.games);
-  const style = {
-    backgroundColor: 'rgb(' + Math.round(redness * 255) + ', 0, '  + Math.round((1 - redness) * 255) + ')',
-    color: 'white',
+  const data = {
+    labels: ['Red', 'Blue'],
+    datasets: [{
+      data: [player.total.gamesAsRed, player.total.games - player.total.gamesAsRed],
+      backgroundColor: ['red', 'blue'],
+    }],
   };
-  const pc = redness * 100;
-  const preference = (pc >= 50) ? (pc.toFixed(2) + '% red') : ((100-pc).toFixed(2) + '% blue');
+  const options = {
+    legend: {display: false},
+  };
   return (
-    <StatBox title='Side preference' style={style}>{preference}</StatBox>
+    <StatBox title='Side preference'><Pie data={data} options={options}/></StatBox>
   )
 }
 
-function getSkillRecords(player: Player, games: Game[]) {
-  const skillLine = games.reduce((skillLine, game) => {
+function getSkillHistory(player: Player, games: Game[]) {
+  return games.reduce((skillLine, game) => {
     const prevSkill = skillLine[skillLine.length - 1].skill;
-    const change = game.red.name == player.name ? game.red.skillChange : game.blue.skillChange;
-    skillLine.push({date: game.date, skill: (prevSkill + change)});
+    skillLine.push({date: game.date, skill: (prevSkill + skillChange(game, player))});
     return skillLine;
   }, [{date: 0, skill: 0}]);
+}
+
+function getSkillRecords(player: Player, games: Game[]) {
+  const skillLine = getSkillHistory(player, games);
   const highestSkill = skillLine.reduce((highest, skill) => skill.skill > highest.skill ? skill : highest, {date: 0, skill: 0});
   const lowestSkill = skillLine.reduce((lowest, skill) => skill.skill < lowest.skill ? skill : lowest, {date: 0, skill: 0});
   return {highestSkill, lowestSkill};
@@ -158,77 +152,66 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     })
     return skill - (total / 10);
   }
-  function getBG(blue: boolean): CSSProperties {
-    return {backgroundColor: blue ? Palette.blueFade : Palette.redFade};
+  function getBG(blue: number): CSSProperties {
+    if (blue == 0) {
+      return {};
+    }
+    return {backgroundColor: blue > 0 ? Palette.blueFade : Palette.redFade};
   }
   const { player, numActivePlayers, games, base } = props;
   const overrated = getOverrated(player.name, games);
   const gamesToday = games.slice(games.length - player.total.gamesToday);
   const goalRatio = player.total.for / player.total.against;
-  const tenNils = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
-  const skillChangeToday = gamesToday.reduce((skill, game) => skill += game.red.name == player.name ? game.red.skillChange : game.blue.skillChange, 0);
+  const flawlessVictories = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
+  const skillChangeToday = gamesToday.reduce((skill, game) => skill += skillChange(game, player), 0);
   const rankChangeToday = gamesToday.reduce((change, game) => change += game.red.name == player.name ? game.red.rankChange : game.blue.rankChange, 0);
   const { highestSkill, lowestSkill } = getSkillRecords(player, games);
   const { winningStreak, losingStreak, currentStreak } = getStreakRecords(player, games);
+  const monthAgo = Math.floor((new Date()).getTime() / 1000) - 2.592e+6;
   return (
     <Panel header={<h1>{player.name}</h1>}>
-      <Row>
-        <Col sm={3}><RankStatBox rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></Col>
-        <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
-        <Col sm={3}><StatBox title={'Overrated'} style={getBG(overrated >= 0)}>{overrated.toFixed(3)}</StatBox></Col>
-        <Col sm={3}><SidePreferenceStat player={player}/></Col>
-      </Row>
-      <Row>
-        <Col sm={3}><StatBox title="Total games">{player.total.games}</StatBox></Col>
-        <Col sm={3}><StatBox title="Wins">{player.total.wins}</StatBox></Col>
-        <Col sm={3}><StatBox title="Losses">{player.total.losses}</StatBox></Col>
-        <Col sm={3}><StatBox title="Draws">{(player.total.games - player.total.wins - player.total.losses)}</StatBox></Col>
-      </Row>
-      <Row>
-        <Col sm={3}><StatBox title="Goals for">{player.total.for}</StatBox></Col>
-        <Col sm={3}><StatBox title="Goals against">{player.total.against}</StatBox></Col>
-        <Col sm={3}><StatBox title="Goal ratio" style={getBG(goalRatio > 1)}>{goalRatio.toFixed(3)}</StatBox></Col>
-        <Col sm={3}><StatBox title='10-0 wins'>{tenNils}</StatBox></Col>
-      </Row>
-      <Row>
-        <Col sm={3}><StatBox title="Games today">{gamesToday.length}</StatBox></Col>
-        <Col sm={3}><StatBox title="Skill change today" style={getBG(skillChangeToday >= 0)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
-        <Col sm={3}><StatBox title="Rank change today" style={getBG(rankChangeToday >= 0)}>{formatRankChange(rankChangeToday)}</StatBox></Col>
-        <Col sm={3}/>
-        <Col sm={3}>
-          <DurationStatBox title={'Current streak'}
-            from={currentStreak.gameTimes[0]}
-            to={currentStreak.gameTimes[currentStreak.gameTimes.length - 1]}
-            base={base}
-          >
-            {currentStreak.gameTimes.length > 0 ? `${currentStreak.gameTimes.length} ${currentStreak.win ? 'wins' : 'losses'}` : '-'}
-          </DurationStatBox>
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={3}><InstantStatBox title={'Highest ever skill'} at={highestSkill.date} base={base}>{highestSkill.skill.toFixed(3)}</InstantStatBox></Col>
-        <Col sm={3}><InstantStatBox title={'Lowest ever skill'} at={lowestSkill.date} base={base}>{lowestSkill.skill.toFixed(3)}</InstantStatBox></Col>
-        <Col sm={3}>
-          <DurationStatBox
-            title={'Longest winning streak'}
-            from={winningStreak.gameTimes[0]}
-            to={winningStreak.gameTimes[winningStreak.gameTimes.length - 1]}
-            base={base}
-          >
-            {winningStreak.gameTimes.length || '-'}
-          </DurationStatBox>
-        </Col>
-        <Col sm={3}>
-          <DurationStatBox
-            title={'Longest losing streak'}
-            from={losingStreak.gameTimes[0]}
-            to={losingStreak.gameTimes[losingStreak.gameTimes.length - 1]}
-            base={base}
-          >
-            {losingStreak.gameTimes.length || '-'}
-          </DurationStatBox>
-        </Col>
-      </Row>
+      <Col sm={3}><StatBox title={'Recent Skill'}><BoxPlot data={getSkillHistory(player, games).filter(d => d.date >= monthAgo).map(d => d.skill)}/></StatBox></Col>
+      <Col sm={3}><RankStatBox rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></Col>
+      <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
+      <Col sm={3}><StatBox title={'Overrated'} style={getBG(overrated)}>{overrated.toFixed(3)}</StatBox></Col>
+      <Col sm={3}><StatBox title="Skill change today" style={getBG(skillChangeToday)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
+      <Col sm={3}><StatBox title="Rank change today" style={getBG(rankChangeToday)}>{formatRankChange(rankChangeToday)}</StatBox></Col>
+      <Col sm={3}>
+        <DurationStatBox title={'Current streak'}
+          from={currentStreak.gameTimes[0]}
+          to={currentStreak.gameTimes[currentStreak.gameTimes.length - 1]}
+          base={base}
+        >
+          {currentStreak.gameTimes.length > 0 ? `${currentStreak.gameTimes.length} ${currentStreak.win ? 'wins' : 'losses'}` : '-'}
+        </DurationStatBox>
+      </Col>
+
+      <Col sm={3}><StatBox title='Flawless Victories'>{flawlessVictories}</StatBox></Col>
+      <Col sm={3}><GamesStat player={player} /></Col>
+      <Col sm={3}><GoalsStat player={player} /></Col>
+      <Col sm={3}><SidePreferenceStat player={player}/></Col>
+      <Col sm={3}><InstantStatBox title={'Highest ever skill'} at={highestSkill.date} base={base}>{highestSkill.skill.toFixed(3)}</InstantStatBox></Col>
+      <Col sm={3}><InstantStatBox title={'Lowest ever skill'} at={lowestSkill.date} base={base}>{lowestSkill.skill.toFixed(3)}</InstantStatBox></Col>
+      <Col sm={3}>
+        <DurationStatBox
+          title={'Longest winning streak'}
+          from={winningStreak.gameTimes[0]}
+          to={winningStreak.gameTimes[winningStreak.gameTimes.length - 1]}
+          base={base}
+        >
+          {winningStreak.gameTimes.length || '-'}
+        </DurationStatBox>
+      </Col>
+      <Col sm={3}>
+        <DurationStatBox
+          title={'Longest losing streak'}
+          from={losingStreak.gameTimes[0]}
+          to={losingStreak.gameTimes[losingStreak.gameTimes.length - 1]}
+          base={base}
+        >
+          {losingStreak.gameTimes.length || '-'}
+        </DurationStatBox>
+      </Col>
     </Panel>
   );
 }
