@@ -2,6 +2,9 @@
 
 ## develop
 * Allow speculating without reloading page
+* Add player's recent skill box plot
+* Remove column restrictions on player page
+* Performance improvements
 
 ## 4.1.1
 * Improve chart performance
