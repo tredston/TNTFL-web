@@ -4,23 +4,11 @@ import urlparse
 import json
 import os
 import re
-import shutil
 import tntfl.test.shared_get as Get
 
 
 class Deployment(Get.TestRunner):
     urlBase = os.path.join('http://www/~tlr/', os.path.split(os.getcwd())[1]) + "/"
-
-    def setUp(self):
-        if os.path.exists('ladder.txt'):
-            os.rename('ladder.txt', 'ladder.actual')
-        shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
-
-    def tearDown(self):
-        if os.path.exists('ladder.txt'):
-            os.remove('ladder.txt')
-        if os.path.exists('ladder.actual'):
-            os.rename('ladder.actual', 'ladder.txt')
 
     def _getJson(self, page, query=None):
         response = self._get(page, query)
@@ -112,38 +100,33 @@ class DeletePage(Get.Tester, Deployment):
 
     @unittest.skip('requires credentials')
     def testReachable(self):
-        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-        password_mgr.add_password(None, self.urlBase, self._username, self._password)
-        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
-        opener = urllib2.build_opener(handler)
+        opener = self._getOpener()
         response = opener.open(self._page('game/1223308996/delete')).read()
         self._testResponse(response)
 
     @unittest.skip('requires credentials')
     def testNoGame(self):
-        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-        password_mgr.add_password(None, self.urlBase, self._username, self._password)
-        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
-        opener = urllib2.build_opener(handler)
-        with self.assertRaises(urllib2.HTTPError) as cm:
-            opener.open(self._page('delete.cgi')).read()
-        e = cm.exception
-        self.assertEqual(e.code, 400)
+        self.assertEqual(self._getErrorCode('delete.cgi'), 400)
 
     @unittest.skip('requires credentials')
     def testInvalidGame(self):
-        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-        password_mgr.add_password(None, self.urlBase, self._username, self._password)
-        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
-        opener = urllib2.build_opener(handler)
-        with self.assertRaises(urllib2.HTTPError) as cm:
-            opener.open(self._page('delete.cgi?game=123')).read()
-        e = cm.exception
-        self.assertEqual(e.code, 404)
+        self.assertEqual(self._getErrorCode('delete.cgi?game=123'), 404)
 
     def _testResponse(self, response):
         super(DeletePage, self)._testResponse(response)
         self.assertTrue("<!DOCTYPE html>" in response)
+
+    def _getErrorCode(self, page):
+        opener = self._getOpener()
+        with self.assertRaises(urllib2.HTTPError) as cm:
+            opener.open(self._page(page)).read()
+        return cm.exception.code
+
+    def _getOpener(self):
+        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+        password_mgr.add_password(None, self.urlBase, self._username, self._password)
+        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
+        return urllib2.build_opener(handler)
 
 
 class Pages(Get.Pages, Deployment):

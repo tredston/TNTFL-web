@@ -1,9 +1,22 @@
 import abc
+import os
+import shutil
 import unittest
 
 
 class TestRunner(unittest.TestCase):
     __metaclass__ = abc.ABCMeta
+
+    def setUp(self):
+        if os.path.exists('ladder.txt'):
+            os.rename('ladder.txt', 'ladder.actual')
+        shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
+
+    def tearDown(self):
+        if os.path.exists('ladder.txt'):
+            os.remove('ladder.txt')
+        if os.path.exists('ladder.actual'):
+            os.rename('ladder.actual', 'ladder.txt')
 
     @abc.abstractmethod
     def _getJson(self, page, query=None):

@@ -12,7 +12,7 @@ module.exports = {
     stats: ['babel-polyfill', './ui/stats.tsx'],
     playergames: ['babel-polyfill', './ui/playergames.tsx'],
     headtoheadgames: ['babel-polyfill', './ui/headtoheadgames.tsx'],
-    delete: ['babel-polyfill', './ui/delete.tsx'],
+    delete: ['babel-polyfill', './ui/delete.tsx']
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -23,11 +23,11 @@ module.exports = {
   },
   module: {
     preLoaders: [
-      { test: /\.json$/, loader: 'json-loader'},
+      { test: /\.json$/, loader: 'json-loader'}
     ],
     loaders: [
       { test: /\.tsx?$/, loader: 'babel-loader?presets[]=es2015&presets[]=react!ts-loader', exclude: /node_modules/},
-      { test: /\.js$/, loader: 'babel', query: { presets: ['es2015', 'react']}, exclude: /node_modules/},
+      { test: /\.js$/, loader: 'babel', query: { presets: ['es2015', 'react']}, exclude: /node_modules/}
     ]
   },
   node: {
@@ -39,6 +39,6 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin("commons.chunk.js"),
     new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
-    new webpack.optimize.UglifyJsPlugin({compress:{warnings: false}}),
+    new webpack.optimize.UglifyJsPlugin({compress:{warnings: false}})
   ]
 };

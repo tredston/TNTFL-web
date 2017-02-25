@@ -69,25 +69,20 @@ class TestAgainstTheOdds(unittest.TestCase):
 
 
 class TestAgainstAllOdds(unittest.TestCase):
-    def testUnder100(self):
+    def _test(self, blueElo):
         ach = AgainstAllOdds()
         player = Player("foo")
         player.elo = 0
         opponent = Player("bar")
-        opponent.elo = 99
-        game = addGame(player, 10, opponent, 0, 0, -50)
-        result = ach.applies(player, game, opponent, None)
-        self.assertFalse(result)
+        opponent.elo = blueElo
+        game = addGame(player, 10, opponent, 0, 0, -1)
+        return ach.applies(player, game, opponent, None)
+
+    def testUnder100(self):
+        self.assertFalse(self._test(99))
 
     def testOver100(self):
-        ach = AgainstAllOdds()
-        player = Player("foo")
-        player.elo = 0
-        opponent = Player("bar")
-        opponent.elo = 100
-        game = addGame(player, 10, opponent, 0, 0, -1)
-        result = ach.applies(player, game, opponent, None)
-        self.assertTrue(result)
+        self.assertTrue(self._test(100))
 
 
 class TestUnstable(unittest.TestCase):
@@ -122,16 +117,19 @@ class TestUnstable(unittest.TestCase):
 
 
 class TestUpUpAndAway(unittest.TestCase):
-    def test(self):
-        sut = UpUpAndAway()
-        player = Player("foo")
-        opponent = Player("bar")
+    def _prep(self, sut, player, opponent):
         for i in range(7):
             game = addGame(player, 6, opponent, 4, i, -1)
             result = sut.applies(player, game, opponent, None)
             self.assertFalse(result)
             result = sut.applies(opponent, game, player, None)
             self.assertFalse(result)
+
+    def test(self):
+        sut = UpUpAndAway()
+        player = Player("foo")
+        opponent = Player("bar")
+        self._prep(sut, player, opponent)
 
         game = addGame(player, 6, opponent, 4, 8, -1)
         result = sut.applies(player, game, opponent, None)
@@ -143,12 +141,7 @@ class TestUpUpAndAway(unittest.TestCase):
         sut = UpUpAndAway()
         player = Player("foo")
         opponent = Player("bar")
-        for i in range(7):
-            game = addGame(player, 6, opponent, 4, i, -1)
-            result = sut.applies(player, game, opponent, None)
-            self.assertFalse(result)
-            result = sut.applies(opponent, game, player, None)
-            self.assertFalse(result)
+        self._prep(sut, player, opponent)
 
         game = addGame(player, 4, opponent, 6, 8, 1)
         result = sut.applies(player, game, opponent, None)

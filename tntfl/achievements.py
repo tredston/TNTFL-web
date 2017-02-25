@@ -144,12 +144,14 @@ class Unstable(Achievement):
     name = "Unstable"
     description = "See-saw 5 or more skill points in consecutive games"
 
+    def getSkillChange(self, player, game):
+        return game.skillChangeToBlue if player.name == game.bluePlayer else -game.skillChangeToBlue
+
     def applies(self, player, game, opponent, ladder):
         result = False
         if len(player.games) > 1:
-            previousGame = player.games[-2]
-            previousDelta = previousGame.skillChangeToBlue if player.name == previousGame.bluePlayer else -previousGame.skillChangeToBlue
-            delta = game.skillChangeToBlue if player.name == game.bluePlayer else -game.skillChangeToBlue
+            previousDelta = self.getSkillChange(player, player.games[-2])
+            delta = self.getSkillChange(player, game)
             if (previousDelta <= -5 and delta >= 5) or (previousDelta >= 5 and delta <= -5):
                 result = True
         return result
@@ -287,7 +289,7 @@ class TheDominator(Achievement):
     def applies(self, player, game, opponent, ladder):
         pairing = (player.name, opponent.name)
         playerIsBlue = player.name == game.bluePlayer
-        won = game.blueScore > game.redScore if playerIsBlue else game.redScore > game.blueScore
+        won = player.wonGame(game)
         points = game.skillChangeToBlue > 0 if playerIsBlue else game.skillChangeToBlue < 0
         if won and points:
             self.counts[pairing] += 1
