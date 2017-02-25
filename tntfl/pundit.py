@@ -11,7 +11,7 @@ class FactChecker(object):
         self._sharedGames = {}
 
     def ordinal(self, n):
-        return "%d%s" % (n,"tsnrhtdd"[(n/10%10!=1)*(n%10<4)*n%10::4])
+        return "%d%s" % (n, "tsnrhtdd"[(n / 10 % 10 != 1) * (n % 10 < 4) * n % 10::4])
 
     def isRoundNumber(self, n):
         digits = len(str(n))
@@ -228,7 +228,7 @@ class Streaks(FactChecker):
             prevStreaks = [s for s in streaks['past'] if s.win == streaks['current'].win]
             if len(prevStreaks) > 0:
                 # find the current streak's significance
-                sortedStreaks = sorted(prevStreaks, key=lambda s:s.count, reverse=True)
+                sortedStreaks = sorted(prevStreaks, key=lambda s: s.count, reverse=True)
                 for i, s in enumerate(sortedStreaks):
                     if s.count < streaks['current'].count:
                         return i + 1
