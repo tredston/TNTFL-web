@@ -1,0 +1,13 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "array-type": false,
+    "interface-name": false,
+    "object-literal-sort-keys": false,
+    "one-line": [true,
+      "check-open-brace",
+      "check-whitespace"
+    ],
+    "quotemark": [true, "single", "avoid-escape"]
+  }
+}
