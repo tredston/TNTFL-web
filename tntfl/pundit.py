@@ -185,11 +185,14 @@ class WinsAgainst(Wins):
         FactChecker.__init__(self)
         self._winsAgainst = {}
 
-    def getFact(self, player, game, opponent):
-        sharedGames = self.getSharedGames(player, opponent)
+    def _getPlayerWins(self, player):
         if player.name not in self._winsAgainst:
             self._winsAgainst[player.name] = {}
-        playerWins = self._winsAgainst[player.name]
+        return self._winsAgainst[player.name]
+
+    def getFact(self, player, game, opponent):
+        sharedGames = self.getSharedGames(player, opponent)
+        playerWins = self._getPlayerWins(player)
         if opponent.name not in playerWins:
             self._winsAgainst[player.name][opponent.name] = [g for g in sharedGames if player.wonGame(g)]
             playerWins = self._winsAgainst[player.name]
