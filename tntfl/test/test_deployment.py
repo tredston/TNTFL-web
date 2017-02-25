@@ -106,23 +106,21 @@ class DeletePage(Get.Tester, Deployment):
 
     @unittest.skip('requires credentials')
     def testNoGame(self):
-        opener = self._getOpener()
-        with self.assertRaises(urllib2.HTTPError) as cm:
-            opener.open(self._page('delete.cgi')).read()
-        e = cm.exception
-        self.assertEqual(e.code, 400)
+        self.assertEqual(self._getErrorCode('delete.cgi'), 400)
 
     @unittest.skip('requires credentials')
     def testInvalidGame(self):
-        opener = self._getOpener()
-        with self.assertRaises(urllib2.HTTPError) as cm:
-            opener.open(self._page('delete.cgi?game=123')).read()
-        e = cm.exception
-        self.assertEqual(e.code, 404)
+        self.assertEqual(self._getErrorCode('delete.cgi?game=123'), 404)
 
     def _testResponse(self, response):
         super(DeletePage, self)._testResponse(response)
         self.assertTrue("<!DOCTYPE html>" in response)
+
+    def _getErrorCode(self, page):
+        opener = self._getOpener()
+        with self.assertRaises(urllib2.HTTPError) as cm:
+            opener.open(self._page(page)).read()
+        return cm.exception.code
 
     def _getOpener(self):
         password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
