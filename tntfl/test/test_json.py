@@ -10,6 +10,10 @@ from tntfl.ladder import TableFootballLadder
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 
+def testLadder():
+    return TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False)
+
+
 class GameJson(unittest.TestCase):
     def test(self):
         game = Game('red', 4, 'blue', 6, 1)
@@ -41,7 +45,7 @@ class GameJson(unittest.TestCase):
 
 class LadderJson(unittest.TestCase):
     def testSimple(self):
-        ladder = TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False)
+        ladder = testLadder()
 
         actual = sut.ladderToJson(ladder.getPlayers(), ladder, '../', False)
 
@@ -52,7 +56,7 @@ class LadderJson(unittest.TestCase):
         self.assertIn('href', actual[0])
 
     def testPlayers(self):
-        ladder = TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False)
+        ladder = testLadder()
 
         actual = sut.ladderToJson(ladder.getPlayers(), ladder, '../', True)
 
@@ -84,7 +88,7 @@ class PerPlayerStatsJson(unittest.TestCase):
 
 class PlayerJson(unittest.TestCase):
     def test(self):
-        ladder = TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False)
+        ladder = testLadder()
 
         actual = sut.playerToJson(ladder.players['aaa'], ladder)
 
@@ -119,7 +123,7 @@ class PlayerAchievementsJson(unittest.TestCase):
 
 class StatsJson(unittest.TestCase):
     def test(self):
-        ladder = TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False)
+        ladder = testLadder()
 
         actual = sut.getStatsJson(ladder, '../')
 
