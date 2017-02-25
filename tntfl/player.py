@@ -8,17 +8,20 @@ class Streak(object):
         self.win = True
         self.gameTimes = []
 
+    def _getTime(self, i):
+        return self.gameTimes[i] if self.count > 0 else 0
+
     @property
     def count(self):
         return len(self.gameTimes)
 
     @property
     def fromDate(self):
-        return self.gameTimes[0] if self.count > 0 else 0
+        return self._getTime(0)
 
     @property
     def toDate(self):
-        return self.gameTimes[-1] if self.count > 0 else 0
+        return self._getTime(-1)
 
 
 class Player(object):
