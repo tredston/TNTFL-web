@@ -134,8 +134,8 @@ class Goals(FactChecker):
     def _numGoals(self, player, game, opponent, games):
         prevGoalTotal = sum([g.blueScore if g.bluePlayer == player.name else g.redScore for g in games if g.time < game.time])
         goalsInGame = game.blueScore if game.bluePlayer == player.name else game.redScore
-        for i in xrange(prevGoalTotal + 1, prevGoalTotal + goalsInGame + 1):
-            if i >= 10 and self.isRoundNumber(i):
+        for i in xrange(max(10, prevGoalTotal + 1), prevGoalTotal + goalsInGame + 1):
+            if self.isRoundNumber(i):
                 return i
         return None
 
