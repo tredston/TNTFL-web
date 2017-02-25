@@ -1,4 +1,8 @@
 language: python
 python:
   - "2.7"
-script: python run_tests.py
+before_install:
+  - pip install pep8
+script:
+  - find . -name \*.py -exec pep8 --ignore=E501 {} +
+  - python run_tests.py
