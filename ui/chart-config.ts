@@ -3,7 +3,7 @@ export const options = {
     type: 'time',
     time: {
       minUnit: 'hour',
-    }
+    },
   }]},
   legend: {display: false},
   tooltips: {enabled: false},
@@ -13,7 +13,7 @@ export const options = {
       radius: 0,
     },
     line: {
-      tension: 0
+      tension: 0,
     },
   },
 };

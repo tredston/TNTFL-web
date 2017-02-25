@@ -15,7 +15,7 @@ interface Player {
   skill: number;
   overrated: number;
   total: Totals;
-  games: {href: string},
+  games: {href: string};
 }
 
 export default Player;
