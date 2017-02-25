@@ -122,16 +122,19 @@ class TestUnstable(unittest.TestCase):
 
 
 class TestUpUpAndAway(unittest.TestCase):
-    def test(self):
-        sut = UpUpAndAway()
-        player = Player("foo")
-        opponent = Player("bar")
+    def _prep(self, sut, player, opponent):
         for i in range(7):
             game = addGame(player, 6, opponent, 4, i, -1)
             result = sut.applies(player, game, opponent, None)
             self.assertFalse(result)
             result = sut.applies(opponent, game, player, None)
             self.assertFalse(result)
+
+    def test(self):
+        sut = UpUpAndAway()
+        player = Player("foo")
+        opponent = Player("bar")
+        self._prep(sut, player, opponent)
 
         game = addGame(player, 6, opponent, 4, 8, -1)
         result = sut.applies(player, game, opponent, None)
@@ -143,12 +146,7 @@ class TestUpUpAndAway(unittest.TestCase):
         sut = UpUpAndAway()
         player = Player("foo")
         opponent = Player("bar")
-        for i in range(7):
-            game = addGame(player, 6, opponent, 4, i, -1)
-            result = sut.applies(player, game, opponent, None)
-            self.assertFalse(result)
-            result = sut.applies(opponent, game, player, None)
-            self.assertFalse(result)
+        self._prep(sut, player, opponent)
 
         game = addGame(player, 4, opponent, 6, 8, 1)
         result = sut.applies(player, game, opponent, None)
