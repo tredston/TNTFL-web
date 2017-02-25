@@ -14,12 +14,13 @@ class FactChecker(object):
         return "%d%s" % (n, "tsnrhtdd"[(n / 10 % 10 != 1) * (n % 10 < 4) * n % 10::4])
 
     def isRoundNumber(self, n):
-        digits = len(str(n))
-        order = 1
-        for i in range(0, digits - 1):
-            order *= 10
-        if n % order == 0:
-            return True
+        if n >= 10:
+            digits = len(str(n))
+            order = 1
+            for i in range(0, digits - 1):
+                order *= 10
+            if n % order == 0:
+                return True
         return False
 
     def getSharedGames(self, player1, player2):
@@ -92,7 +93,7 @@ class Games(FactChecker):
 
     def getFact(self, player, game, opponent):
         numGames = self._numGames(player.games, game.time)
-        if numGames >= 10 and self.isRoundNumber(numGames):
+        if self.isRoundNumber(numGames):
             return self._description % (player.name, self.ordinal(numGames))
         return None
 
@@ -119,7 +120,7 @@ class GamesAgainst(Games):
         key = self._getKey(player, opponent)
         sharedGames = self.getSharedGames(player, opponent)
         numGames = self._numGames(sharedGames, game.time)
-        if numGames >= 10 and self.isRoundNumber(numGames) and numGames not in self._pairings[key]:
+        if self.isRoundNumber(numGames) and numGames not in self._pairings[key]:
             self._pairings[key].append(numGames)
             return self._description % (player.name, opponent.name, self.ordinal(numGames))
         return None
@@ -138,7 +139,7 @@ class Goals(FactChecker):
     def _numGoals(self, player, game, opponent, games):
         prevGoalTotal = sum([g.blueScore if g.bluePlayer == player.name else g.redScore for g in games if g.time < game.time])
         goalsInGame = game.blueScore if game.bluePlayer == player.name else game.redScore
-        for i in xrange(max(10, prevGoalTotal + 1), prevGoalTotal + goalsInGame + 1):
+        for i in xrange(prevGoalTotal + 1, prevGoalTotal + goalsInGame + 1):
             if self.isRoundNumber(i):
                 return i
         return None
@@ -167,7 +168,7 @@ class Wins(FactChecker):
 
     def _getWinsOrdinal(self, player, game, games):
         numWins = len([g for g in games if g.time <= game.time])
-        if numWins >= 10 and self.isRoundNumber(numWins) and player.wonGame(game):
+        if self.isRoundNumber(numWins) and player.wonGame(game):
             return self.ordinal(numWins)
 
     def getFact(self, player, game, opponent):
