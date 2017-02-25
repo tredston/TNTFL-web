@@ -74,21 +74,6 @@ class TableFootballLadder(object):
         else:
             return self._ladderTime['range'][1]
 
-    def getSkillBounds(self):
-        highSkill = {'player': None, 'skill': 0, 'time': 0}
-        lowSkill = {'player': None, 'skill': 0, 'time': 0}
-        for player in self.players.values():
-            skill = player.getSkillBounds()
-            if skill['highest']['skill'] > highSkill['skill']:
-                highSkill['player'] = player
-                highSkill['skill'] = skill['highest']['skill']
-                highSkill['time'] = skill['highest']['time']
-            if skill['lowest']['skill'] < lowSkill['skill']:
-                lowSkill['player'] = player
-                lowSkill['skill'] = skill['lowest']['skill']
-                lowSkill['time'] = skill['lowest']['time']
-        return {'highest': highSkill, 'lowest': lowSkill}
-
     def getStreaks(self):
         winning = {'player': None, 'streak': Streak()}
         losing = {'player': None, 'streak': Streak()}

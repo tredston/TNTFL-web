@@ -71,17 +71,6 @@ class Player(object):
             'lowest': {'time': lowestSkill[0], 'skill': lowestSkill[1]},
         }
 
-    def mostSignificantGame(self):
-        mostSignificantGame = None
-        for game in self.games:
-            if self.name == game.redPlayer:
-                delta = -game.skillChangeToBlue
-            else:
-                delta = game.skillChangeToBlue
-            if mostSignificantGame is None or abs(delta) > abs(mostSignificantGame.skillChangeToBlue):
-                mostSignificantGame = game
-        return mostSignificantGame
-
     @property
     def gamesToday(self):
         today = date.today()
@@ -89,20 +78,6 @@ class Player(object):
 
     def gamesOn(self, date):
         return len([g for g in self.games if g.timeAsDate() == date])
-
-    def skillChangeToday(self):
-        today = date.today()
-        skillChange = 0
-        for game in [g for g in self.games if g.timeAsDate() == today]:
-            skillChange += game.skillChangeToBlue if game.bluePlayer == self.name else -game.skillChangeToBlue
-        return skillChange
-
-    def rankChangeToday(self):
-        today = date.today()
-        change = 0
-        for game in [g for g in self.games if g.timeAsDate() == today]:
-            change += game.bluePosChange if game.bluePlayer == self.name else game.redPosChange
-        return change
 
     def achieve(self, achievements, game):
         for achievement in achievements:
@@ -117,12 +92,6 @@ class Player(object):
                 total += skill
             return skill - (total / 10)
         return 0
-
-    def __str__(self):
-        return self.__repr__()
-
-    def __repr__(self):
-        return self.name + ":" + str(self.elo)
 
     def wonGame(self, game):
         return (game.redPlayer == self.name and game.redScore > game.blueScore) or (game.bluePlayer == self.name and game.blueScore > game.redScore)
