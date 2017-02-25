@@ -161,13 +161,20 @@ class Player(object):
         return {'past': streaks, 'current': currentStreak}
 
     def getStreaks(self):
+        def getLongestStreak(pastStreaks, check):
+            streak = Streak()
+            try:
+                streak = next(s for s in pastStreaks if check(s))
+            except StopIteration:
+                pass
+            return streak
+
         streaks = self.getAllStreaks(self.games)
-        winStreaks = sorted([s for s in streaks['past'] if s.win], key=lambda s: s.count, reverse=True)
-        loseStreaks = sorted([s for s in streaks['past'] if not s.win], key=lambda s: s.count, reverse=True)
+        pastStreaks = sorted(streaks['past'], key=lambda s: s.count, reverse=True)
         currentStreakType = "(last game was a draw)" if streaks['current'].count == 0 else "wins" if streaks['current'].win else "losses"
         return {
-            'win': winStreaks[0] if len(winStreaks) > 0 else Streak(),
-            'lose': loseStreaks[0] if len(loseStreaks) > 0 else Streak(),
+            'win': getLongestStreak(pastStreaks, lambda s: s.win),
+            'lose': getLongestStreak(pastStreaks, lambda s: not s.win),
             'current': streaks['current'],
             'currentType': currentStreakType
         }
