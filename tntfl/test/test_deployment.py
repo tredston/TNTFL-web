@@ -112,19 +112,13 @@ class DeletePage(Get.Tester, Deployment):
 
     @unittest.skip('requires credentials')
     def testReachable(self):
-        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-        password_mgr.add_password(None, self.urlBase, self._username, self._password)
-        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
-        opener = urllib2.build_opener(handler)
+        opener = self._getOpener()
         response = opener.open(self._page('game/1223308996/delete')).read()
         self._testResponse(response)
 
     @unittest.skip('requires credentials')
     def testNoGame(self):
-        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-        password_mgr.add_password(None, self.urlBase, self._username, self._password)
-        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
-        opener = urllib2.build_opener(handler)
+        opener = self._getOpener()
         with self.assertRaises(urllib2.HTTPError) as cm:
             opener.open(self._page('delete.cgi')).read()
         e = cm.exception
@@ -132,10 +126,7 @@ class DeletePage(Get.Tester, Deployment):
 
     @unittest.skip('requires credentials')
     def testInvalidGame(self):
-        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-        password_mgr.add_password(None, self.urlBase, self._username, self._password)
-        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
-        opener = urllib2.build_opener(handler)
+        opener = self._getOpener()
         with self.assertRaises(urllib2.HTTPError) as cm:
             opener.open(self._page('delete.cgi?game=123')).read()
         e = cm.exception
@@ -144,6 +135,12 @@ class DeletePage(Get.Tester, Deployment):
     def _testResponse(self, response):
         super(DeletePage, self)._testResponse(response)
         self.assertTrue("<!DOCTYPE html>" in response)
+
+    def _getOpener(self):
+        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+        password_mgr.add_password(None, self.urlBase, self._username, self._password)
+        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
+        return urllib2.build_opener(handler)
 
 
 class Pages(Get.Pages, Deployment):
