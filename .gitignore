@@ -1,4 +1,5 @@
 *.py[cod]
+.coverage
 
 /node_modules/
 /dist/

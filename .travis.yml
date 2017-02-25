@@ -5,8 +5,13 @@ before_install:
   - nvm install 5
   - node --version
   - pip install pep8
+  - pip install coverage
+  - pip install codeclimate-test-reporter
+before_script:
+  - npm install
 script:
   - find . -name \*.py -exec pep8 --ignore=E501 {} +
   - python run_tests.py
-  - npm install
+  - coverage run --source=tntfl --omit=tntfl/test/* run_tests.py
+  - codeclimate-test-reporter
   - npm test
