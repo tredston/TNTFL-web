@@ -104,7 +104,7 @@ class GamesAgainst(Games):
         Games.__init__(self)
         self._pairings = {}  # to avoid repeating this fact in a game
 
-    def getFact(self, player, game, opponent):
+    def _getKey(self, player, opponent):
         key = None
         if (player, opponent) in self._pairings:
             key = (player, opponent)
@@ -113,6 +113,10 @@ class GamesAgainst(Games):
         else:
             key = (player, opponent)
             self._pairings[key] = []
+        return key
+
+    def getFact(self, player, game, opponent):
+        key = self._getKey(player, opponent)
         sharedGames = self.getSharedGames(player, opponent)
         numGames = self._numGames(sharedGames, game.time)
         if numGames >= 10 and self.isRoundNumber(numGames) and numGames not in self._pairings[key]:
