@@ -17,5 +17,6 @@ engines:
 ratings:
   paths:
   - "**.css"
+  - "**.js"
   - "**.py"
 exclude_paths: []
