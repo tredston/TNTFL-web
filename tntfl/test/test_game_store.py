@@ -3,6 +3,7 @@ import os
 from tntfl.game_store import GameStore
 from tntfl.game import Game
 
+
 class TestGameStore(unittest.TestCase):
     def testRead(self):
         try:
