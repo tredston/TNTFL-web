@@ -4,20 +4,6 @@ from tntfl.player import PerPlayerStat
 from tntfl.achievements import Achievement
 
 
-def getTrend(player):
-    trend = []
-    games = player.games[-10:] if len(player.games) >= 10 else player.games
-    skill = 0
-    for i, game in enumerate(games):
-        skill += game.skillChangeToBlue if game.bluePlayer == player.name else -game.skillChangeToBlue
-        trend.append([i, skill])
-    if len(trend) > 0:
-        trendColour = "#0000FF" if trend[0][1] < trend[len(games) - 1][1] else "#FF0000"
-    else:
-        trendColour = "#000000"
-    return {'trend': trend, 'colour': trendColour}
-
-
 def getSharedGames(player1, player2):
     return [g for g in player1.games if g.redPlayer == player2.name or g.bluePlayer == player2.name]
 
