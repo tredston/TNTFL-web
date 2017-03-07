@@ -1,8 +1,7 @@
-import requests
-import os
 import ConfigParser
-import urlparse
+import os
 import tntfl.constants as Constants
+from tntfl.hooks.utils import postMattermost
 
 
 def skillField(playerName, skillChange):
@@ -36,29 +35,11 @@ def do(game):
             mattermostUrl = config.get('mattermost', 'mattermost_url')
             apiKey = config.get('mattermost', 'api_key')
             tntflUrl = config.get('mattermost', 'tntfl_url')
+            fields = [f for f in [
+                skillField(game.bluePlayer, game.skillChangeToBlue),
+                skillField(game.redPlayer, -game.skillChangeToBlue),
+                rankChangeField(game.bluePlayer, game.bluePosChange, game.bluePosAfter),
+                rankChangeField(game.redPlayer, game.redPosChange, game.redPosAfter),
+            ] if f is not None]
 
-            webhookUrl = urlparse.urljoin(urlparse.urljoin(mattermostUrl, '/hooks/'), apiKey)
-            gameUrl = '{}/game/{}'.format(tntflUrl, game.time)
-            title = '{} {}-{} {}'.format(
-                game.redPlayer,
-                game.redScore,
-                game.blueScore,
-                game.bluePlayer,
-            )
-
-            message = {
-                'attachments': [
-                    {
-                        'pretext': '[{}]({})'.format(title, gameUrl),
-                        'fields': [f for f in [
-                            skillField(game.bluePlayer, game.skillChangeToBlue),
-                            skillField(game.redPlayer, -game.skillChangeToBlue),
-                            rankChangeField(game.bluePlayer, game.bluePosChange, game.bluePosAfter),
-                            rankChangeField(game.redPlayer, game.redPosChange, game.redPosAfter),
-                        ] if f is not None],
-                    }
-                ],
-                'username': 'ScoreBot',
-                'icon_url': urlparse.urljoin(mattermostUrl, '/static/emoji/26bd.png'),
-            }
-            requests.post(webhookUrl, json=message)
+            postMattermost(mattermostUrl, apiKey, tntflUrl, game, fields)
