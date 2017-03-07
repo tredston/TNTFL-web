@@ -28,9 +28,7 @@ def do(game):
             message = {
                 'attachments': [
                     {
-                        'fallback': title,
-                        'title': title,
-                        'title_link': gameUrl,
+                        'pretext': '[{}]({})'.format(title, gameUrl),
                         'color': '#FF0000',
                         'fields': [{
                             'title': 'Deleted',

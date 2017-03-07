@@ -49,9 +49,7 @@ def do(game):
             message = {
                 'attachments': [
                     {
-                        'fallback': title,
-                        'title': title,
-                        'title_link': gameUrl,
+                        'pretext': '[{}]({})'.format(title, gameUrl),
                         'fields': [f for f in [
                             skillField(game.bluePlayer, game.skillChangeToBlue),
                             skillField(game.redPlayer, -game.skillChangeToBlue),
