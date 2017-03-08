@@ -234,17 +234,17 @@ tr.nearly-inactive:hover {
 }
 
 .achievement-UpUpAndAway {
-  background: url("../img/balloon.svg") top center no-repeat;
+  background: url("../img/balloon.png") top center no-repeat;
   padding-top: 48px !important;
 }
 
 .achievement-Unstable {
-  background: url("../img/seesaw.svg") top center no-repeat;
+  background: url("../img/seesaw.png") top center no-repeat;
   padding-top: 48px !important;
 }
 
 .achievement-BossFight {
-  background: url("../img/boss.svg") top center no-repeat;
+  background: url("../img/boss.png") top center no-repeat;
   padding-top: 48px !important;
 }
 
