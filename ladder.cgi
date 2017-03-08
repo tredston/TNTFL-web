@@ -2,7 +2,6 @@
 
 import cgi
 import json
-import os
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
 from tntfl.template_utils import ladderToJson
@@ -25,9 +24,6 @@ def printJson(content):
     print json.dumps(content)
 
 
-def getPlayers(ladder, showInactive):
-    return ladder.getPlayers() if showInactive else [p for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
-
 form = cgi.FieldStorage()
 base = "../"
 timeRange = getTimeRange(form)
@@ -35,6 +31,5 @@ showInactive = getInt('showInactive', form, 0)
 includePlayers = getInt('players', form, 0)
 
 ladder = TableFootballLadder(Constants.ladderFilePath, timeRange=timeRange, transforms=PresetTransforms.transforms_for_ladder())
-players = getPlayers(ladder, showInactive)
 
-printJson(ladderToJson(players, ladder, base, includePlayers))
+printJson(ladderToJson(ladder, base, showInactive, includePlayers))

@@ -63,7 +63,8 @@ def getTrendWithDates(player):
     return trend
 
 
-def ladderToJson(players, ladder, base, includePlayers):
+def ladderToJson(ladder, base, showInactive, includePlayers):
+    players = ladder.getPlayers() if showInactive else [p for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
     if includePlayers:
         return [{
             'rank': ladder.getPlayerRank(p.name),

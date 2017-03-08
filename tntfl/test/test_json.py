@@ -47,7 +47,7 @@ class LadderJson(unittest.TestCase):
     def testSimple(self):
         ladder = testLadder()
 
-        actual = sut.ladderToJson(ladder.getPlayers(), ladder, '../', False)
+        actual = sut.ladderToJson(ladder, '../', True, False)
 
         self.assertEqual(len(actual), 4)
         self.assertIn('rank', actual[0])
@@ -58,7 +58,7 @@ class LadderJson(unittest.TestCase):
     def testPlayers(self):
         ladder = testLadder()
 
-        actual = sut.ladderToJson(ladder.getPlayers(), ladder, '../', True)
+        actual = sut.ladderToJson(ladder, '../', True, True)
 
         self.assertEqual(len(actual), 4)
         self.assertIn('rank', actual[0])
