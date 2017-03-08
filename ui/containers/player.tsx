@@ -4,9 +4,9 @@ import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
 import PerPlayerStats from './per-player-stats';
-import PlayerAchievements from '../components/player-achievements';
-import PlayerSkillChart from '../components/player-skill-chart';
-import PlayerStats from '../components/player-stats';
+import PlayerAchievements from '../components/player/player-achievements';
+import PlayerSkillChart from '../components/player/player-skill-chart';
+import PlayerStats from '../components/player/player-stats';
 import RecentGames from '../components/recent-game-list';
 import NavigationBar from '../components/navigation-bar';
 import Achievement from '../model/achievement';

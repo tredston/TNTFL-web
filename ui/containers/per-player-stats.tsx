@@ -3,7 +3,7 @@ import { Component, Props } from 'react';
 import { Panel } from 'react-bootstrap';
 let LazyLoad = require('react-lazy-load');
 
-import PerPlayerStatsView from '../components/per-player-stats';
+import PerPlayerStatsView from '../components/player/per-player-stats';
 import PerPlayerStat from '../model/per-player-stat';
 
 interface PerPlayerStatsProps extends Props<PerPlayerStats>{

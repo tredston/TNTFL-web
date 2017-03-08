@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Line } from 'react-chartjs-2';
 
-import Game from '../model/game';
-import { options } from '../chart-config';
+import Game from '../../model/game';
+import { options } from '../../chart-config';
 
 interface PlayerSkillChartProps {
   playerName: string;
