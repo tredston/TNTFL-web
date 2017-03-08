@@ -19,8 +19,6 @@ serve_template(
     "ladder.mako",
     timeRange=getTimeRange(form),
     base="",
-    sortCol=getInt('sortCol', form),
-    sortOrder=getInt('sortOrder', form),
     showInactive=getInt('showInactive', form, 0),
     includePlayers=getInt('players', form, 0),
 )
