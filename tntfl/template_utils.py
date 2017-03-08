@@ -70,7 +70,7 @@ def ladderToJson(players, ladder, base, includePlayers):
             'name': p.name,
             'player': playerToJson(p, ladder),
             'trend': getTrendWithDates(p),
-        } for i, p in enumerate(players)]
+        } for p in players]
     else:
         return [{'rank': i + 1, 'name': p.name, 'skill': p.elo, 'href': playerHref(base, p.name)} for i, p in enumerate(players)]
 
