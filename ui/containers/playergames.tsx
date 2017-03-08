@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import GamesPage from '../components/games-page';
+import GamesPage from './games-page';
 import { getParameters } from '../utils/utils';
 
 ReactDOM.render(
