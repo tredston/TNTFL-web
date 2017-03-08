@@ -3,16 +3,16 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: {
-    index: ['babel-polyfill', './ui/index.tsx'],
-    game: ['babel-polyfill', './ui/game.tsx'],
-    player: ['babel-polyfill', './ui/player.tsx'],
-    headtohead: ['babel-polyfill', './ui/headtohead.tsx'],
-    historic: ['babel-polyfill', './ui/historic.tsx'],
-    speculate: ['babel-polyfill', './ui/speculate.tsx'],
-    stats: ['babel-polyfill', './ui/stats.tsx'],
-    playergames: ['babel-polyfill', './ui/playergames.tsx'],
-    headtoheadgames: ['babel-polyfill', './ui/headtoheadgames.tsx'],
-    delete: ['babel-polyfill', './ui/delete.tsx']
+    index: ['babel-polyfill', './ui/containers/index.tsx'],
+    game: ['babel-polyfill', './ui/containers/game.tsx'],
+    player: ['babel-polyfill', './ui/containers/player.tsx'],
+    headtohead: ['babel-polyfill', './ui/containers/headtohead.tsx'],
+    historic: ['babel-polyfill', './ui/containers/historic.tsx'],
+    speculate: ['babel-polyfill', './ui/containers/speculate.tsx'],
+    stats: ['babel-polyfill', './ui/containers/stats.tsx'],
+    playergames: ['babel-polyfill', './ui/containers/playergames.tsx'],
+    headtoheadgames: ['babel-polyfill', './ui/containers/headtoheadgames.tsx'],
+    delete: ['babel-polyfill', './ui/containers/delete.tsx']
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

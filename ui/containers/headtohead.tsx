@@ -3,13 +3,13 @@ import { Component, Props } from 'react';
 import { Panel, Grid, Row, Col, Table } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
-import HeadToHeadChart from './components/head-to-head-chart';
-import Stats from './components/head-to-head-stats';
-import GoalDistributionChart from './components/goal-distribution-chart';
-import NavigationBar from './components/navigation-bar';
-import RecentGames from './components/recent-game-list';
-import Game from './model/game';
-import { getParameters, mostRecentGames } from './utils/utils';
+import HeadToHeadChart from '../components/head-to-head-chart';
+import Stats from '../components/head-to-head-stats';
+import GoalDistributionChart from '../components/goal-distribution-chart';
+import NavigationBar from '../components/navigation-bar';
+import RecentGames from '../components/recent-game-list';
+import Game from '../model/game';
+import { getParameters, mostRecentGames } from '../utils/utils';
 
 
 interface HeadToHeadPageProps extends Props<HeadToHeadPage> {

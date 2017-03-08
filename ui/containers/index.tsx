@@ -3,12 +3,12 @@ import { Component, Props, CSSProperties } from 'react';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
-import RecentGames from './components/recent-game-list';
-import NavigationBar from './components/navigation-bar';
-import Game from './model/game';
+import RecentGames from '../components/recent-game-list';
+import NavigationBar from '../components/navigation-bar';
+import Game from '../model/game';
 
-import LadderPanel from './components/ladder-panel';
-import LadderEntry from './model/ladder-entry';
+import LadderPanel from '../components/ladder-panel';
+import LadderEntry from '../model/ladder-entry';
 
 interface IndexPageProps extends Props<IndexPage> {
   base: string;

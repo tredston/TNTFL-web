@@ -3,17 +3,17 @@ import { Component, Props, CSSProperties } from 'react';
 import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
-import PerPlayerStats from './components/per-player-stats';
-import PlayerAchievements from './components/player-achievements';
-import PlayerSkillChart from './components/player-skill-chart';
-import PlayerStats from './components/player-stats';
-import RecentGames from './components/recent-game-list';
-import NavigationBar from './components/navigation-bar';
-import Achievement from './model/achievement';
-import Game from './model/game';
-import PerPlayerStat from './model/per-player-stat';
-import Player from './model/player';
-import { getParameters, mostRecentGames } from './utils/utils';
+import PerPlayerStats from '../components/per-player-stats';
+import PlayerAchievements from '../components/player-achievements';
+import PlayerSkillChart from '../components/player-skill-chart';
+import PlayerStats from '../components/player-stats';
+import RecentGames from '../components/recent-game-list';
+import NavigationBar from '../components/navigation-bar';
+import Achievement from '../model/achievement';
+import Game from '../model/game';
+import PerPlayerStat from '../model/per-player-stat';
+import Player from '../model/player';
+import { getParameters, mostRecentGames } from '../utils/utils';
 
 interface PlayerPageProps extends Props<PlayerPage> {
   base: string;

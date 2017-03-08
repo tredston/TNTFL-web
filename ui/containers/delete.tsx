@@ -4,11 +4,11 @@ import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import 'whatwg-fetch';
 
-import GameSummary from './components/game-summary';
-import GameDetails from './components/game-details';
-import NavigationBar from './components/navigation-bar';
-import Game from './model/game';
-import { getParameters } from './utils/utils';
+import GameSummary from '../components/game-summary';
+import GameDetails from '../components/game-details';
+import NavigationBar from '../components/navigation-bar';
+import Game from '../model/game';
+import { getParameters } from '../utils/utils';
 
 interface DeletePageProps extends Props<DeletePage> {
   base: string;
