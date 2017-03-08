@@ -3,92 +3,16 @@ import { CSSProperties } from 'react';
 import { Panel, Row, Col } from 'react-bootstrap';
 import { Pie } from 'react-chartjs-2';
 
+import GamesStat from './games-stat';
+import GoalsStat from './goals-stat';
+import RankStat from './rank-stat';
+import SidePreferenceStat from './side-preference-stat';
 import BoxPlot from './box-plot';
 import { StatBox, DurationStatBox, InstantStatBox } from './stat-panel';
-import Game from '../model/game';
-import Player from '../model/player';
-import * as Palette from '../palette';
-import { getLadderLeagueClass, formatRankChange, getNearlyInactiveClass, skillChange } from '../utils/utils';
-
-interface RankStatBoxProps {
-  rank: number;
-  numActivePlayers: number;
-  lastPlayed: number;
-}
-function RankStatBox(props: RankStatBoxProps): JSX.Element {
-  const { rank, numActivePlayers, lastPlayed } = props;
-  const now = (new Date()).getTime() / 1000;
-  const league = getLadderLeagueClass(rank, numActivePlayers);
-  const inactive = getNearlyInactiveClass(lastPlayed, now);
-  const prettyRank = rank !== -1 ? rank : '-';
-  return (
-    <StatBox title="Current Ranking" style={{width: '100%'}} classes={`${league} ${inactive}`}>{prettyRank}</StatBox>
-  )
-}
-
-interface GamesStatProps {
-  player: Player;
-}
-function GamesStat(props: GamesStatProps): JSX.Element {
-  const { player } = props;
-  return (
-    <StatBox title="Games">
-      {player.total.games} games
-      <Pie
-        data={{
-          labels: ['Wins', 'Draws', 'Losses'],
-          datasets: [{
-            data: [player.total.wins, player.total.games - player.total.wins - player.total.losses, player.total.losses],
-            backgroundColor: ['blue', 'rgb(255, 194, 0)', 'red'],
-          }],
-        }}
-        options={{legend: {display: false}}}
-      />
-    </StatBox>
-  );
-}
-
-interface GoalsStatProps {
-  player: Player;
-}
-function GoalsStat(props: GoalsStatProps): JSX.Element {
-  const { player } = props;
-  return (
-    <StatBox title="Goals">
-      {player.total.for + player.total.against} goals
-      <Pie
-        data={{
-          labels: ['For', 'Against'],
-          datasets: [{
-            data: [player.total.for, player.total.against],
-            backgroundColor: ['blue', 'red'],
-          }],
-        }}
-        options={{legend: {display: false}}}
-      />
-    </StatBox>
-  );
-}
-
-interface SidePreferenceStatProps {
-  player: Player;
-}
-function SidePreferenceStat(props: SidePreferenceStatProps): JSX.Element {
-  const { player } = props;
-  const data = {
-    labels: ['Red', 'Blue'],
-    datasets: [{
-      data: [player.total.gamesAsRed, player.total.games - player.total.gamesAsRed],
-      backgroundColor: ['red', 'blue'],
-    }],
-  };
-  const options = {
-    legend: {display: false},
-  };
-  return (
-    <StatBox title='Side preference'><Pie data={data} options={options}/></StatBox>
-  )
-}
+import Game from '../../model/game';
+import Player from '../../model/player';
+import * as Palette from '../../palette';
+import { formatRankChange, skillChange } from '../../utils/utils';
 
 function getSkillHistory(player: Player, games: Game[]) {
   return games.reduce((skillLine, game) => {
@@ -171,7 +95,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   return (
     <Panel header={<h1>{player.name}</h1>}>
       <Col sm={3}><StatBox title={'Recent Skill'}><BoxPlot data={getSkillHistory(player, games).filter(d => d.date >= monthAgo).map(d => d.skill)}/></StatBox></Col>
-      <Col sm={3}><RankStatBox rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></Col>
+      <Col sm={3}><RankStat rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></Col>
       <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
       <Col sm={3}><StatBox title={'Overrated'} style={getBG(overrated)}>{overrated.toFixed(3)}</StatBox></Col>
       <Col sm={3}><StatBox title="Skill change today" style={getBG(skillChangeToday)}>{skillChangeToday.toFixed(3)}</StatBox></Col>

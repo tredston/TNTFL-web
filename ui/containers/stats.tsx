@@ -4,12 +4,12 @@ import { Grid, Row, Col, Button, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { Line } from 'react-chartjs-2';
 
-import GameList from './components/game-list';
-import NavigationBar from './components/navigation-bar';
-import Achievement from './model/achievement';
-import Game from './model/game';
-import Stats, { Totals, Records } from './model/stats';
-import { options } from './chart-config';
+import GameList from '../components/game-list';
+import NavigationBar from '../components/navigation-bar';
+import Achievement from '../model/achievement';
+import Game from '../model/game';
+import Stats, { Totals, Records } from '../model/stats';
+import { options } from '../chart-config';
 
 interface StatsSectionProps {
   totals: Totals;

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Grid, Panel, Row, Col } from 'react-bootstrap';
 
-import Achievement from '../model/achievement';
-import { formatEpoch } from '../utils/utils';
+import Achievement from '../../model/achievement';
+import { formatEpoch } from '../../utils/utils';
 
 interface PlayerAchievementProps {
   achievement: Achievement;

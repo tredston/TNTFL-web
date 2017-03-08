@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import Game from '../model/game';
+import Game from '../../model/game';
 
 function inc(data: any, score: number) {
   if (data[score] === undefined) {

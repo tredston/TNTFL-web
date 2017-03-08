@@ -4,14 +4,14 @@ import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import * as QueryString from 'query-string';
 
-import RangeSlider from './components/range-slider';
-import RecentGames from './components/recent-game-list';
-import NavigationBar from './components/navigation-bar';
-import Game from './model/game';
+import RangeSlider from '../components/range-slider';
+import RecentGames from '../components/recent-game-list';
+import NavigationBar from '../components/navigation-bar';
+import Game from '../model/game';
 
-import LadderPanel from './components/ladder-panel';
-import LadderEntry from './model/ladder-entry';
-import { getMonthName } from './utils/utils';
+import LadderPanel from '../components/ladder-panel';
+import LadderEntry from '../model/ladder-entry';
+import { getMonthName } from '../utils/utils';
 
 interface MonthlyRankingProps {
   year: number;

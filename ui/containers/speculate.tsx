@@ -3,12 +3,12 @@ import { Component, Props, CSSProperties } from 'react';
 import { Grid, Row, Col, Button, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
-import GameList from './components/game-list';
-import NavigationBar from './components/navigation-bar';
-import AddGameForm from './components/add-game-form';
-import LadderPanel from './components/ladder-panel';
-import Game from './model/game';
-import LadderEntry from './model/ladder-entry';
+import GameList from '../components/game-list';
+import NavigationBar from '../components/navigation-bar';
+import AddGameForm from '../components/add-game-form';
+import LadderPanel from '../components/ladder-panel';
+import Game from '../model/game';
+import LadderEntry from '../model/ladder-entry';
 
 interface SpeculatePageProps extends Props<SpeculatePage> {
   base: string;

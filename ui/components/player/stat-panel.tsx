@@ -2,7 +2,7 @@ import * as React from 'react';
 import { CSSProperties } from 'react';
 import { Panel } from 'react-bootstrap';
 
-import GameTime from './game-time';
+import GameTime from '../game-time';
 
 const statStyle: CSSProperties = {
   fontSize: 'x-large',
