@@ -7,7 +7,6 @@ const options = {
   animation: false,
   maintainAspectRatio: false,
   responsive: false,
-  title: false,
 }
 
 interface TapleLineChartProps {
