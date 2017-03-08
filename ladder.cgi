@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 
 import cgi
-from tntfl.web import serve_template, getInt
-
-form = cgi.FieldStorage()
+import json
+import os
+import tntfl.constants as Constants
+from tntfl.ladder import TableFootballLadder
+from tntfl.template_utils import ladderToJson
+import tntfl.transforms.transforms as PresetTransforms
+from tntfl.web import getInt
 
 
 def getTimeRange(form):
@@ -15,10 +19,22 @@ def getTimeRange(form):
     return timeRange
 
 
-serve_template(
-    "ladder.mako",
-    timeRange=getTimeRange(form),
-    base="",
-    showInactive=getInt('showInactive', form, 0),
-    includePlayers=getInt('players', form, 0),
-)
+def printJson(content):
+    print 'Content-Type: application/json'
+    print
+    print json.dumps(content)
+
+
+def getPlayers(ladder, showInactive):
+    return ladder.getPlayers() if showInactive else [p for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
+
+form = cgi.FieldStorage()
+base = "../"
+timeRange = getTimeRange(form)
+showInactive = getInt('showInactive', form, 0)
+includePlayers = getInt('players', form, 0)
+
+ladder = TableFootballLadder(Constants.ladderFilePath, timeRange=timeRange, transforms=PresetTransforms.transforms_for_ladder())
+players = getPlayers(ladder, showInactive)
+
+printJson(ladderToJson(players, ladder, base, includePlayers))
