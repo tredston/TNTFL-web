@@ -75,16 +75,17 @@ class TableFootballLadder(object):
             return self._ladderTime['range'][1]
 
     def getStreaks(self):
+        def maxStreak(streak, best, player):
+            if streak.count > best['streak'].count:
+                best['player'] = player
+                best['streak'] = streak
+
         winning = {'player': None, 'streak': Streak()}
         losing = {'player': None, 'streak': Streak()}
         for player in self.players.values():
             streaks = player.getStreaks()
-            if streaks['win'].count > winning['streak'].count:
-                winning['player'] = player
-                winning['streak'] = streaks['win']
-            if streaks['lose'].count > losing['streak'].count:
-                losing['player'] = player
-                losing['streak'] = streaks['lose']
+            maxStreak(streaks['win'], winning, player)
+            maxStreak(streaks['lose'], losing, player)
         return {'win': winning, 'lose': losing}
 
     def appendGame(self, redPlayer, redScore, bluePlayer, blueScore):

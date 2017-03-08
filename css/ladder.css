@@ -1,8 +1,3 @@
-p.tntfl-header {
-  font-size: large;
-  font-weight: bold;
-}
-
 h1.panel-title {
   font-weight: bold;
   text-align: center;
@@ -21,22 +16,6 @@ h2.panel-title {
   background-color: #FAEBCC;
 }
 
-.ladder>tbody>tr>td {
-  padding: 2px 8px;
-}
-.ladder tr.top-player td {
-  padding: 12px 8px;
-}
-
-table.ladder td {
-  vertical-align: middle !important;
-}
-
-table.ladder th {
-  font-size: small;
-  text-align: center;
-}
-
 .ladder-position {
   font-size: x-large;
   font-weight: bold;
@@ -50,10 +29,16 @@ table.ladder th {
   background-color: #C0C0C0 !important;
 }
 
-tr.inactive {
-  color: #B0B0B0;
-  font-style: italic;
-  display: none;
+.ladder-position.ladder-first {
+  background-color:#EEC900 !important;
+}
+
+.ladder-position.ladder-silver {
+  background-color:#BCC6CC !important;
+}
+
+.ladder-position.ladder-bronze {
+  background-color:#CD7F32 !important;
 }
 
 tr.nearly-inactive {
@@ -63,46 +48,6 @@ tr.nearly-inactive {
 
 tr.nearly-inactive:hover {
   opacity: 1;
-}
-
-button.inactive {
-  display: none;
-}
-
-.ladder-first {
-  background-color:#EEC900 !important;
-}
-
-.ladder-silver {
-  background-color:#BCC6CC !important;
-}
-
-.ladder-bronze {
-  background-color:#CD7F32 !important;
-}
-
-td.ladder-stat {
-  text-align: center;
-  font-size: large;
-}
-
-td.ladder-name,
-td.ladder-skill {
-  font-size: x-large;
-}
-
-div.ladder-trend {
-  width:3em;
-  height: 2em;
-  display: inline-block;
-}
-
-.inactive div.ladder-trend {
-  opacity: 0.3;
-}
-
-.recentHolder {
-  padding: 0;
 }
 
 .no-table-boder tr>td {
@@ -143,11 +88,6 @@ div.ladder-trend {
   background-color: #C0C0FF;
 }
 
-.unpad {
-  padding-left: 0px;
-  padding-right: 0px;
-}
-
 .red-player,
 .red-player a {
   background-color: red;
@@ -166,103 +106,6 @@ div.ladder-trend {
   color: black;
 }
 
-.ladder th.header {
-  cursor: pointer;
-}
-
-.ladder thead {
-  background-color: white;
-}
-
-.ladder thead tr th {
-  font-weight: bold;
-}
-
-.ladder thead tr th.headerSortUp,
-.ladder thead tr th.headerSortDown {
-  /*background: #C0C0FF;*/
-  background: #397cc0;
-  color: #fff;
-  background-position: right center;
-  background-repeat: no-repeat;
-  border-radius: 4px 4px 0 0;
-}
-
-.ladder thead tr th.headerSortUp {
-    background-image: url(asc.gif);
-}
-
-.ladder thead tr th.headerSortDown {
-    background-image: url(desc.gif);
-}
-
-.game-entry input {
-  text-align: center;
-}
-
-.game-entry .player {
-  width: 6em;
-}
-
-.game-entry .score {
-  width: 3em;
-}
-
-h3.statbox {
-  font-size: medium;
-  font-weight: bold;
-  text-align: left;
-  margin: 0;
-}
-
-.panel-statbox {
-  border: 0;
-}
-
-.panel-statbox .panel-heading {
-  background-color: #DDDDDD;
-  padding: 5px 10px;
-  cursor: default;
-}
-
-.panel-statbox .panel-body {
-  text-align: right;
-  font-size: x-large;
-  font-weight: bold;
-  padding: 5px 10% 5px 5px;
-  background-color: #F5F5F5;
-}
-
-.panel-statbox .ladder-position {
-  width: auto;
-}
-
-.panel-statbox .panel-body.positive {
-  background-color: #C0C0FF;
-}
-
-.panel-statbox .panel-body.negative {
-  background-color: #FFC0C0;
-}
-
-.panel-statbox .date {
-  font-size: small;
-  font-weight: normal;
-  display: block;
-}
-
-.side-preference {
-  text-align: center;
-  color: white;
-  border-radius: 4px;
-}
-
-#playerchart,
-#gamesPerDay,
-#histogram {
-  height: 200px;
-}
-
 .dl-horizontal dt {
   line-height: 2;
   background-color: #DDDDDD;
@@ -279,57 +122,6 @@ h3.statbox {
   padding-left: 20px;
   border-radius: 0 4px 4px 0;
   background-color: #F5F5F5;
-}
-
-.headtohead td,
-.headtohead th {
-  width: 33%;
-  text-align: center;
-}
-
-.headtohead .red-player,
-.headtohead .blue-player {
-  font-weight: bold;
-}
-
-.panel-warning tr:hover {
-  background-color: #FCF8E3;
-}
-
-.panel-achievement .panel-heading {
-  background-color: #DDDDDD;
-  padding: 5px 10px;
-}
-
-.panel-achievement h3.statbox {
-  font-weight: bold;
-  min-height: 2em;
-}
-
-.panel-achievement .panel-body {
-  text-align: center;
-  padding: 0px;
-}
-@media(min-width:762px){
-  .panel-achievement .panel-body {
-    min-height: 68px;
-  }
-}
-
-.achievement-games {
-  display:none;
-  font-weight: normal;
-  font-size: small;
-  border-width: 1px;
-  border-style: solid;
-  border-color: #DDD;
-  max-height:200px;
-  overflow: auto;
-  margin:0px;
-}
-
-.achievement-games li:nth-child(odd) {
-  background-color: #FFFFFF;
 }
 
 /* Achievement icons */
@@ -442,30 +234,18 @@ h3.statbox {
 }
 
 .achievement-UpUpAndAway {
-  background: url("../img/balloon.svg") top center no-repeat;
+  background: url("../img/balloon.png") top center no-repeat;
   padding-top: 48px !important;
 }
 
 .achievement-Unstable {
-  background: url("../img/seesaw.svg") top center no-repeat;
+  background: url("../img/seesaw.png") top center no-repeat;
   padding-top: 48px !important;
 }
 
 .achievement-BossFight {
-  background: url("../img/boss.svg") top center no-repeat;
+  background: url("../img/boss.png") top center no-repeat;
   padding-top: 48px !important;
-}
-
-/*
- * Ladder Adjustments
- */
-.controls.form {
-  padding: 10px;
-}
-
-.updated-time {
-  margin-top: -20px;
-  padding: 0;
 }
 
 
