@@ -69,31 +69,36 @@ def ladderToJson(ladder, base, showInactive, includePlayers):
         return [{
             'rank': ladder.getPlayerRank(p.name),
             'name': p.name,
-            'player': playerToJson(p, ladder),
+            'player': playerLiteToJson(p, ladder),
             'trend': getTrendWithDates(p),
         } for p in players]
     else:
         return [{'rank': i + 1, 'name': p.name, 'skill': p.elo, 'href': playerHref(base, p.name)} for i, p in enumerate(players)]
 
 
-def playerToJson(player, ladder):
+def playerLiteToJson(player, ladder):
     return {
         'name': player.name,
         'rank': ladder.getPlayerRank(player.name),
         'active': ladder.isPlayerActive(player),
         'skill': player.elo,
-        'overrated': player.overrated(),
         'total': {
             'for': player.goalsFor,
             'against': player.goalsAgainst,
             'games': len(player.games),
-            'gamesAsRed': player.gamesAsRed,
             'wins': player.wins,
             'losses': player.losses,
-            'gamesToday': player.gamesToday,
         },
         'games': {'href': 'games/json'},
     }
+
+
+def playerToJson(player, ladder):
+    content = playerLiteToJson(player, ladder)
+    content['overrated'] = player.overrated()
+    content['total']['gamesAsRed'] = player.gamesAsRed
+    content['total']['gamesToday'] = player.gamesToday
+    return content
 
 
 def getPerPlayerStats(player):
