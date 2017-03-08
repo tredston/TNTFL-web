@@ -3,7 +3,7 @@ import { Component, Props, CSSProperties } from 'react';
 import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 
-import PerPlayerStats from '../components/per-player-stats';
+import PerPlayerStats from './per-player-stats';
 import PlayerAchievements from '../components/player-achievements';
 import PlayerSkillChart from '../components/player-skill-chart';
 import PlayerStats from '../components/player-stats';
