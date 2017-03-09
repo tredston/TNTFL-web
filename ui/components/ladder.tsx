@@ -40,12 +40,12 @@ export default function Ladder(props: LadderProps): JSX.Element {
   let { entries } = props;
   const { atDate, showInactive } = props;
   if (!showInactive) {
-    entries = entries.filter(e => e.rank >= 1);
+    entries = entries.filter(e => e.player.rank >= 1);
   }
   const flattened = entries.map(e => {
     return {
-      rank: e.rank,
-      name: e.name,
+      rank: e.player.rank,
+      name: e.player.name,
       games: e.player.total.games,
       wins: e.player.total.wins,
       draws: e.player.total.games - e.player.total.wins - e.player.total.losses,
@@ -57,7 +57,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       trend: e.trend,
     };
   });
-  const numActivePlayers = entries.filter((e) => e.rank >= 1).length;
+  const numActivePlayers = entries.filter((e) => e.player.rank >= 1).length;
   return (
     <BootstrapTable
       data={flattened}

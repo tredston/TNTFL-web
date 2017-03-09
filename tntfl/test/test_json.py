@@ -61,8 +61,6 @@ class LadderJson(unittest.TestCase):
         actual = sut.ladderToJson(ladder, '../', True, True)
 
         self.assertEqual(len(actual), 4)
-        self.assertIn('rank', actual[0])
-        self.assertIn('name', actual[0])
         self.assertIn('player', actual[0])
         self.assertIn('trend', actual[0])
 

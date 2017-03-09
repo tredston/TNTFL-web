@@ -55,9 +55,9 @@ def gameToJson(game, base):
 
 def getTrendWithDates(player):
     trend = []
-    games = player.games[-10:] if len(player.games) >= 10 else player.games
+    games = player.games[-min(len(player.games), 10):]
     skill = 0
-    for i, game in enumerate(games):
+    for game in games:
         skill += game.skillChangeToBlue if game.bluePlayer == player.name else -game.skillChangeToBlue
         trend.append((game.time, skill))
     return trend
@@ -67,8 +67,6 @@ def ladderToJson(ladder, base, showInactive, includePlayers):
     players = ladder.getPlayers() if showInactive else [p for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
     if includePlayers:
         return [{
-            'rank': ladder.getPlayerRank(p.name),
-            'name': p.name,
             'player': playerLiteToJson(p, ladder),
             'trend': getTrendWithDates(p),
         } for p in players]
