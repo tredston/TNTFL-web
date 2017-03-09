@@ -134,15 +134,19 @@ class Pages(Get.Pages, Deployment):
 
 
 class PlayerApi(Get.PlayerApi, Deployment):
+    def testNoRoute(self):
+        with self.assertRaises(urllib2.HTTPError) as cm:
+            self._testPageReachable('player.cgi')
+        e = cm.exception
+        self.assertEqual(e.code, 400)
+
     def testNoPlayer(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
-            self._testPageReachable('player')
+            self._testPageReachable('player/')
         e = cm.exception
         self.assertEqual(e.code, 404)
-        # TODO
-        # self.assertEqual(e.code, 400)
 
-    def testMissingPlayer(self):
+    def testInvalidPlayer(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
             self._testPageReachable('player/missing')
         e = cm.exception
@@ -150,13 +154,17 @@ class PlayerApi(Get.PlayerApi, Deployment):
 
 
 class HeadToHeadApi(Get.HeadToHeadApi, Deployment):
+    def testNoRoute(self):
+        with self.assertRaises(urllib2.HTTPError) as cm:
+            self._testPageReachable('headtohead.cgi')
+        e = cm.exception
+        self.assertEqual(e.code, 400)
+
     def testNoPlayers(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
             self._testPageReachable('headtohead/')
         e = cm.exception
         self.assertEqual(e.code, 404)
-        # TODO
-        # self.assertEqual(e.code, 400)
 
     def testInvalidPlayer(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
@@ -174,13 +182,17 @@ class LadderApi(Get.LadderApi, Deployment):
 
 
 class GameApi(Get.GameApi, Deployment):
+    def testNoRoute(self):
+        with self.assertRaises(urllib2.HTTPError) as cm:
+            self._testPageReachable('game.cgi')
+        e = cm.exception
+        self.assertEqual(e.code, 400)
+
     def testNoGame(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
-            self._testPageReachable('game')
+            self._testPageReachable('game/')
         e = cm.exception
         self.assertEqual(e.code, 404)
-        # TODO
-        # self.assertEqual(e.code, 400)
 
     def testInvalidGame(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
@@ -192,9 +204,7 @@ class GameApi(Get.GameApi, Deployment):
         with self.assertRaises(urllib2.HTTPError) as cm:
             self._testPageReachable('game/add')
         e = cm.exception
-        self.assertEqual(e.code, 500)
-        # TODO
-        # self.assertEqual(e.code, 400)
+        self.assertEqual(e.code, 400)
 
 
 class GamesApi(Get.GamesApi, Deployment):

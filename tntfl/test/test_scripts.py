@@ -48,8 +48,8 @@ class AddGame(Get.Tester, Deployment):
         self._getJson('game.cgi', 'method=add&view=json&redPlayer=foo&redScore=10&bluePlayer=bar&blueScore=0')
 
     def testNoSinglePlayer(self):
-        r = self._get('game.cgi', 'method=add&view=json&redPlayer=cxh&redScore=10&bluePlayer=cxh&blueScore=0')
-        self.assertEqual('Status: 400 Bad Request\n', r)
+        status = self._getStatus('game.cgi', 'method=add&view=json&redPlayer=cxh&redScore=10&bluePlayer=cxh&blueScore=0')
+        self.assertEqual(status, '400 Bad Request')
 
 
 class Pages(Get.Pages, Deployment):

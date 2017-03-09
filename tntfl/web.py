@@ -36,6 +36,7 @@ def fail_404():
 
 def fail_400():
     print "Status: 400 Bad Request"
+    print
 
 
 def getString(key, form):
