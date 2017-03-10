@@ -80,8 +80,9 @@ class Player(object):
         return len([g for g in self.games if g.timeAsDate() == date])
 
     def achieve(self, achievements, game):
-        for achievement in achievements:
-            self.achievements[achievement] = game.time
+        if achievements is not None:
+            for achievement in achievements:
+                self.achievements[achievement] = game.time
 
     def overrated(self):
         if len(self.games) >= 10:

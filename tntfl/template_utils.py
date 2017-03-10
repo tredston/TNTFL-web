@@ -9,17 +9,17 @@ def getSharedGames(player1, player2):
 
 
 def isPositionSwap(game):
-    bluePosBefore = game.bluePosAfter + game.bluePosChange
-    redPosBefore = game.redPosAfter + game.redPosChange
-    positionSwap = False
-    if bluePosBefore > 0 and redPosBefore > 0:
-        if bluePosBefore == game.redPosAfter or redPosBefore == game.bluePosAfter:
-            positionSwap = True
-    return positionSwap
+    if game.bluePosAfter is not None and game.bluePosChange is not None and game.redPosAfter is not None and game.redPosChange is not None:
+        return (game.bluePosAfter + game.bluePosChange == game.redPosAfter or game.redPosAfter + game.redPosChange == game.bluePosAfter)
+    return None
 
 
 def playerHref(base, name):
     return base + 'player/' + name + '/json'
+
+
+def achievementsToJson(achievements):
+    return [{'name': a.name, 'description': a.description} for a in achievements] if achievements is not None else []
 
 
 def gameToJson(game, base):
@@ -31,7 +31,7 @@ def gameToJson(game, base):
             'skillChange': -game.skillChangeToBlue,
             'rankChange': game.redPosChange,
             'newRank': game.redPosAfter,
-            'achievements': [{'name': a.name, 'description': a.description} for a in game.redAchievements],
+            'achievements': achievementsToJson(game.redAchievements),
         },
         'blue': {
             'name': game.bluePlayer,
@@ -40,7 +40,7 @@ def gameToJson(game, base):
             'skillChange': game.skillChangeToBlue,
             'rankChange': game.bluePosChange,
             'newRank': game.bluePosAfter,
-            'achievements': [{'name': a.name, 'description': a.description} for a in game.blueAchievements],
+            'achievements': achievementsToJson(game.blueAchievements),
         },
         'positionSwap': isPositionSwap(game),
         'date': game.time,
