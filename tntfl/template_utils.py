@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from datetime import date, datetime, timedelta
+from datetime import datetime
 from tntfl.player import PerPlayerStat
 from tntfl.achievements import Achievement
 
@@ -150,9 +150,9 @@ def appendChristmas(links, base):
 def getGamesPerDay(games):
     if len(games) == 0:
         return []
-    gamesPerDay = [[date.fromtimestamp(games[0].time).strftime('%s'), 0]]
+    gamesPerDay = [[games[0].timeAsDate().strftime('%s'), 0]]
     for game in games:
-        day = date.fromtimestamp(game.time).strftime('%s')
+        day = game.timeAsDate().strftime('%s')
         if gamesPerDay[-1][0] != day:
             gamesPerDay.append([day, 0])
         gamesPerDay[-1][1] += 1
