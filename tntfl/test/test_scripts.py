@@ -15,6 +15,8 @@ class Deployment(Get.TestRunner):
     def _getJson(self, page, query=None):
         response = self._get(page, query)
         headers = Message(StringIO(response.split('\n')[0]))
+        if 'content-type' not in headers:
+            print response
         self.assertEqual(headers['content-type'], 'application/json')
         body = ''.join(response.split('\n')[2:])
         self.assertTrue(len(body) > 0)
