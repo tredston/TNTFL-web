@@ -5,6 +5,7 @@
   "main": "./ui/index.js",
   "scripts": {
     "start": "webpack --watch --progress --colors",
+    "compile": "webpack --progress --colors --bail",
     "test": "tslint ui/**/*.ts"
   },
   "repository": {
