@@ -14,4 +14,5 @@ script:
   - python run_tests.py
   - coverage run --source=tntfl --omit=tntfl/test/* run_tests.py
   - codeclimate-test-reporter
+  - npm run compile
   - npm test
