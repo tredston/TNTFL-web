@@ -13,7 +13,7 @@ class TableFootballLadder(object):
     # Number of days inactivity after which players are considered inactive
     DAYS_INACTIVE = 60
 
-    def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None, games=None):
+    def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None, games=None, postGameHooks=[]):
         self.games = []
         self.players = {}
         self._skillChange = Elo()
@@ -21,6 +21,7 @@ class TableFootballLadder(object):
 
         self._ladderTime = {'now': timeRange is None, 'range': timeRange}
         self._theTime = time.time()
+        self.postGameHooks = postGameHooks
 
         self._gameStore = None
         if games is None:
@@ -88,6 +89,15 @@ class TableFootballLadder(object):
             maxStreak(streaks['lose'], losing, player)
         return {'win': winning, 'lose': losing}
 
+    def _runHooks(self, gameTime):
+        games = self._gameStore.loadGames({'now': True}, PresetTransforms.transforms_for_recent())
+        try:
+            game = next(g for g in games if g.time == gameTime)
+            for hook in self.postGameHooks:
+                hook(game)
+        except StopIteration:
+            pass
+
     def appendGame(self, redPlayer, redScore, bluePlayer, blueScore):
         game = None
         redScore = int(redScore)
@@ -95,6 +105,7 @@ class TableFootballLadder(object):
         if redScore >= 0 and blueScore >= 0 and (redScore + blueScore) > 0:
             game = Game(redPlayer.lower(), redScore, bluePlayer.lower(), blueScore, int(time.time()))
             self._gameStore.appendGame(game)
+            self._runHooks(game.time)
             # Invalidate
             self.games = None
             self.players = None
@@ -102,7 +113,10 @@ class TableFootballLadder(object):
         return None
 
     def deleteGame(self, gameTime, deletedBy):
-        return self._gameStore.deleteGame(gameTime, deletedBy)
+        found = self._gameStore.deleteGame(gameTime, deletedBy)
+        if found:
+            self._runHooks(gameTime)
+        return found
 
     def getPlayers(self):
         return sorted([p for p in self.players.values()], key=lambda x: x.elo, reverse=True)
