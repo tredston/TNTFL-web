@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.1
+* Fix rendering of per player stats
+
 ## 4.2.0
 * Add Mattermost integration
 * Allow speculating without reloading page
