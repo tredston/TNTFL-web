@@ -1,6 +1,3 @@
-from tntfl.game import Game
-
-
 class Player(object):
     def __init__(self):
         self.elo = 0.0
@@ -8,8 +5,9 @@ class Player(object):
 
 def calculateSkillChange(red, blue, redScore, blueScore):
     predict = 1 / (1 + 10 ** ((red.elo - blue.elo) / 180))
-    result = float(blueScore) / (blueScore + redScore)
-    delta = 25 * (result - predict)
+    goals = blueScore + redScore
+    result = float(blueScore) / goals
+    delta = (2.5 * goals) * (result - predict)
     return delta
 
 

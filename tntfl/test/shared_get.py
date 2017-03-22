@@ -91,7 +91,7 @@ class PlayerApi(Tester):
         self.assertEqual(response['name'], "rc")
         self.assertEqual(response['rank'], -1)
         self.assertEqual(response['active'], False)
-        self.assertAlmostEqual(response['skill'], 1.21917, 4)
+        self.assertAlmostEqual(response['skill'], 1.55744, 4)
         self.assertEqual(response['total']['for'], 59)
         self.assertEqual(response['total']['against'], 142)
         self.assertEqual(response['total']['games'], 20)
@@ -115,7 +115,7 @@ class PlayerApi(Tester):
         self.assertEqual(jrem['losses'], 16)
         self.assertEqual(jrem['for'], 59)
         self.assertEqual(jrem['against'], 142)
-        self.assertAlmostEqual(jrem['skillChange'], 1.219, 2)
+        self.assertAlmostEqual(jrem['skillChange'], 1.55744, 4)
 
     def testAchievements(self):
         response = self._getJson('player.cgi', 'player=rc&method=achievements&view=json')
