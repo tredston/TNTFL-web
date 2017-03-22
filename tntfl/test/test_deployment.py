@@ -4,23 +4,11 @@ import urlparse
 import json
 import os
 import re
-import shutil
 import tntfl.test.shared_get as Get
 
 
 class Deployment(Get.TestRunner):
     urlBase = os.path.join('http://www/~tlr/', os.path.split(os.getcwd())[1]) + "/"
-
-    def setUp(self):
-        if os.path.exists('ladder.txt'):
-            os.rename('ladder.txt', 'ladder.actual')
-        shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
-
-    def tearDown(self):
-        if os.path.exists('ladder.txt'):
-            os.remove('ladder.txt')
-        if os.path.exists('ladder.actual'):
-            os.rename('ladder.actual', 'ladder.txt')
 
     def _getJson(self, page, query=None):
         response = self._get(page, query)
@@ -112,62 +100,53 @@ class DeletePage(Get.Tester, Deployment):
 
     @unittest.skip('requires credentials')
     def testReachable(self):
-        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-        password_mgr.add_password(None, self.urlBase, self._username, self._password)
-        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
-        opener = urllib2.build_opener(handler)
+        opener = self._getOpener()
         response = opener.open(self._page('game/1223308996/delete')).read()
         self._testResponse(response)
 
     @unittest.skip('requires credentials')
     def testNoGame(self):
-        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-        password_mgr.add_password(None, self.urlBase, self._username, self._password)
-        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
-        opener = urllib2.build_opener(handler)
-        with self.assertRaises(urllib2.HTTPError) as cm:
-            opener.open(self._page('delete.cgi')).read()
-        e = cm.exception
-        self.assertEqual(e.code, 400)
+        self.assertEqual(self._getErrorCode('delete.cgi'), 400)
 
     @unittest.skip('requires credentials')
     def testInvalidGame(self):
-        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-        password_mgr.add_password(None, self.urlBase, self._username, self._password)
-        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
-        opener = urllib2.build_opener(handler)
-        with self.assertRaises(urllib2.HTTPError) as cm:
-            opener.open(self._page('delete.cgi?game=123')).read()
-        e = cm.exception
-        self.assertEqual(e.code, 404)
+        self.assertEqual(self._getErrorCode('delete.cgi?game=123'), 404)
 
     def _testResponse(self, response):
         super(DeletePage, self)._testResponse(response)
         self.assertTrue("<!DOCTYPE html>" in response)
+
+    def _getErrorCode(self, page):
+        opener = self._getOpener()
+        with self.assertRaises(urllib2.HTTPError) as cm:
+            opener.open(self._page(page)).read()
+        return cm.exception.code
+
+    def _getOpener(self):
+        password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+        password_mgr.add_password(None, self.urlBase, self._username, self._password)
+        handler = urllib2.HTTPBasicAuthHandler(password_mgr)
+        return urllib2.build_opener(handler)
 
 
 class Pages(Get.Pages, Deployment):
     pass
 
 
-class SpeculatePage(Get.SpeculatePage, Deployment):
-    pass
-
-
-class LadderPage(Get.LadderPage, Deployment):
-    pass
-
-
 class PlayerApi(Get.PlayerApi, Deployment):
+    def testNoRoute(self):
+        with self.assertRaises(urllib2.HTTPError) as cm:
+            self._testPageReachable('player.cgi')
+        e = cm.exception
+        self.assertEqual(e.code, 400)
+
     def testNoPlayer(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
-            self._testPageReachable('player')
+            self._testPageReachable('player/')
         e = cm.exception
         self.assertEqual(e.code, 404)
-        # TODO
-        # self.assertEqual(e.code, 400)
 
-    def testMissingPlayer(self):
+    def testInvalidPlayer(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
             self._testPageReachable('player/missing')
         e = cm.exception
@@ -175,13 +154,17 @@ class PlayerApi(Get.PlayerApi, Deployment):
 
 
 class HeadToHeadApi(Get.HeadToHeadApi, Deployment):
+    def testNoRoute(self):
+        with self.assertRaises(urllib2.HTTPError) as cm:
+            self._testPageReachable('headtohead.cgi')
+        e = cm.exception
+        self.assertEqual(e.code, 400)
+
     def testNoPlayers(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
             self._testPageReachable('headtohead/')
         e = cm.exception
         self.assertEqual(e.code, 404)
-        # TODO
-        # self.assertEqual(e.code, 400)
 
     def testInvalidPlayer(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
@@ -199,13 +182,17 @@ class LadderApi(Get.LadderApi, Deployment):
 
 
 class GameApi(Get.GameApi, Deployment):
+    def testNoRoute(self):
+        with self.assertRaises(urllib2.HTTPError) as cm:
+            self._testPageReachable('game.cgi')
+        e = cm.exception
+        self.assertEqual(e.code, 400)
+
     def testNoGame(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
-            self._testPageReachable('game')
+            self._testPageReachable('game/')
         e = cm.exception
         self.assertEqual(e.code, 404)
-        # TODO
-        # self.assertEqual(e.code, 400)
 
     def testInvalidGame(self):
         with self.assertRaises(urllib2.HTTPError) as cm:
@@ -217,9 +204,7 @@ class GameApi(Get.GameApi, Deployment):
         with self.assertRaises(urllib2.HTTPError) as cm:
             self._testPageReachable('game/add')
         e = cm.exception
-        self.assertEqual(e.code, 500)
-        # TODO
-        # self.assertEqual(e.code, 400)
+        self.assertEqual(e.code, 400)
 
 
 class GamesApi(Get.GamesApi, Deployment):
@@ -235,4 +220,12 @@ class PredictApi(Get.PredictApi, Deployment):
 
 
 class ActivePlayersApi(Get.ActivePlayersApi, Deployment):
+    pass
+
+
+class SpeculateApi(Get.SpeculateApi, Deployment):
+    pass
+
+
+class StatsApi(Get.StatsApi, Deployment):
     pass

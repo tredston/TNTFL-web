@@ -1,9 +1,22 @@
 import abc
+import os
+import shutil
 import unittest
 
 
 class TestRunner(unittest.TestCase):
     __metaclass__ = abc.ABCMeta
+
+    def setUp(self):
+        if os.path.exists('ladder.txt'):
+            os.rename('ladder.txt', 'ladder.actual')
+        shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
+
+    def tearDown(self):
+        if os.path.exists('ladder.txt'):
+            os.remove('ladder.txt')
+        if os.path.exists('ladder.actual'):
+            os.rename('ladder.actual', 'ladder.txt')
 
     @abc.abstractmethod
     def _getJson(self, page, query=None):
@@ -59,47 +72,6 @@ class Pages(Tester):
     def _testResponse(self, response):
         super(Pages, self)._testResponse(response)
         self.assertTrue("<!DOCTYPE html>" in response)
-
-
-class SpeculatePage(Tester):
-    def testAGame(self):
-        self._testPageReachable('speculate.cgi', 'redPlayer=tlr&redScore=10&blueScore=0&bluePlayer=cjm&previousGames=')
-
-    def testMultipleGames(self):
-        self._testPageReachable('speculate.cgi', 'redPlayer=acas&redScore=10&blueScore=0&bluePlayer=epb&previousGames=tlr%2C10%2C0%2Ccjm%2Cjma%2C10%2C0%2Cmsh')
-
-    def _testResponse(self, response):
-        super(SpeculatePage, self)._testResponse(response)
-        self.assertTrue("<!DOCTYPE html>" in response)
-        self.assertTrue('Speculative Ladder' in response)
-
-
-class LadderPage(Tester):
-    def testRange(self):
-        self._testPageReachable('ladder.cgi', 'gamesFrom=1223308996&gamesTo=1223400000')
-
-    def _concat(self, thing):
-        return ''.join([l.strip() for l in thing.split('\n')])
-
-    def _testResponse(self, response):
-        super(LadderPage, self)._testResponse(response)
-        jrem = """
-        <td class="ladder-position ladder-first">1</td>
-        <td class="ladder-name"><a href="player/jrem/">jrem</a></td>
-        <td class="ladder-stat">2</td>
-        <td class="ladder-stat">2</td>
-        <td class="ladder-stat">0</td>
-        <td class="ladder-stat">0</td>
-        <td class="ladder-stat">17</td>
-        <td class="ladder-stat">3</td>
-        <td class="ladder-stat">5.667</td>
-        <td class="ladder-stat">0.000</td>
-        <td class="ladder-stat ladder-skill">16.503</td>
-        """
-        jrem = self._concat(jrem)
-        response = self._concat(response)
-        self.assertFalse("<!DOCTYPE html>" in response)
-        self.assertTrue(jrem in response)
 
 
 class PlayerApi(Tester):
@@ -177,8 +149,6 @@ class LadderApi(Tester):
     def testPlayers(self):
         response = self._getJson('ladder.cgi', 'view=json&showInactive=1&players=1')
         self.assertEqual(len(response), 33)
-        self.assertTrue('rank' in response[0])
-        self.assertTrue('name' in response[0])
         self.assertTrue('player' in response[0])
         self.assertTrue('trend' in response[0])
         self.assertEqual(len(response[0]['trend']), 10)
@@ -292,3 +262,40 @@ class ActivePlayersApi(Tester):
         response = self._getJson('activeplayers.cgi', 'at=1420000000,1430402614')
         self.assertEqual(response['1420000000'], 6)
         self.assertEqual(response['1430402614'], 13)
+
+
+class SpeculateApi(Tester):
+    def testNoGames(self):
+        response = self._getJson('speculate.cgi', 'view=json')
+        self.assertTrue('entries' in response)
+        self.assertTrue('games' in response)
+        self.assertEqual(len(response['games']), 0)
+
+    def testGames(self):
+        response = self._getJson('speculate.cgi', 'view=json&previousGames=foo%2C10%2C0%2Cbar%2Cfoo%2C10%2C0%2Cbat')
+        self.assertEqual(len(response['entries']), 3)
+        self.assertEqual(len(response['games']), 2)
+        self.assertNotEqual(response['games'][0]['date'], response['games'][1]['date'])
+
+
+class StatsApi(Tester):
+    def test(self):
+        response = self._getJson('stats.cgi', 'view=json')
+        self.assertIn('totals', response)
+        self.assertIn('games', response['totals'])
+        self.assertGreater(response['totals']['games'], 0)
+        self.assertIn('players', response['totals'])
+        self.assertGreater(response['totals']['players'], 0)
+        self.assertIn('activePlayers', response['totals'])
+        self.assertIn('achievements', response['totals'])
+        self.assertGreater(response['totals']['achievements'], 0)
+        self.assertIn('records', response)
+        self.assertIn('winningStreak', response['records'])
+        self.assertIn('player', response['records']['winningStreak'])
+        self.assertIn('count', response['records']['winningStreak'])
+        self.assertIn('mostSignificant', response['records'])
+        self.assertEqual(len(response['records']['mostSignificant']), 5)
+        self.assertIn('leastSignificant', response['records'])
+        self.assertEqual(len(response['records']['leastSignificant']), 5)
+        self.assertIn('gamesPerDay', response)
+        self.assertGreater(response['gamesPerDay'], 0)

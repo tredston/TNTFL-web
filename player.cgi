@@ -15,9 +15,9 @@ if player:
         player = ladder.getPlayer(player)
         method = getString('method', form)
         if method == "games":
-            serve_template("playerGames.mako", pageTitle="%s's games" % player.name, games=player.games, ladder=ladder)
+            serve_template("playerGames.mako", pageTitle="%s's games" % player.name, games=player.games)
         elif method == 'perplayerstats':
-            serve_template('perPlayerStats.mako', player=player, ladder=ladder)
+            serve_template('perPlayerStats.mako', player=player)
         elif method == 'achievements':
             serve_template('playerAchievements.mako', player=player)
         else:

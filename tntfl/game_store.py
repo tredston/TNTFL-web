@@ -12,11 +12,12 @@ class GameStore(object):
         with open(self._ladderFilePath, 'r') as ladder:
             for line in ladder.readlines():
                 gameLine = line.split()
+                numParts = len(gameLine)
                 # Red player, red score, blue player, blue score, time[, deletedBy, deletedAt]
-                if len(gameLine) == 5 or len(gameLine) == 7:
-                    game = Game(gameLine[0], gameLine[1], gameLine[2], gameLine[3], int(gameLine[4]))
+                if numParts == 5 or numParts == 7:
+                    game = Game(gameLine[0], gameLine[1], gameLine[2], gameLine[3], gameLine[4])
                     games.append(game)
-                    if len(gameLine) == 7:
+                    if numParts == 7:
                         game.deletedBy = gameLine[5]
                         game.deletedAt = int(gameLine[6])
         return games

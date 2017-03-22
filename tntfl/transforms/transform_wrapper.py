@@ -1,5 +1,6 @@
 import cPickle as pickle
 import os
+import gc
 
 
 class TransformWrapper(object):
@@ -24,12 +25,19 @@ class TransformWrapper(object):
     def transform(self, games):
         games = self._transform(games)
         if self.getUseCache():
-            pickle.dump(games, open(self.getCacheName(), 'wb'), pickle.HIGHEST_PROTOCOL)
+            with open(self.getCacheName(), 'wb') as f:
+                gc.disable()
+                pickle.dump(games, f, pickle.HIGHEST_PROTOCOL)
+                gc.enable()
         return games
 
     def loadCached(self):
         if self.getUseCache() and os.path.exists(self.getCacheName()):
-            return pickle.load(open(self.getCacheName(), 'rb'))
+            with open(self.getCacheName(), 'rb') as f:
+                gc.disable()
+                cached = pickle.load(f)
+                gc.enable()
+                return cached
         return None
 
     def deleteCache(self):

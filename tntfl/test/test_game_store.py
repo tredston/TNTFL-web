@@ -3,6 +3,7 @@ import os
 from tntfl.game_store import GameStore
 from tntfl.game import Game
 
+
 class TestGameStore(unittest.TestCase):
     def testRead(self):
         try:
@@ -125,6 +126,6 @@ class TestGameStore(unittest.TestCase):
         self.assertEqual(resultGame.blueScore, expectedTuple[3])
         self.assertEqual(resultGame.time, expectedTuple[4])
         if len(expectedTuple) == 5:
-            expectedTuple += (None, 0)
+            expectedTuple += (None, None)
         self.assertEqual(resultGame.deletedBy, expectedTuple[5])
         self.assertEqual(resultGame.deletedAt, expectedTuple[6])

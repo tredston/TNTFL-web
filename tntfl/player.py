@@ -8,17 +8,20 @@ class Streak(object):
         self.win = True
         self.gameTimes = []
 
+    def _getTime(self, i):
+        return self.gameTimes[i] if self.count > 0 else 0
+
     @property
     def count(self):
         return len(self.gameTimes)
 
     @property
     def fromDate(self):
-        return self.gameTimes[0] if self.count > 0 else 0
+        return self._getTime(0)
 
     @property
     def toDate(self):
-        return self.gameTimes[-1] if self.count > 0 else 0
+        return self._getTime(-1)
 
 
 class Player(object):
@@ -33,7 +36,7 @@ class Player(object):
         self.gamesAsRed = 0
         self.achievements = {}
 
-    def game(self, game):
+    def playGame(self, game):
         if self.name == game.redPlayer:
             self.elo -= game.skillChangeToBlue
             self.gamesAsRed += 1
@@ -68,42 +71,18 @@ class Player(object):
             'lowest': {'time': lowestSkill[0], 'skill': lowestSkill[1]},
         }
 
-    def mostSignificantGame(self):
-        mostSignificantGame = None
-        for game in self.games:
-            if self.name == game.redPlayer:
-                delta = -game.skillChangeToBlue
-            else:
-                delta = game.skillChangeToBlue
-            if mostSignificantGame is None or abs(delta) > abs(mostSignificantGame.skillChangeToBlue):
-                mostSignificantGame = game
-        return mostSignificantGame
-
     @property
     def gamesToday(self):
         today = date.today()
         return self.gamesOn(today)
 
     def gamesOn(self, date):
-        return len([g for g in self.games if g.timeAsDatetime().date() == date])
-
-    def skillChangeToday(self):
-        today = date.today()
-        skillChange = 0
-        for game in [g for g in self.games if g.timeAsDatetime().date() == today]:
-            skillChange += game.skillChangeToBlue if game.bluePlayer == self.name else -game.skillChangeToBlue
-        return skillChange
-
-    def rankChangeToday(self):
-        today = date.today()
-        change = 0
-        for game in [g for g in self.games if g.timeAsDatetime().date() == today]:
-            change += game.bluePosChange if game.bluePlayer == self.name else game.redPosChange
-        return change
+        return len([g for g in self.games if g.timeAsDate() == date])
 
     def achieve(self, achievements, game):
-        for achievement in achievements:
-            self.achievements[achievement] = game.time
+        if achievements is not None:
+            for achievement in achievements:
+                self.achievements[achievement] = game.time
 
     def overrated(self):
         if len(self.games) >= 10:
@@ -114,12 +93,6 @@ class Player(object):
                 total += skill
             return skill - (total / 10)
         return 0
-
-    def __str__(self):
-        return self.__repr__()
-
-    def __repr__(self):
-        return self.name + ":" + str(self.elo)
 
     def wonGame(self, game):
         return (game.redPlayer == self.name and game.redScore > game.blueScore) or (game.bluePlayer == self.name and game.blueScore > game.redScore)
@@ -134,26 +107,34 @@ class Player(object):
         for game in games:
             wonGame = self.wonGame(game)
             lostGame = self.lostGame(game)
+
             if (wonGame and currentStreak.win) or (lostGame and not currentStreak.win):
                 currentStreak.gameTimes.append(game.time)
             else:
                 # end of streak
                 if currentStreak.count >= 1:
                     streaks.append(currentStreak)
-                currentStreak = Streak()
+                    currentStreak = Streak()
                 if wonGame or lostGame:
                     currentStreak.gameTimes.append(game.time)
                 currentStreak.win = wonGame
         return {'past': streaks, 'current': currentStreak}
 
     def getStreaks(self):
+        def getLongestStreak(pastStreaks, check):
+            streak = Streak()
+            try:
+                streak = next(s for s in pastStreaks if check(s))
+            except StopIteration:
+                pass
+            return streak
+
         streaks = self.getAllStreaks(self.games)
-        winStreaks = sorted([s for s in streaks['past'] if s.win], key=lambda s: s.count, reverse=True)
-        loseStreaks = sorted([s for s in streaks['past'] if not s.win], key=lambda s: s.count, reverse=True)
+        pastStreaks = sorted(streaks['past'], key=lambda s: s.count, reverse=True)
         currentStreakType = "(last game was a draw)" if streaks['current'].count == 0 else "wins" if streaks['current'].win else "losses"
         return {
-            'win': winStreaks[0] if len(winStreaks) > 0 else Streak(),
-            'lose': loseStreaks[0] if len(loseStreaks) > 0 else Streak(),
+            'win': getLongestStreak(pastStreaks, lambda s: s.win),
+            'lose': getLongestStreak(pastStreaks, lambda s: not s.win),
             'current': streaks['current'],
             'currentType': currentStreakType
         }

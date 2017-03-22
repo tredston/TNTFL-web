@@ -5,7 +5,7 @@ interface Side {
   score: number;
   rankChange: number;
   newRank: number;
-  skillChange: number
+  skillChange: number;
   achievements: Achievement[];
 }
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.2.0
+* Add Mattermost integration
+* Allow speculating without reloading page
+* Add player's recent skill box plot
+* Remove `Overrated` stat
+* Remove column restrictions on player page
+* Performance improvements
+
 ## 4.1.1
 * Improve chart performance
 

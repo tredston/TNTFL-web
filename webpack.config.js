@@ -3,10 +3,16 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: {
-    index: ['babel-polyfill', './ui/index.tsx'],
-    game: ['babel-polyfill', './ui/game.tsx'],
-    player: ['babel-polyfill', './ui/player.tsx'],
-    headtohead: ['babel-polyfill', './ui/headtohead.tsx'],
+    index: ['babel-polyfill', './ui/containers/index.tsx'],
+    game: ['babel-polyfill', './ui/containers/game.tsx'],
+    player: ['babel-polyfill', './ui/containers/player.tsx'],
+    headtohead: ['babel-polyfill', './ui/containers/headtohead.tsx'],
+    historic: ['babel-polyfill', './ui/containers/historic.tsx'],
+    speculate: ['babel-polyfill', './ui/containers/speculate.tsx'],
+    stats: ['babel-polyfill', './ui/containers/stats.tsx'],
+    playergames: ['babel-polyfill', './ui/containers/playergames.tsx'],
+    headtoheadgames: ['babel-polyfill', './ui/containers/headtoheadgames.tsx'],
+    delete: ['babel-polyfill', './ui/containers/delete.tsx']
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -17,11 +23,11 @@ module.exports = {
   },
   module: {
     preLoaders: [
-      { test: /\.json$/, loader: 'json-loader'},
+      { test: /\.json$/, loader: 'json-loader'}
     ],
     loaders: [
       { test: /\.tsx?$/, loader: 'babel-loader?presets[]=es2015&presets[]=react!ts-loader', exclude: /node_modules/},
-      { test: /\.js$/, loader: 'babel', query: { presets: ['es2015', 'react']}, exclude: /node_modules/},
+      { test: /\.js$/, loader: 'babel', query: { presets: ['es2015', 'react']}, exclude: /node_modules/}
     ]
   },
   node: {
@@ -33,6 +39,6 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin("commons.chunk.js"),
     new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
-    new webpack.optimize.UglifyJsPlugin({compress:{warnings: false}}),
+    new webpack.optimize.UglifyJsPlugin({compress:{warnings: false}})
   ]
 };

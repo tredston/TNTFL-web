@@ -1,31 +1,26 @@
-from datetime import datetime
+from datetime import date
+
 
 class Game(object):
 
     def __init__(self, redPlayer, redScore, bluePlayer, blueScore, time):
-        self.redPlayer = redPlayer.lower()
+        self.redPlayer = redPlayer
         self.redScore = int(redScore)
-        self.redPosChange = 0
-        self.redPosAfter = -1
-        self.bluePlayer = bluePlayer.lower()
+        self.bluePlayer = bluePlayer
         self.blueScore = int(blueScore)
-        self.bluePosChange = 0
-        self.bluePosAfter = -1
         self.time = int(time)
-        self.redAchievements = []
-        self.blueAchievements = []
         self.skillChangeToBlue = 0
+        self.redPosChange = None
+        self.redPosAfter = None
+        self.bluePosChange = None
+        self.bluePosAfter = None
+        self.redAchievements = None
+        self.blueAchievements = None
         self.deletedBy = None
-        self.deletedAt = 0
-
-    def __str__(self):
-        return self.__repr__()
-
-    def __repr__(self):
-        return "{redPlayer} {redScore}-{blueScore} {bluePlayer}".format(redPlayer=self.redPlayer, bluePlayer=self.bluePlayer, redScore=self.redScore, blueScore=self.blueScore)
+        self.deletedAt = None
 
     def isDeleted(self):
-        return self.deletedAt > 0
+        return self.deletedAt > None
 
-    def timeAsDatetime(self):
-        return datetime.fromtimestamp(self.time)
+    def timeAsDate(self):
+        return date.fromtimestamp(self.time)

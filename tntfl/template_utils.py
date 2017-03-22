@@ -1,71 +1,25 @@
-from datetime import date, datetime, timedelta
+from collections import OrderedDict
+from datetime import datetime
 from tntfl.player import PerPlayerStat
 from tntfl.achievements import Achievement
-
-
-def getTrend(player):
-    trend = []
-    games = player.games[-10:] if len(player.games) >= 10 else player.games
-    skill = 0
-    for i, game in enumerate(games):
-        skill += game.skillChangeToBlue if game.bluePlayer == player.name else -game.skillChangeToBlue
-        trend.append([i, skill])
-    if len(trend) > 0:
-        trendColour = "#0000FF" if trend[0][1] < trend[len(games) - 1][1] else "#FF0000"
-    else:
-        trendColour = "#000000"
-    return {'trend': trend, 'colour': trendColour}
-
-
-def getNumYellowStripes(player, games):
-    return len([g for g in games if (g.redPlayer == player.name and g.redScore == 10 and g.blueScore == 0) or (g.bluePlayer == player.name and g.blueScore == 10 and g.redScore == 0)])
 
 
 def getSharedGames(player1, player2):
     return [g for g in player1.games if g.redPlayer == player2.name or g.bluePlayer == player2.name]
 
 
-def punditryAvailable(pundit, game, ladder):
-    red = ladder.getPlayer(game.redPlayer)
-    blue = ladder.getPlayer(game.bluePlayer)
-    return pundit.anyComment(red, game, blue)
-
-
-def formatTime(inTime):
-    time = datetime.fromtimestamp(float(inTime))
-    dateStr = time.strftime("%Y-%m-%d %H:%M")
-    if date.fromtimestamp(float(inTime)) == date.today():
-        dateStr = "%02d:%02d" % (time.hour, time.minute)
-    elif date.fromtimestamp(float(inTime)) > (date.today() - timedelta(7)):
-        dateStr = "%s %02d:%02d" % (("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")[time.weekday()], time.hour, time.minute)
-    return dateStr
-
-
-def getRankCSS(rank, totalActivePlayers):
-    ladderPositionCSS = "ladder-position"
-    if rank == -1:
-        ladderPositionCSS = ladderPositionCSS + " inactive"
-    elif rank == 1:
-        ladderPositionCSS = ladderPositionCSS + " ladder-first"
-    elif rank <= totalActivePlayers * 0.1:
-        ladderPositionCSS = ladderPositionCSS + " ladder-silver"
-    elif rank <= totalActivePlayers * 0.3:
-        ladderPositionCSS = ladderPositionCSS + " ladder-bronze"
-    return ladderPositionCSS
-
-
 def isPositionSwap(game):
-    bluePosBefore = game.bluePosAfter + game.bluePosChange
-    redPosBefore = game.redPosAfter + game.redPosChange
-    positionSwap = False
-    if bluePosBefore > 0 and redPosBefore > 0:
-        if bluePosBefore == game.redPosAfter or redPosBefore == game.bluePosAfter:
-            positionSwap = True
-    return positionSwap
+    if game.bluePosAfter is not None and game.bluePosChange is not None and game.redPosAfter is not None and game.redPosChange is not None:
+        return (game.bluePosAfter + game.bluePosChange == game.redPosAfter or game.redPosAfter + game.redPosChange == game.bluePosAfter)
+    return None
 
 
 def playerHref(base, name):
     return base + 'player/' + name + '/json'
+
+
+def achievementsToJson(achievements):
+    return [{'name': a.name, 'description': a.description} for a in achievements] if achievements is not None else []
 
 
 def gameToJson(game, base):
@@ -77,7 +31,7 @@ def gameToJson(game, base):
             'skillChange': -game.skillChangeToBlue,
             'rankChange': game.redPosChange,
             'newRank': game.redPosAfter,
-            'achievements': [{'name': a.name, 'description': a.description} for a in game.redAchievements],
+            'achievements': achievementsToJson(game.redAchievements),
         },
         'blue': {
             'name': game.bluePlayer,
@@ -86,7 +40,7 @@ def gameToJson(game, base):
             'skillChange': game.skillChangeToBlue,
             'rankChange': game.bluePosChange,
             'newRank': game.bluePosAfter,
-            'achievements': [{'name': a.name, 'description': a.description} for a in game.blueAchievements],
+            'achievements': achievementsToJson(game.blueAchievements),
         },
         'positionSwap': isPositionSwap(game),
         'date': game.time,
@@ -101,44 +55,51 @@ def gameToJson(game, base):
 
 def getTrendWithDates(player):
     trend = []
-    games = player.games[-10:] if len(player.games) >= 10 else player.games
+    games = player.games[-min(len(player.games), 10):]
     skill = 0
-    for i, game in enumerate(games):
+    for game in games:
         skill += game.skillChangeToBlue if game.bluePlayer == player.name else -game.skillChangeToBlue
         trend.append((game.time, skill))
     return trend
 
 
-def ladderToJson(players, ladder, base, includePlayers):
+def ladderToJson(ladder, base, showInactive, includePlayers):
+    players = ladder.getPlayers() if showInactive else [p for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
     if includePlayers:
+        ranked = [p.name for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
         return [{
-            'rank': ladder.getPlayerRank(p.name),
-            'name': p.name,
-            'player': playerToJson(p, ladder),
+            'player': playerLiteToJson(p, ranked),
             'trend': getTrendWithDates(p),
-        } for i, p in enumerate(players)]
+        } for p in players]
     else:
         return [{'rank': i + 1, 'name': p.name, 'skill': p.elo, 'href': playerHref(base, p.name)} for i, p in enumerate(players)]
 
 
-def playerToJson(player, ladder):
+def playerLiteToJson(player, ranked):
+    rank = ranked.index(player.name) + 1 if player.name in ranked else -1
     return {
         'name': player.name,
-        'rank': ladder.getPlayerRank(player.name),
-        'active': ladder.isPlayerActive(player),
+        'rank': rank,
+        'active': rank is not -1,
         'skill': player.elo,
-        'overrated': player.overrated(),
         'total': {
             'for': player.goalsFor,
             'against': player.goalsAgainst,
             'games': len(player.games),
-            'gamesAsRed': player.gamesAsRed,
             'wins': player.wins,
             'losses': player.losses,
-            'gamesToday': player.gamesToday,
         },
         'games': {'href': 'games/json'},
     }
+
+
+def playerToJson(player, ladder):
+    ranked = [p.name for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
+    content = playerLiteToJson(player, ranked)
+    content['overrated'] = player.overrated()
+    content['total']['gamesAsRed'] = player.gamesAsRed
+    content['total']['gamesToday'] = player.gamesToday
+    return content
 
 
 def getPerPlayerStats(player):
@@ -184,3 +145,40 @@ def appendChristmas(links, base):
     if datetime.now().month == 12:
         links.append('<link href="%scss/christmas.css" rel="stylesheet">' % base)
     return links
+
+
+def getGamesPerDay(games):
+    if len(games) == 0:
+        return []
+    gamesPerDay = [[games[0].timeAsDate().strftime('%s'), 0]]
+    for game in games:
+        day = game.timeAsDate().strftime('%s')
+        if gamesPerDay[-1][0] != day:
+            gamesPerDay.append([day, 0])
+        gamesPerDay[-1][1] += 1
+    return gamesPerDay
+
+
+def getStatsJson(ladder, base):
+    winningStreak = ladder.getStreaks()['win']
+    mostSignificantGames = sorted([g for g in ladder.games if not g.isDeleted()], key=lambda x: abs(x.skillChangeToBlue), reverse=True)
+    return {
+        'totals': {
+            'games': len(ladder.games),
+            'players': len(ladder.players),
+            'activePlayers': ladder.getNumActivePlayers(),
+            'achievements': [[{
+                'name': a.name,
+                'description': a.description,
+            }, c] for a, c in sorted(ladder.getAchievements().iteritems(), reverse=True, key=lambda t: t[1])],
+        },
+        'records': {
+            'winningStreak': {
+                'player': winningStreak['player'].name,
+                'count': winningStreak['streak'].count,
+            },
+            'mostSignificant': [gameToJson(g, base) for g in mostSignificantGames[0:5]],
+            'leastSignificant': [gameToJson(g, base) for g in reversed(mostSignificantGames[-5:])],
+        },
+        'gamesPerDay': getGamesPerDay(ladder.games),
+    }

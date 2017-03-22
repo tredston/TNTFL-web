@@ -13,7 +13,7 @@ class TableFootballLadder(object):
     # Number of days inactivity after which players are considered inactive
     DAYS_INACTIVE = 60
 
-    def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None, games=None):
+    def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None, games=None, postGameHooks=[]):
         self.games = []
         self.players = {}
         self._skillChange = Elo()
@@ -21,6 +21,7 @@ class TableFootballLadder(object):
 
         self._ladderTime = {'now': timeRange is None, 'range': timeRange}
         self._theTime = time.time()
+        self.postGameHooks = postGameHooks
 
         self._gameStore = None
         if games is None:
@@ -35,8 +36,8 @@ class TableFootballLadder(object):
         for game in [g for g in self.games if not g.isDeleted()]:
             red = self.getPlayer(game.redPlayer)
             blue = self.getPlayer(game.bluePlayer)
-            blue.game(game)
-            red.game(game)
+            blue.playGame(game)
+            red.playGame(game)
             if withAchievements:
                 red.achieve(game.redAchievements, game)
                 blue.achieve(game.blueAchievements, game)
@@ -74,41 +75,37 @@ class TableFootballLadder(object):
         else:
             return self._ladderTime['range'][1]
 
-    def getSkillBounds(self):
-        highSkill = {'player': None, 'skill': 0, 'time': 0}
-        lowSkill = {'player': None, 'skill': 0, 'time': 0}
-        for player in self.players.values():
-            skill = player.getSkillBounds()
-            if skill['highest']['skill'] > highSkill['skill']:
-                highSkill['player'] = player
-                highSkill['skill'] = skill['highest']['skill']
-                highSkill['time'] = skill['highest']['time']
-            if skill['lowest']['skill'] < lowSkill['skill']:
-                lowSkill['player'] = player
-                lowSkill['skill'] = skill['lowest']['skill']
-                lowSkill['time'] = skill['lowest']['time']
-        return {'highest': highSkill, 'lowest': lowSkill}
-
     def getStreaks(self):
+        def maxStreak(streak, best, player):
+            if streak.count > best['streak'].count:
+                best['player'] = player
+                best['streak'] = streak
+
         winning = {'player': None, 'streak': Streak()}
         losing = {'player': None, 'streak': Streak()}
         for player in self.players.values():
             streaks = player.getStreaks()
-            if streaks['win'].count > winning['streak'].count:
-                winning['player'] = player
-                winning['streak'] = streaks['win']
-            if streaks['lose'].count > losing['streak'].count:
-                losing['player'] = player
-                losing['streak'] = streaks['lose']
+            maxStreak(streaks['win'], winning, player)
+            maxStreak(streaks['lose'], losing, player)
         return {'win': winning, 'lose': losing}
+
+    def _runHooks(self, gameTime):
+        games = self._gameStore.loadGames({'now': True}, PresetTransforms.transforms_for_recent())
+        try:
+            game = next(g for g in games if g.time == gameTime)
+            for hook in self.postGameHooks:
+                hook(game)
+        except StopIteration:
+            pass
 
     def appendGame(self, redPlayer, redScore, bluePlayer, blueScore):
         game = None
         redScore = int(redScore)
         blueScore = int(blueScore)
         if redScore >= 0 and blueScore >= 0 and (redScore + blueScore) > 0:
-            game = Game(redPlayer, redScore, bluePlayer, blueScore, int(time.time()))
+            game = Game(redPlayer.lower(), redScore, bluePlayer.lower(), blueScore, int(time.time()))
             self._gameStore.appendGame(game)
+            self._runHooks(game.time)
             # Invalidate
             self.games = None
             self.players = None
@@ -116,7 +113,10 @@ class TableFootballLadder(object):
         return None
 
     def deleteGame(self, gameTime, deletedBy):
-        return self._gameStore.deleteGame(gameTime, deletedBy)
+        found = self._gameStore.deleteGame(gameTime, deletedBy)
+        if found:
+            self._runHooks(gameTime)
+        return found
 
     def getPlayers(self):
         return sorted([p for p in self.players.values()], key=lambda x: x.elo, reverse=True)

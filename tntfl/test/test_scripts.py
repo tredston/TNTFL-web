@@ -1,7 +1,6 @@
 import json
 from mimetools import Message
 import os
-import shutil
 from StringIO import StringIO
 import subprocess
 import tntfl.test.shared_get as Get
@@ -11,20 +10,13 @@ class Deployment(Get.TestRunner):
     def setUp(self):
         if 'QUERY_STRING' in os.environ:
             del(os.environ['QUERY_STRING'])
-
-        if os.path.exists('ladder.txt'):
-            os.rename('ladder.txt', 'ladder.actual')
-        shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
-
-    def tearDown(self):
-        if os.path.exists('ladder.txt'):
-            os.remove('ladder.txt')
-        if os.path.exists('ladder.actual'):
-            os.rename('ladder.actual', 'ladder.txt')
+        super(Deployment, self).setUp()
 
     def _getJson(self, page, query=None):
         response = self._get(page, query)
         headers = Message(StringIO(response.split('\n')[0]))
+        if 'content-type' not in headers:
+            print response
         self.assertEqual(headers['content-type'], 'application/json')
         body = ''.join(response.split('\n')[2:])
         self.assertTrue(len(body) > 0)
@@ -58,19 +50,11 @@ class AddGame(Get.Tester, Deployment):
         self._getJson('game.cgi', 'method=add&view=json&redPlayer=foo&redScore=10&bluePlayer=bar&blueScore=0')
 
     def testNoSinglePlayer(self):
-        r = self._get('game.cgi', 'method=add&view=json&redPlayer=cxh&redScore=10&bluePlayer=cxh&blueScore=0')
-        self.assertEqual('Status: 400 Bad Request\n', r)
+        status = self._getStatus('game.cgi', 'method=add&view=json&redPlayer=cxh&redScore=10&bluePlayer=cxh&blueScore=0')
+        self.assertEqual(status, '400 Bad Request')
 
 
 class Pages(Get.Pages, Deployment):
-    pass
-
-
-class SpeculatePage(Get.SpeculatePage, Deployment):
-    pass
-
-
-class LadderPage(Get.LadderPage, Deployment):
     pass
 
 
@@ -129,4 +113,12 @@ class PredictApi(Get.PredictApi, Deployment):
 
 
 class ActivePlayersApi(Get.ActivePlayersApi, Deployment):
+    pass
+
+
+class SpeculateApi(Get.SpeculateApi, Deployment):
+    pass
+
+
+class StatsApi(Get.StatsApi, Deployment):
     pass

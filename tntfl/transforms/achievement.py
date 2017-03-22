@@ -16,7 +16,7 @@ class Player(object):
 
         self._activeTillTime = 0
 
-    def game(self, game):
+    def playGame(self, game):
         self._activeTillTime = game.time + secondsInactive
 
         self.elo += game.skillChangeToBlue if self.name == game.bluePlayer else -game.skillChangeToBlue
@@ -50,8 +50,8 @@ class TableFootballLadder:
         self.games.append(game)
         red = self._getPlayer(game.redPlayer)
         blue = self._getPlayer(game.bluePlayer)
-        red.game(game)
-        blue.game(game)
+        red.playGame(game)
+        blue.playGame(game)
 
         self._updateActive(red, blue, game.time)
 

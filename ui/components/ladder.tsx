@@ -33,13 +33,19 @@ function TrendChart(trend: [number, number][]): JSX.Element {
 
 interface LadderProps {
   entries: LadderEntry[];
+  atDate: number;
+  showInactive: boolean;
 }
 export default function Ladder(props: LadderProps): JSX.Element {
-  const { entries } = props;
+  let { entries } = props;
+  const { atDate, showInactive } = props;
+  if (!showInactive) {
+    entries = entries.filter(e => e.player.rank >= 1);
+  }
   const flattened = entries.map(e => {
     return {
-      rank: e.rank,
-      name: e.name,
+      rank: e.player.rank,
+      name: e.player.name,
       games: e.player.total.games,
       wins: e.player.total.wins,
       draws: e.player.total.games - e.player.total.wins - e.player.total.losses,
@@ -51,15 +57,14 @@ export default function Ladder(props: LadderProps): JSX.Element {
       trend: e.trend,
     };
   });
-  const numActivePlayers = entries.filter((e) => e.rank >= 1).length;
-  const now = (new Date()).getTime() / 1000;
+  const numActivePlayers = entries.filter((e) => e.player.rank >= 1).length;
   return (
     <BootstrapTable
       data={flattened}
       hover={true}
       condensed={true}
       bodyStyle={{fontSize: 20}}
-      trClassName={(row) => getNearlyInactiveClass(row.trend[row.trend.length - 1][0], now)}
+      trClassName={(row) => getNearlyInactiveClass(row.trend[row.trend.length - 1][0], atDate)}
     >
       <TableHeaderColumn
         dataField={'rank'}
