@@ -118,11 +118,11 @@ class TableFootballLadder(object):
             self._runHooks(gameTime)
         return found
 
-    def getPlayers(self):
+    def getRankedPlayers(self):
         return sorted([p for p in self.players.values()], key=lambda x: x.elo, reverse=True)
 
     def getPlayerRank(self, playerName):
-        ranked = [p.name for p in self.getPlayers() if self.isPlayerActive(p)]
+        ranked = [p.name for p in self.getRankedPlayers() if self.isPlayerActive(p)]
         if playerName in ranked:
             return ranked.index(playerName) + 1
         return -1

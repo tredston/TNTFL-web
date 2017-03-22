@@ -64,15 +64,20 @@ def getTrendWithDates(player):
 
 
 def ladderToJson(ladder, base, showInactive, includePlayers):
-    players = ladder.getPlayers() if showInactive else [p for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
+    players = ladder.getRankedPlayers() if showInactive else [p for p in ladder.getRankedPlayers() if ladder.isPlayerActive(p)]
     if includePlayers:
-        ranked = [p.name for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
+        ranked = [p.name for p in ladder.getRankedPlayers() if ladder.isPlayerActive(p)]
         return [{
             'player': playerLiteToJson(p, ranked),
             'trend': getTrendWithDates(p),
         } for p in players]
     else:
-        return [{'rank': i + 1, 'name': p.name, 'skill': p.elo, 'href': playerHref(base, p.name)} for i, p in enumerate(players)]
+        return [{
+            'rank': i + 1,
+            'name': p.name,
+            'skill': p.elo,
+            'href': playerHref(base, p.name)
+        } for i, p in enumerate(players)]
 
 
 def playerLiteToJson(player, ranked):
@@ -94,7 +99,7 @@ def playerLiteToJson(player, ranked):
 
 
 def playerToJson(player, ladder):
-    ranked = [p.name for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
+    ranked = [p.name for p in ladder.getRankedPlayers() if ladder.isPlayerActive(p)]
     content = playerLiteToJson(player, ranked)
     content['total']['gamesAsRed'] = player.gamesAsRed
     content['total']['gamesToday'] = player.gamesToday
