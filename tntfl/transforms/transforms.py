@@ -22,17 +22,13 @@ def transforms_for_ladder():
 
 
 def transforms_for_recent():
-    return [
-        Transforms['elo'],
+    return transforms_for_ladder() + [
         Transforms['rank'],
     ]
 
 
 def transforms_for_full_games(ladderTime):
-    transforms = [
-        Transforms['elo'],
-        Transforms['rank'],
-    ]
+    transforms = transforms_for_recent()
     if ladderTime['now']:
         transforms.append(Transforms['achievement'])
     return transforms
