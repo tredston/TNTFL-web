@@ -1,6 +1,7 @@
 # Changelog
 
 ## develop
+* Add Mattermost integration
 * Allow speculating without reloading page
 * Add player's recent skill box plot
 * Remove `Overrated` stat
