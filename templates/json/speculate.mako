@@ -20,10 +20,9 @@ if len(speculativeGames) > 0:
 
 ladder = TableFootballLadder(None, games=games)
 
-players = ladder.getPlayers() if showInactive else [p for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
 speculatedGames = ladder.games[-len(speculativeGames):] if len(speculativeGames) > 0 else []
 %>
 ${json.dumps({
-    'entries': ladderToJson(players, ladder, base, includePlayers),
+    'entries': ladderToJson(ladder, base, showInactive, includePlayers),
     'games': [gameToJson(game, base) for game in speculatedGames],
 })}

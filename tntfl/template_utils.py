@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from datetime import date, datetime, timedelta
+from datetime import datetime
 from tntfl.player import PerPlayerStat
 from tntfl.achievements import Achievement
 
@@ -9,17 +9,17 @@ def getSharedGames(player1, player2):
 
 
 def isPositionSwap(game):
-    bluePosBefore = game.bluePosAfter + game.bluePosChange
-    redPosBefore = game.redPosAfter + game.redPosChange
-    positionSwap = False
-    if bluePosBefore > 0 and redPosBefore > 0:
-        if bluePosBefore == game.redPosAfter or redPosBefore == game.bluePosAfter:
-            positionSwap = True
-    return positionSwap
+    if game.bluePosAfter is not None and game.bluePosChange is not None and game.redPosAfter is not None and game.redPosChange is not None:
+        return (game.bluePosAfter + game.bluePosChange == game.redPosAfter or game.redPosAfter + game.redPosChange == game.bluePosAfter)
+    return None
 
 
 def playerHref(base, name):
     return base + 'player/' + name + '/json'
+
+
+def achievementsToJson(achievements):
+    return [{'name': a.name, 'description': a.description} for a in achievements] if achievements is not None else []
 
 
 def gameToJson(game, base):
@@ -31,7 +31,7 @@ def gameToJson(game, base):
             'skillChange': -game.skillChangeToBlue,
             'rankChange': game.redPosChange,
             'newRank': game.redPosAfter,
-            'achievements': [{'name': a.name, 'description': a.description} for a in game.redAchievements],
+            'achievements': achievementsToJson(game.redAchievements),
         },
         'blue': {
             'name': game.bluePlayer,
@@ -40,7 +40,7 @@ def gameToJson(game, base):
             'skillChange': game.skillChangeToBlue,
             'rankChange': game.bluePosChange,
             'newRank': game.bluePosAfter,
-            'achievements': [{'name': a.name, 'description': a.description} for a in game.blueAchievements],
+            'achievements': achievementsToJson(game.blueAchievements),
         },
         'positionSwap': isPositionSwap(game),
         'date': game.time,
@@ -55,44 +55,51 @@ def gameToJson(game, base):
 
 def getTrendWithDates(player):
     trend = []
-    games = player.games[-10:] if len(player.games) >= 10 else player.games
+    games = player.games[-min(len(player.games), 10):]
     skill = 0
-    for i, game in enumerate(games):
+    for game in games:
         skill += game.skillChangeToBlue if game.bluePlayer == player.name else -game.skillChangeToBlue
         trend.append((game.time, skill))
     return trend
 
 
-def ladderToJson(players, ladder, base, includePlayers):
+def ladderToJson(ladder, base, showInactive, includePlayers):
+    players = ladder.getPlayers() if showInactive else [p for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
     if includePlayers:
+        ranked = [p.name for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
         return [{
-            'rank': ladder.getPlayerRank(p.name),
-            'name': p.name,
-            'player': playerToJson(p, ladder),
+            'player': playerLiteToJson(p, ranked),
             'trend': getTrendWithDates(p),
-        } for i, p in enumerate(players)]
+        } for p in players]
     else:
         return [{'rank': i + 1, 'name': p.name, 'skill': p.elo, 'href': playerHref(base, p.name)} for i, p in enumerate(players)]
 
 
-def playerToJson(player, ladder):
+def playerLiteToJson(player, ranked):
+    rank = ranked.index(player.name) + 1 if player.name in ranked else -1
     return {
         'name': player.name,
-        'rank': ladder.getPlayerRank(player.name),
-        'active': ladder.isPlayerActive(player),
+        'rank': rank,
+        'active': rank is not -1,
         'skill': player.elo,
-        'overrated': player.overrated(),
         'total': {
             'for': player.goalsFor,
             'against': player.goalsAgainst,
             'games': len(player.games),
-            'gamesAsRed': player.gamesAsRed,
             'wins': player.wins,
             'losses': player.losses,
-            'gamesToday': player.gamesToday,
         },
         'games': {'href': 'games/json'},
     }
+
+
+def playerToJson(player, ladder):
+    ranked = [p.name for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
+    content = playerLiteToJson(player, ranked)
+    content['overrated'] = player.overrated()
+    content['total']['gamesAsRed'] = player.gamesAsRed
+    content['total']['gamesToday'] = player.gamesToday
+    return content
 
 
 def getPerPlayerStats(player):
@@ -143,9 +150,9 @@ def appendChristmas(links, base):
 def getGamesPerDay(games):
     if len(games) == 0:
         return []
-    gamesPerDay = [[date.fromtimestamp(games[0].time).strftime('%s'), 0]]
+    gamesPerDay = [[games[0].timeAsDate().strftime('%s'), 0]]
     for game in games:
-        day = date.fromtimestamp(game.time).strftime('%s')
+        day = game.timeAsDate().strftime('%s')
         if gamesPerDay[-1][0] != day:
             gamesPerDay.append([day, 0])
         gamesPerDay[-1][1] += 1

@@ -149,8 +149,6 @@ class LadderApi(Tester):
     def testPlayers(self):
         response = self._getJson('ladder.cgi', 'view=json&showInactive=1&players=1')
         self.assertEqual(len(response), 33)
-        self.assertTrue('rank' in response[0])
-        self.assertTrue('name' in response[0])
         self.assertTrue('player' in response[0])
         self.assertTrue('trend' in response[0])
         self.assertEqual(len(response[0]['trend']), 10)
