@@ -1,6 +1,6 @@
 # Changelog
 
-## develop
+## 4.2.0
 * Add Mattermost integration
 * Allow speculating without reloading page
 * Add player's recent skill box plot
