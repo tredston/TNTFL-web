@@ -2,7 +2,7 @@ import requests
 import urlparse
 
 
-def postMattermost(mattermostUrl, apiKey, tntflUrl, game, fields, colour='#0000FF'):
+def postMattermost(mattermostUrl, apiKey, tntflUrl, game, fields, colour):
     gameUrl = '{}/game/{}'.format(tntflUrl, game.time)
     title = '{} {}-{} {}'.format(
         game.redPlayer,

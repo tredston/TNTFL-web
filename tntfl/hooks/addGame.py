@@ -26,6 +26,10 @@ def rankChangeField(playerName, posChange, posAfter):
     return field
 
 
+def flawlessVictory(game):
+    return (game.redScore is 10 and game.blueScore is 0) or (game.blueScore is 10 and game.redScore is 0)
+
+
 def do(game):
     if os.path.exists(Constants.configFile):
         config = ConfigParser.RawConfigParser()
@@ -41,5 +45,6 @@ def do(game):
                 rankChangeField(game.bluePlayer, game.bluePosChange, game.bluePosAfter),
                 rankChangeField(game.redPlayer, game.redPosChange, game.redPosAfter),
             ] if f is not None]
+            colour = '#0000FF' if not flawlessVictory(game) else '#FFFF00'
 
-            postMattermost(mattermostUrl, apiKey, tntflUrl, game, fields)
+            postMattermost(mattermostUrl, apiKey, tntflUrl, game, fields, colour)
