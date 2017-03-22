@@ -81,7 +81,6 @@ class PlayerApi(Tester):
         self.assertEqual(response['rank'], -1)
         self.assertEqual(response['active'], False)
         self.assertAlmostEqual(response['skill'], 1.21917, 4)
-        self.assertAlmostEqual(response['overrated'], 7.96406, 4)
         self.assertEqual(response['total']['for'], 59)
         self.assertEqual(response['total']['against'], 142)
         self.assertEqual(response['total']['games'], 20)

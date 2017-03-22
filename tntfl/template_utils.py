@@ -96,7 +96,6 @@ def playerLiteToJson(player, ranked):
 def playerToJson(player, ladder):
     ranked = [p.name for p in ladder.getPlayers() if ladder.isPlayerActive(p)]
     content = playerLiteToJson(player, ranked)
-    content['overrated'] = player.overrated()
     content['total']['gamesAsRed'] = player.gamesAsRed
     content['total']['gamesToday'] = player.gamesToday
     return content

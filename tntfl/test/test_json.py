@@ -94,7 +94,6 @@ class PlayerJson(unittest.TestCase):
         self.assertEqual(actual['rank'], -1)
         self.assertEqual(actual['active'], False)
         self.assertAlmostEqual(actual['skill'], -2.30014, 5)
-        self.assertEqual(actual['overrated'], 0)
         self.assertEqual(actual['total']['for'], 14)
         self.assertEqual(actual['total']['against'], 16)
         self.assertEqual(actual['total']['games'], 3)
