@@ -3,6 +3,7 @@
 ## develop
 * Allow speculating without reloading page
 * Add player's recent skill box plot
+* Remove `Overrated` stat
 * Remove column restrictions on player page
 * Performance improvements
 

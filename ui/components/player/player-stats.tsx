@@ -67,15 +67,6 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     return (game.red.score == 10 && game.blue.score == 0 && game.red.name == playerName) ||
       (game.blue.score == 10 && game.red.score == 0 && game.blue.name == playerName);
   }
-  function getOverrated(playerName: string, games: Game[]): number {
-    let skill = 0;
-    let total = 0;
-    games.slice(games.length - 10).forEach((game) => {
-      skill += game.red.name === playerName ? game.red.skillChange : game.blue.skillChange;
-      total += skill;
-    })
-    return skill - (total / 10);
-  }
   function getBG(blue: number): CSSProperties {
     if (blue == 0) {
       return {};
@@ -83,7 +74,6 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     return {backgroundColor: blue > 0 ? Palette.blueFade : Palette.redFade};
   }
   const { player, numActivePlayers, games, base } = props;
-  const overrated = getOverrated(player.name, games);
   const gamesToday = games.slice(games.length - player.total.gamesToday);
   const goalRatio = player.total.for / player.total.against;
   const flawlessVictories = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
@@ -97,7 +87,6 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
       <Col sm={3}><StatBox title={'Recent Skill'}><BoxPlot data={getSkillHistory(player, games).filter(d => d.date >= monthAgo).map(d => d.skill)}/></StatBox></Col>
       <Col sm={3}><RankStat rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></Col>
       <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
-      <Col sm={3}><StatBox title={'Overrated'} style={getBG(overrated)}>{overrated.toFixed(3)}</StatBox></Col>
       <Col sm={3}><StatBox title="Skill change today" style={getBG(skillChangeToday)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
       <Col sm={3}><StatBox title="Rank change today" style={getBG(rankChangeToday)}>{formatRankChange(rankChangeToday)}</StatBox></Col>
       <Col sm={3}>
