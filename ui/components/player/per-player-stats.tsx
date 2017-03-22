@@ -47,7 +47,7 @@ interface PerPlayerStatsProps {
   stats: PerPlayerStat[];
 }
 export default function PerPlayerStats(props: PerPlayerStatsProps): JSX.Element {
-  const { playerName, base, stats } = this.props;
+  const { playerName, base, stats } = props;
   return (
     <BootstrapTable
       data={toTableData(stats)}
