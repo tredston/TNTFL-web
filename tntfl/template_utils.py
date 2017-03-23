@@ -183,6 +183,7 @@ def getStatsJson(ladder, base):
             },
             'mostSignificant': [gameToJson(g, base) for g in mostSignificantGames[0:5]],
             'leastSignificant': [gameToJson(g, base) for g in reversed(mostSignificantGames[-5:])],
+            'longestGame': gameToJson(max(ladder.games, key=lambda g: g.redScore + g.blueScore), base),
         },
         'gamesPerDay': getGamesPerDay(ladder.games),
     }

@@ -15,6 +15,7 @@ export interface Records {
   };
   mostSignificant: Game[];
   leastSignificant: Game[];
+  longestGame: Game;
 }
 
 interface Stats {
