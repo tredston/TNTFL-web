@@ -1,102 +1,16 @@
 import * as React from 'react';
-import { Component, Props, CSSProperties } from 'react';
-import { Grid, Row, Col, Button, Panel } from 'react-bootstrap';
+import { Component, Props } from 'react';
+import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { Line } from 'react-chartjs-2';
 
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
-import Achievement from '../model/achievement';
+import StatsSection from '../components/stats/stats-section';
+import RecordsSection from '../components/stats/records-section';
+import GamesPerDay from '../components/stats/games-per-day';
+import Achievements from '../components/stats/achievements';
 import Game from '../model/game';
-import Stats, { Totals, Records } from '../model/stats';
-import { options } from '../chart-config';
-
-interface StatsSectionProps {
-  totals: Totals;
-}
-function StatsSection(props: StatsSectionProps): JSX.Element {
-  const { totals } = props;
-  return (
-    <Panel header={'Stats'}>
-      <dl className='dl-horizontal'>
-        <dt>Total games</dt>
-        <dd>{totals.games}</dd>
-        <dt>Total players</dt>
-        <dd>{totals.players}</dd>
-        <dt>Active players</dt>
-        <dd>{`${totals.activePlayers} (${((totals.activePlayers / totals.players) * 100).toFixed(2)}%)`}</dd>
-      </dl>
-    </Panel>
-  );
-}
-
-interface RecordsSectionProps {
-  records: Records;
-  base: string;
-}
-function RecordsSection(props: RecordsSectionProps): JSX.Element {
-  const { records, base } = props;
-  const player = records.winningStreak.player;
-  return (
-    <Panel header={'Records'}>
-      <dl className='dl-horizontal'>
-        <dt style={{whiteSpace: 'normal'}}>Longest winning streak</dt>
-        <dd><b>{records.winningStreak.count}</b> (<a href={`${base}player/${player}`}>{player}</a>)</dd>
-      </dl>
-    </Panel>
-  );
-}
-
-interface GamesPerDayProps {
-  gamesPerDay: [number, number][];
-}
-function GamesPerDay(props: GamesPerDayProps): JSX.Element {
-  const { gamesPerDay } = props;
-  const data = {datasets: [{
-    data: gamesPerDay.map(d => {return {x: d[0] * 1000, y: d[1]}}),
-    fill: false,
-    borderColor: '#0000FF',
-  }]};
-  const localOptions = {
-    maintainAspectRatio: false,
-    scales: {xAxes: [{
-      type: 'time',
-      time: {
-        minUnit: 'day',
-      },
-    }]},
-  };
-  return (
-    <Line data={data} options={Object.assign({}, options, localOptions)} height={200}/>
-  );
-}
-
-interface AchievementPanelProps {
-  achievement: Achievement;
-  count: number;
-}
-function AchievementPanel(props: AchievementPanelProps): JSX.Element {
-  const { achievement, count } = props;
-  const icon = "achievement-" + achievement.name.replace(/ /g, '');
-  return (
-    <Panel header={achievement.name} style={{textAlign: 'center'}}>
-      <div className={icon} style={{margin: 'auto'}}/>
-      {achievement.description} - <b>{count}</b>
-    </Panel>
-  );
-}
-
-interface AchievementsProps {
-  achievements: [Achievement, number][];
-}
-function Achievements(props: AchievementsProps): JSX.Element {
-  const { achievements } = props;
-  return (
-    <Panel header={'Achievements'}>
-      {achievements.map((a, i) => <Col xs={3} key={`${i}`}><AchievementPanel achievement={a[0]} count={a[1]}/></Col>)}
-    </Panel>
-  );
-}
+import Stats from '../model/stats';
 
 interface StatsPageProps extends Props<StatsPage> {
   base: string;
