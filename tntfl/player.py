@@ -84,16 +84,6 @@ class Player(object):
             for achievement in achievements:
                 self.achievements[achievement] = game.time
 
-    def overrated(self):
-        if len(self.games) >= 10:
-            skill = 0
-            total = 0
-            for game in self.games[-10:]:
-                skill += game.skillChangeToBlue if game.bluePlayer == self.name else -game.skillChangeToBlue
-                total += skill
-            return skill - (total / 10)
-        return 0
-
     def wonGame(self, game):
         return (game.redPlayer == self.name and game.redScore > game.blueScore) or (game.bluePlayer == self.name and game.blueScore > game.redScore)
 

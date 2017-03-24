@@ -4,6 +4,13 @@ import * as React from 'react';
 import Game from '../model/game';
 import Player from '../model/player';
 
+export function mapsEqual<T, U>(first: Map<T, U>, second: Map<T, U>): boolean {
+  const valid = first !== undefined && second !== undefined;
+  return valid &&
+    (first.size === second.size) &&
+    [...first.keys()].every(k => first.get(k) === second.get(k));
+}
+
 export function getLadderLeagueClass(rank: number, numActivePlayers: number) {
   let league = '';
   if (rank === -1) {

@@ -7,16 +7,27 @@ import unittest
 class TestRunner(unittest.TestCase):
     __metaclass__ = abc.ABCMeta
 
+    def _backupFilename(self, filename):
+        return '%s.actual' % filename
+
+    def _backupFile(self, filename):
+        if os.path.exists(filename):
+            os.rename(filename, self._backupFilename(filename))
+
+    def _restoreFile(self, filename):
+        if os.path.exists(filename):
+            os.remove(filename)
+        if os.path.exists(self._backupFilename(filename)):
+            os.rename(self._backupFilename(filename), filename)
+
     def setUp(self):
-        if os.path.exists('ladder.txt'):
-            os.rename('ladder.txt', 'ladder.actual')
+        self._backupFile('tntfl.cfg')
+        self._backupFile('ladder.txt')
         shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
 
     def tearDown(self):
-        if os.path.exists('ladder.txt'):
-            os.remove('ladder.txt')
-        if os.path.exists('ladder.actual'):
-            os.rename('ladder.actual', 'ladder.txt')
+        self._restoreFile('ladder.txt')
+        self._restoreFile('tntfl.cfg')
 
     @abc.abstractmethod
     def _getJson(self, page, query=None):
@@ -80,8 +91,7 @@ class PlayerApi(Tester):
         self.assertEqual(response['name'], "rc")
         self.assertEqual(response['rank'], -1)
         self.assertEqual(response['active'], False)
-        self.assertAlmostEqual(response['skill'], 1.21917, 4)
-        self.assertAlmostEqual(response['overrated'], 7.96406, 4)
+        self.assertAlmostEqual(response['skill'], 1.55744, 4)
         self.assertEqual(response['total']['for'], 59)
         self.assertEqual(response['total']['against'], 142)
         self.assertEqual(response['total']['games'], 20)
@@ -105,7 +115,7 @@ class PlayerApi(Tester):
         self.assertEqual(jrem['losses'], 16)
         self.assertEqual(jrem['for'], 59)
         self.assertEqual(jrem['against'], 142)
-        self.assertAlmostEqual(jrem['skillChange'], 1.219, 2)
+        self.assertAlmostEqual(jrem['skillChange'], 1.55744, 4)
 
     def testAchievements(self):
         response = self._getJson('player.cgi', 'player=rc&method=achievements&view=json')
