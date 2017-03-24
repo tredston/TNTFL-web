@@ -18,9 +18,20 @@ export interface Records {
   longestGame: Game;
 }
 
+export interface BeltStat {
+  player: string;
+  count: number;
+}
+
+export interface Belt {
+  current: BeltStat;
+  best: BeltStat;
+}
+
 interface Stats {
   totals: Totals;
   records: Records;
+  belt: Belt;
   gamesPerDay: [number, number][];
 }
 export default Stats;

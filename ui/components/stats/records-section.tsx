@@ -1,19 +1,9 @@
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
 
+import PlayerLink from './player-link';
 import { Records } from '../../model/stats';
 import StatListItem from './stat-list-item';
-
-interface PlayerLinkProps {
-  base: string;
-  name: string;
-}
-function PlayerLink(props: PlayerLinkProps): JSX.Element {
-  const { base, name } = props;
-  return (
-    <a href={`${base}player/${name}`}>{name}</a>
-  );
-}
 
 interface RecordsSectionProps {
   records: Records;

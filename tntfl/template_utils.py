@@ -1,7 +1,8 @@
-from collections import OrderedDict
 from datetime import datetime
-from tntfl.player import PerPlayerStat
+
 from tntfl.achievements import Achievement
+from tntfl.player import PerPlayerStat
+from tntfl.transforms import belt
 
 
 def getSharedGames(player1, player2):
@@ -166,6 +167,8 @@ def getGamesPerDay(games):
 def getStatsJson(ladder, base):
     winningStreak = ladder.getStreaks()['win']
     mostSignificantGames = sorted([g for g in ladder.games if not g.isDeleted()], key=lambda x: abs(x.skillChangeToBlue), reverse=True)
+    beltHistory = belt.getBeltHistory(belt.do(ladder.games))
+    longestHolder = max(beltHistory, key=lambda b: b[1])
     return {
         'totals': {
             'games': len(ladder.games),
@@ -184,6 +187,16 @@ def getStatsJson(ladder, base):
             'mostSignificant': [gameToJson(g, base) for g in mostSignificantGames[0:5]],
             'leastSignificant': [gameToJson(g, base) for g in reversed(mostSignificantGames[-5:])],
             'longestGame': gameToJson(max(ladder.games, key=lambda g: g.redScore + g.blueScore), base),
+        },
+        'belt': {
+            'best': {
+                'player': longestHolder[0],
+                'count': longestHolder[1],
+            },
+            'current': {
+                'player': beltHistory[-1][0],
+                'count': beltHistory[-1][1],
+            }
         },
         'gamesPerDay': getGamesPerDay(ladder.games),
     }

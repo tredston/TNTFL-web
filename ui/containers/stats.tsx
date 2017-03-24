@@ -6,10 +6,10 @@ import * as ReactDOM from 'react-dom';
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
 import StatsSection from '../components/stats/stats-section';
+import BeltSection from '../components/stats/belt-section';
 import RecordsSection from '../components/stats/records-section';
 import GamesPerDay from '../components/stats/games-per-day';
 import Achievements from '../components/stats/achievements';
-import Game from '../model/game';
 import Stats from '../model/stats';
 
 interface StatsPageProps extends Props<StatsPage> {
@@ -48,8 +48,9 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
           ? <Grid fluid={true}>
             <Row>
               <Col md={4}>
-                <StatsSection totals={stats.totals}/>
+                <BeltSection belt={stats.belt} base={base} />
                 <RecordsSection records={stats.records} base={base}/>
+                <StatsSection totals={stats.totals}/>
               </Col>
               <Col md={4}>
                 <Panel header={'Most Significant Games'}>
