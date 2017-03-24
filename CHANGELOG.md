@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.0.0
+* Scale skill point transfer by number of goals played
+** Scaled linearly with 10 goals being the expected length of a game
+* Removed the `overrated` stat from the `player` API endpoint
+* Fixed league colours in the `Recent Games` list
+
 ## 4.2.1
 * Fix rendering of per player stats
 
