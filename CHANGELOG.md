@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.1
+* Fix linting
+
 ## 5.0.0
 * Scale skill point transfer by number of goals played
 ** Scaled linearly with 10 goals being the expected length of a game
