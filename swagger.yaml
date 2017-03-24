@@ -232,10 +232,6 @@ definitions:
         properties:
           href:
             type: string
-      overrated:
-        description: How overrated the system thinks the player is
-        type: number
-        format: double
       active:
         description: Whether or not the system considers the player active
         type: boolean
