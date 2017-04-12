@@ -137,4 +137,12 @@ class StatsJson(unittest.TestCase):
         self.assertIn('mostSignificant', actual['records'])
         self.assertIn('leastSignificant', actual['records'])
 
-        self.assertIn('gamesPerDay', actual)
+        self.assertIn('belt', actual)
+        self.assertIn('current', actual['belt'])
+        self.assertIn('player', actual['belt']['current'])
+        self.assertIn('count', actual['belt']['current'])
+        self.assertIn('best', actual['belt'])
+        self.assertIn('player', actual['belt']['best'])
+        self.assertIn('count', actual['belt']['best'])
+
+        self.assertIn('gamesPerWeek', actual)

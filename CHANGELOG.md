@@ -1,5 +1,8 @@
 # Changelog
 
+## develop
+* Add more stats
+
 ## 5.0.1
 * Fix linting
 
