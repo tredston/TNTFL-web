@@ -152,16 +152,21 @@ def appendChristmas(links, base):
     return links
 
 
-def getGamesPerDay(games):
+def getGamesPerWeek(games):
     if len(games) == 0:
         return []
-    gamesPerDay = [[games[0].timeAsDate().strftime('%s'), 0]]
+    first = games[0].timeAsDate()
+    curYear, curWeek, _ = first.isocalendar()
+    gamesPerWeek = [[first.strftime('%s'), 0]]
     for game in games:
-        day = game.timeAsDate().strftime('%s')
-        if gamesPerDay[-1][0] != day:
-            gamesPerDay.append([day, 0])
-        gamesPerDay[-1][1] += 1
-    return gamesPerDay
+        date = game.timeAsDate()
+        year, week, _ = date.isocalendar()
+        if curYear != year or curWeek != week:
+            curYear = year
+            curWeek = week
+            gamesPerWeek.append([date.strftime('%s'), 0])
+        gamesPerWeek[-1][1] += 1
+    return gamesPerWeek
 
 
 def getStatsJson(ladder, base):
@@ -198,5 +203,5 @@ def getStatsJson(ladder, base):
                 'count': beltHistory[-1][1],
             }
         },
-        'gamesPerDay': getGamesPerDay(ladder.games),
+        'gamesPerWeek': getGamesPerWeek(ladder.games),
     }

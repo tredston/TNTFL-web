@@ -3,13 +3,13 @@ import { Line } from 'react-chartjs-2';
 
 import { options } from '../../chart-config';
 
-interface GamesPerDayProps {
-  gamesPerDay: [number, number][];
+interface GamesPerWeekProps {
+  gamesPerWeek: [number, number][];
 }
-export default function GamesPerDay(props: GamesPerDayProps): JSX.Element {
-  const { gamesPerDay } = props;
+export default function GamesPerWeek(props: GamesPerWeekProps): JSX.Element {
+  const { gamesPerWeek } = props;
   const data = {datasets: [{
-    data: gamesPerDay.map(d => {return {x: d[0] * 1000, y: d[1]}}),
+    data: gamesPerWeek.map(d => {return {x: d[0] * 1000, y: d[1]}}),
     fill: false,
     borderColor: '#0000FF',
   }]};

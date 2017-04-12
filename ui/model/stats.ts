@@ -32,6 +32,6 @@ interface Stats {
   totals: Totals;
   records: Records;
   belt: Belt;
-  gamesPerDay: [number, number][];
+  gamesPerWeek: [number, number][];
 }
 export default Stats;

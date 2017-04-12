@@ -145,4 +145,4 @@ class StatsJson(unittest.TestCase):
         self.assertIn('player', actual['belt']['best'])
         self.assertIn('count', actual['belt']['best'])
 
-        self.assertIn('gamesPerDay', actual)
+        self.assertIn('gamesPerWeek', actual)

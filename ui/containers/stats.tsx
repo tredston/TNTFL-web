@@ -8,7 +8,7 @@ import NavigationBar from '../components/navigation-bar';
 import StatsSection from '../components/stats/stats-section';
 import BeltSection from '../components/stats/belt-section';
 import RecordsSection from '../components/stats/records-section';
-import GamesPerDay from '../components/stats/games-per-day';
+import GamesPerWeek from '../components/stats/games-per-week';
 import Achievements from '../components/stats/achievements';
 import Stats from '../model/stats';
 
@@ -65,8 +65,8 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
             </Row>
             <Row>
               <Col md={12}>
-                <Panel header={'Games Per Day'}>
-                  <GamesPerDay gamesPerDay={stats.gamesPerDay} />
+                <Panel header={'Games Per Week'}>
+                  <GamesPerWeek gamesPerWeek={stats.gamesPerWeek} />
                 </Panel>
               </Col>
             </Row>

@@ -307,5 +307,5 @@ class StatsApi(Tester):
         self.assertEqual(len(response['records']['mostSignificant']), 5)
         self.assertIn('leastSignificant', response['records'])
         self.assertEqual(len(response['records']['leastSignificant']), 5)
-        self.assertIn('gamesPerDay', response)
-        self.assertGreater(response['gamesPerDay'], 0)
+        self.assertIn('gamesPerWeek', response)
+        self.assertGreater(response['gamesPerWeek'], 0)
