@@ -12,6 +12,7 @@ import tntfl.test.test_json as test_json
 import tntfl.test.test_scripts as test_scripts
 import tntfl.test.test_deployment as test_deployment
 import tntfl.test.transforms.test_achievement as test_achievement
+import tntfl.test.transforms.test_belt as test_belt
 import tntfl.test.transforms.test_elo as test_elo
 import tntfl.test.transforms.test_rank as test_rank
 
@@ -32,6 +33,7 @@ def unitTestSuite():
     test_suite.addTest(unittest.findTestCases(test_pundit))
     test_suite.addTest(unittest.findTestCases(test_json))
     test_suite.addTest(unittest.findTestCases(test_achievement))
+    test_suite.addTest(unittest.findTestCases(test_belt))
     test_suite.addTest(unittest.findTestCases(test_elo))
     test_suite.addTest(unittest.findTestCases(test_rank))
     return test_suite

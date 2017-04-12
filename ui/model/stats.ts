@@ -15,11 +15,23 @@ export interface Records {
   };
   mostSignificant: Game[];
   leastSignificant: Game[];
+  longestGame: Game;
+}
+
+export interface BeltStat {
+  player: string;
+  count: number;
+}
+
+export interface Belt {
+  current: BeltStat;
+  best: BeltStat;
 }
 
 interface Stats {
   totals: Totals;
   records: Records;
-  gamesPerDay: [number, number][];
+  belt: Belt;
+  gamesPerWeek: [number, number][];
 }
 export default Stats;

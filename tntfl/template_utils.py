@@ -1,7 +1,8 @@
-from collections import OrderedDict
 from datetime import datetime
-from tntfl.player import PerPlayerStat
+
 from tntfl.achievements import Achievement
+from tntfl.player import PerPlayerStat
+from tntfl.transforms import belt
 
 
 def getSharedGames(player1, player2):
@@ -151,21 +152,28 @@ def appendChristmas(links, base):
     return links
 
 
-def getGamesPerDay(games):
+def getGamesPerWeek(games):
     if len(games) == 0:
         return []
-    gamesPerDay = [[games[0].timeAsDate().strftime('%s'), 0]]
+    first = games[0].timeAsDate()
+    curYear, curWeek, _ = first.isocalendar()
+    gamesPerWeek = [[first.strftime('%s'), 0]]
     for game in games:
-        day = game.timeAsDate().strftime('%s')
-        if gamesPerDay[-1][0] != day:
-            gamesPerDay.append([day, 0])
-        gamesPerDay[-1][1] += 1
-    return gamesPerDay
+        date = game.timeAsDate()
+        year, week, _ = date.isocalendar()
+        if curYear != year or curWeek != week:
+            curYear = year
+            curWeek = week
+            gamesPerWeek.append([date.strftime('%s'), 0])
+        gamesPerWeek[-1][1] += 1
+    return gamesPerWeek
 
 
 def getStatsJson(ladder, base):
     winningStreak = ladder.getStreaks()['win']
     mostSignificantGames = sorted([g for g in ladder.games if not g.isDeleted()], key=lambda x: abs(x.skillChangeToBlue), reverse=True)
+    beltHistory = belt.getBeltHistory(belt.do(ladder.games))
+    longestHolder = max(beltHistory, key=lambda b: b[1])
     return {
         'totals': {
             'games': len(ladder.games),
@@ -183,6 +191,17 @@ def getStatsJson(ladder, base):
             },
             'mostSignificant': [gameToJson(g, base) for g in mostSignificantGames[0:5]],
             'leastSignificant': [gameToJson(g, base) for g in reversed(mostSignificantGames[-5:])],
+            'longestGame': gameToJson(max(ladder.games, key=lambda g: g.redScore + g.blueScore), base),
         },
-        'gamesPerDay': getGamesPerDay(ladder.games),
+        'belt': {
+            'best': {
+                'player': longestHolder[0],
+                'count': longestHolder[1],
+            },
+            'current': {
+                'player': beltHistory[-1][0],
+                'count': beltHistory[-1][1],
+            }
+        },
+        'gamesPerWeek': getGamesPerWeek(ladder.games),
     }

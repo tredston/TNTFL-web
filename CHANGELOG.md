@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.1.0
+* Add more stats
+
 ## 5.0.1
 * Fix linting
 
