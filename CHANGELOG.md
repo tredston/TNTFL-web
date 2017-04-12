@@ -1,6 +1,6 @@
 # Changelog
 
-## develop
+## 5.1.0
 * Add more stats
 
 ## 5.0.1
