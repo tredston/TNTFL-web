@@ -9,7 +9,7 @@ interface GamesPerWeekProps {
 export default function GamesPerWeek(props: GamesPerWeekProps): JSX.Element {
   const { gamesPerWeek } = props;
   const data = {datasets: [{
-    data: gamesPerWeek.map(d => {return {x: d[0] * 1000, y: d[1]}}),
+    data: gamesPerWeek.map(d => { return {x: d[0] * 1000, y: d[1]}; }),
     fill: false,
     borderColor: '#0000FF',
   }]};

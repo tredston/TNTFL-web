@@ -22,18 +22,18 @@ export default function GoalDistributionChart(props: GoalDistributionChartProps)
   let p2data: {[key: number]: number} = {};
   games.forEach((game) => {
     if (game.red.name === player1) {
-      p1data = inc(p1data, game.red.score)
-      p2data = inc(p2data, game.blue.score)
+      p1data = inc(p1data, game.red.score);
+      p2data = inc(p2data, game.blue.score);
     }
     else {
-      p1data = inc(p1data, game.blue.score)
-      p2data = inc(p2data, game.red.score)
+      p1data = inc(p1data, game.blue.score);
+      p2data = inc(p2data, game.red.score);
     }
   });
   const maxGoals = games.reduce((pre, game) => Math.max(pre, game.red.score, game.blue.score), 0);
   const labels = [...Array(maxGoals + 1).keys()];
-  const p1hist = labels.map((score) => p1data[score] | 0);
-  const p2hist = labels.map((score) => -p2data[score] | 0);
+  const p1hist = labels.map((score) => p1data[score] || 0);
+  const p2hist = labels.map((score) => -p2data[score] || 0);
   const data = {
     labels,
     datasets: [
@@ -47,11 +47,11 @@ export default function GoalDistributionChart(props: GoalDistributionChartProps)
         data: p2hist,
         backgroundColor: '#0000FF',
       },
-    ]
+    ],
   };
   const options = {
     scales: {xAxes: [{stacked: true}]},
-  }
+  };
   return (
     <Bar data={data} options={options}/>
   );

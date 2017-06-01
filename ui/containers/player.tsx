@@ -109,5 +109,5 @@ ReactDOM.render(
     addURL={'game/add'}
     playerName={getParameters(1)[0]}
   />,
-  document.getElementById('entry')
+  document.getElementById('entry'),
 );

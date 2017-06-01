@@ -21,11 +21,11 @@ function AchievementsSummary(props: AchievementsSummaryProps): JSX.Element {
         <div style={{display: 'table-cell'}} key={`${i}`}>
           <img
             src={`${base}img/trophy5_24.png`}
-            alt="Achievement unlocked!"
-            title="Achievement unlocked!"
+            alt='Achievement unlocked!'
+            title='Achievement unlocked!'
             style={{width: '100%'}}
           />
-        </div>
+        </div>,
       )}
     </div>
   );
@@ -54,7 +54,7 @@ function SkillChange(props: SkillChangeProps): JSX.Element {
     <div>
       {skillChange > 0 &&
         <div className={'skill-change ' + colour}>
-          {"+" + skillChange.toFixed(3)}
+          {'+' + skillChange.toFixed(3)}
         </div>
       }
     </div>
@@ -89,11 +89,11 @@ interface GameSummaryProps {
 }
 export default function GameSummary(props: GameSummaryProps): JSX.Element {
   const { game, base, numActivePlayers } = props;
-  var redStripe = game.red.score == 10 && game.blue.score == 0;
-  var blueStripe = game.red.score == 0 && game.blue.score == 10;
+  const redStripe = game.red.score === 10 && game.blue.score === 0;
+  const blueStripe = game.red.score === 0 && game.blue.score === 10;
   return (
     <Grid fluid={true}>
-      {game.deleted ? <p className="bg-danger">This game was deleted by {game.deleted.by} at {formatEpoch(game.deleted.at)}</p> : null}
+      {game.deleted ? <p className='bg-danger'>This game was deleted by {game.deleted.by} at {formatEpoch(game.deleted.at)}</p> : null}
       <Table id={'compactTable'}>
         <tbody>
           <tr className={'recent-game-result'}>
@@ -106,13 +106,13 @@ export default function GameSummary(props: GameSummaryProps): JSX.Element {
             <td style={{width: '20%'}} className={stripe(blueStripe)}> <PlayerName name={game.blue.name} base={base} colour={blueStripe ? 'yellow-stripe' : 'blue-player'} /> </td>
           </tr>
           <tr className={'game-changes'}>
-            <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.red.skillChange} colour="skill-change-red" /> </td>
-            <td style={{width: '10%'}} className={'rank-change red'}> <RankChange rankChange={game.red.rankChange} colour="skill-change-red" /> </td>
+            <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.red.skillChange} colour='skill-change-red' /> </td>
+            <td style={{width: '10%'}} className={'rank-change red'}> <RankChange rankChange={game.red.rankChange} colour='skill-change-red' /> </td>
             <td style={{width: '10%'}}/>
             <td style={{width: '20%', textAlign: 'center'}}> <GameTime date={game.date} base={base} /> </td>
             <td style={{width: '10%'}}/>
-            <td style={{width: '10%'}} className={'rank-change blue'}> <RankChange rankChange={game.blue.rankChange} colour="skill-change-blue" /> </td>
-            <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.blue.skillChange} colour="skill-change-blue" /> </td>
+            <td style={{width: '10%'}} className={'rank-change blue'}> <RankChange rankChange={game.blue.rankChange} colour='skill-change-blue' /> </td>
+            <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.blue.skillChange} colour='skill-change-blue' /> </td>
           </tr>
         </tbody>
       </Table>

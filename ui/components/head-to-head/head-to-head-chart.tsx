@@ -8,7 +8,7 @@ function InsertOrigin(data: any, games: Game[]) {
   if (games.length > 0) {
     const day = 86400;
     const beforeMeeting = games[0].date - day;
-    data.unshift({x: beforeMeeting * 1000, y: 0})
+    data.unshift({x: beforeMeeting * 1000, y: 0});
   }
   return data;
 }
@@ -18,8 +18,8 @@ function WinsAhead(player1: string, games: Game[]) {
   let winsAhead = games.map((game: Game) => {
     if (game.red.score !== game.blue.score) {
       if (
-        (game.red.name == player1 && game.red.score > game.blue.score) ||
-        (game.blue.name == player1 && game.blue.score > game.red.score)
+        (game.red.name === player1 && game.red.score > game.blue.score) ||
+        (game.blue.name === player1 && game.blue.score > game.red.score)
       ) {
         player1Ahead += 1;
       }

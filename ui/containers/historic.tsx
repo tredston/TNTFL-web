@@ -15,7 +15,7 @@ import { getMonthName } from '../utils/utils';
 
 interface MonthlyRankingProps {
   year: number;
-  month: number;  //0 indexed
+  month: number;  // 0 indexed
   onClick: (d: Date) => void;
 }
 function Month(props: MonthlyRankingProps): JSX.Element {
@@ -23,7 +23,7 @@ function Month(props: MonthlyRankingProps): JSX.Element {
   return (
     <div>
       <a
-        href="#"
+        href='#'
         onClick={(e) => {
           e.preventDefault();
           onClick(new Date(year, month, 1));
@@ -41,7 +41,7 @@ interface MonthlyRankingsProps {
 }
 function Year(props: MonthlyRankingsProps): JSX.Element {
   const { year, onClick } = props;
-  const now = new Date;
+  const now = new Date();
   const numMonths = year !== now.getFullYear() ? 12 : now.getMonth() + 1;
   let months = Array.from(Array(numMonths).keys());
   // First game was in July 2005
@@ -86,7 +86,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
       entries: undefined,
       gamesFrom: props.gamesFrom,
       gamesTo: props.gamesTo,
-    }
+    };
   }
   async loadLadder(gamesFrom?: number, gamesTo?: number) {
     const { base } = this.props;
@@ -134,7 +134,12 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
         />
         <Grid fluid={true}>
           <Panel>
-            <RangeSlider gamesFrom={fromTime} gamesTo={toTime} id={'rangeSlider'} onChange={(f, t) => this.onRangeChange(f, t)}/>
+            <RangeSlider
+              gamesFrom={fromTime}
+              gamesTo={toTime}
+              id={'rangeSlider'}
+              onChange={(f, t) => this.onRangeChange(f, t)}
+            />
           </Panel>
           <Row>
             <Col lg={8}>
@@ -156,8 +161,8 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
 
 function getParameters(): [number | undefined, number | undefined] {
   if (location.search !== '') {
-    const params = QueryString.parse(location.search);
-    return [+params['gamesFrom'], +params['gamesTo']];
+    const params: any = QueryString.parse(location.search);
+    return [+params.gamesFrom, +params.gamesTo];
   }
   return [undefined, undefined];
 }
@@ -169,5 +174,5 @@ ReactDOM.render(
     gamesFrom={getParameters()[0]}
     gamesTo={getParameters()[1]}
   />,
-  document.getElementById('entry')
+  document.getElementById('entry'),
 );

@@ -10,7 +10,7 @@ interface GoalsStatProps {
 export default function GoalsStat(props: GoalsStatProps): JSX.Element {
   const { player } = props;
   return (
-    <StatBox title="Goals">
+    <StatBox title='Goals'>
       {player.total.for + player.total.against} goals
       <Pie
         data={{

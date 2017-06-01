@@ -21,14 +21,12 @@ interface GamePageState {
   activePlayers?: {[key: number]: number};
 }
 class GamePage extends Component<GamePageProps, GamePageState> {
-  constructor(props: GamePageProps, context: any) {
-    super(props, context)
-    this.state = {
-      game: undefined,
-      punditry: undefined,
-      activePlayers: undefined,
-    };
-  }
+  state = {
+    game: undefined,
+    punditry: undefined,
+    activePlayers: undefined,
+  };
+
   async loadGame() {
     const { base, gameId } = this.props;
     const url = `${base}game/${gameId}/json`;
@@ -57,7 +55,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     const { game, punditry, activePlayers } = this.state;
     const numActivePlayers: number = activePlayers ? activePlayers[Number(Object.keys(activePlayers)[0])] : 0;
     return (
-      <div className="gamePage">
+      <div className='gamePage'>
         <NavigationBar
           base={base}
           addURL={addURL}
@@ -66,7 +64,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
           <Grid fluid={true}>
             <Panel>
               <Row>
-                <GameSummary game={game} base={"../../"} numActivePlayers={numActivePlayers} />
+                <GameSummary game={game} base={'../../'} numActivePlayers={numActivePlayers} />
               </Row>
               <Row>
                 <GameDetails game={game} punditry={punditry}/>
@@ -86,5 +84,5 @@ ReactDOM.render(
       addURL={'game/add'}
       gameId={getParameters(1)[0]}
     />,
-    document.getElementById('entry')
+    document.getElementById('entry'),
 );

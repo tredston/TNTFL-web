@@ -9,7 +9,7 @@ interface AchievementPanelProps {
 }
 function AchievementPanel(props: AchievementPanelProps): JSX.Element {
   const { achievement, count } = props;
-  const icon = "achievement-" + achievement.name.replace(/ /g, '');
+  const icon = 'achievement-' + achievement.name.replace(/ /g, '');
   return (
     <Panel header={achievement.name} style={{textAlign: 'center'}}>
       <div className={icon} style={{margin: 'auto'}}/>

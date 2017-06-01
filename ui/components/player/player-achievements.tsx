@@ -10,7 +10,7 @@ interface PlayerAchievementProps {
 }
 function PlayerAchievement(props: PlayerAchievementProps): JSX.Element {
   const { achievement, base } = props;
-  const icon = "achievement-" + achievement.name.replace(/ /g, '');
+  const icon = 'achievement-' + achievement.name.replace(/ /g, '');
   const opacity = achievement.time ? 1 : 0.3;
   const iconStyle = {width: 100, textAlign: 'center', opacity};
   return (

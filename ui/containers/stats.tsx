@@ -24,7 +24,7 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
     super(props, context);
     this.state = {
       stats: undefined,
-    }
+    };
   }
   async load() {
     const { base } = this.props;
@@ -88,5 +88,5 @@ ReactDOM.render(
     base={'../'}
     addURL={'game/add'}
   />,
-  document.getElementById('entry')
+  document.getElementById('entry'),
 );

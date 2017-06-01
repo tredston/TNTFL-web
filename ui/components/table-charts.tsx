@@ -7,7 +7,7 @@ const options = {
   animation: false,
   maintainAspectRatio: false,
   responsive: false,
-}
+};
 
 interface TapleLineChartProps {
   data: any;
@@ -20,7 +20,7 @@ export function TableLineChart(props: TapleLineChartProps): JSX.Element {
       xAxes: [{display: false}],
       yAxes: [{display: false}],
     },
-  }
+  };
   return (
     <div style={{width, margin: 'auto'}}>
       <Line data={data} options={Object.assign({}, options, sup)} width={width} height={42}/>

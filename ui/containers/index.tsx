@@ -19,13 +19,11 @@ interface IndexPageState {
   recentGames: Game[];
 }
 export default class IndexPage extends Component<IndexPageProps, IndexPageState> {
-  constructor(props: IndexPageProps, context: any) {
-    super(props, context);
-    this.state = {
-      entries: undefined,
-      recentGames: [],
-    }
-  }
+  state = {
+    entries: undefined,
+    recentGames: [],
+  };
+
   async loadLadder() {
     const { base } = this.props;
     let url = `${base}ladder.cgi?view=json&players=1&showInactive=1`;
@@ -41,10 +39,10 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   componentDidMount() {
     this.loadLadder();
     this.loadRecent();
-    setInterval(function() {
+    setInterval(() => {
       this.loadLadder();
       this.loadRecent();
-    }.bind(this), 600000);
+    }, 600 * 1000);
   }
   render() {
     const { addURL, base } = this.props;
@@ -76,5 +74,5 @@ ReactDOM.render(
     base={''}
     addURL={'game/add'}
   />,
-  document.getElementById('entry')
+  document.getElementById('entry'),
 );

@@ -16,7 +16,7 @@ function BeltSectionStat(props: BeltSectionStatProps): JSX.Element {
     <span>
       <b><PlayerLink name={stat.player} base={base} /></b> ({Pluralize('games', stat.count, true)})
     </span>
-  )
+  );
 }
 
 interface BeltSectionProps {

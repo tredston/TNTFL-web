@@ -51,7 +51,7 @@ export default class GameList extends Component<GameListProps, State> {
             base={base}
             numActivePlayers={(activePlayers && activePlayers.get(game.date - 1)) || 0}
             key={`${game.date}`}
-          />
+          />,
         )}
       </Grid>
     );

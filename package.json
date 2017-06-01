@@ -10,7 +10,7 @@
     "compile": "npm run compile:webpack",
     "compile:webpack": "NODE_ENV=production webpack --progress --colors --bail",
     "start": "webpack --watch --progress --colors",
-    "test": "tslint ui/**/*.ts"
+    "test": "tslint -t stylish -c tslint.json --project tsconfig.json"
   },
   "repository": {
     "type": "git",

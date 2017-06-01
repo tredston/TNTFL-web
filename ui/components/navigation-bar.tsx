@@ -13,12 +13,10 @@ interface State {
   isBusy: boolean;
 }
 export default class NavigationBar extends Component<NavigationBarProps, State> {
-  constructor(props: NavigationBarProps, context: any) {
-    super(props, context);
-    this.state = {
-      isBusy: false,
-    }
-  }
+  state = {
+    isBusy: false,
+  };
+
   render(): JSX.Element {
     const { base, addURL } = this.props;
     const { isBusy } = this.state;
@@ -49,7 +47,7 @@ export default class NavigationBar extends Component<NavigationBarProps, State> 
                 credentials: 'omit',
               };
               fetch(url, options).then(r => {
-                if (r.status == 200){
+                if (r.status === 200) {
                   window.location.href = r.url;
                 }
               });

@@ -18,7 +18,7 @@ interface SpeculatePageState {
   speculated?: {
     entries: LadderEntry[],
     games: Game[],
-  },
+  };
   isBusy: boolean;
 }
 export default class SpeculatePage extends Component<SpeculatePageProps, SpeculatePageState> {
@@ -27,7 +27,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     this.state = {
       speculated: undefined,
       isBusy: false,
-    }
+    };
   }
   async loadLadder(games: Game[]) {
     const { base } = this.props;
@@ -116,5 +116,5 @@ ReactDOM.render(
     base={'../'}
     addURL={'game/add'}
   />,
-  document.getElementById('entry')
+  document.getElementById('entry'),
 );

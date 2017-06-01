@@ -14,12 +14,10 @@ interface State {
   showInactive: boolean;
 }
 export default class LadderPanel extends Component<LadderPanelProps, State> {
-  constructor(props: LadderPanelProps, context: any) {
-    super(props, context);
-    this.state = {
-      showInactive: false,
-    }
-  }
+  state = {
+    showInactive: false,
+  };
+
   onShowInactive() {
     const { showInactive } = this.state;
     this.setState({showInactive: !showInactive});

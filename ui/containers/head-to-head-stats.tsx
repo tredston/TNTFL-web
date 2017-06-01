@@ -61,5 +61,5 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
         activePlayers={activePlayers}
       />
     );
-  }
+  };
 }

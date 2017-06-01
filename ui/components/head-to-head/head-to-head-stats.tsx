@@ -61,7 +61,7 @@ export default function HeadToHeadStats(props: HeadToHeadStatsProps): JSX.Elemen
           />
           <PointSwingRow p1swing={p1swing}/>
           {rows.map(({name, p1, p2}, i) =>
-            <StatRow name={name} redValue={p1} blueValue={p2} redAhead={p1 > p2} blueAhead={p2 > p1} key={`${i}`}/>
+            <StatRow name={name} redValue={p1} blueValue={p2} redAhead={p1 > p2} blueAhead={p2 > p1} key={`${i}`}/>,
           )}
           <PredictRow base={base} player1={player1} player2={player2}/>
         </tbody>
