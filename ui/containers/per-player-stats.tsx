@@ -11,7 +11,7 @@ interface PerPlayerStatsProps extends Props<PerPlayerStats>{
   base: string;
 }
 interface State {
-  stats: PerPlayerStat[];
+  stats?: PerPlayerStat[];
 }
 export default class PerPlayerStats extends Component<PerPlayerStatsProps, State> {
   constructor(props: PerPlayerStatsProps, context: any) {

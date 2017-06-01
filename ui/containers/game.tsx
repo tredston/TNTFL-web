@@ -16,9 +16,9 @@ interface GamePageProps extends Props<GamePage> {
   gameId: string;
 }
 interface GamePageState {
-  game: Game;
-  punditry: string[];
-  activePlayers: {[key: number]: number};
+  game?: Game;
+  punditry?: string[];
+  activePlayers?: {[key: number]: number};
 }
 class GamePage extends Component<GamePageProps, GamePageState> {
   constructor(props: GamePageProps, context: any) {
@@ -55,7 +55,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
   render() {
     const { base, addURL } = this.props;
     const { game, punditry, activePlayers } = this.state;
-    const numActivePlayers: number = activePlayers && activePlayers[Number(Object.keys(activePlayers)[0])];
+    const numActivePlayers: number = activePlayers ? activePlayers[Number(Object.keys(activePlayers)[0])] : 0;
     return (
       <div className="gamePage">
         <NavigationBar

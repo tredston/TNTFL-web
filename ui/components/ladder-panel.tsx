@@ -6,7 +6,7 @@ import Ladder from './ladder';
 import LadderEntry from '../model/ladder-entry';
 
 interface LadderPanelProps extends Props<LadderPanel> {
-  entries: LadderEntry[];
+  entries?: LadderEntry[];
   atDate: number;
   bsStyle?: string;
 }

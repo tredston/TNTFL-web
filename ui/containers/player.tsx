@@ -21,10 +21,10 @@ interface PlayerPageProps extends Props<PlayerPage> {
   playerName: string;
 }
 interface PlayerPageState {
-  player: Player;
-  games: Game[];
-  achievements: Achievement[];
-  activePlayers: number;
+  player?: Player;
+  games?: Game[];
+  achievements?: Achievement[];
+  activePlayers?: number;
 }
 class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
   constructor(props: PlayerPageProps, context: any) {
@@ -79,7 +79,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
           <Grid fluid={true}>
             <Row>
               <Col md={8}>
-                <PlayerStats player={player} numActivePlayers={activePlayers} games={games} base={base}/>
+                <PlayerStats player={player} numActivePlayers={activePlayers || 0} games={games} base={base}/>
                 <Panel header={<h2>Skill Chart</h2>}>
                   <PlayerSkillChart playerName={player.name} games={games} />
                 </Panel>

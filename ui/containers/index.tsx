@@ -15,7 +15,7 @@ interface IndexPageProps extends Props<IndexPage> {
   addURL: string;
 }
 interface IndexPageState {
-  entries: LadderEntry[];
+  entries?: LadderEntry[];
   recentGames: Game[];
 }
 export default class IndexPage extends Component<IndexPageProps, IndexPageState> {

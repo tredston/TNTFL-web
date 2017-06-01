@@ -13,13 +13,13 @@ interface HeadToHeadStatsProps {
   player1Name: string;
   player2Name: string;
   games: Game[];
-  player1: Player;
-  player2: Player;
-  activePlayers: {[key: number]: number};
+  player1?: Player;
+  player2?: Player;
+  activePlayers?: {[key: number]: number};
 }
 export default function HeadToHeadStats(props: HeadToHeadStatsProps): JSX.Element {
   const { base, player1Name, player2Name, player1, player2, games, activePlayers } = props;
-  const numActivePlayers: number = activePlayers && activePlayers[Number(Object.keys(activePlayers)[0])];
+  const numActivePlayers: number = activePlayers ? activePlayers[Number(Object.keys(activePlayers)[0])] : 0;
   let p1swing = 0;
   let p1wins = 0;
   let p2wins = 0;

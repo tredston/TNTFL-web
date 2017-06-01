@@ -19,7 +19,7 @@ interface HeadToHeadPageProps extends Props<HeadToHeadPage> {
   player2: string;
 }
 interface HeadToHeadPageState {
-  games: Game[];
+  games?: Game[];
 }
 class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState> {
   constructor(props: HeadToHeadPageProps, context: any) {

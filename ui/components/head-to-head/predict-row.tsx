@@ -6,11 +6,11 @@ import Player from '../../model/player';
 
 interface PredictRowProps extends Props<PredictRow> {
   base: string;
-  player1: Player;
-  player2: Player;
+  player1?: Player;
+  player2?: Player;
 }
 interface PredictRowState {
-  predictedBlueGoalRatio: number;
+  predictedBlueGoalRatio?: number;
 }
 export default class PredictRow extends Component<PredictRowProps, PredictRowState> {
   constructor(props: PredictRowProps, context: any) {

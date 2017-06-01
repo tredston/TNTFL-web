@@ -16,8 +16,8 @@ interface DeletePageProps extends Props<DeletePage> {
   gameId: string;
 }
 interface DeletePageState {
-  game: Game;
-  activePlayers: {[key: number]: number};
+  game?: Game;
+  activePlayers?: {[key: number]: number};
 }
 class DeletePage extends Component<DeletePageProps, DeletePageState> {
   constructor(props: DeletePageProps, context: any) {
@@ -46,7 +46,7 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
   render() {
     const { base, addURL } = this.props;
     const { game, activePlayers } = this.state;
-    const numActivePlayers: number = activePlayers && activePlayers[Number(Object.keys(activePlayers)[0])];
+    const numActivePlayers: number = activePlayers ? activePlayers[Number(Object.keys(activePlayers)[0])] : 0;
     return (
       <div className="gamePage">
         <NavigationBar

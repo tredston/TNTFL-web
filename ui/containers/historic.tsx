@@ -75,9 +75,9 @@ interface HistoricPageProps extends Props<HistoricPage> {
   gamesTo?: number;
 }
 interface HistoricPageState {
-  entries: LadderEntry[];
-  gamesFrom: number;
-  gamesTo: number;
+  entries?: LadderEntry[];
+  gamesFrom?: number;
+  gamesTo?: number;
 }
 export default class HistoricPage extends Component<HistoricPageProps, HistoricPageState> {
   constructor(props: HistoricPageProps, context: any) {
@@ -88,7 +88,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
       gamesTo: props.gamesTo,
     }
   }
-  async loadLadder(gamesFrom: number, gamesTo: number) {
+  async loadLadder(gamesFrom?: number, gamesTo?: number) {
     const { base } = this.props;
     let url = `${base}ladder.cgi?view=json&players=1&gamesFrom=${gamesFrom}&gamesTo=${gamesTo}&showInactive=1`;
     const r = await fetch(url);

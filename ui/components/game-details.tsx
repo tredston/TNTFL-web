@@ -32,7 +32,7 @@ function Punditry(props: PunditryProps): JSX.Element {
 
 interface GameDetailsProps {
   game: Game;
-  punditry: string[];
+  punditry?: string[];
 }
 export default function GameDetails(props: GameDetailsProps): JSX.Element {
   const { game, punditry } = props;

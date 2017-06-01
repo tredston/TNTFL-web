@@ -50,7 +50,7 @@ function getStreakRecords(player: Player, games: Game[]) {
       }
     }
     return {streaks, currentStreak};
-  }, {streaks: [], currentStreak: {win: true, gameTimes: []}});
+  }, {streaks: [] as Streak[], currentStreak: {win: true, gameTimes: []} as Streak});
   const winningStreak = streaks.reduce((winning, streak) => (streak.win && streak.gameTimes.length > winning.gameTimes.length) ? streak : winning , {win: true, gameTimes: []});
   const losingStreak = streaks.reduce((losing, streak) => (!streak.win && streak.gameTimes.length > losing.gameTimes.length) ? streak : losing, {win: false, gameTimes: []});
   return {winningStreak, losingStreak, currentStreak};

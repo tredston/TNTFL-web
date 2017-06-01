@@ -13,7 +13,7 @@ interface GamesPageProps extends Props<GamesPage> {
   title: string;
 }
 interface GamesPageState {
-  games: Game[];
+  games?: Game[];
 }
 export default class GamesPage extends Component<GamesPageProps, GamesPageState> {
   constructor(props: GamesPageProps, context: any) {

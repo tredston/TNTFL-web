@@ -17,7 +17,7 @@ interface StatsPageProps extends Props<StatsPage> {
   addURL: string;
 }
 interface StatsPageState {
-  stats: Stats;
+  stats?: Stats;
 }
 export default class StatsPage extends Component<StatsPageProps, StatsPageState> {
   constructor(props: StatsPageProps, context: any) {

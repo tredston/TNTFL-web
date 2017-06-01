@@ -15,7 +15,7 @@ interface SpeculatePageProps extends Props<SpeculatePage> {
   addURL: string;
 }
 interface SpeculatePageState {
-  speculated: {
+  speculated?: {
     entries: LadderEntry[],
     games: Game[],
   },
@@ -43,27 +43,29 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
   onAddGame(redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) {
     this.setState({isBusy: true} as SpeculatePageState);
     const { speculated } = this.state;
-    const games = speculated.games.slice();
-    games.push({
-      red: {
-        name: redPlayer,
-        score: redScore,
-        rankChange: undefined,
-        newRank: undefined,
-        skillChange: undefined,
-        achievements: [],
-      },
-      blue: {
-        name: bluePlayer,
-        score: blueScore,
-        rankChange: undefined,
-        newRank: undefined,
-        skillChange: undefined,
-        achievements: [],
-      },
-      date: undefined,
-    });
-    this.loadLadder(games).then(() => this.setState({isBusy: false} as SpeculatePageState));
+    if (speculated) {
+      const games = speculated.games.slice();
+      games.push({
+        red: {
+          name: redPlayer,
+          score: redScore,
+          rankChange: undefined,
+          newRank: undefined,
+          skillChange: undefined,
+          achievements: [],
+        },
+        blue: {
+          name: bluePlayer,
+          score: blueScore,
+          rankChange: undefined,
+          newRank: undefined,
+          skillChange: undefined,
+          achievements: [],
+        },
+        date: undefined,
+      } as any);
+      this.loadLadder(games).then(() => this.setState({isBusy: false} as SpeculatePageState));
+    }
   }
   onReset(e: any) {
     e.preventDefault();
@@ -74,8 +76,8 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     const { addURL, base } = this.props;
     const { speculated, isBusy } = this.state;
     const isSpeculating = speculated && speculated.games.length > 0;
-    const entries = speculated && speculated.entries;
     const now = (new Date()).getTime() / 1000;
+    const entries = speculated && speculated.entries;
     return (
       <div>
         <NavigationBar
