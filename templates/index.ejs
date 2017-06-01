@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= htmlWebpackPlugin.options.title%>Table Football Ladder <%= htmlWebpackPlugin.options.appVersion%></title>
+    <link href="<%= htmlWebpackPlugin.options.base%>css/ladder.css?v=<%= htmlWebpackPlugin.options.appVersion%>" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+    <% for (var link of htmlWebpackPlugin.options.links) { %>
+      <%= link %>
+    <% } %>
+  </head>
+  <body>
+    <div id="entry">Javascript disabled</div>
+    <% for (var key of Object.keys(htmlWebpackPlugin.files.chunks)) { %>
+      <script type="text/javascript" src="<%= htmlWebpackPlugin.options.base%><%= htmlWebpackPlugin.files.chunks[key].entry%>"></script>
+    <% } %>
+  </body>
+</html>

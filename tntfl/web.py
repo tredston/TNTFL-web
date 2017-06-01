@@ -1,4 +1,5 @@
 import cgi
+import os
 
 from mako.lookup import TemplateLookup
 from mako import exceptions
@@ -14,13 +15,21 @@ def get_template(templatename, **kwargs):
     form = cgi.FieldStorage()
     if form.getfirst("view") == "json":
         template = "json/" + templatename
+        try:
+            mytemplate = tl.get_template(template)
+            return mytemplate.render(**kwargs)
+        except:
+            return exceptions.text_error_template().render()
     else:
-        template = templatename
-    try:
-        mytemplate = tl.get_template(template)
-        return mytemplate.render(**kwargs)
-    except:
-        return exceptions.text_error_template().render()
+        root, ext = os.path.splitext(templatename)
+        template = os.path.join('dist', '%s.html' % root.lower())
+        if os.path.exists(template):
+            with open(template, 'r') as fh:
+                print 'Content-Type: text/html'
+                print
+                print fh.read()
+        else:
+            raise Exception('Missing HTML: %s' % template)
 
 
 def redirect_302(redirectionTo):
