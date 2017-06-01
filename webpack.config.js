@@ -1,5 +1,8 @@
 var path = require("path");
 var webpack = require('webpack');
+const awesomeTypescriptLoader = require('awesome-typescript-loader');
+
+const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
   entry: {
@@ -12,23 +15,34 @@ module.exports = {
     stats: ['babel-polyfill', './ui/containers/stats.tsx'],
     playergames: ['babel-polyfill', './ui/containers/playergames.tsx'],
     headtoheadgames: ['babel-polyfill', './ui/containers/headtoheadgames.tsx'],
-    delete: ['babel-polyfill', './ui/containers/delete.tsx']
+    delete: ['babel-polyfill', './ui/containers/delete.tsx'],
   },
   output: {
+    publicPath: '/',
     path: path.resolve(__dirname, 'dist'),
     filename: '[name]-bundle.js'
   },
   resolve: {
-    extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.css']
+    extensions: ['.ts', '.tsx', '.js', '.css'],
   },
   module: {
-    preLoaders: [
-      { test: /\.json$/, loader: 'json-loader'}
+    rules: [
+      {
+        enforce: 'pre',
+        test: /\.tsx?$/,
+        exclude: [
+          "node_modules",
+        ],
+        loaders: 'tslint-loader',
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: [
+          "node_modules",
+        ],
+        use: { loader: 'awesome-typescript-loader', options: { useCache: true, useBabel: true } },
+      },
     ],
-    loaders: [
-      { test: /\.tsx?$/, loader: 'babel-loader?presets[]=es2015&presets[]=react!ts-loader', exclude: /node_modules/},
-      { test: /\.js$/, loader: 'babel', query: { presets: ['es2015', 'react']}, exclude: /node_modules/}
-    ]
   },
   node: {
     console: true,
@@ -36,9 +50,17 @@ module.exports = {
     net: 'empty',
     tls: 'empty'
   },
-  plugins: [
-    new webpack.optimize.CommonsChunkPlugin("commons.chunk.js"),
-    new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
-    new webpack.optimize.UglifyJsPlugin({compress:{warnings: false}})
-  ]
+  plugins: [...plugins()],
 };
+
+function* plugins() {
+  yield new webpack.optimize.CommonsChunkPlugin("commons-chunk");
+  if (isProd) {
+    yield new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } });
+    yield new webpack.optimize.UglifyJsPlugin();
+  }
+  else {
+    yield new awesomeTypescriptLoader.CheckerPlugin();
+    yield new webpack.NoEmitOnErrorsPlugin();
+  }
+}

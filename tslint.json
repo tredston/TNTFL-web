@@ -4,7 +4,8 @@
     "array-type": false,
     "interface-name": false,
     "object-literal-sort-keys": false,
-    "one-line": [true,
+    "one-line": [
+      true,
       "check-open-brace",
       "check-whitespace"
     ],

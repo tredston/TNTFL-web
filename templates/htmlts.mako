@@ -18,7 +18,7 @@ links = []
   </head>
 <body>
   <div id="entry">Javascript disabled</div>
-  <script src="${self.attr.base}dist/commons.chunk.js?v=${version}"></script>
+  <script src="${self.attr.base}dist/commons-chunk-bundle.js?v=${version}"></script>
   <script src="${self.attr.base}dist/${self.attr.pageName}-bundle.js?v=${version}"></script>
 </body>
 </html>
