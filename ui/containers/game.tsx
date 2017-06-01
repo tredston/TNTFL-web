@@ -18,7 +18,7 @@ interface GamePageProps extends Props<GamePage> {
 interface GamePageState {
   game?: Game;
   punditry?: string[];
-  activePlayers?: {[key: number]: number};
+  activePlayers?: number;
 }
 class GamePage extends Component<GamePageProps, GamePageState> {
   state = {
@@ -43,7 +43,8 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     const { base, gameId } = this.props;
     const url = `${base}activeplayers.cgi?at=${+gameId - 1}`;
     const r = await fetch(url);
-    this.setState({activePlayers: await r.json()} as GamePageState);
+    const activePlayers = await r.json();
+    this.setState({activePlayers: activePlayers[Number(Object.keys(activePlayers)[0])]} as GamePageState);
   }
   componentDidMount() {
     this.loadGame();
@@ -53,7 +54,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
   render() {
     const { base, addURL } = this.props;
     const { game, punditry, activePlayers } = this.state;
-    const numActivePlayers: number = activePlayers ? activePlayers[Number(Object.keys(activePlayers)[0])] : 0;
+    const numActivePlayers = activePlayers || 0;
     return (
       <div className='gamePage'>
         <NavigationBar

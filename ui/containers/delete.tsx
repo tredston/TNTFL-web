@@ -17,7 +17,7 @@ interface DeletePageProps extends Props<DeletePage> {
 }
 interface DeletePageState {
   game?: Game;
-  activePlayers?: {[key: number]: number};
+  activePlayers?: number;
 }
 class DeletePage extends Component<DeletePageProps, DeletePageState> {
   state = {
@@ -35,7 +35,8 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
     const { base, gameId } = this.props;
     const url = `${base}activeplayers.cgi?at=${+gameId - 1}`;
     const r = await fetch(url);
-    this.setState({activePlayers: await r.json()} as DeletePageState);
+    const activePlayers: {[key: number]: number} = await r.json();
+    this.setState({activePlayers: activePlayers[Number(Object.keys(activePlayers)[0])]});
   }
   componentDidMount() {
     this.loadGame();
@@ -44,7 +45,7 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
   render() {
     const { base, addURL } = this.props;
     const { game, activePlayers } = this.state;
-    const numActivePlayers: number = activePlayers ? activePlayers[Number(Object.keys(activePlayers)[0])] : 0;
+    const numActivePlayers = activePlayers || 0;
     return (
       <div className='gamePage'>
         <NavigationBar
