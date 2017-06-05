@@ -10,7 +10,7 @@ export default function PlayerName(props: PlayerNameProps): JSX.Element {
   const colourClass = colour || '';
   return (
     <div className={`${colourClass}`} style={{fontSize: 'x-large', padding: 5}}>
-      <a href={base + "player/" + name}>
+      <a href={base + 'player/' + name}>
         {name}
       </a>
     </div>

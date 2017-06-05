@@ -16,19 +16,17 @@ interface GamePageProps extends Props<GamePage> {
   gameId: string;
 }
 interface GamePageState {
-  game: Game;
-  punditry: string[];
-  activePlayers: {[key: number]: number};
+  game?: Game;
+  punditry?: string[];
+  activePlayers?: number;
 }
 class GamePage extends Component<GamePageProps, GamePageState> {
-  constructor(props: GamePageProps, context: any) {
-    super(props, context)
-    this.state = {
-      game: undefined,
-      punditry: undefined,
-      activePlayers: undefined,
-    };
-  }
+  state = {
+    game: undefined,
+    punditry: undefined,
+    activePlayers: undefined,
+  };
+
   async loadGame() {
     const { base, gameId } = this.props;
     const url = `${base}game/${gameId}/json`;
@@ -45,7 +43,8 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     const { base, gameId } = this.props;
     const url = `${base}activeplayers.cgi?at=${+gameId - 1}`;
     const r = await fetch(url);
-    this.setState({activePlayers: await r.json()} as GamePageState);
+    const activePlayers = await r.json();
+    this.setState({activePlayers: activePlayers[Number(Object.keys(activePlayers)[0])]} as GamePageState);
   }
   componentDidMount() {
     this.loadGame();
@@ -55,9 +54,9 @@ class GamePage extends Component<GamePageProps, GamePageState> {
   render() {
     const { base, addURL } = this.props;
     const { game, punditry, activePlayers } = this.state;
-    const numActivePlayers: number = activePlayers && activePlayers[Number(Object.keys(activePlayers)[0])];
+    const numActivePlayers = activePlayers || 0;
     return (
-      <div className="gamePage">
+      <div className='gamePage'>
         <NavigationBar
           base={base}
           addURL={addURL}
@@ -66,7 +65,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
           <Grid fluid={true}>
             <Panel>
               <Row>
-                <GameSummary game={game} base={"../../"} numActivePlayers={numActivePlayers} />
+                <GameSummary game={game} base={'../../'} numActivePlayers={numActivePlayers} />
               </Row>
               <Row>
                 <GameDetails game={game} punditry={punditry}/>
@@ -86,5 +85,5 @@ ReactDOM.render(
       addURL={'game/add'}
       gameId={getParameters(1)[0]}
     />,
-    document.getElementById('entry')
+    document.getElementById('entry'),
 );

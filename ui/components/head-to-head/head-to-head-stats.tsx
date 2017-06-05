@@ -13,13 +13,13 @@ interface HeadToHeadStatsProps {
   player1Name: string;
   player2Name: string;
   games: Game[];
-  player1: Player;
-  player2: Player;
-  activePlayers: {[key: number]: number};
+  player1?: Player;
+  player2?: Player;
+  activePlayers?: {[key: number]: number};
 }
 export default function HeadToHeadStats(props: HeadToHeadStatsProps): JSX.Element {
   const { base, player1Name, player2Name, player1, player2, games, activePlayers } = props;
-  const numActivePlayers: number = activePlayers && activePlayers[Number(Object.keys(activePlayers)[0])];
+  const numActivePlayers: number = activePlayers ? activePlayers[Number(Object.keys(activePlayers)[0])] : 0;
   let p1swing = 0;
   let p1wins = 0;
   let p2wins = 0;
@@ -61,7 +61,7 @@ export default function HeadToHeadStats(props: HeadToHeadStatsProps): JSX.Elemen
           />
           <PointSwingRow p1swing={p1swing}/>
           {rows.map(({name, p1, p2}, i) =>
-            <StatRow name={name} redValue={p1} blueValue={p2} redAhead={p1 > p2} blueAhead={p2 > p1} key={`${i}`}/>
+            <StatRow name={name} redValue={p1} blueValue={p2} redAhead={p1 > p2} blueAhead={p2 > p1} key={`${i}`}/>,
           )}
           <PredictRow base={base} player1={player1} player2={player2}/>
         </tbody>

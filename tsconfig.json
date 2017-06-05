@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es6",
+		"target": "es2015",
 		"module": "commonjs",
 		"sourceMap": true,
 		"jsx": "react",
@@ -9,6 +9,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
+		"strictNullChecks": true,
     "rootDir": "ui"
 	},
 	"exclude": [

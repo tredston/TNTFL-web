@@ -11,9 +11,9 @@ import { getLadderLeagueClass, getNearlyInactiveClass } from '../utils/utils';
 
 function TrendChart(trend: [number, number][]): JSX.Element {
   if (trend.length >= 2) {
-    const trendLine = trend.map(([date, y], x) => {return {x, y}});
+    const trendLine = trend.map(([date, y], x) => { return {x, y}; });
     const labels = trend.map((y, x) => '');
-    const colour = trend[0][1] < trend[trend.length - 1][1] ? "#0000FF" : "#FF0000"
+    const colour = trend[0][1] < trend[trend.length - 1][1] ? '#0000FF' : '#FF0000';
     const data = {
       datasets: [{
         data: trendLine,

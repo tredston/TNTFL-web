@@ -11,5 +11,5 @@ ReactDOM.render(
     getUrl={`${window.location.href}json`}
     title={`${getParameters(2)[0]}'s Games`}
   />,
-  document.getElementById('entry')
+  document.getElementById('entry'),
 );

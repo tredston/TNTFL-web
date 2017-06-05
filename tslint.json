@@ -2,12 +2,24 @@
   "extends": "tslint:recommended",
   "rules": {
     "array-type": false,
+    "arrow-parens": false,
     "interface-name": false,
+    "member-access": false,
+    "no-var-requires": false,
     "object-literal-sort-keys": false,
-    "one-line": [true,
+    "one-line": [
+      true,
       "check-open-brace",
       "check-whitespace"
     ],
-    "quotemark": [true, "single", "avoid-escape"]
+    "ordered-imports": false,
+    "quotemark": [true, "single", "avoid-escape"],
+
+    // Maintainability
+    "cyclomatic-complexity": true,
+    "eofline": true,
+    "indent": [true, "spaces"],
+    "linebreak-style": [true, "LF"],
+    "max-line-length": false
   }
 }

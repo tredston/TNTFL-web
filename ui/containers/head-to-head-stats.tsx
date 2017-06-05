@@ -12,9 +12,9 @@ interface HeadToHeadStatsProps extends Props<HeadToHeadStats> {
   games: Game[];
 }
 interface HeadToHeadStatsState {
-  player1: Player;
-  player2: Player;
-  activePlayers: {[key: number]: number};
+  player1?: Player;
+  player2?: Player;
+  activePlayers?: {[key: number]: number};
 }
 export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, HeadToHeadStatsState> {
   constructor(props: HeadToHeadStatsProps, context: any) {
@@ -61,5 +61,5 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
         activePlayers={activePlayers}
       />
     );
-  }
+  };
 }

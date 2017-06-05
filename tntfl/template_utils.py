@@ -146,12 +146,6 @@ def getPlayerAchievementsJson(player):
     return achievements
 
 
-def appendChristmas(links, base):
-    if datetime.now().month == 12:
-        links.append('<link href="%scss/christmas.css" rel="stylesheet">' % base)
-    return links
-
-
 def getGamesPerWeek(games):
     if len(games) == 0:
         return []

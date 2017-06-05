@@ -17,14 +17,14 @@ interface StatsPageProps extends Props<StatsPage> {
   addURL: string;
 }
 interface StatsPageState {
-  stats: Stats;
+  stats?: Stats;
 }
 export default class StatsPage extends Component<StatsPageProps, StatsPageState> {
   constructor(props: StatsPageProps, context: any) {
     super(props, context);
     this.state = {
       stats: undefined,
-    }
+    };
   }
   async load() {
     const { base } = this.props;
@@ -88,5 +88,5 @@ ReactDOM.render(
     base={'../'}
     addURL={'game/add'}
   />,
-  document.getElementById('entry')
+  document.getElementById('entry'),
 );

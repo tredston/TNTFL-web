@@ -11,7 +11,6 @@ import RecentGames from '../components/recent-game-list';
 import Game from '../model/game';
 import { getParameters, mostRecentGames } from '../utils/utils';
 
-
 interface HeadToHeadPageProps extends Props<HeadToHeadPage> {
   base: string;
   addURL: string;
@@ -19,7 +18,7 @@ interface HeadToHeadPageProps extends Props<HeadToHeadPage> {
   player2: string;
 }
 interface HeadToHeadPageState {
-  games: Game[];
+  games?: Game[];
 }
 class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState> {
   constructor(props: HeadToHeadPageProps, context: any) {
@@ -75,5 +74,5 @@ ReactDOM.render(
     player1={getParameters(2)[0]}
     player2={getParameters(2)[1]}
   />,
-  document.getElementById('entry')
+  document.getElementById('entry'),
 );

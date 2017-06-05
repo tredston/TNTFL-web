@@ -1,5 +1,7 @@
 *.py[cod]
 .coverage
+/.idea/
+/.awcache/
 
 /node_modules/
 /dist/

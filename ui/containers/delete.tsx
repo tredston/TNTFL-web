@@ -16,17 +16,15 @@ interface DeletePageProps extends Props<DeletePage> {
   gameId: string;
 }
 interface DeletePageState {
-  game: Game;
-  activePlayers: {[key: number]: number};
+  game?: Game;
+  activePlayers?: number;
 }
 class DeletePage extends Component<DeletePageProps, DeletePageState> {
-  constructor(props: DeletePageProps, context: any) {
-    super(props, context)
-    this.state = {
-      game: undefined,
-      activePlayers: undefined,
-    };
-  }
+  state = {
+    game: undefined,
+    activePlayers: undefined,
+  };
+
   async loadGame() {
     const { base, gameId } = this.props;
     const url = `${base}game/${gameId}/json`;
@@ -37,7 +35,8 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
     const { base, gameId } = this.props;
     const url = `${base}activeplayers.cgi?at=${+gameId - 1}`;
     const r = await fetch(url);
-    this.setState({activePlayers: await r.json()} as DeletePageState);
+    const activePlayers: {[key: number]: number} = await r.json();
+    this.setState({activePlayers: activePlayers[Number(Object.keys(activePlayers)[0])]});
   }
   componentDidMount() {
     this.loadGame();
@@ -46,9 +45,9 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
   render() {
     const { base, addURL } = this.props;
     const { game, activePlayers } = this.state;
-    const numActivePlayers: number = activePlayers && activePlayers[Number(Object.keys(activePlayers)[0])];
+    const numActivePlayers = activePlayers || 0;
     return (
-      <div className="gamePage">
+      <div className='gamePage'>
         <NavigationBar
           base={base}
           addURL={addURL}
@@ -60,12 +59,12 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
                 <Col md={8} mdOffset={2}>
                   <Panel header={'Delete Game'}>
                     <p>Are you sure you wish to delete this game?</p>
-                    <a href="javascript:history.go(-1);" className="btn btn-default">No, I'd rather not</a> <a className="btn btn-danger" href="?deleteConfirm=true">Yes, delete it</a>
+                    <a href='javascript:history.go(-1);' className='btn btn-default'>No, I'd rather not</a> <a className='btn btn-danger' href='?deleteConfirm=true'>Yes, delete it</a>
                   </Panel>
                 </Col>
               </Row>
               <Row>
-                <GameSummary game={game} base={"../../"} numActivePlayers={numActivePlayers} />
+                <GameSummary game={game} base={'../../'} numActivePlayers={numActivePlayers} />
               </Row>
             </Panel>
           </Grid>
@@ -82,5 +81,5 @@ ReactDOM.render(
       addURL={'game/add'}
       gameId={getParameters(2)[0]}
     />,
-    document.getElementById('entry')
+    document.getElementById('entry'),
 );

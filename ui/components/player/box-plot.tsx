@@ -23,10 +23,10 @@ export default function BoxPlot(props: Props): JSX.Element {
     yAxis: {
       title: {
         text: 'Skill',
-      }
+      },
     },
     legend: {
-      enabled: false
+      enabled: false,
     },
     tooltip: {
       headerFormat: '',

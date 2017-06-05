@@ -11,7 +11,7 @@ interface GameListProps extends Props<GameList> {
   base: string;
 }
 interface State {
-  activePlayers: Map<number, number>;
+  activePlayers?: Map<number, number>;
 }
 export default class GameList extends Component<GameListProps, State> {
   constructor(props: GameListProps, context: any) {
@@ -46,7 +46,12 @@ export default class GameList extends Component<GameListProps, State> {
     return (
       <Grid fluid={true}>
         {games.map((game) =>
-          <GameSummary game={game} base={base} numActivePlayers={activePlayers && activePlayers.get(game.date - 1)} key={`${game.date}`}/>
+          <GameSummary
+            game={game}
+            base={base}
+            numActivePlayers={(activePlayers && activePlayers.get(game.date - 1)) || 0}
+            key={`${game.date}`}
+          />,
         )}
       </Grid>
     );

@@ -6,20 +6,18 @@ let LazyLoad = require('react-lazy-load');
 import PerPlayerStatsView from '../components/player/per-player-stats';
 import PerPlayerStat from '../model/per-player-stat';
 
-interface PerPlayerStatsProps extends Props<PerPlayerStats>{
+interface PerPlayerStatsProps extends Props<PerPlayerStats> {
   playerName: string;
   base: string;
 }
 interface State {
-  stats: PerPlayerStat[];
+  stats?: PerPlayerStat[];
 }
 export default class PerPlayerStats extends Component<PerPlayerStatsProps, State> {
-  constructor(props: PerPlayerStatsProps, context: any) {
-    super(props, context)
-    this.state = {
-      stats: undefined,
-    };
-  }
+  state = {
+    stats: undefined,
+  };
+
   async loadPerPlayerStats() {
     const { base, playerName } = this.props;
     const url = `${base}player.cgi?method=perplayerstats&view=json&player=${playerName}`;

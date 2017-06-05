@@ -21,5 +21,5 @@ export default function SidePreferenceStat(props: SidePreferenceStatProps): JSX.
   };
   return (
     <StatBox title='Side preference'><Pie data={data} options={options}/></StatBox>
-  )
+  );
 }
