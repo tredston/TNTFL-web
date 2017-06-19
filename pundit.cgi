@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import cgi
 import json
 import tntfl.constants as Constants
@@ -23,9 +24,9 @@ if gameTime is not None:
         redFacts = pundit.getAllForGame(red, game, blue)
         blueFacts = pundit.getAllForGame(blue, game, red)
         facts = redFacts + blueFacts
-        print 'Content-Type: application/json'
-        print
-        print json.dumps(facts)
+        print('Content-Type: application/json')
+        print()
+        print(json.dumps(facts))
     except StopIteration:
         fail_404()
 else:

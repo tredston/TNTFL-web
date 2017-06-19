@@ -1,3 +1,4 @@
+from __future__ import print_function
 import argparse
 import os
 import re
@@ -18,7 +19,7 @@ import tntfl.test.transforms.test_rank as test_rank
 
 
 def clearCache():
-    print 'Clearing cache'
+    print('Clearing cache')
     cacheFile = '^\.cache\.'
     for f in os.listdir('.'):
         if re.search(cacheFile, f):
@@ -60,17 +61,17 @@ if __name__ == "__main__":
     runner = unittest.TextTestRunner()
 
     clearCache()
-    print 'Running unit tests:'
+    print('Running unit tests:')
     result = runner.run(unitTestSuite())
 
     if len(result.errors) == 0 and len(result.failures) == 0:
         clearCache()
-        print 'Running functional tests:'
+        print('Running functional tests:')
         result = runner.run(functionalTestSuite())
 
     if len(result.errors) == 0 and len(result.failures) == 0 and args.runIntegration:
         clearCache()
-        print 'Running integration tests:'
+        print('Running integration tests:')
         result = runner.run(integrationTestSuite())
 
     clearCache()

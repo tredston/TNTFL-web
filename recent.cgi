@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import cgi
 import json
 from tntfl.web import getInt
@@ -9,9 +10,9 @@ from tntfl.template_utils import gameToJson
 
 
 def printJson(content):
-    print 'Content-Type: application/json'
-    print
-    print json.dumps(content)
+    print('Content-Type: application/json')
+    print()
+    print(json.dumps(content))
 
 
 form = cgi.FieldStorage()

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import cgi
 import json
 from tntfl.skill_change import Elo
@@ -13,9 +14,9 @@ if player1Elo is not None and player2Elo is not None:
     try:
         elo = Elo()
         blueGoalRatio = {'blueGoalRatio': elo.getBlueGoalRatio(player1Elo, player2Elo)}
-        print 'Content-Type: application/json'
-        print
-        print json.dumps(blueGoalRatio)
+        print('Content-Type: application/json')
+        print()
+        print(json.dumps(blueGoalRatio))
     except StopIteration:
         fail_404()
 else:

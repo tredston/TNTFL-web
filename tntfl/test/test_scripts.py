@@ -1,3 +1,4 @@
+from __future__ import print_function
 import json
 from mimetools import Message
 import os
@@ -16,7 +17,7 @@ class Deployment(Get.TestRunner):
         response = self._get(page, query)
         headers = Message(StringIO(response.split('\n')[0]))
         if 'content-type' not in headers:
-            print response
+            print(response)
         self.assertEqual(headers['content-type'], 'application/json')
         body = ''.join(response.split('\n')[2:])
         self.assertTrue(len(body) > 0)
