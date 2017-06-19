@@ -1,5 +1,3 @@
-from future import standard_library
-standard_library.install_aliases()
 import configparser
 import os
 import tntfl.constants as Constants
@@ -12,7 +10,7 @@ def skillField(playerName, skillChange):
         field = {
             'title': "{}'s skill".format(playerName),
             'value': '{:+.3f}'.format(skillChange),
-            'short': True
+            'short': True,
         }
     return field
 
@@ -23,7 +21,7 @@ def rankChangeField(playerName, posChange, posAfter):
         field = {
             'title': "{}'s rank".format(playerName),
             'value': '{:+d} ({:d})'.format(posChange, posAfter),
-            'short': True
+            'short': True,
         }
     return field
 

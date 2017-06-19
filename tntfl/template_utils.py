@@ -47,7 +47,7 @@ def gameToJson(game, base):
     if game.isDeleted():
         asJson['deleted'] = {
             'at': game.deletedAt,
-            'by': game.deletedBy
+            'by': game.deletedBy,
         }
     return asJson
 
@@ -75,7 +75,7 @@ def ladderToJson(ladder, base, showInactive, includePlayers):
             'rank': i + 1,
             'name': p.name,
             'skill': p.elo,
-            'href': playerHref(base, p.name)
+            'href': playerHref(base, p.name),
         } for i, p in enumerate(players)]
 
 
@@ -135,7 +135,7 @@ def getPlayerAchievementsJson(player):
     achievements = [{
         'name': a.name,
         'description': a.description,
-        'time': player.achievements[a]
+        'time': player.achievements[a],
     } for a in list(player.achievements.keys())]
     [achievements.append({
         'name': clz.name,
@@ -174,7 +174,7 @@ def getStatsJson(ladder, base):
             'achievements': [{
                 'name': a.name,
                 'description': a.description,
-                'count': c
+                'count': c,
             } for a, c in sorted(iter(ladder.getAchievements().items()), reverse=True, key=lambda t: t[1])],
         },
         'records': {
@@ -194,7 +194,7 @@ def getStatsJson(ladder, base):
             'current': {
                 'player': beltHistory[-1][0],
                 'count': beltHistory[-1][1],
-            }
+            },
         },
         'gamesPerWeek': getGamesPerWeek(ladder.games),
     }

@@ -1,4 +1,3 @@
-from builtins import object
 from datetime import date
 
 
@@ -21,7 +20,7 @@ class Game(object):
         self.deletedAt = None
 
     def isDeleted(self):
-        return self.deletedAt > None
+        return self.deletedAt is not None
 
     def timeAsDate(self):
         return date.fromtimestamp(self.time)

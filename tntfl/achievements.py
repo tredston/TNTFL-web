@@ -4,10 +4,9 @@ from collections import Counter, defaultdict
 import datetime
 import os.path
 import abc
-from future.utils import with_metaclass
 
 
-class Achievement(with_metaclass(abc.ABCMeta, object)):
+class Achievement(metaclass=abc.ABCMeta):
     @abc.abstractproperty
     def name(self):
         pass

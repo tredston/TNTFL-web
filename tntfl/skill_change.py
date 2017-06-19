@@ -1,10 +1,7 @@
-from __future__ import division
-from builtins import object
 import abc
-from future.utils import with_metaclass
 
 
-class SkillChange(with_metaclass(abc.ABCMeta, object)):
+class SkillChange(metaclass=abc.ABCMeta):
     @abc.abstractproperty
     def getBlueGoalRatio(self, red, blue):
         pass

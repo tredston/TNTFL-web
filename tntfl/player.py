@@ -1,8 +1,4 @@
-from builtins import next
-from builtins import object
-from collections import defaultdict
 from datetime import date
-import time
 
 
 class Streak(object):
@@ -128,7 +124,7 @@ class Player(object):
             'win': getLongestStreak(pastStreaks, lambda s: s.win),
             'lose': getLongestStreak(pastStreaks, lambda s: not s.win),
             'current': streaks['current'],
-            'currentType': currentStreakType
+            'currentType': currentStreakType,
         }
 
 

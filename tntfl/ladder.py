@@ -1,6 +1,3 @@
-from builtins import next
-from builtins import object
-import os
 import time
 from collections import Counter
 from tntfl.player import Player, Streak

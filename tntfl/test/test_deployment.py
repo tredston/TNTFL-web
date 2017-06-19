@@ -1,11 +1,12 @@
-from future import standard_library
-standard_library.install_aliases()
-import urllib.request, urllib.error, urllib.parse
-import unittest
-import urllib.parse
 import json
 import os
 import re
+import unittest
+import urllib.error
+import urllib.parse
+import urllib.parse
+import urllib.request
+
 import tntfl.test.shared_get as Get
 
 
@@ -24,7 +25,7 @@ class Deployment(Get.TestRunner):
         return url
 
     def _get(self, page, query):
-        return urllib.request.urlopen(self._page(page, query)).read()
+        return urllib.request.urlopen(self._page(page, query)).read().decode('utf-8')
 
 
 class Redirects(Get.Tester, Deployment):

@@ -1,5 +1,3 @@
-from __future__ import division
-from builtins import object
 class Player(object):
     def __init__(self):
         self.elo = 0.0

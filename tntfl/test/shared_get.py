@@ -2,10 +2,9 @@ import abc
 import os
 import shutil
 import unittest
-from future.utils import with_metaclass
 
 
-class TestRunner(with_metaclass(abc.ABCMeta, unittest.TestCase)):
+class TestRunner(unittest.TestCase, metaclass=abc.ABCMeta):
     def _backupFilename(self, filename):
         return '%s.actual' % filename
 
@@ -172,12 +171,13 @@ class GameApi(Tester):
         self.assertAlmostEqual(response['red']['skillChange'], 13.00655, 4)
         self.assertEqual(response['red']['rankChange'], 1)
         self.assertEqual(response['red']['newRank'], 3)
-        redAchievements = response['red']['achievements']
-        self.assertEqual(len(redAchievements), 2)
-        self.assertEqual(redAchievements[0]['name'], "Flawless Victory")
-        self.assertEqual(redAchievements[0]['description'], "Beat an opponent 10-0")
-        self.assertEqual(redAchievements[1]['name'], "PokeMaster")
-        self.assertEqual(redAchievements[1]['description'], "Collect all the scores")
+        self.assertListEqual(sorted(response['red']['achievements'], key=lambda x: x['name']), [{
+            'name': 'Flawless Victory',
+            'description': 'Beat an opponent 10-0',
+        }, {
+            'name': 'PokeMaster',
+            'description': 'Collect all the scores',
+        }])
 
         self.assertEqual(response['blue']['name'], 'kjb')
         self.assertEqual(response['blue']['href'], '../../player/kjb/json')
@@ -185,10 +185,10 @@ class GameApi(Tester):
         self.assertAlmostEqual(response['blue']['skillChange'], -13.00655, 4)
         self.assertEqual(response['blue']['rankChange'], -2)
         self.assertEqual(response['blue']['newRank'], 5)
-        blueAchievements = response['blue']['achievements']
-        self.assertEqual(len(blueAchievements), 1)
-        self.assertEqual(blueAchievements[0]['name'], "The Worst")
-        self.assertEqual(blueAchievements[0]['description'], "Go last in the rankings")
+        self.assertListEqual(sorted(response['blue']['achievements'], key=lambda x: x['name']), [{
+            'name': 'The Worst',
+            'description': 'Go last in the rankings',
+        }])
 
         self.assertEqual(response['positionSwap'], True)
         self.assertEqual(response['date'], 1223308996)
@@ -241,7 +241,7 @@ class PunditApi(Tester):
         self.assertListEqual(response, [
             "That was jrem's 2nd most significant game.",
             "That game featured jrem's 10th goal against kjb.",
-            "That was kjb's most significant game."
+            "That was kjb's most significant game.",
         ])
 
 
@@ -297,7 +297,7 @@ class StatsApi(Tester):
         self.assertGreater(response['totals']['players'], 0)
         self.assertIn('activePlayers', response['totals'])
         self.assertIn('achievements', response['totals'])
-        self.assertGreater(response['totals']['achievements'], 0)
+        self.assertGreater(len(response['totals']['achievements']), 0)
         self.assertIn('records', response)
         self.assertIn('winningStreak', response['records'])
         self.assertIn('player', response['records']['winningStreak'])
@@ -307,4 +307,4 @@ class StatsApi(Tester):
         self.assertIn('leastSignificant', response['records'])
         self.assertEqual(len(response['records']['leastSignificant']), 5)
         self.assertIn('gamesPerWeek', response)
-        self.assertGreater(response['gamesPerWeek'], 0)
+        self.assertGreater(len(response['gamesPerWeek']), 0)

@@ -1,5 +1,3 @@
-from future import standard_library
-standard_library.install_aliases()
 import requests
 import urllib.parse
 
@@ -18,7 +16,7 @@ def postMattermost(mattermostUrl, apiKey, tntflUrl, game, fields, colour):
                 'pretext': '[{}]({})'.format(title, gameUrl),
                 'fields': fields,
                 'color': colour,
-            }
+            },
         ],
         'username': 'ScoreBot',
         'icon_url': urllib.parse.urljoin(mattermostUrl, '/static/emoji/26bd.png'),
