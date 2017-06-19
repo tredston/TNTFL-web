@@ -1,3 +1,5 @@
+from __future__ import division
+from builtins import object
 class Player(object):
     def __init__(self):
         self.elo = 0.0
@@ -6,7 +8,7 @@ class Player(object):
 def calculateSkillChange(red, blue, redScore, blueScore):
     predict = 1 / (1 + 10 ** ((red.elo - blue.elo) / 180))
     goals = blueScore + redScore
-    result = float(blueScore) / goals
+    result = blueScore / goals
     delta = (2.5 * goals) * (result - predict)
     return delta
 

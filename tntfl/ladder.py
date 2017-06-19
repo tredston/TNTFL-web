@@ -1,3 +1,5 @@
+from builtins import next
+from builtins import object
 import os
 import time
 from collections import Counter
@@ -55,7 +57,7 @@ class TableFootballLadder(object):
         if atTime is None:
             atTime = self._getTime()
         if self._recentlyActivePlayers[0] != atTime:
-            self._recentlyActivePlayers = (atTime, [p for p in self.players.values() if self.isPlayerActive(p, atTime)])
+            self._recentlyActivePlayers = (atTime, [p for p in list(self.players.values()) if self.isPlayerActive(p, atTime)])
         return self._recentlyActivePlayers[1]
 
     def getNumActivePlayers(self, atTime=None):
@@ -83,7 +85,7 @@ class TableFootballLadder(object):
 
         winning = {'player': None, 'streak': Streak()}
         losing = {'player': None, 'streak': Streak()}
-        for player in self.players.values():
+        for player in list(self.players.values()):
             streaks = player.getStreaks()
             maxStreak(streaks['win'], winning, player)
             maxStreak(streaks['lose'], losing, player)
@@ -119,7 +121,7 @@ class TableFootballLadder(object):
         return found
 
     def getRankedPlayers(self):
-        return sorted([p for p in self.players.values()], key=lambda x: x.elo, reverse=True)
+        return sorted([p for p in list(self.players.values())], key=lambda x: x.elo, reverse=True)
 
     def getPlayerRank(self, playerName):
         ranked = [p.name for p in self.getRankedPlayers() if self.isPlayerActive(p)]
@@ -129,7 +131,7 @@ class TableFootballLadder(object):
 
     def getAchievements(self):
         achievements = Counter()
-        for player in self.players.values():
-            for ach in player.achievements.keys():
+        for player in list(self.players.values()):
+            for ach in list(player.achievements.keys()):
                 achievements[ach] += 1
         return achievements

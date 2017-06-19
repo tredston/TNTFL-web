@@ -1,4 +1,6 @@
-import ConfigParser
+from future import standard_library
+standard_library.install_aliases()
+import configparser
 import os
 import tntfl.constants as Constants
 from tntfl.hooks.utils import postMattermost
@@ -42,7 +44,7 @@ def victoryColour(game):
 
 def do(game):
     if os.path.exists(Constants.configFile):
-        config = ConfigParser.RawConfigParser()
+        config = configparser.RawConfigParser()
         config.readfp(open(Constants.configFile, 'r'))
 
         if config.has_option('mattermost', 'mattermost_url') and config.has_option('mattermost', 'api_key') and config.has_option('mattermost', 'tntfl_url'):

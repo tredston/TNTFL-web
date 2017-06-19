@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from builtins import next
 import cgi
 import os
 import tntfl.constants as Constants

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
+from builtins import next
 import cgi
 import json
 import tntfl.constants as Constants

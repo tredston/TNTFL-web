@@ -2,11 +2,10 @@ import abc
 import os
 import shutil
 import unittest
+from future.utils import with_metaclass
 
 
-class TestRunner(unittest.TestCase):
-    __metaclass__ = abc.ABCMeta
-
+class TestRunner(with_metaclass(abc.ABCMeta, unittest.TestCase)):
     def _backupFilename(self, filename):
         return '%s.actual' % filename
 

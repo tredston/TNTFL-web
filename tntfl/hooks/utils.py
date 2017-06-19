@@ -1,5 +1,7 @@
+from future import standard_library
+standard_library.install_aliases()
 import requests
-import urlparse
+import urllib.parse
 
 
 def postMattermost(mattermostUrl, apiKey, tntflUrl, game, fields, colour):
@@ -19,7 +21,7 @@ def postMattermost(mattermostUrl, apiKey, tntflUrl, game, fields, colour):
             }
         ],
         'username': 'ScoreBot',
-        'icon_url': urlparse.urljoin(mattermostUrl, '/static/emoji/26bd.png'),
+        'icon_url': urllib.parse.urljoin(mattermostUrl, '/static/emoji/26bd.png'),
     }
-    webhookUrl = urlparse.urljoin(urlparse.urljoin(mattermostUrl, '/hooks/'), apiKey)
+    webhookUrl = urllib.parse.urljoin(urllib.parse.urljoin(mattermostUrl, '/hooks/'), apiKey)
     requests.post(webhookUrl, json=message)

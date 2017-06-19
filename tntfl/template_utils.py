@@ -128,7 +128,7 @@ def perPlayerStatsToJson(stats):
         'games': stats[opponent].games,
         'wins': stats[opponent].wins,
         'losses': stats[opponent].losses,
-    } for opponent in stats.keys()]
+    } for opponent in list(stats.keys())]
 
 
 def getPlayerAchievementsJson(player):
@@ -136,11 +136,11 @@ def getPlayerAchievementsJson(player):
         'name': a.name,
         'description': a.description,
         'time': player.achievements[a]
-    } for a in player.achievements.keys()]
+    } for a in list(player.achievements.keys())]
     [achievements.append({
         'name': clz.name,
         'description': clz.description,
-    }) for clz in Achievement.__subclasses__() if clz not in player.achievements.keys()]
+    }) for clz in Achievement.__subclasses__() if clz not in list(player.achievements.keys())]
     return achievements
 
 
@@ -175,7 +175,7 @@ def getStatsJson(ladder, base):
                 'name': a.name,
                 'description': a.description,
                 'count': c
-            } for a, c in sorted(ladder.getAchievements().iteritems(), reverse=True, key=lambda t: t[1])],
+            } for a, c in sorted(iter(ladder.getAchievements().items()), reverse=True, key=lambda t: t[1])],
         },
         'records': {
             'winningStreak': {

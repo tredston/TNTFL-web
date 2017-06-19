@@ -1,4 +1,7 @@
-import cPickle as pickle
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
+import pickle as pickle
 import os
 import gc
 

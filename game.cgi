@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from builtins import next
 import cgi
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder

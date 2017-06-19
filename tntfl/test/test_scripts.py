@@ -1,8 +1,10 @@
 from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
 import json
 from mimetools import Message
 import os
-from StringIO import StringIO
+from io import StringIO
 import subprocess
 import tntfl.test.shared_get as Get
 

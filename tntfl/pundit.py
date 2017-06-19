@@ -1,3 +1,6 @@
+from builtins import str
+from builtins import range
+from builtins import object
 from tntfl.player import Streak
 import tntfl.template_utils as utils
 from datetime import datetime
@@ -139,7 +142,7 @@ class Goals(FactChecker):
     def _numGoals(self, player, game, opponent, games):
         prevGoalTotal = sum([g.blueScore if g.bluePlayer == player.name else g.redScore for g in games if g.time < game.time])
         goalsInGame = game.blueScore if game.bluePlayer == player.name else game.redScore
-        for i in xrange(prevGoalTotal + 1, prevGoalTotal + goalsInGame + 1):
+        for i in range(prevGoalTotal + 1, prevGoalTotal + goalsInGame + 1):
             if self.isRoundNumber(i):
                 return i
         return None
