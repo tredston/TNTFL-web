@@ -116,6 +116,7 @@ module.exports = {
 
 function* plugins() {
   yield new webpack.optimize.CommonsChunkPlugin("commons-chunk");
+  yield new webpack.optimize.ModuleConcatenationPlugin();
   for (var page of pages) {
     const links = page.links;
     if ((new Date()).getMonth() === 11) {
