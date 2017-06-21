@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  version: 4.0.0
+  version: 5.1.0
   title: TNTFL
   description: Table Football Ladder
 host: www.int.corefiling.com
@@ -141,6 +141,15 @@ paths:
               $ref: '#/definitions/Game'
   /ladder/json:
     get:
+      parameters:
+        - name: showInactive
+          in: query
+          description: Include inactive players
+          type: integer
+        - name: players
+          in: query
+          description: Include detailed player info
+          type: integer
       responses:
         200:
           description: Ladder
@@ -214,6 +223,13 @@ paths:
           description: Number of active players
           schema:
             type: integer
+  /stats/json:
+    get:
+      responses:
+        200:
+          description: Global stats
+          schema:
+            $ref: '#/definitions/Stats'
 definitions:
   PlayerInfo:
     description: Resource representing information about a player
@@ -260,6 +276,9 @@ definitions:
             type: integer
           gamesToday:
             description: The total number of games the player has played so far today
+            type: integer
+          gamesAsRed:
+            description: The total number of games the player has played as red.
             type: integer
   Performance:
     description: Resource representing how a player performed in a game
@@ -319,6 +338,16 @@ definitions:
         $ref: '#/definitions/Performance'
       red:
         $ref: '#/definitions/Performance'
+  TrendItem:
+    type: object
+    properties:
+      date:
+        description: Unix time
+        type: number
+        format: int32
+      skill:
+        type: number
+        format: float
   LadderEntry:
     type: object
     properties:
@@ -334,6 +363,13 @@ definitions:
       href:
         description: Link to detailed player stats
         type: string
+      player:
+        $ref: '#/definitions/PlayerInfo'
+      trend:
+        description: Player's skill point trend
+        type: array
+        items:
+          $ref: '#/definitions/TrendItem'
   PerPlayerStat:
     type: object
     properties:
@@ -364,3 +400,87 @@ definitions:
         description: Number of losses
         type: number
         format: int32
+  AchievementCount:
+    allOf:
+      - $ref: '#/definitions/Achievement'
+      - type: object
+        properties:
+          count:
+            description: Number of times awarded
+            type: number
+            format: int32
+  Streak:
+    type: object
+    properties:
+      player:
+        description: The player's name
+        type: string
+      count:
+        description: Length of streak
+        type: number
+        format: int32
+  GamesPerWeekItem:
+    type: object
+    properties:
+      date:
+        description: Unix time
+        type: number
+        format: int32
+      count:
+        type: number
+        format: int32
+  Stats:
+    type: object
+    properties:
+      totals:
+        type: object
+        properties:
+          games:
+            description: Number of games played
+            type: number
+            format: int32
+          players:
+            description: Number of players
+            type: number
+            format: int32
+          activePlayers:
+            description: Number of active players
+            type: number
+            format: int32
+          achievements:
+            description: Accumulated achievements
+            type: array
+            items:
+              $ref: '#/definitions/AchievementCount'
+      records:
+        type: object
+        properties:
+          winningStreak:
+            description: Longest winning streak
+            $ref: '#/definitions/Streak'
+          mostSignificant:
+            description: Games with largest skill transfer
+            type: array
+            items:
+              $ref: '#/definitions/Game'
+          leastSignificant:
+            description: Games with smallest skill transfer
+            type: array
+            items:
+              $ref: '#/definitions/Game'
+          longestGame:
+            description: Games with most goals played
+            $ref: '#/definitions/Game'
+      belt:
+        type: object
+        properties:
+          best:
+            description: Longest holder
+            $ref: '#/definitions/Streak'
+          current:
+            description: Current holder
+            $ref: '#/definitions/Streak'
+      gamesPerWeek:
+        type: array
+        items:
+          $ref: '#/definitions/GamesPerWeekItem'

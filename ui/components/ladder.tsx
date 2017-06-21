@@ -3,17 +3,15 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import GamesChart from './games-chart';
 import PlayerName from './player-name';
-import Rank from './rank';
 import { TableLineChart } from './table-charts';
-import LadderEntry from '../model/ladder-entry';
-import Player, { Totals } from '../model/player';
+import LadderEntry, { TrendItem } from '../model/ladder-entry';
 import { getLadderLeagueClass, getNearlyInactiveClass } from '../utils/utils';
 
-function TrendChart(trend: [number, number][]): JSX.Element {
+function TrendChart(trend: TrendItem[]): JSX.Element {
   if (trend.length >= 2) {
-    const trendLine = trend.map(([date, y], x) => { return {x, y}; });
-    const labels = trend.map((y, x) => '');
-    const colour = trend[0][1] < trend[trend.length - 1][1] ? '#0000FF' : '#FF0000';
+    const trendLine = trend.map((item, x) => { return {x, y: item.skill}; });
+    const labels = trend.map((item, x) => '');
+    const colour = trend[0].skill < trend[trend.length - 1].skill ? '#0000FF' : '#FF0000';
     const data = {
       datasets: [{
         data: trendLine,
@@ -82,7 +80,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       <TableHeaderColumn dataField={'for'} dataSort={true} dataAlign={'center'}>For</TableHeaderColumn>
       <TableHeaderColumn dataField={'against'} dataSort={true} dataAlign={'center'}>Against</TableHeaderColumn>
       <TableHeaderColumn dataField={'skill'} dataSort={true} dataAlign={'center'}>Skill</TableHeaderColumn>
-      <TableHeaderColumn dataField={'trend'} dataFormat={(t: [number, number][]) => TrendChart(t)}>Trend</TableHeaderColumn>
+      <TableHeaderColumn dataField={'trend'} dataFormat={(t: TrendItem[]) => TrendChart(t)}>Trend</TableHeaderColumn>
     </BootstrapTable>
   );
 }

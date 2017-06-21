@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Col, Panel } from 'react-bootstrap';
 
 import Achievement from '../../model/achievement';
+import { AchievementCount } from '../../model/stats';
 
 interface AchievementPanelProps {
   achievement: Achievement;
@@ -19,13 +20,13 @@ function AchievementPanel(props: AchievementPanelProps): JSX.Element {
 }
 
 interface AchievementsProps {
-  achievements: [Achievement, number][];
+  achievements: AchievementCount[];
 }
 export default function Achievements(props: AchievementsProps): JSX.Element {
   const { achievements } = props;
   return (
     <Panel header={'Achievements'}>
-      {achievements.map((a, i) => <Col xs={3} key={`${i}`}><AchievementPanel achievement={a[0]} count={a[1]}/></Col>)}
+      {achievements.map((a, i) => <Col xs={3} key={`${i}`}><AchievementPanel achievement={a} count={a.count}/></Col>)}
     </Panel>
   );
 }

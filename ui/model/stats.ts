@@ -1,11 +1,14 @@
 import Achievement from './achievement';
 import Game from './game';
 
+export interface AchievementCount extends Achievement {
+  count: number;
+}
 export interface Totals {
   games: number;
   players: number;
   activePlayers: number;
-  achievements: [Achievement, number][];
+  achievements: AchievementCount[];
 }
 
 export interface Records {
@@ -28,10 +31,14 @@ export interface Belt {
   best: BeltStat;
 }
 
+export interface GamesPerWeekItem {
+  date: number;
+  count: number
+}
 interface Stats {
   totals: Totals;
   records: Records;
   belt: Belt;
-  gamesPerWeek: [number, number][];
+  gamesPerWeek: GamesPerWeekItem[];
 }
 export default Stats;

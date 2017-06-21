@@ -1,7 +1,11 @@
 import Player from './player';
 
+export interface TrendItem {
+  date: number;
+  skill: number;
+}
 interface LadderEntry {
   player: Player;
-  trend: [number, number][];
+  trend: TrendItem[];
 }
 export default LadderEntry;
