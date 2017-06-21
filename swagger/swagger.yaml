@@ -13,27 +13,35 @@ consumes:
 produces:
 - application/json
 paths:
-  /player/{playerName}/json:
+  /player/{player}/json:
     get:
       parameters:
-      - name: playerName
+      - name: player
         in: path
         type: string
         description: ID of the player
         required: true
+      operationId: getPlayer
+      summary: Get player info
+      description: Get player info.
+      tags: [players]
       responses:
         200:
           description: Player information
           schema:
-            $ref: '#/definitions/PlayerInfo'
-  /player/{playerName}/achievements/json:
+            $ref: '#/definitions/Player'
+  /player/{player}/achievements/json:
     get:
       parameters:
-      - name: playerName
+      - name: player
         in: path
         type: string
         description: ID of the player
         required: true
+      operationId: getPlayerAchievements
+      summary: Get player's achievements
+      description: Get player's achievements.
+      tags: [players]
       responses:
         200:
           description: Player achievements
@@ -41,14 +49,18 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Achievement'
-  /player/{playerName}/perplayerstats/json:
+  /player/{player}/perplayerstats/json:
     get:
       parameters:
-      - name: playerName
+      - name: player
         in: path
         type: string
         description: ID of the player
         required: true
+      operationId: getPerPlayerStats
+      summary: Get per player stats
+      description: Get per player stats.
+      tags: [players]
       responses:
         200:
           description: Opponents information
@@ -56,17 +68,45 @@ paths:
             type: array
             items:
               $ref: '#/definitions/PerPlayerStat'
-  /player/{playerName}/games/json:
+  /player/{player}/games/json:
     get:
       parameters:
-      - name: playerName
+      - name: player
         in: path
         type: string
         description: ID of the player
         required: true
+      operationId: getPlayerGames
+      summary: Get player's games
+      description: Get player's games.
+      tags: [players]
       responses:
         200:
           description: Games of the requested player
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Game'
+  /headtohead/{player1}/{player2}/games/json:
+    get:
+      parameters:
+      - name: player1
+        in: path
+        type: string
+        description: Name of player 1
+        required: true
+      - name: player2
+        in: path
+        type: string
+        description: Name of player 2
+        required: true
+      operationId: getHeadToHeadGames
+      summary: Get shared games
+      description: Get shared games.
+      tags: [games]
+      responses:
+        200:
+          description: Shared games
           schema:
             type: array
             items:
@@ -80,38 +120,81 @@ paths:
         format: int64
         description: Timestamp of the game
         required: true
+      operationId: getGame
+      summary: Get a game
+      description: Get a game.
+      tags: [games]
       responses:
         200:
           description: Game resource
           schema:
             $ref: '#/definitions/Game'
+  /game/add:
+    post:
+      parameters:
+      - name: redPlayer
+        in: query
+        type: string
+        description: 'The player on red'
+        required: true
+      - name: redScore
+        in: query
+        type: integer
+        format: int32
+        description: 'The red team score'
+        required: true
+      - name: bluePlayer
+        in: query
+        type: string
+        description: 'The player on blue'
+        required: true
+      - name: blueScore
+        in: query
+        type: integer
+        format: int32
+        description: 'The blue team score'
+        required: true
+      operationId: addGameRedirect
+      summary: Add a game
+      description: Add a game.
+      tags: [games]
+      responses:
+        302:
+          description: Redirect to new game's page
+          headers:
+            Location:
+              type: 'string'
   /game/add/json:
     post:
       consumes:
       - application/x-www-form-urlencoded
       parameters:
       - name: redPlayer
-        in: formData
+        in: query
         type: string
         description: 'The player on red'
         required: true
       - name: redScore
-        in: formData
+        in: query
         type: integer
         format: int32
         description: 'The red team score'
         required: true
       - name: bluePlayer
-        in: formData
+        in: query
         type: string
         description: 'The player on blue'
         required: true
       - name: blueScore
-        in: formData
+        in: query
         type: integer
         format: int32
         description: 'The blue team score'
         required: true
+      operationId: addGame
+      summary: Add a game
+      description: Add a game.
+      tags: [games]
       responses:
         200:
           description: A game resource representing the added game
@@ -132,6 +215,10 @@ paths:
         type: number
         format: int64
         required: true
+      operationId: getGames
+      summary: Get games
+      description: Get games.
+      tags: [games]
       responses:
         200:
           description: Games played between given times
@@ -142,14 +229,18 @@ paths:
   /ladder/json:
     get:
       parameters:
-        - name: showInactive
-          in: query
-          description: Include inactive players
-          type: integer
-        - name: players
-          in: query
-          description: Include detailed player info
-          type: integer
+      - name: showInactive
+        in: query
+        description: Include inactive players
+        type: integer
+      - name: players
+        in: query
+        description: Include detailed player info
+        type: integer
+      operationId: getLadder
+      summary: Get the ladder
+      description: Get the ladder.
+      tags: [ladder]
       responses:
         200:
           description: Ladder
@@ -172,6 +263,18 @@ paths:
         type: number
         format: int64
         required: true
+      - name: showInactive
+        in: query
+        description: Include inactive players
+        type: integer
+      - name: players
+        in: query
+        description: Include detailed player info
+        type: integer
+      operationId: getLadderBetween
+      summary: Get the ladder
+      description: Get the ladder.
+      tags: [ladder]
       responses:
         200:
           description: Ladder
@@ -187,6 +290,10 @@ paths:
         type: integer
         description: Maximum number of games to return
         required: false
+      operationId: getRecent
+      summary: Get recent games
+      description: Get recent games.
+      tags: [games]
       responses:
         200:
           description: Recent games
@@ -203,6 +310,10 @@ paths:
         format: int64
         description: Timestamp of game
         required: true
+      operationId: getPunditry
+      summary: Get game punditry
+      description: Get game punditry.
+      tags: [games]
       responses:
         200:
           description: Punditry for requested game
@@ -213,25 +324,119 @@ paths:
   /activeplayers/json:
     get:
       parameters:
-      - name: time
+      - name: at
         in: query
         type: string
         description: CSV of timestamps
         required: false
+      operationId: getActive
+      summary: Get number of active players
+      description: Get number of active players.
+      tags: [players]
       responses:
         200:
           description: Number of active players
           schema:
-            type: integer
+            type: object
+            additionalProperties:
+              $ref: '#/definitions/ActivePlayers'
   /stats/json:
     get:
+      operationId: getStats
+      summary: Get global stats
+      description: Get global stats.
+      tags: [stats]
       responses:
         200:
           description: Global stats
           schema:
             $ref: '#/definitions/Stats'
+  /speculate/json:
+    get:
+      parameters:
+      - name: showInactive
+        in: query
+        description: Include inactive players
+        type: integer
+      - name: players
+        in: query
+        description: Include detailed player info
+        type: integer
+      - name: previousGames
+        in: query
+        description: CSV of speculative games
+        type: string
+      operationId: speculate
+      summary: Get the ladder
+      description: Get the ladder.
+      tags: [ladder]
+      responses:
+        200:
+          description: Ladder
+          schema:
+            $ref: '#/definitions/Speculated'
+  /predict/{redElo}/{blueElo}/json:
+    get:
+      parameters:
+      - name: redElo
+        in: path
+        description: Elo of red player
+        type: number
+        required: true
+      - name: blueElo
+        in: path
+        description: Elo of blue player
+        type: number
+        required: true
+      operationId: predict
+      summary: Predict the outcome of a game
+      description: Predict the outcome of a game.
+      tags: [games]
+      responses:
+        200:
+          description: Predicted goal ratio
+          schema:
+            $ref: '#/definitions/Prediction'
 definitions:
-  PlayerInfo:
+  ActivePlayers:
+    type: object
+    properties:
+      count:
+        type: number
+        format: int32
+    required: [count]
+  PlayerTotals:
+    type: object
+    properties:
+      for:
+        description: The total number of goals the player has scored
+        type: integer
+      against:
+        description: The total number of goals scored against the player
+        type: integer
+      wins:
+        description: The total number of games the player has won
+        type: integer
+      losses:
+        description: The total number of games the player has lost
+        type: integer
+      games:
+        description: The total number of games the player has played
+        type: integer
+      gamesToday:
+        description: The total number of games the player has played so far today
+        type: integer
+      gamesAsRed:
+        description: The total number of games the player has played as red.
+        type: integer
+    required: [for, against, wins, losses, games]
+  GamesLink:
+    type: object
+    properties:
+      href:
+        type: string
+    required: [href]
+  Player:
     description: Resource representing information about a player
     type: object
     properties:
@@ -244,10 +449,7 @@ definitions:
         format: int32
       games:
         description: Link to get all games for this player
-        type: object
-        properties:
-          href:
-            type: string
+        $ref: '#/definitions/GamesLink'
       active:
         description: Whether or not the system considers the player active
         type: boolean
@@ -257,29 +459,8 @@ definitions:
         format: double
       total:
         description: Statistics for the player
-        type: object
-        properties:
-          for:
-            description: The total number of goals the player has scored
-            type: integer
-          against:
-            description: The total number of goals scored against the player
-            type: integer
-          wins:
-            description: The total number of games the player has won
-            type: integer
-          losses:
-            description: The total number of games the player has lost
-            type: integer
-          games:
-            description: The total number of games the player has played
-            type: integer
-          gamesToday:
-            description: The total number of games the player has played so far today
-            type: integer
-          gamesAsRed:
-            description: The total number of games the player has played as red.
-            type: integer
+        $ref: '#/definitions/PlayerTotals'
+    required: [name, rank, games, active, skill, total]
   Performance:
     description: Resource representing how a player performed in a game
     type: object
@@ -311,6 +492,7 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Achievement'
+    required: [name, score, skillChange, rankChange, newRank, href, achievements]
   Achievement:
     type: object
     properties:
@@ -324,6 +506,7 @@ definitions:
         description: Timestamp of when the achievement was earned
         type: integer
         format: int64
+    required: [name, description]
   Game:
     type: object
     properties:
@@ -338,16 +521,29 @@ definitions:
         $ref: '#/definitions/Performance'
       red:
         $ref: '#/definitions/Performance'
+      deleted:
+        type: object
+        properties:
+          at:
+            description: Unix time game was deleted at
+            type: integer
+            format: int64
+          by:
+            description: User that deleted the game
+            type: string
+        required: [at, by]
+    required: [date, positionSwap, blue, red]
   TrendItem:
     type: object
     properties:
       date:
         description: Unix time
         type: number
-        format: int32
+        format: int64
       skill:
         type: number
         format: float
+    required: [date, skill]
   LadderEntry:
     type: object
     properties:
@@ -364,7 +560,7 @@ definitions:
         description: Link to detailed player stats
         type: string
       player:
-        $ref: '#/definitions/PlayerInfo'
+        $ref: '#/definitions/Player'
       trend:
         description: Player's skill point trend
         type: array
@@ -400,15 +596,39 @@ definitions:
         description: Number of losses
         type: number
         format: int32
+    required: [opponent, skillChange, for, against, games, wins, losses]
+  Speculated:
+    type: object
+    properties:
+      entries:
+        description: Ladder entries
+        type: array
+        items:
+          $ref: '#/definitions/LadderEntry'
+      games:
+        description: Ladder entries
+        type: array
+        items:
+          $ref: '#/definitions/Game'
+    required: [entries, games]
   AchievementCount:
-    allOf:
-      - $ref: '#/definitions/Achievement'
-      - type: object
-        properties:
-          count:
-            description: Number of times awarded
-            type: number
-            format: int32
+    type: object
+    properties:
+      name:
+        description: Name of the achievement
+        type: string
+      description:
+        description: A brief description of the achievement
+        type: string
+      time:
+        description: Timestamp of when the achievement was earned
+        type: integer
+        format: int64
+      count:
+        description: Number of times awarded
+        type: number
+        format: int32
+    required: [name, description, count]
   Streak:
     type: object
     properties:
@@ -419,68 +639,86 @@ definitions:
         description: Length of streak
         type: number
         format: int32
+    required: [player, count]
   GamesPerWeekItem:
     type: object
     properties:
       date:
         description: Unix time
         type: number
-        format: int32
+        format: int64
       count:
         type: number
         format: int32
+    required: [date, count]
+  GlobalTotals:
+    type: object
+    properties:
+      games:
+        description: Number of games played
+        type: number
+        format: int32
+      players:
+        description: Number of players
+        type: number
+        format: int32
+      activePlayers:
+        description: Number of active players
+        type: number
+        format: int32
+      achievements:
+        description: Accumulated achievements
+        type: array
+        items:
+          $ref: '#/definitions/AchievementCount'
+    required: [games, players, activePlayers, achievements]
+  GlobalRecords:
+    type: object
+    properties:
+      winningStreak:
+        description: Longest winning streak
+        $ref: '#/definitions/Streak'
+      mostSignificant:
+        description: Games with largest skill transfer
+        type: array
+        items:
+          $ref: '#/definitions/Game'
+      leastSignificant:
+        description: Games with smallest skill transfer
+        type: array
+        items:
+          $ref: '#/definitions/Game'
+      longestGame:
+        description: Games with most goals played
+        $ref: '#/definitions/Game'
+    required: [winningStreak, mostSignificant, leastSignificant, longestGame]
+  Belt:
+    type: object
+    properties:
+      best:
+        description: Longest holder
+        $ref: '#/definitions/Streak'
+      current:
+        description: Current holder
+        $ref: '#/definitions/Streak'
+    required: [best, current]
   Stats:
     type: object
     properties:
       totals:
-        type: object
-        properties:
-          games:
-            description: Number of games played
-            type: number
-            format: int32
-          players:
-            description: Number of players
-            type: number
-            format: int32
-          activePlayers:
-            description: Number of active players
-            type: number
-            format: int32
-          achievements:
-            description: Accumulated achievements
-            type: array
-            items:
-              $ref: '#/definitions/AchievementCount'
+        $ref: '#/definitions/GlobalTotals'
       records:
-        type: object
-        properties:
-          winningStreak:
-            description: Longest winning streak
-            $ref: '#/definitions/Streak'
-          mostSignificant:
-            description: Games with largest skill transfer
-            type: array
-            items:
-              $ref: '#/definitions/Game'
-          leastSignificant:
-            description: Games with smallest skill transfer
-            type: array
-            items:
-              $ref: '#/definitions/Game'
-          longestGame:
-            description: Games with most goals played
-            $ref: '#/definitions/Game'
+        $ref: '#/definitions/GlobalRecords'
       belt:
-        type: object
-        properties:
-          best:
-            description: Longest holder
-            $ref: '#/definitions/Streak'
-          current:
-            description: Current holder
-            $ref: '#/definitions/Streak'
+        $ref: '#/definitions/Belt'
       gamesPerWeek:
         type: array
         items:
           $ref: '#/definitions/GamesPerWeekItem'
+    required: [totals, records, belt, gamesPerWeek]
+  Prediction:
+    type: object
+    properties:
+      blueGoalRatio:
+        description: Ratio of goals that blue is expected to score
+        type: number
