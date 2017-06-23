@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Pie } from 'react-chartjs-2';
+import { Player } from 'tntfl-api';
 
 import { StatBox } from './stat-panel';
-import Player from '../../model/player';
 
 interface SidePreferenceStatProps {
   player: Player;

@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Panel } from 'react-bootstrap';
 let LazyLoad = require('react-lazy-load');
+import { PerPlayerStat, PlayersApi } from 'tntfl-api';
 
 import PerPlayerStatsView from '../components/player/per-player-stats';
-import PerPlayerStat from '../model/per-player-stat';
 
 interface PerPlayerStatsProps extends Props<PerPlayerStats> {
   playerName: string;
@@ -20,9 +20,9 @@ export default class PerPlayerStats extends Component<PerPlayerStatsProps, State
 
   async loadPerPlayerStats() {
     const { base, playerName } = this.props;
-    const url = `${base}player.cgi?method=perplayerstats&view=json&player=${playerName}`;
-    const r = await fetch(url);
-    this.setState({stats: await r.json()} as State);
+    const api = new PlayersApi(fetch, base);
+    const stats = await api.getPerPlayerStats({player: playerName});
+    this.setState({stats} as State);
   }
   render(): JSX.Element {
     const { playerName, base } = this.props;

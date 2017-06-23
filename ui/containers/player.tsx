@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Component, Props, CSSProperties } from 'react';
+import { Component, Props } from 'react';
 import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import { Game, Achievement, Player } from 'tntfl-api';
 
 import PerPlayerStats from './per-player-stats';
 import PlayerAchievements from '../components/player/player-achievements';
@@ -9,15 +10,11 @@ import PlayerSkillChart from '../components/player/player-skill-chart';
 import PlayerStats from '../components/player/player-stats';
 import RecentGames from '../components/recent-game-list';
 import NavigationBar from '../components/navigation-bar';
-import Achievement from '../model/achievement';
-import Game from '../model/game';
-import PerPlayerStat from '../model/per-player-stat';
-import Player from '../model/player';
 import { getParameters, mostRecentGames } from '../utils/utils';
+import { PlayersApi } from '../../swagger/tntfl-api/dist/api';
 
 interface PlayerPageProps extends Props<PlayerPage> {
   base: string;
-  addURL: string;
   playerName: string;
 }
 interface PlayerPageState {
@@ -38,27 +35,23 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
   }
   async loadSummary() {
     const { base, playerName } = this.props;
-    const url = `${base}player.cgi?method=view&view=json&player=${playerName}`;
-    const r = await fetch(url);
-    this.setState({player: await r.json()} as PlayerPageState);
+    const player = await new PlayersApi(fetch, base).getPlayer({player: playerName});
+    this.setState({player} as PlayerPageState);
   }
   async loadGames() {
     const { base, playerName } = this.props;
-    const url = `${base}player.cgi?method=games&view=json&player=${playerName}`;
-    const r = await fetch(url);
-    this.setState({games: await r.json()} as PlayerPageState);
+    const games = await new PlayersApi(fetch, base).getPlayerGames({player: playerName});
+    this.setState({games} as PlayerPageState);
   }
   async loadAchievements() {
     const { base, playerName } = this.props;
-    const url = `${base}player.cgi?method=achievements&view=json&player=${playerName}`;
-    const r = await fetch(url);
-    this.setState({achievements: await r.json()} as PlayerPageState);
+    const achievements = await new PlayersApi(fetch, base).getPlayerAchievements({player: playerName});
+    this.setState({achievements} as PlayerPageState);
   }
   async loadActivePlayers() {
     const { base } = this.props;
-    const url = `${base}activeplayers.cgi`;
-    const r = await fetch(url);
-    this.setState({activePlayers: await r.json()} as PlayerPageState);
+    const activePlayers = await new PlayersApi(fetch, base).getActive({});
+    this.setState({activePlayers: activePlayers[Object.keys(activePlayers)[0]].count});
   }
   componentDidMount() {
     this.loadSummary();
@@ -67,13 +60,12 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
     this.loadActivePlayers();
   }
   render() {
-    const { playerName, base, addURL } = this.props;
+    const { playerName, base } = this.props;
     const { player, games, achievements, activePlayers } = this.state;
     return (
       <div>
         <NavigationBar
           base={base}
-          addURL={addURL}
         />
         {player && games ?
           <Grid fluid={true}>
@@ -106,7 +98,6 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
 ReactDOM.render(
   <PlayerPage
     base={'../../'}
-    addURL={'game/add'}
     playerName={getParameters(1)[0]}
   />,
   document.getElementById('entry'),

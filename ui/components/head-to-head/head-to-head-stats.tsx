@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { Panel, Table } from 'react-bootstrap';
+import { Game, Player } from 'tntfl-api';
 
 import StatRow from './stat-row';
 import PlayerRow from './player-row';
 import PointSwingRow from './point-swing-row';
 import PredictRow from './predict-row';
-import Game from '../../model/game';
-import Player from '../../model/player';
 
 interface HeadToHeadStatsProps {
   base: string;
@@ -15,11 +14,11 @@ interface HeadToHeadStatsProps {
   games: Game[];
   player1?: Player;
   player2?: Player;
-  activePlayers?: {[key: number]: number};
+  activePlayers?: {[key: string]: {count: number}};
 }
 export default function HeadToHeadStats(props: HeadToHeadStatsProps): JSX.Element {
   const { base, player1Name, player2Name, player1, player2, games, activePlayers } = props;
-  const numActivePlayers: number = activePlayers ? activePlayers[Number(Object.keys(activePlayers)[0])] : 0;
+  const numActivePlayers: number = activePlayers ? activePlayers[Number(Object.keys(activePlayers)[0])].count : 0;
   let p1swing = 0;
   let p1wins = 0;
   let p2wins = 0;

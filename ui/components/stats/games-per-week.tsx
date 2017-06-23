@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Line } from 'react-chartjs-2';
+import { GamesPerWeekItem } from 'tntfl-api';
 
 import { options } from '../../chart-config';
-import { GamesPerWeekItem } from '../../model/stats';
 
 interface GamesPerWeekProps {
   gamesPerWeek: GamesPerWeekItem[];

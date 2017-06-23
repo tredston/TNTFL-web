@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { TrendItem, LadderEntry } from 'tntfl-api';
 
 import GamesChart from './games-chart';
 import PlayerName from './player-name';
 import { TableLineChart } from './table-charts';
-import LadderEntry, { TrendItem } from '../model/ladder-entry';
 import { getLadderLeagueClass, getNearlyInactiveClass } from '../utils/utils';
 
 function TrendChart(trend: TrendItem[]): JSX.Element {
@@ -38,10 +38,10 @@ export default function Ladder(props: LadderProps): JSX.Element {
   let { entries } = props;
   const { atDate, showInactive } = props;
   if (!showInactive) {
-    entries = entries.filter(e => e.player.rank >= 1);
+    entries = entries.filter(e => e.player && e.player.rank >= 1);
   }
   const flattened = entries.map(e => {
-    return {
+    return e.player && {
       rank: e.player.rank,
       name: e.player.name,
       games: e.player.total.games,
@@ -55,7 +55,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       trend: e.trend,
     };
   });
-  const numActivePlayers = entries.filter((e) => e.player.rank >= 1).length;
+  const numActivePlayers = entries.filter((e) => e.player && e.player.rank >= 1).length;
   return (
     <BootstrapTable
       data={flattened}

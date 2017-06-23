@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
 import { Grid, Panel } from 'react-bootstrap';
+import { Game } from 'tntfl-api';
 
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
-import Game from '../model/game';
 
 interface GamesPageProps extends Props<GamesPage> {
   base: string;
-  addURL: string;
   getUrl: string;
   title: string;
 }
@@ -23,7 +22,7 @@ export default class GamesPage extends Component<GamesPageProps, GamesPageState>
     };
   }
   async load() {
-    const { base, getUrl } = this.props;
+    const { getUrl } = this.props;
     const r = await fetch(getUrl);
     this.setState({games: await r.json()});
   }
@@ -31,13 +30,12 @@ export default class GamesPage extends Component<GamesPageProps, GamesPageState>
     this.load();
   }
   render() {
-    const { addURL, base, title } = this.props;
+    const { base, title } = this.props;
     const { games } = this.state;
     return (
       <div>
         <NavigationBar
           base={base}
-          addURL={addURL}
         />
         {games
           ? <Grid fluid={true}>

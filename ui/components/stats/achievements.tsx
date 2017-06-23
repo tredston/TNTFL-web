@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Col, Panel } from 'react-bootstrap';
-
-import Achievement from '../../model/achievement';
-import { AchievementCount } from '../../model/stats';
+import { Achievement, AchievementCount } from 'tntfl-api';
 
 interface AchievementPanelProps {
   achievement: Achievement;

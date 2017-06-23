@@ -1,18 +1,16 @@
 import * as React from 'react';
-import { Component, Props, CSSProperties } from 'react';
-import { Grid, Row, Col, Panel } from 'react-bootstrap';
+import { Component, Props } from 'react';
+import { Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import { LadderApi, GamesApi, LadderEntry, Game } from 'tntfl-api';
 
 import RecentGames from '../components/recent-game-list';
 import NavigationBar from '../components/navigation-bar';
-import Game from '../model/game';
 
 import LadderPanel from '../components/ladder-panel';
-import LadderEntry from '../model/ladder-entry';
 
 interface IndexPageProps extends Props<IndexPage> {
   base: string;
-  addURL: string;
 }
 interface IndexPageState {
   entries?: LadderEntry[];
@@ -25,16 +23,16 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   };
 
   async loadLadder() {
-    const { base } = this.props;
-    let url = `${base}ladder.cgi?view=json&players=1&showInactive=1`;
-    const r = await fetch(url);
-    this.setState({entries: await r.json()} as IndexPageState);
+    const base = '.';
+    const api = new LadderApi(fetch, base);
+    const entries = await api.getLadder({ showInactive: 1, players: 1 });
+    this.setState({entries} as IndexPageState);
   }
   async loadRecent() {
-    const { base } = this.props;
-    const url = `${base}recent.cgi?view=json`;
-    const r = await fetch(url);
-    this.setState({recentGames: await r.json()} as IndexPageState);
+    const base = '.';
+    const api = new GamesApi(fetch, base);
+    const recentGames = await api.getRecent({});
+    this.setState({recentGames} as IndexPageState);
   }
   componentDidMount() {
     this.loadLadder();
@@ -45,14 +43,13 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
     }, 600 * 1000);
   }
   render() {
-    const { addURL, base } = this.props;
+    const { base } = this.props;
     const { entries, recentGames } = this.state;
     const now = (new Date()).getTime() / 1000;
     return (
       <div>
         <NavigationBar
           base={base}
-          addURL={addURL}
         />
         <Grid fluid={true}>
           <Row>
@@ -71,8 +68,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
 
 ReactDOM.render(
   <IndexPage
-    base={''}
-    addURL={'game/add'}
+    base={'./'}
   />,
   document.getElementById('entry'),
 );

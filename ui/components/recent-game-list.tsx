@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
+import { Game } from 'tntfl-api';
 
 import GameList from './game-list';
-import Game from '../model/game';
 
 interface RecentGamesProps {
   base: string;

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Grid, Panel, Row, Col } from 'react-bootstrap';
-
-import Achievement from '../model/achievement';
+import { Panel } from 'react-bootstrap';
+import { Achievement } from 'tntfl-api';
 
 interface AchievementPanelProps {
   achievement: Achievement;
