@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.1.2
+* Display current month's ladder when loading Slice page
+
 ## 5.1.1
 * Fix first load of Slice page
 
