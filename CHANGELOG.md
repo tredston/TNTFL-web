@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.1.1
+* Fix first load of Slice page
+
 ## 5.1.0
 * Add more stats
 
