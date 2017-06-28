@@ -90,10 +90,11 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
   }
   async loadLadder(gamesFrom?: number, gamesTo?: number) {
     const { base } = this.props;
-    let url = `${base}ladder.cgi?view=json&players=1&showInactive=1`;
-    if (gamesFrom && gamesTo) {
-      url += `&gamesFrom=${gamesFrom}&gamesTo=${gamesTo}`;
-    }
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    const fromTime = gamesFrom || dateToEpoch(startOfMonth);
+    const toTime = gamesTo || dateToEpoch(getEndOfMonth(startOfMonth));
+    const url = `${base}ladder.cgi?view=json&players=1&showInactive=1&gamesFrom=${fromTime}&gamesTo=${toTime}`;
     const r = await fetch(url);
     this.setState({entries: await r.json()} as HistoricPageState);
   }
