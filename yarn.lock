@@ -674,17 +674,7 @@ babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.22.0:
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
 
-babel-template@^6.24.1:
-  version "6.24.1"
-  resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/babel-template/-/babel-template-6.24.1.tgz#04ae514f1f93b3a2537f2a0f60a5a45fb8308333"
-  dependencies:
-    babel-runtime "^6.22.0"
-    babel-traverse "^6.24.1"
-    babel-types "^6.24.1"
-    babylon "^6.11.0"
-    lodash "^4.2.0"
-
-babel-template@^6.25.0:
+babel-template@^6.24.1, babel-template@^6.25.0:
   version "6.25.0"
   resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/babel-template/-/babel-template-6.25.0.tgz#665241166b7c2aa4c619d71e192969552b10c071"
   dependencies:
@@ -694,21 +684,7 @@ babel-template@^6.25.0:
     babylon "^6.17.2"
     lodash "^4.2.0"
 
-babel-traverse@^6.24.1:
-  version "6.24.1"
-  resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/babel-traverse/-/babel-traverse-6.24.1.tgz#ab36673fd356f9a0948659e7b338d5feadb31695"
-  dependencies:
-    babel-code-frame "^6.22.0"
-    babel-messages "^6.23.0"
-    babel-runtime "^6.22.0"
-    babel-types "^6.24.1"
-    babylon "^6.15.0"
-    debug "^2.2.0"
-    globals "^9.0.0"
-    invariant "^2.2.0"
-    lodash "^4.2.0"
-
-babel-traverse@^6.25.0:
+babel-traverse@^6.24.1, babel-traverse@^6.25.0:
   version "6.25.0"
   resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/babel-traverse/-/babel-traverse-6.25.0.tgz#2257497e2fcd19b89edc13c4c91381f9512496f1"
   dependencies:
@@ -722,16 +698,7 @@ babel-traverse@^6.25.0:
     invariant "^2.2.0"
     lodash "^4.2.0"
 
-babel-types@^6.19.0, babel-types@^6.24.1:
-  version "6.24.1"
-  resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/babel-types/-/babel-types-6.24.1.tgz#a136879dc15b3606bda0d90c1fc74304c2ff0975"
-  dependencies:
-    babel-runtime "^6.22.0"
-    esutils "^2.0.2"
-    lodash "^4.2.0"
-    to-fast-properties "^1.0.1"
-
-babel-types@^6.25.0:
+babel-types@^6.19.0, babel-types@^6.24.1, babel-types@^6.25.0:
   version "6.25.0"
   resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/babel-types/-/babel-types-6.25.0.tgz#70afb248d5660e5d18f811d91c8303b54134a18e"
   dependencies:
@@ -740,7 +707,7 @@ babel-types@^6.25.0:
     lodash "^4.2.0"
     to-fast-properties "^1.0.1"
 
-babylon@^6.11.0, babylon@^6.15.0, babylon@^6.17.2:
+babylon@^6.17.2:
   version "6.17.2"
   resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/babylon/-/babylon-6.17.2.tgz#201d25ef5f892c41bae49488b08db0dd476e9f5c"
 
@@ -965,7 +932,7 @@ chalk@^1.1.0:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
-chart.js@^2.4.0:
+chart.js@^2.6.0:
   version "2.6.0"
   resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/chart.js/-/chart.js-2.6.0.tgz#308f9a4b0bfed5a154c14f5deb1d9470d22abe71"
   dependencies:
@@ -1542,7 +1509,7 @@ fast-deep-equal@^0.1.0:
   version "0.1.0"
   resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/fast-deep-equal/-/fast-deep-equal-0.1.0.tgz#5c6f4599aba6b333ee3342e2ed978672f1001f8d"
 
-fbjs@^0.8.1, fbjs@^0.8.4:
+fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.9:
   version "0.8.12"
   resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/fbjs/-/fbjs-0.8.12.tgz#10b5d92f76d45575fd63a217d4ea02bea2f8ed04"
   dependencies:
@@ -2227,7 +2194,7 @@ longest@^1.0.1:
   version "1.0.1"
   resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
 
-loose-envify@^1.0.0, loose-envify@^1.1.0:
+loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1:
   version "1.3.1"
   resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/loose-envify/-/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
   dependencies:
@@ -2696,6 +2663,13 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
+prop-types@^15.5.8:
+  version "15.5.10"
+  resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
+  dependencies:
+    fbjs "^0.8.9"
+    loose-envify "^1.3.1"
+
 prr@~0.0.0:
   version "0.0.0"
   resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/prr/-/prr-0.0.0.tgz#1a84b85908325501411853d0081ee3fa86e2926a"
@@ -2789,11 +2763,12 @@ react-boxplot@^0.3.1:
     simple-statistics "~0.9.1"
     underscore "~1.8"
 
-react-chartjs-2@2.0.0:
-  version "2.0.0"
-  resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/react-chartjs-2/-/react-chartjs-2-2.0.0.tgz#cf6aed0d8bad2e46497697eac46d8df9b4769b8a"
+react-chartjs-2@^2.4.1:
+  version "2.4.1"
+  resolved "https://artifacts.int.corefiling.com/api/npm/cfl-npm/react-chartjs-2/-/react-chartjs-2-2.4.1.tgz#549bf4df874d69d6f047279caf708040bbce92e5"
   dependencies:
     lodash.isequal "^4.4.0"
+    prop-types "^15.5.8"
 
 react-dom@15.4.2:
   version "15.4.2"
