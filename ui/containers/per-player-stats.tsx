@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
 import { Panel } from 'react-bootstrap';
-let LazyLoad = require('react-lazy-load');
+const LazyLoad = require('react-lazy-load');
 import { PerPlayerStat, PlayersApi } from 'tntfl-api';
 
 import PerPlayerStatsView from '../components/player/per-player-stats';

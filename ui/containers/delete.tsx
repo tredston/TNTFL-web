@@ -70,7 +70,7 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
       </div>
     );
   }
-};
+}
 
 ReactDOM.render(
     <DeletePage

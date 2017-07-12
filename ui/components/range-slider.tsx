@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-let $ = require('jquery');
 import * as moment from 'moment';
-let slider = require('ion-rangeslider');
+const $ = require('jquery');
+const slider = require('ion-rangeslider');
 
 interface RangeSliderProps extends Props<RangeSlider> {
   id: string;
