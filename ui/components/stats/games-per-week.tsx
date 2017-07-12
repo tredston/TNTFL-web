@@ -10,7 +10,7 @@ interface GamesPerWeekProps {
 export default function GamesPerWeek(props: GamesPerWeekProps): JSX.Element {
   const { gamesPerWeek } = props;
   const data = {datasets: [{
-    data: gamesPerWeek.map(d => { return {x: d.date * 1000, y: d.count}; }),
+    data: gamesPerWeek.map(d => ({x: d.date * 1000, y: d.count})),
     fill: false,
     borderColor: '#0000FF',
   }]};

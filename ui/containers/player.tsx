@@ -93,7 +93,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
       </div>
     );
   }
-};
+}
 
 ReactDOM.render(
   <PlayerPage

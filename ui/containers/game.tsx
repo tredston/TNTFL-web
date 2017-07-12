@@ -74,7 +74,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
       </div>
     );
   }
-};
+}
 
 ReactDOM.render(
     <GamePage
