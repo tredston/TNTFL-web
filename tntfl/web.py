@@ -25,9 +25,7 @@ def get_template(templatename, **kwargs):
         template = os.path.join('dist', '%s.html' % root.lower())
         if os.path.exists(template):
             with open(template, 'r') as fh:
-                print 'Content-Type: text/html'
-                print
-                print fh.read()
+                return 'Content-Type: text/html\n\n%s' % fh.read()
         else:
             raise Exception('Missing HTML: %s' % template)
 
