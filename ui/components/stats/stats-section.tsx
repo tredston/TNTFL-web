@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
-
-import { Totals } from '../../model/stats';
+import { GlobalTotals } from 'tntfl-api';
 
 interface StatsSectionProps {
-  totals: Totals;
+  totals: GlobalTotals;
 }
 export default function StatsSection(props: StatsSectionProps): JSX.Element {
   const { totals } = props;

@@ -44,6 +44,7 @@
     "react-dom": "15.4.2",
     "react-highcharts": "^11.5.0",
     "react-lazy-load": "3.0.10",
+    "tntfl-api": "file:./swagger/tntfl-api/",
     "typescript": "2.1.4",
     "whatwg-fetch": "2.0.1"
   },

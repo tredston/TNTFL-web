@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
+import { PlayersApi, Game, Player } from 'tntfl-api';
 
-import Game from '../model/game';
-import Player from '../model/player';
 import HeadToHeadStatsView from '../components/head-to-head/head-to-head-stats';
 
 interface HeadToHeadStatsProps extends Props<HeadToHeadStats> {
@@ -14,7 +13,7 @@ interface HeadToHeadStatsProps extends Props<HeadToHeadStats> {
 interface HeadToHeadStatsState {
   player1?: Player;
   player2?: Player;
-  activePlayers?: {[key: number]: number};
+  activePlayers?: {[key: string]: {count: number}};
 }
 export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, HeadToHeadStatsState> {
   constructor(props: HeadToHeadStatsProps, context: any) {
@@ -27,21 +26,20 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
   }
   async loadPlayer(playerName: string): Promise<Player> {
     const { base } = this.props;
-    const url = `${base}player.cgi?method=view&view=json&player=${playerName}`;
-    const r = await fetch(url);
-    return await r.json();
+    const api = new PlayersApi(fetch, base);
+    return await api.getPlayer({player: playerName});
   }
   async loadPlayers() {
     const { player1, player2 } = this.props;
     const p1 = this.loadPlayer(player1);
     const p2 = this.loadPlayer(player2);
-    this.setState({player1: await p1, player2: await p2} as HeadToHeadStatsState);
+    this.setState({player1: await p1, player2: await p2});
   }
   async loadActivePlayers() {
     const { base } = this.props;
-    const url = `${base}activeplayers.cgi`;
-    const r = await fetch(url);
-    this.setState({activePlayers: await r.json()} as HeadToHeadStatsState);
+    const api = new PlayersApi(fetch, base);
+    const activePlayers = await api.getActive({});
+    this.setState({activePlayers});
   }
   componentDidMount() {
     this.loadPlayers();

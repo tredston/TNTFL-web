@@ -7,8 +7,8 @@ from tntfl.web import fail_400, fail_404, getFloat
 
 form = cgi.FieldStorage()
 
-player1Elo = getFloat('player1Elo', form)
-player2Elo = getFloat('player2Elo', form)
+player1Elo = getFloat('redElo', form)
+player2Elo = getFloat('blueElo', form)
 if player1Elo is not None and player2Elo is not None:
     try:
         elo = Elo()

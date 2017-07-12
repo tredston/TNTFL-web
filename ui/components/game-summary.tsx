@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { Grid, Table } from 'react-bootstrap';
-import * as moment from 'moment';
+import { Achievement, Game } from 'tntfl-api';
 
 import Rank from './rank';
 import PlayerName from './player-name';
 import GameTime from './game-time';
-import Achievement from '../model/achievement';
-import Game from '../model/game';
-import { getLadderLeagueClass, formatEpoch, formatRankChange } from '../utils/utils';
+import { formatEpoch, formatRankChange } from '../utils/utils';
 
 interface AchievementsSummaryProps {
   achievements: Achievement[];

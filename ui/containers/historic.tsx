@@ -1,16 +1,14 @@
 import * as React from 'react';
-import { Component, Props, CSSProperties } from 'react';
+import { Component, Props } from 'react';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import * as QueryString from 'query-string';
+import { LadderApi, LadderEntry } from 'tntfl-api';
 
 import RangeSlider from '../components/range-slider';
-import RecentGames from '../components/recent-game-list';
 import NavigationBar from '../components/navigation-bar';
-import Game from '../model/game';
 
 import LadderPanel from '../components/ladder-panel';
-import LadderEntry from '../model/ladder-entry';
 import { getMonthName } from '../utils/utils';
 
 interface MonthlyRankingProps {
@@ -70,7 +68,6 @@ function dateToEpoch(d: Date): number {
 
 interface HistoricPageProps extends Props<HistoricPage> {
   base: string;
-  addURL: string;
   gamesFrom?: number;
   gamesTo?: number;
 }
@@ -92,11 +89,11 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     const { base } = this.props;
     const startOfMonth = new Date();
     startOfMonth.setDate(1);
-    const fromTime = gamesFrom || dateToEpoch(startOfMonth);
-    const toTime = gamesTo || dateToEpoch(getEndOfMonth(startOfMonth));
-    const url = `${base}ladder.cgi?view=json&players=1&showInactive=1&gamesFrom=${fromTime}&gamesTo=${toTime}`;
-    const r = await fetch(url);
-    this.setState({entries: await r.json()} as HistoricPageState);
+    const begin = gamesFrom || dateToEpoch(startOfMonth);
+    const end = gamesTo || dateToEpoch(getEndOfMonth(startOfMonth));
+    const api = new LadderApi(fetch, base);
+    const entries = await api.getLadderBetween({players: 1, showInactive: 1, begin, end});
+    this.setState({entries} as HistoricPageState);
   }
   componentDidMount() {
     const { gamesFrom, gamesTo } = this.state;
@@ -118,7 +115,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     this.loadLadder(gamesFrom, gamesTo);
   }
   render() {
-    const { addURL, base } = this.props;
+    const { base } = this.props;
     const { entries, gamesFrom, gamesTo } = this.state;
     const now = (new Date()).getUTCFullYear();
     const firstYear = 2005;
@@ -134,7 +131,6 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
       <div>
         <NavigationBar
           base={base}
-          addURL={addURL}
         />
         <Grid fluid={true}>
           <Panel>
@@ -174,7 +170,6 @@ function getParameters(): [number | undefined, number | undefined] {
 ReactDOM.render(
   <HistoricPage
     base={'./'}
-    addURL={'game/add'}
     gamesFrom={getParameters()[0]}
     gamesTo={getParameters()[1]}
   />,

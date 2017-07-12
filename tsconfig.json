@@ -13,7 +13,8 @@
     "rootDir": "ui"
 	},
 	"exclude": [
-    "node_modules"
+    "node_modules",
+		"swagger"
   ],
 	"formatCodeOptions": {
 		"indentSize": 2

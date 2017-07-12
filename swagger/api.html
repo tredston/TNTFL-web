@@ -1,0 +1,1825 @@
+<!doctype html>
+<html>
+  <head>
+    <title>TNTFL</title>
+    <style type="text/css">
+      body {
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>TNTFL</h1>
+    <div class="app-desc">Table Football Ladder</div>
+    <div class="app-desc">More information: <a href="https://github.com/tredston/TNTFL">https://github.com/tredston/TNTFL</a></div>
+    <div class="app-desc">Contact Info: <a href="hello@helloreverb.com">hello@helloreverb.com</a></div>
+    <div class="app-desc">Version: 5.1.2</div>
+    <div class="app-desc">BasePath:/~tlr/tntfl</div>
+    <div class="license-info">MIT</div>
+    <div class="license-url">https://opensource.org/licenses/MIT</div>
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Games">Games</a></h4>
+  <ul>
+  <li><a href="#addGame"><code><span class="http-method">post</span> /game/add/json</code></a></li>
+  <li><a href="#addGameRedirect"><code><span class="http-method">post</span> /game/add</code></a></li>
+  <li><a href="#getGame"><code><span class="http-method">get</span> /game/{gameId}/json</code></a></li>
+  <li><a href="#getGames"><code><span class="http-method">get</span> /games/{begin}/{end}/json</code></a></li>
+  <li><a href="#getHeadToHeadGames"><code><span class="http-method">get</span> /headtohead/{player1}/{player2}/games/json</code></a></li>
+  <li><a href="#getPunditry"><code><span class="http-method">get</span> /pundit/{gameId}/json</code></a></li>
+  <li><a href="#getRecent"><code><span class="http-method">get</span> /recent/json</code></a></li>
+  <li><a href="#predict"><code><span class="http-method">get</span> /predict/{redElo}/{blueElo}/json</code></a></li>
+  </ul>
+  <h4><a href="#Ladder">Ladder</a></h4>
+  <ul>
+  <li><a href="#getLadder"><code><span class="http-method">get</span> /ladder/json</code></a></li>
+  <li><a href="#getLadderBetween"><code><span class="http-method">get</span> /ladder/{begin}/{end}/json</code></a></li>
+  <li><a href="#speculate"><code><span class="http-method">get</span> /speculate/json</code></a></li>
+  </ul>
+  <h4><a href="#Players">Players</a></h4>
+  <ul>
+  <li><a href="#getActive"><code><span class="http-method">get</span> /activeplayers/json</code></a></li>
+  <li><a href="#getPerPlayerStats"><code><span class="http-method">get</span> /player/{player}/perplayerstats/json</code></a></li>
+  <li><a href="#getPlayer"><code><span class="http-method">get</span> /player/{player}/json</code></a></li>
+  <li><a href="#getPlayerAchievements"><code><span class="http-method">get</span> /player/{player}/achievements/json</code></a></li>
+  <li><a href="#getPlayerGames"><code><span class="http-method">get</span> /player/{player}/games/json</code></a></li>
+  </ul>
+  <h4><a href="#Stats">Stats</a></h4>
+  <ul>
+  <li><a href="#getStats"><code><span class="http-method">get</span> /stats/json</code></a></li>
+  </ul>
+
+  <h1><a name="Games">Games</a></h1>
+  <div class="method"><a name="addGame"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /game/add/json</code></pre></div>
+    <div class="method-summary">Add a game (<span class="nickname">addGame</span>)</div>
+    <div class="method-notes">Add a game.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/x-www-form-urlencoded</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">redPlayer (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The player on red </div><div class="param">redScore (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The red team score format: int32</div><div class="param">bluePlayer (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The player on blue </div><div class="param">blueScore (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The blue team score format: int32</div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200_3">inline_response_200_3</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "date" : 123456789,
+  "red" : "",
+  "deleted" : {
+    "at" : 123456789,
+    "by" : "aeiou"
+  },
+  "blue" : {
+    "score" : 123,
+    "achievements" : [ {
+      "name" : "aeiou",
+      "description" : "aeiou",
+      "time" : 123456789
+    } ],
+    "rankChange" : 123,
+    "newRank" : 123,
+    "name" : "aeiou",
+    "href" : "aeiou",
+    "skillChange" : 1.3579000000000001069366817318950779736042022705078125
+  },
+  "positionSwap" : true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    A game resource representing the added game
+        <a href="#inline_response_200_3">inline_response_200_3</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="addGameRedirect"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /game/add</code></pre></div>
+    <div class="method-summary">Add a game (<span class="nickname">addGameRedirect</span>)</div>
+    <div class="method-notes">Add a game.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">redPlayer (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The player on red </div><div class="param">redScore (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The red team score format: int32</div><div class="param">bluePlayer (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The player on blue </div><div class="param">blueScore (required)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; The blue team score format: int32</div>
+    </div>  <!-- field-items -->
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">302</h4>
+    Redirect to new game&#39;s page
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getGame"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /game/{gameId}/json</code></pre></div>
+    <div class="method-summary">Get a game (<span class="nickname">getGame</span>)</div>
+    <div class="method-notes">Get a game.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">gameId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Timestamp of the game format: int64</div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200_3">inline_response_200_3</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "date" : 123456789,
+  "red" : "",
+  "deleted" : {
+    "at" : 123456789,
+    "by" : "aeiou"
+  },
+  "blue" : {
+    "score" : 123,
+    "achievements" : [ {
+      "name" : "aeiou",
+      "description" : "aeiou",
+      "time" : 123456789
+    } ],
+    "rankChange" : 123,
+    "newRank" : 123,
+    "name" : "aeiou",
+    "href" : "aeiou",
+    "skillChange" : 1.3579000000000001069366817318950779736042022705078125
+  },
+  "positionSwap" : true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Game resource
+        <a href="#inline_response_200_3">inline_response_200_3</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getGames"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /games/{begin}/{end}/json</code></pre></div>
+    <div class="method-summary">Get games (<span class="nickname">getGames</span>)</div>
+    <div class="method-notes">Get games.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">begin (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Timestamp to filter from. format: int64</div><div class="param">end (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Timestamp to filter to. format: int64</div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_3">inline_response_200_3</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "date" : 123456789,
+  "red" : "",
+  "deleted" : {
+    "at" : 123456789,
+    "by" : "aeiou"
+  },
+  "blue" : {
+    "score" : 123,
+    "achievements" : [ {
+      "name" : "aeiou",
+      "description" : "aeiou",
+      "time" : 123456789
+    } ],
+    "rankChange" : 123,
+    "newRank" : 123,
+    "name" : "aeiou",
+    "href" : "aeiou",
+    "skillChange" : 1.3579000000000001069366817318950779736042022705078125
+  },
+  "positionSwap" : true
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Games played between given times
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getHeadToHeadGames"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /headtohead/{player1}/{player2}/games/json</code></pre></div>
+    <div class="method-summary">Get shared games (<span class="nickname">getHeadToHeadGames</span>)</div>
+    <div class="method-notes">Get shared games.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">player1 (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Name of player 1 </div><div class="param">player2 (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Name of player 2 </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_3">inline_response_200_3</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "date" : 123456789,
+  "red" : "",
+  "deleted" : {
+    "at" : 123456789,
+    "by" : "aeiou"
+  },
+  "blue" : {
+    "score" : 123,
+    "achievements" : [ {
+      "name" : "aeiou",
+      "description" : "aeiou",
+      "time" : 123456789
+    } ],
+    "rankChange" : 123,
+    "newRank" : 123,
+    "name" : "aeiou",
+    "href" : "aeiou",
+    "skillChange" : 1.3579000000000001069366817318950779736042022705078125
+  },
+  "positionSwap" : true
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Shared games
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getPunditry"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /pundit/{gameId}/json</code></pre></div>
+    <div class="method-summary">Get game punditry (<span class="nickname">getPunditry</span>)</div>
+    <div class="method-notes">Get game punditry.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">gameId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Timestamp of game format: int64</div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      array[String]
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ "aeiou" ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Punditry for requested game
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getRecent"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /recent/json</code></pre></div>
+    <div class="method-summary">Get recent games (<span class="nickname">getRecent</span>)</div>
+    <div class="method-notes">Get recent games.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Maximum number of games to return </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_3">inline_response_200_3</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "date" : 123456789,
+  "red" : "",
+  "deleted" : {
+    "at" : 123456789,
+    "by" : "aeiou"
+  },
+  "blue" : {
+    "score" : 123,
+    "achievements" : [ {
+      "name" : "aeiou",
+      "description" : "aeiou",
+      "time" : 123456789
+    } ],
+    "rankChange" : 123,
+    "newRank" : 123,
+    "name" : "aeiou",
+    "href" : "aeiou",
+    "skillChange" : 1.3579000000000001069366817318950779736042022705078125
+  },
+  "positionSwap" : true
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Recent games
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="predict"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /predict/{redElo}/{blueElo}/json</code></pre></div>
+    <div class="method-summary">Predict the outcome of a game (<span class="nickname">predict</span>)</div>
+    <div class="method-notes">Predict the outcome of a game.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">redElo (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Elo of red player </div><div class="param">blueElo (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Elo of blue player </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200_8">inline_response_200_8</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "blueGoalRatio" : 1.3579000000000001069366817318950779736042022705078125
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Predicted goal ratio
+        <a href="#inline_response_200_8">inline_response_200_8</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Ladder">Ladder</a></h1>
+  <div class="method"><a name="getLadder"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /ladder/json</code></pre></div>
+    <div class="method-summary">Get the ladder (<span class="nickname">getLadder</span>)</div>
+    <div class="method-notes">Get the ladder.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">showInactive (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Include inactive players </div><div class="param">players (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Include detailed player info </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_4">inline_response_200_4</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "trend" : [ {
+    "date" : 1.3579000000000001069366817318950779736042022705078125,
+    "skill" : 1.3579000000000001069366817318950779736042022705078125
+  } ],
+  "skill" : 1.3579000000000001069366817318950779736042022705078125,
+  "name" : "aeiou",
+  "rank" : 123,
+  "href" : "aeiou",
+  "player" : {
+    "total" : {
+      "wins" : 123,
+      "gamesToday" : 123,
+      "against" : 123,
+      "for" : 123,
+      "games" : 123,
+      "gamesAsRed" : 123,
+      "losses" : 123
+    },
+    "skill" : 1.3579000000000001069366817318950779736042022705078125,
+    "name" : "aeiou",
+    "games" : {
+      "href" : "aeiou"
+    },
+    "rank" : 123,
+    "active" : true
+  }
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Ladder
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getLadderBetween"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /ladder/{begin}/{end}/json</code></pre></div>
+    <div class="method-summary">Get the ladder (<span class="nickname">getLadderBetween</span>)</div>
+    <div class="method-notes">Get the ladder.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">begin (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Timestamp to filter from. format: int64</div><div class="param">end (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Timestamp to filter to. format: int64</div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">showInactive (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Include inactive players </div><div class="param">players (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Include detailed player info </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_4">inline_response_200_4</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "trend" : [ {
+    "date" : 1.3579000000000001069366817318950779736042022705078125,
+    "skill" : 1.3579000000000001069366817318950779736042022705078125
+  } ],
+  "skill" : 1.3579000000000001069366817318950779736042022705078125,
+  "name" : "aeiou",
+  "rank" : 123,
+  "href" : "aeiou",
+  "player" : {
+    "total" : {
+      "wins" : 123,
+      "gamesToday" : 123,
+      "against" : 123,
+      "for" : 123,
+      "games" : 123,
+      "gamesAsRed" : 123,
+      "losses" : 123
+    },
+    "skill" : 1.3579000000000001069366817318950779736042022705078125,
+    "name" : "aeiou",
+    "games" : {
+      "href" : "aeiou"
+    },
+    "rank" : 123,
+    "active" : true
+  }
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Ladder
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="speculate"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /speculate/json</code></pre></div>
+    <div class="method-summary">Get the ladder (<span class="nickname">speculate</span>)</div>
+    <div class="method-notes">Get the ladder.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">showInactive (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Include inactive players </div><div class="param">players (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Include detailed player info </div><div class="param">previousGames (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; CSV of speculative games </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200_7">inline_response_200_7</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "entries" : [ {
+    "trend" : [ {
+      "date" : 1.3579000000000001069366817318950779736042022705078125,
+      "skill" : 1.3579000000000001069366817318950779736042022705078125
+    } ],
+    "skill" : 1.3579000000000001069366817318950779736042022705078125,
+    "name" : "aeiou",
+    "rank" : 123,
+    "href" : "aeiou",
+    "player" : {
+      "total" : {
+        "wins" : 123,
+        "gamesToday" : 123,
+        "against" : 123,
+        "for" : 123,
+        "games" : 123,
+        "gamesAsRed" : 123,
+        "losses" : 123
+      },
+      "skill" : 1.3579000000000001069366817318950779736042022705078125,
+      "name" : "aeiou",
+      "games" : {
+        "href" : "aeiou"
+      },
+      "rank" : 123,
+      "active" : true
+    }
+  } ],
+  "games" : [ {
+    "date" : 123456789,
+    "red" : "",
+    "deleted" : {
+      "at" : 123456789,
+      "by" : "aeiou"
+    },
+    "blue" : {
+      "score" : 123,
+      "achievements" : [ {
+        "name" : "aeiou",
+        "description" : "aeiou",
+        "time" : 123456789
+      } ],
+      "rankChange" : 123,
+      "newRank" : 123,
+      "name" : "aeiou",
+      "href" : "aeiou",
+      "skillChange" : 1.3579000000000001069366817318950779736042022705078125
+    },
+    "positionSwap" : true
+  } ]
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Ladder
+        <a href="#inline_response_200_7">inline_response_200_7</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Players">Players</a></h1>
+  <div class="method"><a name="getActive"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /activeplayers/json</code></pre></div>
+    <div class="method-summary">Get number of active players (<span class="nickname">getActive</span>)</div>
+    <div class="method-notes">Get number of active players.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">at (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; CSV of timestamps </div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      map[<a href="#inline_response_200_5">inline_response_200_5</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "key" : {
+    "count" : 1.3579000000000001069366817318950779736042022705078125
+  }
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Number of active players
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getPerPlayerStats"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /player/{player}/perplayerstats/json</code></pre></div>
+    <div class="method-summary">Get per player stats (<span class="nickname">getPerPlayerStats</span>)</div>
+    <div class="method-notes">Get per player stats.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">player (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the player </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_2">inline_response_200_2</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "wins" : 1.3579000000000001069366817318950779736042022705078125,
+  "against" : 1.3579000000000001069366817318950779736042022705078125,
+  "opponent" : "aeiou",
+  "for" : 1.3579000000000001069366817318950779736042022705078125,
+  "games" : 1.3579000000000001069366817318950779736042022705078125,
+  "losses" : 1.3579000000000001069366817318950779736042022705078125,
+  "skillChange" : 1.3579000000000001069366817318950779736042022705078125
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Opponents information
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getPlayer"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /player/{player}/json</code></pre></div>
+    <div class="method-summary">Get player info (<span class="nickname">getPlayer</span>)</div>
+    <div class="method-notes">Get player info.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">player (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the player </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200">inline_response_200</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "total" : {
+    "wins" : 123,
+    "gamesToday" : 123,
+    "against" : 123,
+    "for" : 123,
+    "games" : 123,
+    "gamesAsRed" : 123,
+    "losses" : 123
+  },
+  "skill" : 1.3579000000000001069366817318950779736042022705078125,
+  "name" : "aeiou",
+  "games" : {
+    "href" : "aeiou"
+  },
+  "rank" : 123,
+  "active" : true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Player information
+        <a href="#inline_response_200">inline_response_200</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getPlayerAchievements"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /player/{player}/achievements/json</code></pre></div>
+    <div class="method-summary">Get player&#39;s achievements (<span class="nickname">getPlayerAchievements</span>)</div>
+    <div class="method-notes">Get player&#39;s achievements.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">player (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the player </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_1">inline_response_200_1</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "name" : "aeiou",
+  "description" : "aeiou",
+  "time" : 123456789
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Player achievements
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getPlayerGames"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /player/{player}/games/json</code></pre></div>
+    <div class="method-summary">Get player&#39;s games (<span class="nickname">getPlayerGames</span>)</div>
+    <div class="method-notes">Get player&#39;s games.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">player (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; ID of the player </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_3">inline_response_200_3</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "date" : 123456789,
+  "red" : "",
+  "deleted" : {
+    "at" : 123456789,
+    "by" : "aeiou"
+  },
+  "blue" : {
+    "score" : 123,
+    "achievements" : [ {
+      "name" : "aeiou",
+      "description" : "aeiou",
+      "time" : 123456789
+    } ],
+    "rankChange" : 123,
+    "newRank" : 123,
+    "name" : "aeiou",
+    "href" : "aeiou",
+    "skillChange" : 1.3579000000000001069366817318950779736042022705078125
+  },
+  "positionSwap" : true
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Games of the requested player
+        
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Stats">Stats</a></h1>
+  <div class="method"><a name="getStats"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /stats/json</code></pre></div>
+    <div class="method-summary">Get global stats (<span class="nickname">getStats</span>)</div>
+    <div class="method-notes">Get global stats.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="heaader">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200_6">inline_response_200_6</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "records" : {
+    "mostSignificant" : [ {
+      "date" : 123456789,
+      "red" : "",
+      "deleted" : {
+        "at" : 123456789,
+        "by" : "aeiou"
+      },
+      "blue" : {
+        "score" : 123,
+        "achievements" : [ {
+          "name" : "aeiou",
+          "description" : "aeiou",
+          "time" : 123456789
+        } ],
+        "rankChange" : 123,
+        "newRank" : 123,
+        "name" : "aeiou",
+        "href" : "aeiou",
+        "skillChange" : 1.3579000000000001069366817318950779736042022705078125
+      },
+      "positionSwap" : true
+    } ],
+    "longestGame" : "",
+    "winningStreak" : {
+      "count" : 1.3579000000000001069366817318950779736042022705078125,
+      "player" : "aeiou"
+    },
+    "leastSignificant" : [ "" ]
+  },
+  "belt" : {
+    "current" : "",
+    "best" : ""
+  },
+  "gamesPerWeek" : [ {
+    "date" : 1.3579000000000001069366817318950779736042022705078125,
+    "count" : 1.3579000000000001069366817318950779736042022705078125
+  } ],
+  "totals" : {
+    "achievements" : [ {
+      "name" : "aeiou",
+      "count" : 1.3579000000000001069366817318950779736042022705078125,
+      "description" : "aeiou",
+      "time" : 123456789
+    } ],
+    "activePlayers" : 1.3579000000000001069366817318950779736042022705078125,
+    "players" : 1.3579000000000001069366817318950779736042022705078125,
+    "games" : 1.3579000000000001069366817318950779736042022705078125
+  }
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="heaader">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Global stats
+        <a href="#inline_response_200_6">inline_response_200_6</a>
+  </div> <!-- method -->
+  <hr/>
+
+  <div class="up"><a href="#__Models">Up</a></div>
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#Achievement"><code>Achievement</code></a></li>
+    <li><a href="#AchievementCount"><code>AchievementCount</code></a></li>
+    <li><a href="#ActivePlayers"><code>ActivePlayers</code></a></li>
+    <li><a href="#Belt"><code>Belt</code></a></li>
+    <li><a href="#Game"><code>Game</code></a></li>
+    <li><a href="#GamesLink"><code>GamesLink</code></a></li>
+    <li><a href="#GamesPerWeekItem"><code>GamesPerWeekItem</code></a></li>
+    <li><a href="#GlobalRecords"><code>GlobalRecords</code></a></li>
+    <li><a href="#GlobalTotals"><code>GlobalTotals</code></a></li>
+    <li><a href="#inline_response_200"><code>inline_response_200</code></a></li>
+    <li><a href="#inline_response_200_1"><code>inline_response_200_1</code></a></li>
+    <li><a href="#inline_response_200_2"><code>inline_response_200_2</code></a></li>
+    <li><a href="#inline_response_200_3"><code>inline_response_200_3</code></a></li>
+    <li><a href="#inline_response_200_4"><code>inline_response_200_4</code></a></li>
+    <li><a href="#inline_response_200_5"><code>inline_response_200_5</code></a></li>
+    <li><a href="#inline_response_200_6"><code>inline_response_200_6</code></a></li>
+    <li><a href="#inline_response_200_6_belt"><code>inline_response_200_6_belt</code></a></li>
+    <li><a href="#inline_response_200_6_gamesPerWeek"><code>inline_response_200_6_gamesPerWeek</code></a></li>
+    <li><a href="#inline_response_200_6_records"><code>inline_response_200_6_records</code></a></li>
+    <li><a href="#inline_response_200_6_records_winningStreak"><code>inline_response_200_6_records_winningStreak</code></a></li>
+    <li><a href="#inline_response_200_6_totals"><code>inline_response_200_6_totals</code></a></li>
+    <li><a href="#inline_response_200_6_totals_achievements"><code>inline_response_200_6_totals_achievements</code></a></li>
+    <li><a href="#inline_response_200_7"><code>inline_response_200_7</code></a></li>
+    <li><a href="#inline_response_200_8"><code>inline_response_200_8</code></a></li>
+    <li><a href="#inline_response_200_games"><code>inline_response_200_games</code></a></li>
+    <li><a href="#inline_response_200_total"><code>inline_response_200_total</code></a></li>
+    <li><a href="#LadderEntry"><code>LadderEntry</code></a></li>
+    <li><a href="#ladderjson_trend"><code>ladderjson_trend</code></a></li>
+    <li><a href="#PerPlayerStat"><code>PerPlayerStat</code></a></li>
+    <li><a href="#Performance"><code>Performance</code></a></li>
+    <li><a href="#Player"><code>Player</code></a></li>
+    <li><a href="#PlayerTotals"><code>PlayerTotals</code></a></li>
+    <li><a href="#playerplayergamesjson_blue"><code>playerplayergamesjson_blue</code></a></li>
+    <li><a href="#playerplayergamesjson_deleted"><code>playerplayergamesjson_deleted</code></a></li>
+    <li><a href="#Prediction"><code>Prediction</code></a></li>
+    <li><a href="#Speculated"><code>Speculated</code></a></li>
+    <li><a href="#Stats"><code>Stats</code></a></li>
+    <li><a href="#Streak"><code>Streak</code></a></li>
+    <li><a href="#TrendItem"><code>TrendItem</code></a></li>
+  </ol>
+
+  <div class="model">
+    <h3 class="field-label"><a name="Achievement">Achievement - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Name of the achievement </div>
+<div class="param">description </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> A brief description of the achievement </div>
+<div class="param">time (optional)</div><div class="param-desc"><span class="param-type"><a href="#long">Long</a></span> Timestamp of when the achievement was earned format: int64</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="AchievementCount">AchievementCount - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Name of the achievement </div>
+<div class="param">description </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> A brief description of the achievement </div>
+<div class="param">time (optional)</div><div class="param-desc"><span class="param-type"><a href="#long">Long</a></span> Timestamp of when the achievement was earned format: int64</div>
+<div class="param">count </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of times awarded format: int32</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="ActivePlayers">ActivePlayers - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">count </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  format: int32</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="Belt">Belt - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">best (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_records_winningStreak">inline_response_200_6_records_winningStreak</a></span>  </div>
+<div class="param">current (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_records_winningStreak">inline_response_200_6_records_winningStreak</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="Game">Game - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">date </div><div class="param-desc"><span class="param-type"><a href="#long">Long</a></span> The unix timestamp of when the game was added format: int64</div>
+<div class="param">positionSwap </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Whether or not the players swapped ladder position </div>
+<div class="param">blue (optional)</div><div class="param-desc"><span class="param-type"><a href="#playerplayergamesjson_blue">playerplayergamesjson_blue</a></span>  </div>
+<div class="param">red (optional)</div><div class="param-desc"><span class="param-type"><a href="#playerplayergamesjson_blue">playerplayergamesjson_blue</a></span>  </div>
+<div class="param">deleted (optional)</div><div class="param-desc"><span class="param-type"><a href="#playerplayergamesjson_deleted">playerplayergamesjson_deleted</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="GamesLink">GamesLink - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">href </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="GamesPerWeekItem">GamesPerWeekItem - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">date </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Unix time format: int64</div>
+<div class="param">count </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  format: int32</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="GlobalRecords">GlobalRecords - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">winningStreak (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_records_winningStreak">inline_response_200_6_records_winningStreak</a></span>  </div>
+<div class="param">mostSignificant </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_3">array[inline_response_200_3]</a></span> Games with largest skill transfer </div>
+<div class="param">leastSignificant </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_3">array[inline_response_200_3]</a></span> Games with smallest skill transfer </div>
+<div class="param">longestGame (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_3">inline_response_200_3</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="GlobalTotals">GlobalTotals - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">games </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of games played format: int32</div>
+<div class="param">players </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of players format: int32</div>
+<div class="param">activePlayers </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of active players format: int32</div>
+<div class="param">achievements </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_totals_achievements">array[inline_response_200_6_totals_achievements]</a></span> Accumulated achievements </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200">inline_response_200 - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Resource representing information about a player</div>
+    <div class="field-items">
+      <div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Player&#39;s cfl username </div>
+<div class="param">rank </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Player&#39;s current ladder rank format: int32</div>
+<div class="param">games (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_games">inline_response_200_games</a></span>  </div>
+<div class="param">active </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Whether or not the system considers the player active </div>
+<div class="param">skill </div><div class="param-desc"><span class="param-type"><a href="#double">Double</a></span> The player&#39;s skill value in the ranking system format: double</div>
+<div class="param">total (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_total">inline_response_200_total</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_1">inline_response_200_1 - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Name of the achievement </div>
+<div class="param">description </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> A brief description of the achievement </div>
+<div class="param">time (optional)</div><div class="param-desc"><span class="param-type"><a href="#long">Long</a></span> Timestamp of when the achievement was earned format: int64</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_2">inline_response_200_2 - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">opponent </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Opponent&#39;s ID </div>
+<div class="param">skillChange </div><div class="param-desc"><span class="param-type"><a href="#double">Double</a></span> Skill transfer format: double</div>
+<div class="param">for </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Goals scored format: int32</div>
+<div class="param">against </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Goals conceded format: int32</div>
+<div class="param">games </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of games format: int32</div>
+<div class="param">wins </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of wins format: int32</div>
+<div class="param">losses </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of losses format: int32</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_3">inline_response_200_3 - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">date </div><div class="param-desc"><span class="param-type"><a href="#long">Long</a></span> The unix timestamp of when the game was added format: int64</div>
+<div class="param">positionSwap </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Whether or not the players swapped ladder position </div>
+<div class="param">blue (optional)</div><div class="param-desc"><span class="param-type"><a href="#playerplayergamesjson_blue">playerplayergamesjson_blue</a></span>  </div>
+<div class="param">red (optional)</div><div class="param-desc"><span class="param-type"><a href="#playerplayergamesjson_blue">playerplayergamesjson_blue</a></span>  </div>
+<div class="param">deleted (optional)</div><div class="param-desc"><span class="param-type"><a href="#playerplayergamesjson_deleted">playerplayergamesjson_deleted</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_4">inline_response_200_4 - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">rank (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Player&#39;s rank </div>
+<div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Player&#39;s name </div>
+<div class="param">skill (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Player&#39;s skill </div>
+<div class="param">href (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Link to detailed player stats </div>
+<div class="param">player (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200">inline_response_200</a></span>  </div>
+<div class="param">trend (optional)</div><div class="param-desc"><span class="param-type"><a href="#ladderjson_trend">array[ladderjson_trend]</a></span> Player&#39;s skill point trend </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_5">inline_response_200_5 - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">count </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  format: int32</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_6">inline_response_200_6 - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">totals (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_totals">inline_response_200_6_totals</a></span>  </div>
+<div class="param">records (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_records">inline_response_200_6_records</a></span>  </div>
+<div class="param">belt (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_belt">inline_response_200_6_belt</a></span>  </div>
+<div class="param">gamesPerWeek </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_gamesPerWeek">array[inline_response_200_6_gamesPerWeek]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_6_belt">inline_response_200_6_belt - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">best (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_records_winningStreak">inline_response_200_6_records_winningStreak</a></span>  </div>
+<div class="param">current (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_records_winningStreak">inline_response_200_6_records_winningStreak</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_6_gamesPerWeek">inline_response_200_6_gamesPerWeek - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">date </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Unix time format: int64</div>
+<div class="param">count </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span>  format: int32</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_6_records">inline_response_200_6_records - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">winningStreak (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_records_winningStreak">inline_response_200_6_records_winningStreak</a></span>  </div>
+<div class="param">mostSignificant </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_3">array[inline_response_200_3]</a></span> Games with largest skill transfer </div>
+<div class="param">leastSignificant </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_3">array[inline_response_200_3]</a></span> Games with smallest skill transfer </div>
+<div class="param">longestGame (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_3">inline_response_200_3</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_6_records_winningStreak">inline_response_200_6_records_winningStreak - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">player </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The player&#39;s name </div>
+<div class="param">count </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Length of streak format: int32</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_6_totals">inline_response_200_6_totals - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">games </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of games played format: int32</div>
+<div class="param">players </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of players format: int32</div>
+<div class="param">activePlayers </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of active players format: int32</div>
+<div class="param">achievements </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_totals_achievements">array[inline_response_200_6_totals_achievements]</a></span> Accumulated achievements </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_6_totals_achievements">inline_response_200_6_totals_achievements - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Name of the achievement </div>
+<div class="param">description </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> A brief description of the achievement </div>
+<div class="param">time (optional)</div><div class="param-desc"><span class="param-type"><a href="#long">Long</a></span> Timestamp of when the achievement was earned format: int64</div>
+<div class="param">count </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of times awarded format: int32</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_7">inline_response_200_7 - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">entries </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_4">array[inline_response_200_4]</a></span> Ladder entries </div>
+<div class="param">games </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_3">array[inline_response_200_3]</a></span> Ladder entries </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_8">inline_response_200_8 - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">blueGoalRatio (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Ratio of goals that blue is expected to score </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_games">inline_response_200_games - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">href </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="inline_response_200_total">inline_response_200_total - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">for </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of goals the player has scored </div>
+<div class="param">against </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of goals scored against the player </div>
+<div class="param">wins </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of games the player has won </div>
+<div class="param">losses </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of games the player has lost </div>
+<div class="param">games </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of games the player has played </div>
+<div class="param">gamesToday (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of games the player has played so far today </div>
+<div class="param">gamesAsRed (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of games the player has played as red. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="LadderEntry">LadderEntry - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">rank (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Player&#39;s rank </div>
+<div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Player&#39;s name </div>
+<div class="param">skill (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Player&#39;s skill </div>
+<div class="param">href (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Link to detailed player stats </div>
+<div class="param">player (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200">inline_response_200</a></span>  </div>
+<div class="param">trend (optional)</div><div class="param-desc"><span class="param-type"><a href="#ladderjson_trend">array[ladderjson_trend]</a></span> Player&#39;s skill point trend </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="ladderjson_trend">ladderjson_trend - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">date </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Unix time format: int64</div>
+<div class="param">skill </div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="PerPlayerStat">PerPlayerStat - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">opponent </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Opponent&#39;s ID </div>
+<div class="param">skillChange </div><div class="param-desc"><span class="param-type"><a href="#double">Double</a></span> Skill transfer format: double</div>
+<div class="param">for </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Goals scored format: int32</div>
+<div class="param">against </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Goals conceded format: int32</div>
+<div class="param">games </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of games format: int32</div>
+<div class="param">wins </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of wins format: int32</div>
+<div class="param">losses </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Number of losses format: int32</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="Performance">Performance - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Resource representing how a player performed in a game</div>
+    <div class="field-items">
+      <div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Player&#39;s cfl username </div>
+<div class="param">score </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Goals scored by this player format: int32</div>
+<div class="param">skillChange </div><div class="param-desc"><span class="param-type"><a href="#double">Double</a></span> Skill value change for this player format: double</div>
+<div class="param">rankChange </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Ladder rank change for this player format: int32</div>
+<div class="param">newRank </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> New ladder rank of this player format: int32</div>
+<div class="param">href </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Link to get player&#39;s information </div>
+<div class="param">achievements </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_1">array[inline_response_200_1]</a></span> Achievements earned during this performance </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="Player">Player - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Resource representing information about a player</div>
+    <div class="field-items">
+      <div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Player&#39;s cfl username </div>
+<div class="param">rank </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Player&#39;s current ladder rank format: int32</div>
+<div class="param">games (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_games">inline_response_200_games</a></span>  </div>
+<div class="param">active </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Whether or not the system considers the player active </div>
+<div class="param">skill </div><div class="param-desc"><span class="param-type"><a href="#double">Double</a></span> The player&#39;s skill value in the ranking system format: double</div>
+<div class="param">total (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_total">inline_response_200_total</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="PlayerTotals">PlayerTotals - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">for </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of goals the player has scored </div>
+<div class="param">against </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of goals scored against the player </div>
+<div class="param">wins </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of games the player has won </div>
+<div class="param">losses </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of games the player has lost </div>
+<div class="param">games </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of games the player has played </div>
+<div class="param">gamesToday (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of games the player has played so far today </div>
+<div class="param">gamesAsRed (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of games the player has played as red. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="playerplayergamesjson_blue">playerplayergamesjson_blue - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Resource representing how a player performed in a game</div>
+    <div class="field-items">
+      <div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Player&#39;s cfl username </div>
+<div class="param">score </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Goals scored by this player format: int32</div>
+<div class="param">skillChange </div><div class="param-desc"><span class="param-type"><a href="#double">Double</a></span> Skill value change for this player format: double</div>
+<div class="param">rankChange </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Ladder rank change for this player format: int32</div>
+<div class="param">newRank </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> New ladder rank of this player format: int32</div>
+<div class="param">href </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Link to get player&#39;s information </div>
+<div class="param">achievements </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_1">array[inline_response_200_1]</a></span> Achievements earned during this performance </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="playerplayergamesjson_deleted">playerplayergamesjson_deleted - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">at </div><div class="param-desc"><span class="param-type"><a href="#long">Long</a></span> Unix time game was deleted at format: int64</div>
+<div class="param">by </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> User that deleted the game </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="Prediction">Prediction - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">blueGoalRatio (optional)</div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Ratio of goals that blue is expected to score </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="Speculated">Speculated - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">entries </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_4">array[inline_response_200_4]</a></span> Ladder entries </div>
+<div class="param">games </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_3">array[inline_response_200_3]</a></span> Ladder entries </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="Stats">Stats - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">totals (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_totals">inline_response_200_6_totals</a></span>  </div>
+<div class="param">records (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_records">inline_response_200_6_records</a></span>  </div>
+<div class="param">belt (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_belt">inline_response_200_6_belt</a></span>  </div>
+<div class="param">gamesPerWeek </div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_6_gamesPerWeek">array[inline_response_200_6_gamesPerWeek]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="Streak">Streak - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">player </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The player&#39;s name </div>
+<div class="param">count </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Length of streak format: int32</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3 class="field-label"><a name="TrendItem">TrendItem - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">date </div><div class="param-desc"><span class="param-type"><a href="#number">BigDecimal</a></span> Unix time format: int64</div>
+<div class="param">skill </div><div class="param-desc"><span class="param-type"><a href="#float">Float</a></span>  format: float</div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>

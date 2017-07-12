@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
+import { GlobalRecords } from 'tntfl-api';
 
 import PlayerLink from './player-link';
-import { Records } from '../../model/stats';
 import StatListItem from './stat-list-item';
 
 interface RecordsSectionProps {
-  records: Records;
+  records: GlobalRecords;
   base: string;
 }
 export default function RecordsSection(props: RecordsSectionProps): JSX.Element {

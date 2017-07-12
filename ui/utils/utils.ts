@@ -1,7 +1,5 @@
 import * as moment from 'moment';
-
-import Game from '../model/game';
-import Player from '../model/player';
+import { Game, Player } from 'tntfl-api';
 
 export function mapsEqual<T, U>(first?: Map<T, U>, second?: Map<T, U>): boolean {
   if (first !== undefined && second !== undefined) {

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Grid, Panel, Table } from 'react-bootstrap';
+import { Game } from 'tntfl-api';
 
 import AchievementPanel from './achievement-panel';
-import Game from '../model/game';
 
 interface FactProps {
   fact: string;

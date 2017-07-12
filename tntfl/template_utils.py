@@ -60,7 +60,7 @@ def getTrendWithDates(player):
     skill = 0
     for game in games:
         skill += game.skillChangeToBlue if game.bluePlayer == player.name else -game.skillChangeToBlue
-        trend.append((game.time, skill))
+        trend.append({'date': game.time, 'skill': skill})
     return trend
 
 
@@ -151,15 +151,15 @@ def getGamesPerWeek(games):
         return []
     first = games[0].timeAsDate()
     curYear, curWeek, _ = first.isocalendar()
-    gamesPerWeek = [[first.strftime('%s'), 0]]
+    gamesPerWeek = [{'date': first.strftime('%s'), 'count': 0}]
     for game in games:
         date = game.timeAsDate()
         year, week, _ = date.isocalendar()
         if curYear != year or curWeek != week:
             curYear = year
             curWeek = week
-            gamesPerWeek.append([date.strftime('%s'), 0])
-        gamesPerWeek[-1][1] += 1
+            gamesPerWeek.append({'date': date.strftime('%s'), 'count': 0})
+        gamesPerWeek[-1]['count'] += 1
     return gamesPerWeek
 
 
@@ -173,10 +173,11 @@ def getStatsJson(ladder, base):
             'games': len(ladder.games),
             'players': len(ladder.players),
             'activePlayers': ladder.getNumActivePlayers(),
-            'achievements': [[{
+            'achievements': [{
                 'name': a.name,
                 'description': a.description,
-            }, c] for a, c in sorted(ladder.getAchievements().iteritems(), reverse=True, key=lambda t: t[1])],
+                'count': c
+            } for a, c in sorted(ladder.getAchievements().iteritems(), reverse=True, key=lambda t: t[1])],
         },
         'records': {
             'winningStreak': {

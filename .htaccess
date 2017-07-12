@@ -2,9 +2,9 @@ Options -MultiViews
 Header set Access-Control-Allow-Origin "*"
 
 RewriteEngine on
-RewriteBase /~tlr/tntfl
+RewriteBase /~tlr/tntfl-test
 
-RewriteRule (.*)/json$ $1?view=json
+RewriteRule (.*)/json$ $1?view=json [QSA]
 
 RewriteRule ^game(.cgi)?/([^/]+)$ game/$2/ [R]
 RewriteRule ^game(.cgi)?/add/ game.cgi?method=add [QSA]
@@ -33,10 +33,13 @@ RewriteRule ^headtohead(.cgi)?/([a-zA-Z]+)/([a-zA-Z]+)/games/ headtohead.cgi?pla
 RewriteRule ^pundit(.cgi)?/([^/]+)$ pundit/$2/ [R]
 RewriteRule ^pundit(.cgi)?/([0-9]+)/ pundit.cgi?game=$2 [QSA]
 
-RewriteRule ^ladder(.cgi)?/? ladder.cgi
-RewriteRule ^ladder(.cgi)?/([0-9]+)/([0-9]+)/$ ladder.cgi?gamesFrom=$2&gamesTo=$3
+RewriteRule ^ladder(.cgi)?/? ladder.cgi [QSA]
+RewriteRule ^ladder(.cgi)?/([0-9]+)/([0-9]+)/ ladder.cgi?gamesFrom=$2&gamesTo=$3 [QSA]
 
-RewriteRule ^api(.cgi)?/ api.html
+RewriteRule ^predict(.cgi)?/? predict.cgi [QSA]
+RewriteRule ^predict(.cgi)?/([0-9.]+)/([0-9.]+)/ predict.cgi?redElo=$2&blueElo=$3 [QSA]
+
+RewriteRule ^api(.cgi)?/ swagger/api.html
 RewriteRule ^stats(.cgi)?/ stats.cgi
 RewriteRule ^recent(.cgi)?/ recent.cgi
 RewriteRule ^speculate(.cgi)?/ speculate.cgi

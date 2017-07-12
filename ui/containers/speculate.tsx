@@ -1,24 +1,19 @@
 import * as React from 'react';
-import { Component, Props, CSSProperties } from 'react';
-import { Grid, Row, Col, Button, Panel } from 'react-bootstrap';
+import { Component, Props } from 'react';
+import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import {LadderApi, Speculated, Game} from 'tntfl-api';
 
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
 import AddGameForm from '../components/add-game-form';
 import LadderPanel from '../components/ladder-panel';
-import Game from '../model/game';
-import LadderEntry from '../model/ladder-entry';
 
 interface SpeculatePageProps extends Props<SpeculatePage> {
   base: string;
-  addURL: string;
 }
 interface SpeculatePageState {
-  speculated?: {
-    entries: LadderEntry[],
-    games: Game[],
-  };
+  speculated?: Speculated;
   isBusy: boolean;
 }
 export default class SpeculatePage extends Component<SpeculatePageProps, SpeculatePageState> {
@@ -32,9 +27,9 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
   async loadLadder(games: Game[]) {
     const { base } = this.props;
     const serialised = games.map(g => `${g.red.name},${g.red.score},${g.blue.score},${g.blue.name}`).join(',');
-    let url = `${base}speculate.cgi?view=json&players=1&previousGames=${serialised}&showInactive=1`;
-    const r = await fetch(url);
-    this.setState({speculated: await r.json()} as SpeculatePageState);
+    const api = new LadderApi(fetch, base);
+    const speculated = await api.speculate({showInactive: 1, players: 1, previousGames: serialised});
+    this.setState({speculated} as SpeculatePageState);
   }
   componentDidMount() {
     const { speculated } = this.state;
@@ -73,7 +68,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     this.loadLadder([]).then(() => this.setState({isBusy: false} as SpeculatePageState));
   }
   render() {
-    const { addURL, base } = this.props;
+    const { base } = this.props;
     const { speculated, isBusy } = this.state;
     const isSpeculating = speculated && speculated.games.length > 0;
     const now = (new Date()).getTime() / 1000;
@@ -82,7 +77,6 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
       <div>
         <NavigationBar
           base={base}
-          addURL={addURL}
         />
         <Grid fluid={true}>
           <Row>
@@ -114,7 +108,6 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
 ReactDOM.render(
   <SpeculatePage
     base={'../'}
-    addURL={'game/add'}
   />,
   document.getElementById('entry'),
 );

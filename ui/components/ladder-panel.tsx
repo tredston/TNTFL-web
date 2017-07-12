@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
 import { Button, Panel } from 'react-bootstrap';
+import { LadderEntry } from 'tntfl-api';
 
 import Ladder from './ladder';
-import LadderEntry from '../model/ladder-entry';
 
 interface LadderPanelProps extends Props<LadderPanel> {
   entries?: LadderEntry[];

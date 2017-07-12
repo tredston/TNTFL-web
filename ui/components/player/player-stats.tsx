@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CSSProperties } from 'react';
-import { Panel, Row, Col } from 'react-bootstrap';
-import { Pie } from 'react-chartjs-2';
+import { Panel, Col } from 'react-bootstrap';
+import { Game, Player } from 'tntfl-api';
 
 import GamesStat from './games-stat';
 import GoalsStat from './goals-stat';
@@ -9,8 +9,6 @@ import RankStat from './rank-stat';
 import SidePreferenceStat from './side-preference-stat';
 import BoxPlot from './box-plot';
 import { StatBox, DurationStatBox, InstantStatBox } from './stat-panel';
-import Game from '../../model/game';
-import Player from '../../model/player';
 import * as Palette from '../../palette';
 import { formatRankChange, skillChange } from '../../utils/utils';
 

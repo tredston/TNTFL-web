@@ -248,15 +248,15 @@ class PunditApi(Tester):
 
 class PredictApi(Tester):
     def test(self):
-        response = self._getJson('predict.cgi', 'player1Elo=0&player2Elo=0')
+        response = self._getJson('predict.cgi', 'redElo=0&blueElo=0')
         self.assertEqual(response['blueGoalRatio'], 0.5)
 
     def test2(self):
-        response = self._getJson('predict.cgi', 'player1Elo=10&player2Elo=95.882')
+        response = self._getJson('predict.cgi', 'redElo=10&blueElo=95.882')
         self.assertAlmostEqual(response['blueGoalRatio'], 0.75, 4)
 
     def test2Mirrored(self):
-        response = self._getJson('predict.cgi', 'player1Elo=95.882&player2Elo=10')
+        response = self._getJson('predict.cgi', 'redElo=95.882&blueElo=10')
         self.assertAlmostEqual(response['blueGoalRatio'], 0.25, 4)
 
 
@@ -266,12 +266,12 @@ class ActivePlayersApi(Tester):
 
     def testAtDate(self):
         response = self._getJson('activeplayers.cgi', 'at=1430402614')
-        self.assertEqual(response['1430402614'], 13)
+        self.assertEqual(response['1430402614'], {'count': 13})
 
     def testAtDates(self):
         response = self._getJson('activeplayers.cgi', 'at=1420000000,1430402614')
-        self.assertEqual(response['1420000000'], 6)
-        self.assertEqual(response['1430402614'], 13)
+        self.assertEqual(response['1420000000'], {'count': 6})
+        self.assertEqual(response['1430402614'], {'count': 13})
 
 
 class SpeculateApi(Tester):

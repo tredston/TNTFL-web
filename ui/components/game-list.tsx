@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
 import { Grid } from 'react-bootstrap';
+import { PlayersApi, Game } from 'tntfl-api';
 
-import Game from '../model/game';
 import GameSummary from './game-summary';
-import {mapsEqual} from '../utils/utils';
+import { mapsEqual } from '../utils/utils';
 
 interface GameListProps extends Props<GameList> {
   games: Game[];
@@ -23,12 +23,10 @@ export default class GameList extends Component<GameListProps, State> {
   async loadActivePlayers() {
     const { base, games } = this.props;
     if (games.length > 0) {
-      const gameTimes = games.map((game) => game.date - 1);
-      const url = `${base}activeplayers.cgi?at=${gameTimes.join(',')}`;
-      const r = await fetch(url);
-      const json = await r.json();
-      const activePlayers = Object.keys(json).reduce((acc, cur) => acc.set(+cur, json[cur]), new Map<number, number>());
-      this.setState({activePlayers} as State);
+      const at = games.map((game) => game.date - 1).join(',');
+      const json: {[key: string]: {count: number}} = await new PlayersApi(fetch, base).getActive({at});
+      const activePlayers = Object.keys(json).reduce((acc, cur) => acc.set(+cur, json[cur].count), new Map<number, number>());
+      this.setState({activePlayers});
     }
   }
   componentDidMount() {

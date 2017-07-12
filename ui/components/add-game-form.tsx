@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, Props, CSSProperties, FormEvent } from 'react';
-import { Grid, Navbar, Nav, NavItem, Form, FormGroup, FormControl, Button } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, Button } from 'react-bootstrap';
 
 import * as Palette from '../palette';
 

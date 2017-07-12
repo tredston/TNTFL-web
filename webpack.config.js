@@ -92,14 +92,16 @@ module.exports = {
         enforce: 'pre',
         test: /\.tsx?$/,
         exclude: [
-          "node_modules",
+          'node_modules',
+          'swagger',
         ],
         loaders: 'tslint-loader',
       },
       {
         test: /\.tsx?$/,
         exclude: [
-          "node_modules",
+          'node_modules',
+          'swagger',
         ],
         use: { loader: 'awesome-typescript-loader', options: { useCache: true, useBabel: true } },
       },
@@ -115,7 +117,7 @@ module.exports = {
 };
 
 function* plugins() {
-  yield new webpack.optimize.CommonsChunkPlugin("commons-chunk");
+  yield new webpack.optimize.CommonsChunkPlugin('commons-chunk');
   yield new webpack.optimize.ModuleConcatenationPlugin();
   for (var page of pages) {
     const links = page.links;

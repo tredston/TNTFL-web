@@ -2,17 +2,15 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import { GamesApi, PlayersApi, Game } from 'tntfl-api';
 import 'whatwg-fetch';
 
 import GameSummary from '../components/game-summary';
-import GameDetails from '../components/game-details';
 import NavigationBar from '../components/navigation-bar';
-import Game from '../model/game';
 import { getParameters } from '../utils/utils';
 
 interface DeletePageProps extends Props<DeletePage> {
   base: string;
-  addURL: string;
   gameId: string;
 }
 interface DeletePageState {
@@ -27,30 +25,29 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
 
   async loadGame() {
     const { base, gameId } = this.props;
-    const url = `${base}game/${gameId}/json`;
-    const r = await fetch(url);
-    this.setState({game: await r.json()} as DeletePageState);
+    const api = new GamesApi(fetch, base);
+    const game = await api.getGame({gameId: +gameId});
+    this.setState({game} as DeletePageState);
   }
   async loadActivePlayers() {
     const { base, gameId } = this.props;
-    const url = `${base}activeplayers.cgi?at=${+gameId - 1}`;
-    const r = await fetch(url);
-    const activePlayers: {[key: number]: number} = await r.json();
-    this.setState({activePlayers: activePlayers[Number(Object.keys(activePlayers)[0])]});
+    const api = new PlayersApi(fetch, base);
+    const at = `${+gameId - 1}`;
+    const activePlayers: {[key: string]: {count: number}} = await api.getActive({at});
+    this.setState({activePlayers: activePlayers[Number(Object.keys(activePlayers)[0])].count});
   }
   componentDidMount() {
     this.loadGame();
     this.loadActivePlayers();
   }
   render() {
-    const { base, addURL } = this.props;
+    const { base } = this.props;
     const { game, activePlayers } = this.state;
     const numActivePlayers = activePlayers || 0;
     return (
       <div className='gamePage'>
         <NavigationBar
           base={base}
-          addURL={addURL}
         />
         {game ?
           <Grid fluid={true}>
@@ -78,7 +75,6 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
 ReactDOM.render(
     <DeletePage
       base={'../../'}
-      addURL={'game/add'}
       gameId={getParameters(2)[0]}
     />,
     document.getElementById('entry'),

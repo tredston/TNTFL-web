@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { PerPlayerStat } from 'tntfl-api';
 
 import GamesChart from '../games-chart';
 import PlayerName from '../player-name';
-import PerPlayerStat from '../../model/per-player-stat';
 
 interface HeadToHeadLinkProps {
   base: string;
