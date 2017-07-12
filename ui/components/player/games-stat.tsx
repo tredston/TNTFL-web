@@ -1,31 +1,29 @@
 import * as React from 'react';
-import { Pie } from 'react-chartjs-2';
+import { CSSProperties } from 'react';
 import { Player } from 'tntfl-api';
 
-import { StatBox } from './stat-panel';
+import { PieStatBox } from './stat-panel';
 
 interface GamesStatProps {
   player: Player;
+  style?: CSSProperties;
 }
 export default function GamesStat(props: GamesStatProps): JSX.Element {
-  const { player } = props;
+  const { player, style } = props;
+  const data = {
+    labels: ['Wins', 'Draws', 'Losses'],
+    datasets: [{
+      data: [
+        player.total.wins,
+        player.total.games - player.total.wins - player.total.losses,
+        player.total.losses,
+      ],
+      backgroundColor: ['blue', 'rgb(255, 194, 0)', 'red'],
+    }],
+  };
   return (
-    <StatBox title='Games'>
+    <PieStatBox title='Games' style={style} data={data}>
       {player.total.games} games
-      <Pie
-        data={{
-          labels: ['Wins', 'Draws', 'Losses'],
-          datasets: [{
-            data: [
-              player.total.wins,
-              player.total.games - player.total.wins - player.total.losses,
-              player.total.losses,
-            ],
-            backgroundColor: ['blue', 'rgb(255, 194, 0)', 'red'],
-          }],
-        }}
-        options={{legend: {display: false}}}
-      />
-    </StatBox>
+    </PieStatBox>
   );
 }
