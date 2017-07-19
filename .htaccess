@@ -2,7 +2,7 @@ Options -MultiViews
 Header set Access-Control-Allow-Origin "*"
 
 RewriteEngine on
-RewriteBase /~tlr/tntfl-test
+RewriteBase /~tlr/tntfl
 
 RewriteRule (.*)/json$ $1?view=json [QSA]
 
