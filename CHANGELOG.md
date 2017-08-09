@@ -1,6 +1,6 @@
 # Changelog
 
-## develop
+## 5.2.0
 * Changes to some API responses for easier consumption
 * Colour Mattermost notifications based on game outcome
 * Performance improvements
