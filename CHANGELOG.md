@@ -1,5 +1,10 @@
 # Changelog
 
+## develop
+* Changes to some API responses for easier consumption
+* Colour Mattermost notifications based on game outcome
+* Performance improvements
+
 ## 5.1.2
 * Display current month's ladder when loading Slice page
 
