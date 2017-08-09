@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
+import { Player } from 'tntfl-api';
 
 import PlayerName from '../player-name';
 import Rank from '../rank';
-import Player from '../../model/player';
 
 interface PlayerRowProps {
   player1Name: string;

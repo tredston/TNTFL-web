@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
 import * as Pluralize from 'pluralize';
+import { Belt, Streak } from 'tntfl-api';
 
 import PlayerLink from './player-link';
-import { Belt, BeltStat } from '../../model/stats';
 import StatListItem from './stat-list-item';
 
 interface BeltSectionStatProps {
-  stat: BeltStat;
+  stat: Streak;
   base: string;
 }
 function BeltSectionStat(props: BeltSectionStatProps): JSX.Element {
@@ -16,7 +16,7 @@ function BeltSectionStat(props: BeltSectionStatProps): JSX.Element {
     <span>
       <b><PlayerLink name={stat.player} base={base} /></b> ({Pluralize('games', stat.count, true)})
     </span>
-  )
+  );
 }
 
 interface BeltSectionProps {

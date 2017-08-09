@@ -1,21 +1,19 @@
 import * as React from 'react';
-import { Component, Props, CSSProperties } from 'react';
+import { Component, Props } from 'react';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import * as QueryString from 'query-string';
+import { LadderApi, LadderEntry } from 'tntfl-api';
 
 import RangeSlider from '../components/range-slider';
-import RecentGames from '../components/recent-game-list';
 import NavigationBar from '../components/navigation-bar';
-import Game from '../model/game';
 
 import LadderPanel from '../components/ladder-panel';
-import LadderEntry from '../model/ladder-entry';
 import { getMonthName } from '../utils/utils';
 
 interface MonthlyRankingProps {
   year: number;
-  month: number;  //0 indexed
+  month: number;  // 0 indexed
   onClick: (d: Date) => void;
 }
 function Month(props: MonthlyRankingProps): JSX.Element {
@@ -23,7 +21,7 @@ function Month(props: MonthlyRankingProps): JSX.Element {
   return (
     <div>
       <a
-        href="#"
+        href='#'
         onClick={(e) => {
           e.preventDefault();
           onClick(new Date(year, month, 1));
@@ -41,7 +39,7 @@ interface MonthlyRankingsProps {
 }
 function Year(props: MonthlyRankingsProps): JSX.Element {
   const { year, onClick } = props;
-  const now = new Date;
+  const now = new Date();
   const numMonths = year !== now.getFullYear() ? 12 : now.getMonth() + 1;
   let months = Array.from(Array(numMonths).keys());
   // First game was in July 2005
@@ -70,14 +68,13 @@ function dateToEpoch(d: Date): number {
 
 interface HistoricPageProps extends Props<HistoricPage> {
   base: string;
-  addURL: string;
   gamesFrom?: number;
   gamesTo?: number;
 }
 interface HistoricPageState {
-  entries: LadderEntry[];
-  gamesFrom: number;
-  gamesTo: number;
+  entries?: LadderEntry[];
+  gamesFrom?: number;
+  gamesTo?: number;
 }
 export default class HistoricPage extends Component<HistoricPageProps, HistoricPageState> {
   constructor(props: HistoricPageProps, context: any) {
@@ -86,17 +83,17 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
       entries: undefined,
       gamesFrom: props.gamesFrom,
       gamesTo: props.gamesTo,
-    }
+    };
   }
-  async loadLadder(gamesFrom: number, gamesTo: number) {
+  async loadLadder(gamesFrom?: number, gamesTo?: number) {
     const { base } = this.props;
     const startOfMonth = new Date();
     startOfMonth.setDate(1);
-    const fromTime = gamesFrom || dateToEpoch(startOfMonth);
-    const toTime = gamesTo || dateToEpoch(getEndOfMonth(startOfMonth));
-    const url = `${base}ladder.cgi?view=json&players=1&showInactive=1&gamesFrom=${fromTime}&gamesTo=${toTime}`;
-    const r = await fetch(url);
-    this.setState({entries: await r.json()} as HistoricPageState);
+    const begin = gamesFrom || dateToEpoch(startOfMonth);
+    const end = gamesTo || dateToEpoch(getEndOfMonth(startOfMonth));
+    const api = new LadderApi(fetch, base);
+    const entries = await api.getLadderBetween({players: 1, showInactive: 1, begin, end});
+    this.setState({entries} as HistoricPageState);
   }
   componentDidMount() {
     const { gamesFrom, gamesTo } = this.state;
@@ -118,7 +115,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     this.loadLadder(gamesFrom, gamesTo);
   }
   render() {
-    const { addURL, base } = this.props;
+    const { base } = this.props;
     const { entries, gamesFrom, gamesTo } = this.state;
     const now = (new Date()).getUTCFullYear();
     const firstYear = 2005;
@@ -134,11 +131,15 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
       <div>
         <NavigationBar
           base={base}
-          addURL={addURL}
         />
         <Grid fluid={true}>
           <Panel>
-            <RangeSlider gamesFrom={fromTime} gamesTo={toTime} id={'rangeSlider'} onChange={(f, t) => this.onRangeChange(f, t)}/>
+            <RangeSlider
+              gamesFrom={fromTime}
+              gamesTo={toTime}
+              id={'rangeSlider'}
+              onChange={(f, t) => this.onRangeChange(f, t)}
+            />
           </Panel>
           <Row>
             <Col lg={8}>
@@ -160,8 +161,8 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
 
 function getParameters(): [number | undefined, number | undefined] {
   if (location.search !== '') {
-    const params = QueryString.parse(location.search);
-    return [+params['gamesFrom'], +params['gamesTo']];
+    const params: any = QueryString.parse(location.search);
+    return [+params.gamesFrom, +params.gamesTo];
   }
   return [undefined, undefined];
 }
@@ -169,9 +170,8 @@ function getParameters(): [number | undefined, number | undefined] {
 ReactDOM.render(
   <HistoricPage
     base={'./'}
-    addURL={'game/add'}
     gamesFrom={getParameters()[0]}
     gamesTo={getParameters()[1]}
   />,
-  document.getElementById('entry')
+  document.getElementById('entry'),
 );

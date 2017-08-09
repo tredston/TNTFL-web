@@ -15,6 +15,6 @@ export default function RankStatBox(props: RankStatBoxProps): JSX.Element {
   const inactive = getNearlyInactiveClass(lastPlayed, now);
   const prettyRank = rank !== -1 ? rank : '-';
   return (
-    <StatBox title="Current Ranking" style={{width: '100%'}} classes={`${league} ${inactive}`}>{prettyRank}</StatBox>
-  )
+    <StatBox title='Current Ranking' style={{width: '100%'}} classes={`${league} ${inactive}`}>{prettyRank}</StatBox>
+  );
 }

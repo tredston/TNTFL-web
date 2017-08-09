@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CSSProperties } from 'react';
-import { Panel, Row, Col } from 'react-bootstrap';
-import { Pie } from 'react-chartjs-2';
+import { Panel, Col } from 'react-bootstrap';
+import { Game, Player } from 'tntfl-api';
 
 import GamesStat from './games-stat';
 import GoalsStat from './goals-stat';
@@ -9,8 +9,6 @@ import RankStat from './rank-stat';
 import SidePreferenceStat from './side-preference-stat';
 import BoxPlot from './box-plot';
 import { StatBox, DurationStatBox, InstantStatBox } from './stat-panel';
-import Game from '../../model/game';
-import Player from '../../model/player';
 import * as Palette from '../../palette';
 import { formatRankChange, skillChange } from '../../utils/utils';
 
@@ -33,10 +31,10 @@ interface Streak {
   win: boolean;
   gameTimes: number[];
 }
-function getStreakRecords(player: Player, games: Game[]) {
-  const { streaks, currentStreak } = games.reduce(({streaks, currentStreak}, game) => {
-    const won = (game.red.name == player.name && game.red.score > game.blue.score) || (game.blue.name == player.name && game.blue.score > game.red.score);
-    const lost = (game.red.name == player.name && game.red.score < game.blue.score) || (game.blue.name == player.name && game.blue.score < game.red.score);
+function getStreaks(player: Player, games: Game[]) {
+  return games.reduce(({streaks, currentStreak}, game) => {
+    const won = (game.red.name === player.name && game.red.score > game.blue.score) || (game.blue.name === player.name && game.blue.score > game.red.score);
+    const lost = (game.red.name === player.name && game.red.score < game.blue.score) || (game.blue.name === player.name && game.blue.score < game.red.score);
     if ((won && currentStreak.win) || lost && !currentStreak.win) {
       currentStreak.gameTimes.push(game.date);
     }
@@ -50,7 +48,10 @@ function getStreakRecords(player: Player, games: Game[]) {
       }
     }
     return {streaks, currentStreak};
-  }, {streaks: [], currentStreak: {win: true, gameTimes: []}});
+  }, {streaks: [] as Streak[], currentStreak: {win: true, gameTimes: []} as Streak});
+}
+function getStreakRecords(player: Player, games: Game[]) {
+  const { streaks, currentStreak } = getStreaks(player, games);
   const winningStreak = streaks.reduce((winning, streak) => (streak.win && streak.gameTimes.length > winning.gameTimes.length) ? streak : winning , {win: true, gameTimes: []});
   const losingStreak = streaks.reduce((losing, streak) => (!streak.win && streak.gameTimes.length > losing.gameTimes.length) ? streak : losing, {win: false, gameTimes: []});
   return {winningStreak, losingStreak, currentStreak};
@@ -64,21 +65,20 @@ interface PlayerStatsProps {
 }
 export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   function isTenNilWin(playerName: string, game: Game): boolean {
-    return (game.red.score == 10 && game.blue.score == 0 && game.red.name == playerName) ||
-      (game.blue.score == 10 && game.red.score == 0 && game.blue.name == playerName);
+    return (game.red.score === 10 && game.blue.score === 0 && game.red.name === playerName) ||
+      (game.blue.score === 10 && game.red.score === 0 && game.blue.name === playerName);
   }
   function getBG(blue: number): CSSProperties {
-    if (blue == 0) {
+    if (blue === 0) {
       return {};
     }
     return {backgroundColor: blue > 0 ? Palette.blueFade : Palette.redFade};
   }
   const { player, numActivePlayers, games, base } = props;
-  const gamesToday = games.slice(games.length - player.total.gamesToday);
-  const goalRatio = player.total.for / player.total.against;
+  const gamesToday = player.total.gamesToday !== undefined ? games.slice(games.length - player.total.gamesToday) : [];
   const flawlessVictories = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
   const skillChangeToday = gamesToday.reduce((skill, game) => skill += skillChange(game, player), 0);
-  const rankChangeToday = gamesToday.reduce((change, game) => change += game.red.name == player.name ? game.red.rankChange : game.blue.rankChange, 0);
+  const rankChangeToday = gamesToday.reduce((change, game) => change += game.red.name === player.name ? game.red.rankChange : game.blue.rankChange, 0);
   const { highestSkill, lowestSkill } = getSkillRecords(player, games);
   const { winningStreak, losingStreak, currentStreak } = getStreakRecords(player, games);
   const monthAgo = Math.floor((new Date()).getTime() / 1000) - 2.592e+6;
@@ -86,9 +86,9 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     <Panel header={<h1>{player.name}</h1>}>
       <Col sm={3}><StatBox title={'Recent Skill'}><BoxPlot data={getSkillHistory(player, games).filter(d => d.date >= monthAgo).map(d => d.skill)}/></StatBox></Col>
       <Col sm={3}><RankStat rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></Col>
-      <Col sm={3}><StatBox title="Skill">{player.skill.toFixed(3)}</StatBox></Col>
-      <Col sm={3}><StatBox title="Skill change today" style={getBG(skillChangeToday)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
-      <Col sm={3}><StatBox title="Rank change today" style={getBG(rankChangeToday)}>{formatRankChange(rankChangeToday)}</StatBox></Col>
+      <Col sm={3}><StatBox title='Skill'>{player.skill.toFixed(3)}</StatBox></Col>
+      <Col sm={3}><StatBox title='Skill change today' style={getBG(skillChangeToday)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
+      <Col sm={3}><StatBox title='Rank change today' style={getBG(rankChangeToday)}>{formatRankChange(rankChangeToday)}</StatBox></Col>
       <Col sm={3}>
         <DurationStatBox title={'Current streak'}
           from={currentStreak.gameTimes[0]}

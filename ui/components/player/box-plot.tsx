@@ -1,8 +1,7 @@
 import * as React from 'react';
-let ReactHighcharts = require('react-highcharts');
+const ReactHighcharts = require('react-highcharts');
 require('highcharts/highcharts-more')(ReactHighcharts.Highcharts);
-let SS = require('simple-statistics');
-let computeBoxplotStats = require('react-boxplot/dist/stats');
+const computeBoxplotStats = require('react-boxplot/dist/stats');
 
 interface Props {
   data: number[];
@@ -23,10 +22,10 @@ export default function BoxPlot(props: Props): JSX.Element {
     yAxis: {
       title: {
         text: 'Skill',
-      }
+      },
     },
     legend: {
-      enabled: false
+      enabled: false,
     },
     tooltip: {
       headerFormat: '',

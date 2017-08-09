@@ -11,5 +11,5 @@ export default function StatListItem(props: ItemProps): JSX.Element {
       <dt style={{whiteSpace: 'normal'}}>{name}</dt>
       <dd>{value}</dd>
     </div>
-  )
+  );
 }

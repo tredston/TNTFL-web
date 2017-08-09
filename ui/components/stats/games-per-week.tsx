@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { Line } from 'react-chartjs-2';
+import { GamesPerWeekItem } from 'tntfl-api';
 
 import { options } from '../../chart-config';
 
 interface GamesPerWeekProps {
-  gamesPerWeek: [number, number][];
+  gamesPerWeek: GamesPerWeekItem[];
 }
 export default function GamesPerWeek(props: GamesPerWeekProps): JSX.Element {
   const { gamesPerWeek } = props;
   const data = {datasets: [{
-    data: gamesPerWeek.map(d => {return {x: d[0] * 1000, y: d[1]}}),
+    data: gamesPerWeek.map(d => ({x: d.date * 1000, y: d.count})),
     fill: false,
     borderColor: '#0000FF',
   }]};

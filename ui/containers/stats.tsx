@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import { Stats, StatsApi } from 'tntfl-api';
 
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
@@ -10,39 +11,36 @@ import BeltSection from '../components/stats/belt-section';
 import RecordsSection from '../components/stats/records-section';
 import GamesPerWeek from '../components/stats/games-per-week';
 import Achievements from '../components/stats/achievements';
-import Stats from '../model/stats';
 
 interface StatsPageProps extends Props<StatsPage> {
   base: string;
-  addURL: string;
 }
 interface StatsPageState {
-  stats: Stats;
+  stats?: Stats;
 }
 export default class StatsPage extends Component<StatsPageProps, StatsPageState> {
   constructor(props: StatsPageProps, context: any) {
     super(props, context);
     this.state = {
       stats: undefined,
-    }
+    };
   }
   async load() {
     const { base } = this.props;
-    let url = `${base}stats.cgi?view=json`;
-    const r = await fetch(url);
-    this.setState({stats: await r.json()});
+    const api = new StatsApi(fetch, base);
+    const stats = await api.getStats();
+    this.setState({stats});
   }
   componentDidMount() {
     this.load();
   }
   render() {
-    const { addURL, base } = this.props;
+    const { base } = this.props;
     const { stats } = this.state;
     return (
       <div>
         <NavigationBar
           base={base}
-          addURL={addURL}
         />
         {stats
           ? <Grid fluid={true}>
@@ -86,7 +84,6 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
 ReactDOM.render(
   <StatsPage
     base={'../'}
-    addURL={'game/add'}
   />,
-  document.getElementById('entry')
+  document.getElementById('entry'),
 );

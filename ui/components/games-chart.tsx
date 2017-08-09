@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { Pie } from 'react-chartjs-2';
+import { PlayerTotals } from 'tntfl-api';
 
-import { Totals } from '../model/player';
-
-export default function GamesChart(totals: Totals): JSX.Element {
+export default function GamesChart(totals: PlayerTotals): JSX.Element {
   const win = (totals.wins / totals.games) * 100;
   const draw = ((totals.games - totals.wins - totals.losses) / totals.games) * 100;
   const loss = (totals.losses / totals.games) * 100;

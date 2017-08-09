@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Col, Panel } from 'react-bootstrap';
-
-import Achievement from '../../model/achievement';
+import { Achievement, AchievementCount } from 'tntfl-api';
 
 interface AchievementPanelProps {
   achievement: Achievement;
@@ -9,7 +8,7 @@ interface AchievementPanelProps {
 }
 function AchievementPanel(props: AchievementPanelProps): JSX.Element {
   const { achievement, count } = props;
-  const icon = "achievement-" + achievement.name.replace(/ /g, '');
+  const icon = 'achievement-' + achievement.name.replace(/ /g, '');
   return (
     <Panel header={achievement.name} style={{textAlign: 'center'}}>
       <div className={icon} style={{margin: 'auto'}}/>
@@ -19,13 +18,13 @@ function AchievementPanel(props: AchievementPanelProps): JSX.Element {
 }
 
 interface AchievementsProps {
-  achievements: [Achievement, number][];
+  achievements: AchievementCount[];
 }
 export default function Achievements(props: AchievementsProps): JSX.Element {
   const { achievements } = props;
   return (
     <Panel header={'Achievements'}>
-      {achievements.map((a, i) => <Col xs={3} key={`${i}`}><AchievementPanel achievement={a[0]} count={a[1]}/></Col>)}
+      {achievements.map((a, i) => <Col xs={3} key={`${i}`}><AchievementPanel achievement={a} count={a.count}/></Col>)}
     </Panel>
   );
 }

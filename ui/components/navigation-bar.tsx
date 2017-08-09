@@ -1,26 +1,24 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { GamesApi } from 'tntfl-api';
 import 'whatwg-fetch';
 
 import AddGameForm from './add-game-form';
 
 interface NavigationBarProps extends Props<NavigationBar> {
   base: string;
-  addURL: string;
 }
 interface State {
   isBusy: boolean;
 }
 export default class NavigationBar extends Component<NavigationBarProps, State> {
-  constructor(props: NavigationBarProps, context: any) {
-    super(props, context);
-    this.state = {
-      isBusy: false,
-    }
-  }
+  state = {
+    isBusy: false,
+  };
+
   render(): JSX.Element {
-    const { base, addURL } = this.props;
+    const { base } = this.props;
     const { isBusy } = this.state;
     return (
       <Navbar fluid={true}>
@@ -40,23 +38,19 @@ export default class NavigationBar extends Component<NavigationBarProps, State> 
           <AddGameForm
             base={base}
             isBusy={isBusy}
-            onSubmit={(redPlayer, redScore, bluePlayer, blueScore) => {
-              this.setState({isBusy: true});
-              const url = `${base}${addURL}?redPlayer=${redPlayer}&redScore=${+redScore}&bluePlayer=${bluePlayer}&blueScore=${+blueScore}`;
-              const options: RequestInit = {
-                method: 'POST',
-                mode: 'cors',
-                credentials: 'omit',
-              };
-              fetch(url, options).then(r => {
-                if (r.status == 200){
-                  window.location.href = r.url;
-                }
-              });
-            }}
+            onSubmit={(r, rs, b, bs) => this.onAddGame(r, rs, b, bs)}
           />
         </Nav>
       </Navbar>
     );
+  }
+
+  async onAddGame(redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) {
+    const { base } = this.props;
+    this.setState({isBusy: true});
+    const r = await new GamesApi(fetch, base).addGameRedirect({redPlayer, redScore, bluePlayer, blueScore}) as Response;
+    if (r.status === 200) {
+      window.location.href = r.url;
+    }
   }
 }

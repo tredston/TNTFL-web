@@ -11,7 +11,7 @@ form = cgi.FieldStorage()
 
 
 def add(record, time, cur):
-    record[int(time)] = cur
+    record[int(time)] = {'count': cur}
 
 ladder = TableFootballLadder(Constants.ladderFilePath, transforms=PresetTransforms.no_transforms())
 times = form.getfirst('at')
