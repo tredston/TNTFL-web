@@ -9,10 +9,11 @@ interface SidePreferenceStatProps {
 }
 export default function SidePreferenceStat(props: SidePreferenceStatProps): JSX.Element {
   const { player } = props;
+  const gamesAsRed = player.total.gamesAsRed || 0;
   const data = {
     labels: ['Red', 'Blue'],
     datasets: [{
-      data: [player.total.gamesAsRed, player.total.games - player.total.gamesAsRed],
+      data: [gamesAsRed, player.total.games - gamesAsRed],
       backgroundColor: ['red', 'blue'],
     }],
   };

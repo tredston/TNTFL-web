@@ -75,8 +75,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
     return {backgroundColor: blue > 0 ? Palette.blueFade : Palette.redFade};
   }
   const { player, numActivePlayers, games, base } = props;
-  const gamesToday = games.slice(games.length - player.total.gamesToday);
-  const goalRatio = player.total.for / player.total.against;
+  const gamesToday = player.total.gamesToday !== undefined ? games.slice(games.length - player.total.gamesToday) : [];
   const flawlessVictories = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
   const skillChangeToday = gamesToday.reduce((skill, game) => skill += skillChange(game, player), 0);
   const rankChangeToday = gamesToday.reduce((change, game) => change += game.red.name === player.name ? game.red.rankChange : game.blue.rankChange, 0);
