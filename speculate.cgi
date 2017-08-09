@@ -24,21 +24,25 @@ def deserialise(serialisedGames):
     return games
 
 
-base = "../"
+def getLadder():
+    transforms = PresetTransforms.transforms_for_recent()
+    games = Transformer.transform(lambda: GameStore(Constants.ladderFilePath).getGames(), transforms, False)
+
+    if len(speculativeGames) > 0:
+        games += speculativeGames
+        games = Transformer.transform(lambda: games, transforms, False)
+
+    return TableFootballLadder(None, games=games)
+
+
+base = '../'
 form = cgi.FieldStorage()
-showInactive=getInt('showInactive', form, 0)
-includePlayers=getInt('players', form, 0)
+showInactive = getInt('showInactive', form, 0)
+includePlayers = getInt('players', form, 0)
+
 speculativeGames = deserialise(form.getfirst('previousGames', ''))
 
-transforms = PresetTransforms.transforms_for_recent()
-games = Transformer.transform(lambda: GameStore(Constants.ladderFilePath).getGames(), transforms, False)
-
-if len(speculativeGames) > 0:
-    games += speculativeGames
-    games = Transformer.transform(lambda: games, transforms, False)
-
-ladder = TableFootballLadder(None, games=games)
-
+ladder = getLadder()
 speculatedGames = ladder.games[-len(speculativeGames):] if len(speculativeGames) > 0 else []
 
 serve_template('speculate.mako', lambda: {
