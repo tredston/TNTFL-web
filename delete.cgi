@@ -22,7 +22,7 @@ if gameTime is not None:
     else:
         try:
             game = next(g for g in ladder.games if g.time == gameTime)
-            serve_template("deleteGame.mako", ladder=ladder, game=game)
+            serve_template("delete.mako", ladder=ladder, game=game)
         except StopIteration:
             fail_404()
 else:

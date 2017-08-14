@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.2.1
+* Fixes for deleting games
+
 ## 5.2.0
 * Changes to some API responses for easier consumption
 * Colour Mattermost notifications based on game outcome
