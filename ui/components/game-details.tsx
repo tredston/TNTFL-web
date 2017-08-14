@@ -55,7 +55,7 @@ export default function GameDetails(props: GameDetailsProps): JSX.Element {
         </tbody>
       </Table>
       <p><a href='json'>This game as JSON</a></p>
-      {game.deleted &&
+      {!game.deleted &&
         <a href='delete' className='btn btn-danger pull-right'><span className='glyphicon glyphicon-lock'></span> Delete game</a>
       }
     </Grid>
