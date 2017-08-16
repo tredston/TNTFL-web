@@ -2,4 +2,4 @@
 
 from tntfl.web import serve_template
 
-serve_template("historic.mako")
+serve_template("historic.html")

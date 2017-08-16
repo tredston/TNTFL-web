@@ -1,28 +1,18 @@
 import cgi
+import json
 import os
 
-from mako.lookup import TemplateLookup
-from mako import exceptions
 
-tl = TemplateLookup(directories=['templates'])
-
-
-def serve_template(templatename, **kwargs):
-    print get_template(templatename, **kwargs)
+def serve_template(templatename, generate=None):
+    print get_template(templatename, generate)
 
 
-def get_template(templatename, **kwargs):
+def get_template(templatename, generate):
     form = cgi.FieldStorage()
     if form.getfirst("view") == "json":
-        template = "json/" + templatename
-        try:
-            mytemplate = tl.get_template(template)
-            return mytemplate.render(**kwargs)
-        except:
-            return exceptions.text_error_template().render()
+        return 'Content-Type: application/json\n\n%s' % json.dumps(generate())
     else:
-        root, ext = os.path.splitext(templatename)
-        template = os.path.join('dist', '%s.html' % root.lower())
+        template = os.path.join('dist', templatename)
         if os.path.exists(template):
             with open(template, 'r') as fh:
                 return 'Content-Type: text/html\n\n%s' % fh.read()

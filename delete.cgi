@@ -4,7 +4,7 @@ import cgi
 import os
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
-from tntfl.web import redirect_302, fail_404, serve_template, getInt, getString
+from tntfl.web import redirect_302, fail_404, serve_template, getInt, getString, fail_400
 from tntfl.hooks.deleteGame import do
 
 form = cgi.FieldStorage()
@@ -22,7 +22,7 @@ if gameTime is not None:
     else:
         try:
             game = next(g for g in ladder.games if g.time == gameTime)
-            serve_template("delete.mako", ladder=ladder, game=game)
+            serve_template("delete.html")
         except StopIteration:
             fail_404()
 else:

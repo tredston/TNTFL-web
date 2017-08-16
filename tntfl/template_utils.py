@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from tntfl.achievements import Achievement
 from tntfl.player import PerPlayerStat
 from tntfl.transforms import belt
