@@ -238,11 +238,11 @@ class GamesApi(Tester):
 class PunditApi(Tester):
     def test(self):
         response = self._getJson('pundit.cgi', 'game=1223308996')
-        self.assertListEqual(response, [
+        self.assertSetEqual(set(response), {
             "That was jrem's 2nd most significant game.",
             "That game featured jrem's 10th goal against kjb.",
             "That was kjb's most significant game.",
-        ])
+        })
 
 
 class PredictApi(Tester):
