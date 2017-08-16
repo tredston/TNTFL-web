@@ -27,7 +27,7 @@ if getString('method', form) == "add":
             # Tablet doesn't display achievements
             ladder = TableFootballLadder(Constants.ladderFilePath, transforms=PresetTransforms.transforms_for_recent())
             game = ladder.games[-1]
-            serve_template("game.mako", lambda: gameToJson(game, base))
+            serve_template("game.html", lambda: gameToJson(game, base))
         else:
             redirect_302("../%.0f" % newGameTime)
     else:
@@ -38,7 +38,7 @@ else:
         try:
             ladder = TableFootballLadder(Constants.ladderFilePath)
             game = next(g for g in ladder.games if g.time == gameTime)
-            serve_template("game.mako", lambda: gameToJson(game, base))
+            serve_template("game.html", lambda: gameToJson(game, base))
         except StopIteration:
             fail_404()
     else:

@@ -28,4 +28,4 @@ includeDeleted = getInt('includeDeleted', form, 0)
 base = ''
 games = filterGames(ladder, fromTime, toTime, includeDeleted, limit)
 
-serve_template("games.mako", lambda: [gameToJson(game, base) for game in games])
+serve_template("games.html", lambda: [gameToJson(game, base) for game in games])

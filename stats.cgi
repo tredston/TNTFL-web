@@ -8,4 +8,4 @@ from tntfl.web import serve_template
 base = '../'
 ladder = TableFootballLadder(Constants.ladderFilePath)
 
-serve_template("stats.mako", lambda: getStatsJson(ladder, base))
+serve_template("stats.html", lambda: getStatsJson(ladder, base))

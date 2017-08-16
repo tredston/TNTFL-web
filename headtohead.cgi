@@ -19,9 +19,9 @@ if player1 and player2:
         if getString('method', form) == "games":
             games = utils.getSharedGames(player1, player2)
             pageTitle = "%s vs %s" % (player1.name, player2.name)
-            serve_template("headtoheadgames.mako", lambda: [utils.gameToJson(game, base) for game in games])
+            serve_template("headtoheadgames.html", lambda: [utils.gameToJson(game, base) for game in games])
         else:
-            serve_template("headtohead.mako")
+            serve_template("headtohead.html")
     else:
         fail_404()
 else:

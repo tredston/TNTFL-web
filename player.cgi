@@ -18,13 +18,13 @@ if player:
         player = ladder.getPlayer(player)
         method = getString('method', form)
         if method == "games":
-            serve_template("playerGames.mako", lambda: [gameToJson(game, base) for game in player.games])
+            serve_template("playergames.html", lambda: [gameToJson(game, base) for game in player.games])
         elif method == 'perplayerstats':
-            serve_template('perPlayerStats.mako', lambda: perPlayerStatsToJson(getPerPlayerStats(player)))
+            serve_template('', lambda: perPlayerStatsToJson(getPerPlayerStats(player)))
         elif method == 'achievements':
-            serve_template('playerAchievements.mako', lambda: getPlayerAchievementsJson(player))
+            serve_template('', lambda: getPlayerAchievementsJson(player))
         else:
-            serve_template("player.mako", lambda: playerToJson(player, ladder))
+            serve_template("player.html", lambda: playerToJson(player, ladder))
     else:
         fail_404()
 else:

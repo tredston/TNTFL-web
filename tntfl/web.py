@@ -12,8 +12,7 @@ def get_template(templatename, generate):
     if form.getfirst("view") == "json":
         return 'Content-Type: application/json\n\n%s' % json.dumps(generate())
     else:
-        root, ext = os.path.splitext(templatename)
-        template = os.path.join('dist', '%s.html' % root.lower())
+        template = os.path.join('dist', templatename)
         if os.path.exists(template):
             with open(template, 'r') as fh:
                 return 'Content-Type: text/html\n\n%s' % fh.read()

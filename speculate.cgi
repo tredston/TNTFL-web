@@ -45,7 +45,7 @@ speculativeGames = deserialise(form.getfirst('previousGames', ''))
 ladder = getLadder()
 speculatedGames = ladder.games[-len(speculativeGames):] if len(speculativeGames) > 0 else []
 
-serve_template('speculate.mako', lambda: {
+serve_template('speculate.html', lambda: {
     'entries': ladderToJson(ladder, base, showInactive, includePlayers),
     'games': [gameToJson(game, base) for game in speculatedGames],
 })

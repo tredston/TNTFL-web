@@ -2,4 +2,4 @@
 
 from tntfl.web import serve_template
 
-serve_template("index.mako")
+serve_template("index.html")
