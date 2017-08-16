@@ -23,6 +23,8 @@ class Streak(object):
 
 
 class Player(object):
+    __slots__ = 'name', 'elo', 'games', 'wins', 'losses', 'goalsFor', 'goalsAgainst', 'gamesAsRed', 'achievements'
+
     def __init__(self, name):
         self.name = name
         self.elo = 0.0

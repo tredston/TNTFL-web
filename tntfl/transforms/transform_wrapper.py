@@ -1,4 +1,4 @@
-import pickle as pickle
+import pickle
 import os
 import gc
 
@@ -27,7 +27,7 @@ class TransformWrapper(object):
         if self.getUseCache():
             with open(self.getCacheName(), 'wb') as f:
                 gc.disable()
-                pickle.dump(games, f, pickle.HIGHEST_PROTOCOL)
+                pickle.dump(games, f, -1)
                 gc.enable()
         return games
 
