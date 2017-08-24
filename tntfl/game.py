@@ -2,6 +2,7 @@ from datetime import date
 
 
 class Game(object):
+    __slots__ = 'redPlayer', 'redScore', 'bluePlayer', 'blueScore', 'time', 'skillChangeToBlue', 'redPosChange', 'redPosAfter', 'bluePosChange', 'bluePosAfter', 'redAchievements', 'blueAchievements', 'deletedBy', 'deletedAt'
 
     def __init__(self, redPlayer, redScore, bluePlayer, blueScore, time):
         self.redPlayer = redPlayer
