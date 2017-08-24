@@ -1,5 +1,6 @@
 import abc
 import os
+import re
 import shutil
 import unittest
 
@@ -17,6 +18,12 @@ class TestRunner(unittest.TestCase, metaclass=abc.ABCMeta):
             os.remove(filename)
         if os.path.exists(self._backupFilename(filename)):
             os.rename(self._backupFilename(filename), filename)
+
+    def _clearCache(self):
+        cacheFile = '^\.cache\.'
+        for f in os.listdir('.'):
+            if re.search(cacheFile, f):
+                os.remove(f)
 
     def setUp(self):
         self._backupFile('tntfl.cfg')
@@ -134,11 +141,14 @@ class HeadToHeadApi(Tester):
 class RecentApi(Tester):
     def testRecentJsonReachable(self):
         response = self._getJson('recent.cgi', 'view=json')
+        self.assertEqual(len(response), 10)
+        self.assertEqual(response[0]['date'], 1430991614)
 
 
 class LadderApi(Tester):
     def testReachable(self):
         response = self._getJson('ladder.cgi', 'view=json')
+        self.assertEqual(len(response), 0)
 
     def testRange(self):
         response = self._getJson('ladder.cgi', 'gamesFrom=1223308996&gamesTo=1223400000&view=json')
@@ -262,6 +272,8 @@ class PredictApi(Tester):
 class ActivePlayersApi(Tester):
     def test(self):
         response = self._getJson('activeplayers.cgi')
+        self.assertEqual(len(response.keys()), 1)
+        self.assertEqual(response[next(iter(response))], {'count': 0})
 
     def testAtDate(self):
         response = self._getJson('activeplayers.cgi', 'at=1430402614')
