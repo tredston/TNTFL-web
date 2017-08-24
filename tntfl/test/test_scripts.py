@@ -56,6 +56,9 @@ class AddGame(Get.Tester, Deployment):
         status = self._getStatus('game.cgi', 'method=add&view=json&redPlayer=cxh&redScore=10&bluePlayer=cxh&blueScore=0')
         self.assertEqual(status, '400 Bad Request')
 
+    def tearDown(self):
+        self._clearCache()
+
 
 class Pages(Get.Pages, Deployment):
     pass
