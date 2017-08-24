@@ -86,6 +86,9 @@ class Redirects(Get.Tester, Deployment):
     def testPundit(self):
         self._getJson('pundit/1223308996')
 
+    def testPredict(self):
+        self._getJson('predict/-10.200/0.2344/json')
+
     def _testResponse(self, response):
         super(Redirects, self)._testResponse(response)
         self.assertTrue(re.search('<!DOCTYPE html>', response, re.IGNORECASE))
@@ -219,7 +222,11 @@ class PunditApi(Get.PunditApi, Deployment):
 
 
 class PredictApi(Get.PredictApi, Deployment):
-    pass
+    def testNoRoute(self):
+        with self.assertRaises(urllib.error.HTTPError) as cm:
+            self._testPageReachable('predict.cgi')
+        e = cm.exception
+        self.assertEqual(e.code, 400)
 
 
 class ActivePlayersApi(Get.ActivePlayersApi, Deployment):

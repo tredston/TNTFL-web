@@ -37,7 +37,7 @@ RewriteRule ^ladder(.cgi)?/? ladder.cgi [QSA]
 RewriteRule ^ladder(.cgi)?/([0-9]+)/([0-9]+)/ ladder.cgi?gamesFrom=$2&gamesTo=$3 [QSA]
 
 RewriteRule ^predict(.cgi)?/? predict.cgi [QSA]
-RewriteRule ^predict(.cgi)?/([0-9.]+)/([0-9.]+)/ predict.cgi?redElo=$2&blueElo=$3 [QSA]
+RewriteRule ^predict(.cgi)?/([0-9.-]+)/([0-9.-]+)/ predict.cgi?redElo=$2&blueElo=$3 [QSA]
 
 RewriteRule ^api(.cgi)?/ swagger/api.html
 RewriteRule ^stats(.cgi)?/ stats.cgi

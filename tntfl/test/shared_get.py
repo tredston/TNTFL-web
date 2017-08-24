@@ -268,6 +268,10 @@ class PredictApi(Tester):
         response = self._getJson('predict.cgi', 'redElo=95.882&blueElo=10')
         self.assertAlmostEqual(response['blueGoalRatio'], 0.25, 4)
 
+    def testNegative(self):
+        response = self._getJson('predict.cgi', 'redElo=-95.882&blueElo=10')
+        self.assertAlmostEqual(response['blueGoalRatio'], 0.79485, 4)
+
 
 class ActivePlayersApi(Tester):
     def test(self):
