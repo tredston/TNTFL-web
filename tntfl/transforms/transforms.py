@@ -5,7 +5,7 @@ from tntfl.transforms.transform_wrapper import TransformWrapper
 
 
 Transforms = {
-    'elo': TransformWrapper(eloTransform.do, 'elo', False),
+    'elo': TransformWrapper(eloTransform.do, 'elo'),
     'rank': TransformWrapper(rankTransform.do, 'rank'),
     'achievement': TransformWrapper(achievementTransform.do, 'achievement'),
 }
