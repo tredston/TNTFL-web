@@ -1,3 +1,4 @@
+from builtins import object
 from time import time
 from tntfl.game import Game
 

@@ -1,3 +1,4 @@
+from builtins import object
 import tntfl.achievements as Achievements
 from tntfl.game import Game
 
@@ -39,7 +40,7 @@ class Player(object):
                     self.unachieved.remove(a)
 
 
-class TableFootballLadder:
+class TableFootballLadder(object):
     def __init__(self):
         self.games = []
         self._players = {}

@@ -1,4 +1,4 @@
-import ConfigParser
+import configparser
 import os
 import tntfl.constants as Constants
 from tntfl.hooks.utils import postMattermost
@@ -10,7 +10,7 @@ def skillField(playerName, skillChange):
         field = {
             'title': "{}'s skill".format(playerName),
             'value': '{:+.3f}'.format(skillChange),
-            'short': True
+            'short': True,
         }
     return field
 
@@ -21,7 +21,7 @@ def rankChangeField(playerName, posChange, posAfter):
         field = {
             'title': "{}'s rank".format(playerName),
             'value': '{:+d} ({:d})'.format(posChange, posAfter),
-            'short': True
+            'short': True,
         }
     return field
 
@@ -42,7 +42,7 @@ def victoryColour(game):
 
 def do(game):
     if os.path.exists(Constants.configFile):
-        config = ConfigParser.RawConfigParser()
+        config = configparser.RawConfigParser()
         config.readfp(open(Constants.configFile, 'r'))
 
         if config.has_option('mattermost', 'mattermost_url') and config.has_option('mattermost', 'api_key') and config.has_option('mattermost', 'tntfl_url'):

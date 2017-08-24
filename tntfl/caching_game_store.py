@@ -1,3 +1,4 @@
+from builtins import object
 from tntfl.game_store import GameStore
 from tntfl.transforms.transforms import Transforms
 import tntfl.transforms.transformer as Transformer
@@ -28,5 +29,5 @@ class CachingGameStore(object):
         return self._gameStore.deleteGame(gameTime, deletedBy)
 
     def _deleteCache(self):
-        for transform in Transforms.values():
+        for transform in list(Transforms.values()):
             transform.deleteCache()

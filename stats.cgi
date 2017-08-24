@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder

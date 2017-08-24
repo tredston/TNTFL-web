@@ -1,3 +1,4 @@
+from builtins import object
 from operator import itemgetter
 
 DAYS_INACTIVE = 60
@@ -16,7 +17,7 @@ def getPlayer(players, name):
 
 
 def isFirstGame(players, time):
-    for player in players.values():
+    for player in list(players.values()):
         if player.hasBelt:
             isInactive = time - player.lastGameTime > (60 * 60 * 24 * DAYS_INACTIVE)
             if isInactive:

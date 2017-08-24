@@ -4,7 +4,7 @@ import os
 
 
 def serve_template(templatename, generate=None):
-    print get_template(templatename, generate)
+    print(get_template(templatename, generate))
 
 
 def get_template(templatename, generate):
@@ -21,19 +21,19 @@ def get_template(templatename, generate):
 
 
 def redirect_302(redirectionTo):
-    print "Status: 302 Found"
-    print "Location: " + redirectionTo
-    print
+    print("Status: 302 Found")
+    print("Location: " + redirectionTo)
+    print()
 
 
 def fail_404():
-    print "Status: 404 Not Found"
-    print
+    print("Status: 404 Not Found")
+    print()
 
 
 def fail_400():
-    print "Status: 400 Bad Request"
-    print
+    print("Status: 400 Bad Request")
+    print()
 
 
 def getString(key, form):

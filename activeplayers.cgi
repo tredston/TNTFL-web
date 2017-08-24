@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import cgi
 import json
@@ -21,6 +21,6 @@ if times is not None:
 else:
     add(activePlayers, time.time(), ladder.getNumActivePlayers())
 
-print 'Content-Type: application/json'
-print
-print json.dumps(activePlayers)
+print('Content-Type: application/json')
+print()
+print(json.dumps(activePlayers))

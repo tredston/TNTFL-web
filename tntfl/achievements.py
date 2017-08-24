@@ -1,12 +1,12 @@
+from builtins import range
+from builtins import object
 from collections import Counter, defaultdict
 import datetime
 import os.path
 import abc
 
 
-class Achievement(object):
-    __metaclass__ = abc.ABCMeta
-
+class Achievement(metaclass=abc.ABCMeta):
     @abc.abstractproperty
     def name(self):
         pass
@@ -252,7 +252,7 @@ class EarlyBird(Achievement):
         return False
 
     def _getMostRecentGame(self, curGame, ladder):
-        for i in xrange(len(ladder.games) - 2, 0, -1):
+        for i in range(len(ladder.games) - 2, 0, -1):
             game = ladder.games[i]
             if not game.isDeleted():
                 return game
