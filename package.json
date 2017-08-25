@@ -10,7 +10,9 @@
     "compile": "npm run compile:webpack",
     "compile:webpack": "NODE_ENV=production webpack --progress --colors --bail",
     "start": "webpack --watch --progress --colors",
-    "test": "tslint -t stylish -c tslint.json --project tsconfig.json"
+    "test": "tslint -t stylish -c tslint.json --project tsconfig.json",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -29,7 +31,6 @@
     "@types/react-bootstrap": "0.0.37",
     "@types/react-bootstrap-table": "2.6.0",
     "@types/react-dom": "0.14.20",
-    "@types/whatwg-fetch": "0.0.33",
     "chart.js": "^2.6.0",
     "ion-rangeslider": "^2.2.0",
     "jquery": "^3.2.1",
@@ -45,10 +46,15 @@
     "react-highcharts": "^11.5.0",
     "react-lazy-load": "3.0.10",
     "tntfl-api": "file:./swagger/tntfl-api/",
-    "typescript": "2.1.4",
-    "whatwg-fetch": "2.0.1"
+    "typescript": "2.3"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.2.6",
+    "@storybook/addon-links": "^3.2.6",
+    "@storybook/react": "3.2.3",
+    "@types/storybook__addon-actions": "^3.0.1",
+    "@types/storybook__addon-links": "^3.0.1",
+    "@types/storybook__react": "3.0.3",
     "awesome-typescript-loader": "^3.2.3",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
