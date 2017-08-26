@@ -21,6 +21,7 @@ script:
   - yarn test
   - yarn compile
   - find ./tntfl -name \*.py -exec pep8 --ignore=E501 {} +
+  - find . -name \*.cgi -exec pep8 --ignore=E501 {} +
   - python run_tests.py
   - coverage run --source=tntfl --omit=tntfl/test/* run_tests.py
   - codeclimate-test-reporter
