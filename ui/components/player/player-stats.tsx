@@ -57,6 +57,18 @@ function getStreakRecords(player: Player, games: Game[]) {
   return {winningStreak, losingStreak, currentStreak};
 }
 
+function isTenNilWin(playerName: string, game: Game): boolean {
+  return (game.red.score === 10 && game.blue.score === 0 && game.red.name === playerName) ||
+    (game.blue.score === 10 && game.red.score === 0 && game.blue.name === playerName);
+}
+
+function getBG(blue: number): CSSProperties {
+  if (blue === 0) {
+    return {};
+  }
+  return {backgroundColor: blue > 0 ? Palette.blueFade : Palette.redFade};
+}
+
 interface PlayerStatsProps {
   player: Player;
   games: Game[];
@@ -64,16 +76,6 @@ interface PlayerStatsProps {
   base: string;
 }
 export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
-  function isTenNilWin(playerName: string, game: Game): boolean {
-    return (game.red.score === 10 && game.blue.score === 0 && game.red.name === playerName) ||
-      (game.blue.score === 10 && game.red.score === 0 && game.blue.name === playerName);
-  }
-  function getBG(blue: number): CSSProperties {
-    if (blue === 0) {
-      return {};
-    }
-    return {backgroundColor: blue > 0 ? Palette.blueFade : Palette.redFade};
-  }
   const { player, numActivePlayers, games, base } = props;
   const gamesToday = player.total.gamesToday !== undefined ? games.slice(games.length - player.total.gamesToday) : [];
   const flawlessVictories = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
