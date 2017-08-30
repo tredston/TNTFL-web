@@ -76,7 +76,7 @@ export function PieStatBox(props: PieStatBoxProps): JSX.Element {
   const options = {legend: {display: false}};
   return (
     <Panel header={<h3>{title}</h3>} style={mergedStyle}>
-      <Pie data={data} options={options} />
+      <Pie data={data} options={options} height={100} width={120} />
       {children}
     </Panel>
   );
