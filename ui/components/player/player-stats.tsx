@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CSSProperties } from 'react';
-import { Panel, Col } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import { Game, Player } from 'tntfl-api';
 
 import GamesStat from './games-stat';
@@ -84,49 +84,59 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
   const { highestSkill, lowestSkill } = getSkillRecords(player, games);
   const { winningStreak, losingStreak, currentStreak } = getStreakRecords(player, games);
   const monthAgo = Math.floor((new Date()).getTime() / 1000) - 2.592e+6;
+  const rowStyle: CSSProperties = {display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' };
   return (
     <Panel header={<h1>{player.name}</h1>}>
-      <Col sm={3}><StatBox title={'Recent Skill'}><BoxPlot data={getSkillHistory(player, games).filter(d => d.date >= monthAgo).map(d => d.skill)}/></StatBox></Col>
-      <Col sm={3}><RankStat rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></Col>
-      <Col sm={3}><StatBox title='Skill'>{player.skill.toFixed(3)}</StatBox></Col>
-      <Col sm={3}><StatBox title='Skill change today' style={getBG(skillChangeToday)}>{skillChangeToday.toFixed(3)}</StatBox></Col>
-      <Col sm={3}><StatBox title='Rank change today' style={getBG(rankChangeToday)}>{formatRankChange(rankChangeToday)}</StatBox></Col>
-      <Col sm={3}>
-        <DurationStatBox title={'Current streak'}
-          from={currentStreak.gameTimes[0]}
-          to={currentStreak.gameTimes[currentStreak.gameTimes.length - 1]}
-          base={base}
-        >
-          {currentStreak.gameTimes.length > 0 ? `${currentStreak.gameTimes.length} ${currentStreak.win ? 'wins' : 'losses'}` : '-'}
-        </DurationStatBox>
-      </Col>
+      <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex' }}>
+          <StatBox title={'Recent Skill'}><BoxPlot data={getSkillHistory(player, games).filter(d => d.date >= monthAgo).map(d => d.skill)}/></StatBox>
+        </div>
+        <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
+          <div style={rowStyle}>
+            <div style={{display: 'flex'}}><RankStat rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></div>
+            <div style={{display: 'flex'}}><StatBox title='Skill'>{player.skill.toFixed(3)}</StatBox></div>
+            <div style={{display: 'flex'}}><StatBox title='Skill change today' style={getBG(skillChangeToday)}>{skillChangeToday.toFixed(3)}</StatBox></div>
+            <div style={{display: 'flex'}}><StatBox title='Rank change today' style={getBG(rankChangeToday)}>{formatRankChange(rankChangeToday)}</StatBox></div>
+            <div style={{display: 'flex'}}>
+              <DurationStatBox title={'Current streak'}
+                from={currentStreak.gameTimes[0]}
+                to={currentStreak.gameTimes[currentStreak.gameTimes.length - 1]}
+                base={base}
+              >
+                {currentStreak.gameTimes.length > 0 ? `${currentStreak.gameTimes.length} ${currentStreak.win ? 'wins' : 'losses'}` : '-'}
+              </DurationStatBox>
+            </div>
 
-      <Col sm={3}><StatBox title='Flawless Victories'>{flawlessVictories}</StatBox></Col>
-      <Col sm={3}><GamesStat player={player} /></Col>
-      <Col sm={3}><GoalsStat player={player} /></Col>
-      <Col sm={3}><SidePreferenceStat player={player}/></Col>
-      <Col sm={3}><InstantStatBox title={'Highest ever skill'} at={highestSkill.date} base={base}>{highestSkill.skill.toFixed(3)}</InstantStatBox></Col>
-      <Col sm={3}><InstantStatBox title={'Lowest ever skill'} at={lowestSkill.date} base={base}>{lowestSkill.skill.toFixed(3)}</InstantStatBox></Col>
-      <Col sm={3}>
-        <DurationStatBox
-          title={'Longest winning streak'}
-          from={winningStreak.gameTimes[0]}
-          to={winningStreak.gameTimes[winningStreak.gameTimes.length - 1]}
-          base={base}
-        >
-          {winningStreak.gameTimes.length || '-'}
-        </DurationStatBox>
-      </Col>
-      <Col sm={3}>
-        <DurationStatBox
-          title={'Longest losing streak'}
-          from={losingStreak.gameTimes[0]}
-          to={losingStreak.gameTimes[losingStreak.gameTimes.length - 1]}
-          base={base}
-        >
-          {losingStreak.gameTimes.length || '-'}
-        </DurationStatBox>
-      </Col>
+            <div style={{display: 'flex'}}><GamesStat player={player} /></div>
+            <div style={{display: 'flex'}}><GoalsStat player={player} /></div>
+            <div style={{display: 'flex'}}><SidePreferenceStat player={player} /></div>
+
+            <div style={{display: 'flex'}}><StatBox title='Flawless Victories'>{flawlessVictories}</StatBox></div>
+            <div style={{display: 'flex'}}><InstantStatBox title={'Highest ever skill'} at={highestSkill.date} base={base}>{highestSkill.skill.toFixed(3)}</InstantStatBox></div>
+            <div style={{display: 'flex'}}><InstantStatBox title={'Lowest ever skill'} at={lowestSkill.date} base={base}>{lowestSkill.skill.toFixed(3)}</InstantStatBox></div>
+            <div style={{display: 'flex'}}>
+              <DurationStatBox
+                title={'Longest winning streak'}
+                from={winningStreak.gameTimes[0]}
+                to={winningStreak.gameTimes[winningStreak.gameTimes.length - 1]}
+                base={base}
+              >
+                {winningStreak.gameTimes.length || '-'}
+              </DurationStatBox>
+            </div>
+            <div style={{display: 'flex'}}>
+              <DurationStatBox
+                title={'Longest losing streak'}
+                from={losingStreak.gameTimes[0]}
+                to={losingStreak.gameTimes[losingStreak.gameTimes.length - 1]}
+                base={base}
+              >
+                {losingStreak.gameTimes.length || '-'}
+              </DurationStatBox>
+            </div>
+          </div>
+        </div>
+      </div>
     </Panel>
   );
 }
