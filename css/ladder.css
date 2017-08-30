@@ -11,6 +11,10 @@ h2.panel-title {
   font-size: 18pt;
 }
 
+.panel-body {
+  height: 100%;
+}
+
 .panel-warning .panel-body,
 .panel-warning th {
   background-color: #FAEBCC;
