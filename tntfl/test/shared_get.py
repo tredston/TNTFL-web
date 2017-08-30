@@ -254,6 +254,10 @@ class PunditApi(Tester):
             "That was kjb's most significant game.",
         })
 
+    def testEmpty(self):
+        response = self._getJson('pundit.cgi', 'game=1430991614')
+        self.assertEqual(response, [])
+
 
 class PredictApi(Tester):
     def test(self):

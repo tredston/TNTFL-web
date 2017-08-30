@@ -218,7 +218,17 @@ class GamesApi(Get.GamesApi, Deployment):
 
 
 class PunditApi(Get.PunditApi, Deployment):
-    pass
+    def testNoGame(self):
+        with self.assertRaises(urllib.error.HTTPError) as cm:
+            self._testPageReachable('pundit/')
+        e = cm.exception
+        self.assertEqual(e.code, 404)
+
+    def testMissingGame(self):
+        with self.assertRaises(urllib.error.HTTPError) as cm:
+            self._testPageReachable('pundit/123')
+        e = cm.exception
+        self.assertEqual(e.code, 404)
 
 
 class PredictApi(Get.PredictApi, Deployment):

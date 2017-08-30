@@ -111,7 +111,13 @@ class GamesApi(Get.GamesApi, Deployment):
 
 
 class PunditApi(Get.PunditApi, Deployment):
-    pass
+    def testNoGame(self):
+        status = self._getStatus('pundit.cgi', 'view=json')
+        self.assertEqual(status, '400 Bad Request')
+
+    def testInvalidGame(self):
+        status = self._getStatus('pundit.cgi', 'view=json&game=123')
+        self.assertEqual(status, '404 Not Found')
 
 
 class PredictApi(Get.PredictApi, Deployment):
