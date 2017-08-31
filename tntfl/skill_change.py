@@ -1,9 +1,7 @@
 import abc
 
 
-class SkillChange(object):
-    __metaclass__ = abc.ABCMeta
-
+class SkillChange(metaclass=abc.ABCMeta):
     @abc.abstractproperty
     def getBlueGoalRatio(self, red, blue):
         pass

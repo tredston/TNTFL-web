@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { Pie } from 'react-chartjs-2';
+import { CSSProperties } from 'react';
 import { Player } from 'tntfl-api';
 
-import { StatBox } from './stat-panel';
+import { PieStatBox } from './stat-panel';
 
 interface SidePreferenceStatProps {
   player: Player;
+  style?: CSSProperties;
 }
 export default function SidePreferenceStat(props: SidePreferenceStatProps): JSX.Element {
-  const { player } = props;
+  const { player, style } = props;
   const gamesAsRed = player.total.gamesAsRed || 0;
   const data = {
     labels: ['Red', 'Blue'],
@@ -17,10 +18,7 @@ export default function SidePreferenceStat(props: SidePreferenceStatProps): JSX.
       backgroundColor: ['red', 'blue'],
     }],
   };
-  const options = {
-    legend: {display: false},
-  };
   return (
-    <StatBox title='Side preference'><Pie data={data} options={options}/></StatBox>
+    <PieStatBox title='Side preference' style={style} data={data}/>
   );
 }

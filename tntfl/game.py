@@ -2,6 +2,7 @@ from datetime import date
 
 
 class Game(object):
+    __slots__ = 'redPlayer', 'redScore', 'bluePlayer', 'blueScore', 'time', 'skillChangeToBlue', 'redPosChange', 'redPosAfter', 'bluePosChange', 'bluePosAfter', 'redAchievements', 'blueAchievements', 'deletedBy', 'deletedAt'
 
     def __init__(self, redPlayer, redScore, bluePlayer, blueScore, time):
         self.redPlayer = redPlayer
@@ -20,7 +21,7 @@ class Game(object):
         self.deletedAt = None
 
     def isDeleted(self):
-        return self.deletedAt > None
+        return self.deletedAt is not None
 
     def timeAsDate(self):
         return date.fromtimestamp(self.time)

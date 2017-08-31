@@ -1,8 +1,8 @@
 import json
-from mimetools import Message
 import os
-from StringIO import StringIO
 import subprocess
+from email.parser import Parser
+
 import tntfl.test.shared_get as Get
 
 
@@ -12,13 +12,17 @@ class Deployment(Get.TestRunner):
             del(os.environ['QUERY_STRING'])
         super(Deployment, self).setUp()
 
+    def _getHeaders(self, response):
+        headers = Parser().parsestr(response.split('\n', 1)[0])
+        return headers
+
     def _getJson(self, page, query=None):
         response = self._get(page, query)
-        headers = Message(StringIO(response.split('\n')[0]))
+        headers = self._getHeaders(response)
         if 'content-type' not in headers:
-            print response
+            print(response)
         self.assertEqual(headers['content-type'], 'application/json')
-        body = ''.join(response.split('\n')[2:])
+        body = response.split('\n', 1)[1]
         self.assertTrue(len(body) > 0)
         return json.loads(body)
 
@@ -27,7 +31,7 @@ class Deployment(Get.TestRunner):
 
     def _get(self, page, query):
         self._setQuery(query)
-        return subprocess.check_output(['python', self._page(page)])
+        return subprocess.check_output([self._page(page)]).decode('utf-8')
 
     def _setQuery(self, query):
         if query is not None:
@@ -35,8 +39,7 @@ class Deployment(Get.TestRunner):
 
     def _getStatus(self, page, query):
         response = self._get(page, query)
-        headers = response.split('\n')[0]
-        return Message(StringIO(headers))['status']
+        return self._getHeaders(response)['status']
 
 
 class AddGame(Get.Tester, Deployment):
@@ -52,6 +55,9 @@ class AddGame(Get.Tester, Deployment):
     def testNoSinglePlayer(self):
         status = self._getStatus('game.cgi', 'method=add&view=json&redPlayer=cxh&redScore=10&bluePlayer=cxh&blueScore=0')
         self.assertEqual(status, '400 Bad Request')
+
+    def tearDown(self):
+        self._clearCache()
 
 
 class Pages(Get.Pages, Deployment):
@@ -105,7 +111,13 @@ class GamesApi(Get.GamesApi, Deployment):
 
 
 class PunditApi(Get.PunditApi, Deployment):
-    pass
+    def testNoGame(self):
+        status = self._getStatus('pundit.cgi', 'view=json')
+        self.assertEqual(status, '400 Bad Request')
+
+    def testInvalidGame(self):
+        status = self._getStatus('pundit.cgi', 'view=json&game=123')
+        self.assertEqual(status, '404 Not Found')
 
 
 class PredictApi(Get.PredictApi, Deployment):

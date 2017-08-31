@@ -1,4 +1,5 @@
-import ConfigParser
+from builtins import str
+import configparser
 from datetime import datetime, timedelta
 import os
 import tntfl.constants as Constants
@@ -7,7 +8,7 @@ from tntfl.hooks.utils import postMattermost
 
 def do(game):
     if os.path.exists(Constants.configFile):
-        config = ConfigParser.RawConfigParser()
+        config = configparser.RawConfigParser()
         config.readfp(open(Constants.configFile, 'r'))
 
         if config.has_option('mattermost', 'mattermost_url') and config.has_option('mattermost', 'delete_api_key') and config.has_option('mattermost', 'tntfl_url'):

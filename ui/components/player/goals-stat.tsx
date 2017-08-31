@@ -1,27 +1,25 @@
 import * as React from 'react';
-import { Pie } from 'react-chartjs-2';
+import { CSSProperties } from 'react';
 import { Player } from 'tntfl-api';
 
-import { StatBox } from './stat-panel';
+import { PieStatBox } from './stat-panel';
 
 interface GoalsStatProps {
   player: Player;
+  style?: CSSProperties;
 }
 export default function GoalsStat(props: GoalsStatProps): JSX.Element {
-  const { player } = props;
+  const { player, style } = props;
+  const data = {
+    labels: ['For', 'Against'],
+    datasets: [{
+      data: [player.total.for, player.total.against],
+      backgroundColor: ['blue', 'red'],
+    }],
+  };
   return (
-    <StatBox title='Goals'>
+    <PieStatBox title='Goals' style={style} data={data}>
       {player.total.for + player.total.against} goals
-      <Pie
-        data={{
-          labels: ['For', 'Against'],
-          datasets: [{
-            data: [player.total.for, player.total.against],
-            backgroundColor: ['blue', 'red'],
-          }],
-        }}
-        options={{legend: {display: false}}}
-      />
-    </StatBox>
+    </PieStatBox>
   );
 }

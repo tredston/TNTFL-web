@@ -1,5 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
+from __future__ import print_function
 import cgi
 import json
 import tntfl.constants as Constants
@@ -19,9 +20,9 @@ def getTimeRange(form):
 
 
 def printJson(content):
-    print 'Content-Type: application/json'
-    print
-    print json.dumps(content)
+    print('Content-Type: application/json')
+    print()
+    print(json.dumps(content))
 
 
 form = cgi.FieldStorage()

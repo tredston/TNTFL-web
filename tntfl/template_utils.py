@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from tntfl.achievements import Achievement
 from tntfl.player import PerPlayerStat
 from tntfl.transforms import belt
@@ -49,7 +47,7 @@ def gameToJson(game, base):
     if game.isDeleted():
         asJson['deleted'] = {
             'at': game.deletedAt,
-            'by': game.deletedBy
+            'by': game.deletedBy,
         }
     return asJson
 
@@ -77,7 +75,7 @@ def ladderToJson(ladder, base, showInactive, includePlayers):
             'rank': i + 1,
             'name': p.name,
             'skill': p.elo,
-            'href': playerHref(base, p.name)
+            'href': playerHref(base, p.name),
         } for i, p in enumerate(players)]
 
 
@@ -130,19 +128,19 @@ def perPlayerStatsToJson(stats):
         'games': stats[opponent].games,
         'wins': stats[opponent].wins,
         'losses': stats[opponent].losses,
-    } for opponent in stats.keys()]
+    } for opponent in list(stats.keys())]
 
 
 def getPlayerAchievementsJson(player):
     achievements = [{
         'name': a.name,
         'description': a.description,
-        'time': player.achievements[a]
-    } for a in player.achievements.keys()]
+        'time': player.achievements[a],
+    } for a in list(player.achievements.keys())]
     [achievements.append({
         'name': clz.name,
         'description': clz.description,
-    }) for clz in Achievement.__subclasses__() if clz not in player.achievements.keys()]
+    }) for clz in Achievement.__subclasses__() if clz not in list(player.achievements.keys())]
     return achievements
 
 
@@ -176,8 +174,8 @@ def getStatsJson(ladder, base):
             'achievements': [{
                 'name': a.name,
                 'description': a.description,
-                'count': c
-            } for a, c in sorted(ladder.getAchievements().iteritems(), reverse=True, key=lambda t: t[1])],
+                'count': c,
+            } for a, c in sorted(iter(ladder.getAchievements().items()), reverse=True, key=lambda t: t[1])],
         },
         'records': {
             'winningStreak': {
@@ -196,7 +194,7 @@ def getStatsJson(ladder, base):
             'current': {
                 'player': beltHistory[-1][0],
                 'count': beltHistory[-1][1],
-            }
+            },
         },
         'gamesPerWeek': getGamesPerWeek(ladder.games),
     }

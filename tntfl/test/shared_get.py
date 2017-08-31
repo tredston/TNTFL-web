@@ -1,12 +1,11 @@
 import abc
 import os
+import re
 import shutil
 import unittest
 
 
-class TestRunner(unittest.TestCase):
-    __metaclass__ = abc.ABCMeta
-
+class TestRunner(unittest.TestCase, metaclass=abc.ABCMeta):
     def _backupFilename(self, filename):
         return '%s.actual' % filename
 
@@ -19,6 +18,12 @@ class TestRunner(unittest.TestCase):
             os.remove(filename)
         if os.path.exists(self._backupFilename(filename)):
             os.rename(self._backupFilename(filename), filename)
+
+    def _clearCache(self):
+        cacheFile = '^\.cache\.'
+        for f in os.listdir('.'):
+            if re.search(cacheFile, f):
+                os.remove(f)
 
     def setUp(self):
         self._backupFile('tntfl.cfg')
@@ -136,11 +141,14 @@ class HeadToHeadApi(Tester):
 class RecentApi(Tester):
     def testRecentJsonReachable(self):
         response = self._getJson('recent.cgi', 'view=json')
+        self.assertEqual(len(response), 10)
+        self.assertEqual(response[0]['date'], 1430991614)
 
 
 class LadderApi(Tester):
     def testReachable(self):
         response = self._getJson('ladder.cgi', 'view=json')
+        self.assertEqual(len(response), 0)
 
     def testRange(self):
         response = self._getJson('ladder.cgi', 'gamesFrom=1223308996&gamesTo=1223400000&view=json')
@@ -173,12 +181,13 @@ class GameApi(Tester):
         self.assertAlmostEqual(response['red']['skillChange'], 13.00655, 4)
         self.assertEqual(response['red']['rankChange'], 1)
         self.assertEqual(response['red']['newRank'], 3)
-        redAchievements = response['red']['achievements']
-        self.assertEqual(len(redAchievements), 2)
-        self.assertEqual(redAchievements[0]['name'], "Flawless Victory")
-        self.assertEqual(redAchievements[0]['description'], "Beat an opponent 10-0")
-        self.assertEqual(redAchievements[1]['name'], "PokeMaster")
-        self.assertEqual(redAchievements[1]['description'], "Collect all the scores")
+        self.assertListEqual(sorted(response['red']['achievements'], key=lambda x: x['name']), [{
+            'name': 'Flawless Victory',
+            'description': 'Beat an opponent 10-0',
+        }, {
+            'name': 'PokeMaster',
+            'description': 'Collect all the scores',
+        }])
 
         self.assertEqual(response['blue']['name'], 'kjb')
         self.assertEqual(response['blue']['href'], '../../player/kjb/json')
@@ -186,10 +195,10 @@ class GameApi(Tester):
         self.assertAlmostEqual(response['blue']['skillChange'], -13.00655, 4)
         self.assertEqual(response['blue']['rankChange'], -2)
         self.assertEqual(response['blue']['newRank'], 5)
-        blueAchievements = response['blue']['achievements']
-        self.assertEqual(len(blueAchievements), 1)
-        self.assertEqual(blueAchievements[0]['name'], "The Worst")
-        self.assertEqual(blueAchievements[0]['description'], "Go last in the rankings")
+        self.assertListEqual(sorted(response['blue']['achievements'], key=lambda x: x['name']), [{
+            'name': 'The Worst',
+            'description': 'Go last in the rankings',
+        }])
 
         self.assertEqual(response['positionSwap'], True)
         self.assertEqual(response['date'], 1223308996)
@@ -239,11 +248,15 @@ class GamesApi(Tester):
 class PunditApi(Tester):
     def test(self):
         response = self._getJson('pundit.cgi', 'game=1223308996')
-        self.assertListEqual(response, [
+        self.assertSetEqual(set(response), {
             "That was jrem's 2nd most significant game.",
             "That game featured jrem's 10th goal against kjb.",
-            "That was kjb's most significant game."
-        ])
+            "That was kjb's most significant game.",
+        })
+
+    def testEmpty(self):
+        response = self._getJson('pundit.cgi', 'game=1430991614')
+        self.assertEqual(response, [])
 
 
 class PredictApi(Tester):
@@ -259,10 +272,16 @@ class PredictApi(Tester):
         response = self._getJson('predict.cgi', 'redElo=95.882&blueElo=10')
         self.assertAlmostEqual(response['blueGoalRatio'], 0.25, 4)
 
+    def testNegative(self):
+        response = self._getJson('predict.cgi', 'redElo=-95.882&blueElo=10')
+        self.assertAlmostEqual(response['blueGoalRatio'], 0.79485, 4)
+
 
 class ActivePlayersApi(Tester):
     def test(self):
         response = self._getJson('activeplayers.cgi')
+        self.assertEqual(len(response.keys()), 1)
+        self.assertEqual(response[next(iter(response))], {'count': 0})
 
     def testAtDate(self):
         response = self._getJson('activeplayers.cgi', 'at=1430402614')
@@ -298,7 +317,7 @@ class StatsApi(Tester):
         self.assertGreater(response['totals']['players'], 0)
         self.assertIn('activePlayers', response['totals'])
         self.assertIn('achievements', response['totals'])
-        self.assertGreater(response['totals']['achievements'], 0)
+        self.assertGreater(len(response['totals']['achievements']), 0)
         self.assertIn('records', response)
         self.assertIn('winningStreak', response['records'])
         self.assertIn('player', response['records']['winningStreak'])
@@ -308,4 +327,4 @@ class StatsApi(Tester):
         self.assertIn('leastSignificant', response['records'])
         self.assertEqual(len(response['records']['leastSignificant']), 5)
         self.assertIn('gamesPerWeek', response)
-        self.assertGreater(response['gamesPerWeek'], 0)
+        self.assertGreater(len(response['gamesPerWeek']), 0)

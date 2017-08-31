@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import cgi
 import json
@@ -9,9 +9,9 @@ from tntfl.template_utils import gameToJson
 
 
 def printJson(content):
-    print 'Content-Type: application/json'
-    print
-    print json.dumps(content)
+    print('Content-Type: application/json')
+    print()
+    print(json.dumps(content))
 
 
 form = cgi.FieldStorage()

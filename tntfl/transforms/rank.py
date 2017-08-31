@@ -1,3 +1,4 @@
+from builtins import object
 from tntfl.game import Game
 
 DAYS_INACTIVE = 60

@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.3.0
+* Fix predictions for players with negative elo
+* Make better use of space on player's page
+* Performance improvements
+
 ## 5.2.1
 * Fixes for deleting games
 

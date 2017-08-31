@@ -1,4 +1,3 @@
-
 def transform(baseGameLoader, transforms, useCache):
     for t in transforms:
         t.setUseCache(useCache)

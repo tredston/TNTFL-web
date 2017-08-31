@@ -1,6 +1,4 @@
-from collections import defaultdict
 from datetime import date
-import time
 
 
 class Streak(object):
@@ -25,6 +23,8 @@ class Streak(object):
 
 
 class Player(object):
+    __slots__ = 'name', 'elo', 'games', 'wins', 'losses', 'goalsFor', 'goalsAgainst', 'gamesAsRed', 'achievements'
+
     def __init__(self, name):
         self.name = name
         self.elo = 0.0
@@ -126,7 +126,7 @@ class Player(object):
             'win': getLongestStreak(pastStreaks, lambda s: s.win),
             'lose': getLongestStreak(pastStreaks, lambda s: not s.win),
             'current': streaks['current'],
-            'currentType': currentStreakType
+            'currentType': currentStreakType,
         }
 
 
