@@ -1,14 +1,6 @@
 import * as moment from 'moment';
 import { Game, Player } from 'tntfl-api';
 
-export function mapsEqual<T, U>(first?: Map<T, U>, second?: Map<T, U>): boolean {
-  if (first !== undefined && second !== undefined) {
-    return (first.size === second.size) &&
-      [...first.keys()].every((k) => first.get(k) === second.get(k));
-  }
-  return false;
-}
-
 export function getLadderLeagueClass(rank: number, numActivePlayers: number) {
   let league = '';
   if (rank === -1) {
