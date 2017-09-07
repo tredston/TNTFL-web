@@ -247,16 +247,27 @@ class GamesApi(Tester):
 
 class PunditApi(Tester):
     def test(self):
-        response = self._getJson('pundit.cgi', 'game=1223308996')
-        self.assertSetEqual(set(response), {
+        response = self._getJson('pundit.cgi', 'at=1223308996')
+        self.assertEqual(len(response.keys()), 1)
+        self.assertSetEqual(set(response['1223308996']['facts']), {
             "That was jrem's 2nd most significant game.",
             "That game featured jrem's 10th goal against kjb.",
             "That was kjb's most significant game.",
         })
 
     def testEmpty(self):
-        response = self._getJson('pundit.cgi', 'game=1430991614')
-        self.assertEqual(response, [])
+        response = self._getJson('pundit.cgi', 'at=1430991614')
+        self.assertEqual(response, {'1430991614': {'facts': []}})
+
+    def testMultiple(self):
+        response = self._getJson('pundit.cgi', 'at=1223308996, 1430991614')
+        self.assertEqual(len(response.keys()), 2)
+        self.assertSetEqual(set(response['1223308996']['facts']), {
+            "That was jrem's 2nd most significant game.",
+            "That game featured jrem's 10th goal against kjb.",
+            "That was kjb's most significant game.",
+        })
+        self.assertEqual(response['1430991614']['facts'], [])
 
 
 class PredictApi(Tester):
