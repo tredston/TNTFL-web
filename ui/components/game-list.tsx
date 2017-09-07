@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
 import { Grid } from 'react-bootstrap';
-import { PlayersApi, Game } from 'tntfl-api';
+import { isEqual } from 'lodash';
+import { PlayersApi, Game, GamesApi } from 'tntfl-api';
 
 import GameSummary from './game-summary';
-import { mapsEqual } from '../utils/utils';
 
 interface GameListProps extends Props<GameList> {
   games: Game[];
@@ -12,6 +12,7 @@ interface GameListProps extends Props<GameList> {
 }
 interface State {
   activePlayers?: Map<number, number>;
+  punditry?: Map<number, string[]>;
 }
 export default class GameList extends Component<GameListProps, State> {
   constructor(props: GameListProps, context: any) {
@@ -19,6 +20,15 @@ export default class GameList extends Component<GameListProps, State> {
     this.state = {
       activePlayers: undefined,
     };
+  }
+  async loadPunditry() {
+    const { base, games } = this.props;
+    if (games.length > 0) {
+      const at = games.map((game) => game.date).join(',');
+      const json = await new GamesApi(fetch, base).getPunditry({at});
+      const punditry = Object.keys(json).reduce((acc, cur) => acc.set(+cur, json[cur].facts), new Map<number, string[]>());
+      this.setState({punditry});
+    }
   }
   async loadActivePlayers() {
     const { base, games } = this.props;
@@ -30,17 +40,21 @@ export default class GameList extends Component<GameListProps, State> {
     }
   }
   componentDidMount() {
+    this.loadPunditry();
     this.loadActivePlayers();
   }
   shouldComponentUpdate(nextProps: GameListProps, nextState: State) {
-    return this.props.games !== nextProps.games || !mapsEqual(this.state.activePlayers, nextState.activePlayers);
+    return this.props.games !== nextProps.games ||
+      !isEqual(this.state.activePlayers, nextState.activePlayers) ||
+      !isEqual(this.state.punditry, nextState.punditry);
   }
   componentDidUpdate() {
+    this.loadPunditry();
     this.loadActivePlayers();
   }
   render(): JSX.Element {
     const { games, base } = this.props;
-    const { activePlayers } = this.state;
+    const { activePlayers, punditry } = this.state;
     return (
       <Grid fluid={true}>
         {games.map((game) =>
@@ -48,6 +62,7 @@ export default class GameList extends Component<GameListProps, State> {
             game={game}
             base={base}
             numActivePlayers={(activePlayers && activePlayers.get(game.date - 1)) || 0}
+            punditry={punditry && punditry.get(game.date)}
             key={`${game.date}`}
           />,
         )}

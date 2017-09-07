@@ -275,6 +275,9 @@ export interface Prediction {
      */
     "blueGoalRatio"?: number;
 }
+export interface Punditry {
+    "facts": Array<string>;
+}
 export interface Speculated {
     /**
      * Ladder entries
@@ -311,78 +314,80 @@ export interface TrendItem {
 /**
  * GamesApi - fetch parameter creator
  */
-export declare const GamesApiFetchParamCreactor: {
+export declare const GamesApiFetchParamCreator: {
     addGame(params: {
-        redPlayer: string;
-        redScore: number;
-        bluePlayer: string;
-        blueScore: number;
-    }): FetchArgs;
+        "redPlayer": string;
+        "redScore": number;
+        "bluePlayer": string;
+        "blueScore": number;
+    }, options?: any): FetchArgs;
     addGameRedirect(params: {
-        redPlayer: string;
-        redScore: number;
-        bluePlayer: string;
-        blueScore: number;
-    }): FetchArgs;
+        "redPlayer": string;
+        "redScore": number;
+        "bluePlayer": string;
+        "blueScore": number;
+    }, options?: any): FetchArgs;
     getGame(params: {
-        gameId: number;
-    }): FetchArgs;
+        "gameId": number;
+    }, options?: any): FetchArgs;
     getGames(params: {
-        begin: number;
-        end: number;
-    }): FetchArgs;
+        "begin": number;
+        "end": number;
+    }, options?: any): FetchArgs;
     getHeadToHeadGames(params: {
-        player1: string;
-        player2: string;
-    }): FetchArgs;
+        "player1": string;
+        "player2": string;
+    }, options?: any): FetchArgs;
     getPunditry(params: {
-        gameId: number;
-    }): FetchArgs;
+        "at": string;
+    }, options?: any): FetchArgs;
     getRecent(params: {
-        limit?: number;
-    }): FetchArgs;
+        "limit"?: number;
+    }, options?: any): FetchArgs;
     predict(params: {
-        redElo: number;
-        blueElo: number;
-    }): FetchArgs;
+        "redElo": number;
+        "blueElo": number;
+    }, options?: any): FetchArgs;
 };
 /**
  * GamesApi - functional programming interface
  */
 export declare const GamesApiFp: {
     addGame(params: {
-        redPlayer: string;
-        redScore: number;
-        bluePlayer: string;
-        blueScore: number;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<Game>;
+        "redPlayer": string;
+        "redScore": number;
+        "bluePlayer": string;
+        "blueScore": number;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Game>;
     addGameRedirect(params: {
-        redPlayer: string;
-        redScore: number;
-        bluePlayer: string;
-        blueScore: number;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<any>;
+        "redPlayer": string;
+        "redScore": number;
+        "bluePlayer": string;
+        "blueScore": number;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<any>;
     getGame(params: {
-        gameId: number;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<Game>;
+        "gameId": number;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Game>;
     getGames(params: {
-        begin: number;
-        end: number;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<Game[]>;
+        "begin": number;
+        "end": number;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Game[]>;
     getHeadToHeadGames(params: {
-        player1: string;
-        player2: string;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<Game[]>;
+        "player1": string;
+        "player2": string;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Game[]>;
     getPunditry(params: {
-        gameId: number;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<string[]>;
+        "at": string;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{
+        [key: string]: Punditry;
+    }>;
     getRecent(params: {
-        limit?: number;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<Game[]>;
+        "limit"?: number;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Game[]>;
     predict(params: {
-        redElo: number;
-        blueElo: number;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<Prediction>;
+        "redElo": number;
+        "blueElo": number;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Prediction>;
 };
 /**
  * GamesApi - object-oriented interface
@@ -397,11 +402,11 @@ export declare class GamesApi extends BaseAPI {
      * @param blueScore The blue team score
      */
     addGame(params: {
-        redPlayer: string;
-        redScore: number;
-        bluePlayer: string;
-        blueScore: number;
-    }): Promise<Game>;
+        "redPlayer": string;
+        "redScore": number;
+        "bluePlayer": string;
+        "blueScore": number;
+    }, options?: any): Promise<Game>;
     /**
      * Add a game
      * Add a game.
@@ -411,19 +416,19 @@ export declare class GamesApi extends BaseAPI {
      * @param blueScore The blue team score
      */
     addGameRedirect(params: {
-        redPlayer: string;
-        redScore: number;
-        bluePlayer: string;
-        blueScore: number;
-    }): Promise<any>;
+        "redPlayer": string;
+        "redScore": number;
+        "bluePlayer": string;
+        "blueScore": number;
+    }, options?: any): Promise<any>;
     /**
      * Get a game
      * Get a game.
      * @param gameId Timestamp of the game
      */
     getGame(params: {
-        gameId: number;
-    }): Promise<Game>;
+        "gameId": number;
+    }, options?: any): Promise<Game>;
     /**
      * Get games
      * Get games.
@@ -431,9 +436,9 @@ export declare class GamesApi extends BaseAPI {
      * @param end Timestamp to filter to.
      */
     getGames(params: {
-        begin: number;
-        end: number;
-    }): Promise<Game[]>;
+        "begin": number;
+        "end": number;
+    }, options?: any): Promise<Game[]>;
     /**
      * Get shared games
      * Get shared games.
@@ -441,25 +446,27 @@ export declare class GamesApi extends BaseAPI {
      * @param player2 Name of player 2
      */
     getHeadToHeadGames(params: {
-        player1: string;
-        player2: string;
-    }): Promise<Game[]>;
+        "player1": string;
+        "player2": string;
+    }, options?: any): Promise<Game[]>;
     /**
      * Get game punditry
      * Get game punditry.
-     * @param gameId Timestamp of game
+     * @param at CSV of timestamps
      */
     getPunditry(params: {
-        gameId: number;
-    }): Promise<string[]>;
+        "at": string;
+    }, options?: any): Promise<{
+        [key: string]: Punditry;
+    }>;
     /**
      * Get recent games
      * Get recent games.
      * @param limit Maximum number of games to return
      */
     getRecent(params: {
-        limit?: number;
-    }): Promise<Game[]>;
+        "limit"?: number;
+    }, options?: any): Promise<Game[]>;
     /**
      * Predict the outcome of a game
      * Predict the outcome of a game.
@@ -467,87 +474,89 @@ export declare class GamesApi extends BaseAPI {
      * @param blueElo Elo of blue player
      */
     predict(params: {
-        redElo: number;
-        blueElo: number;
-    }): Promise<Prediction>;
+        "redElo": number;
+        "blueElo": number;
+    }, options?: any): Promise<Prediction>;
 }
 /**
  * GamesApi - factory interface
  */
 export declare const GamesApiFactory: (fetch?: FetchAPI, basePath?: string) => {
     addGame(params: {
-        redPlayer: string;
-        redScore: number;
-        bluePlayer: string;
-        blueScore: number;
-    }): Promise<Game>;
+        "redPlayer": string;
+        "redScore": number;
+        "bluePlayer": string;
+        "blueScore": number;
+    }, options?: any): Promise<Game>;
     addGameRedirect(params: {
-        redPlayer: string;
-        redScore: number;
-        bluePlayer: string;
-        blueScore: number;
-    }): Promise<any>;
+        "redPlayer": string;
+        "redScore": number;
+        "bluePlayer": string;
+        "blueScore": number;
+    }, options?: any): Promise<any>;
     getGame(params: {
-        gameId: number;
-    }): Promise<Game>;
+        "gameId": number;
+    }, options?: any): Promise<Game>;
     getGames(params: {
-        begin: number;
-        end: number;
-    }): Promise<Game[]>;
+        "begin": number;
+        "end": number;
+    }, options?: any): Promise<Game[]>;
     getHeadToHeadGames(params: {
-        player1: string;
-        player2: string;
-    }): Promise<Game[]>;
+        "player1": string;
+        "player2": string;
+    }, options?: any): Promise<Game[]>;
     getPunditry(params: {
-        gameId: number;
-    }): Promise<string[]>;
+        "at": string;
+    }, options?: any): Promise<{
+        [key: string]: Punditry;
+    }>;
     getRecent(params: {
-        limit?: number;
-    }): Promise<Game[]>;
+        "limit"?: number;
+    }, options?: any): Promise<Game[]>;
     predict(params: {
-        redElo: number;
-        blueElo: number;
-    }): Promise<Prediction>;
+        "redElo": number;
+        "blueElo": number;
+    }, options?: any): Promise<Prediction>;
 };
 /**
  * LadderApi - fetch parameter creator
  */
-export declare const LadderApiFetchParamCreactor: {
+export declare const LadderApiFetchParamCreator: {
     getLadder(params: {
-        showInactive?: number;
-        players?: number;
-    }): FetchArgs;
+        "showInactive"?: number;
+        "players"?: number;
+    }, options?: any): FetchArgs;
     getLadderBetween(params: {
-        begin: number;
-        end: number;
-        showInactive?: number;
-        players?: number;
-    }): FetchArgs;
+        "begin": number;
+        "end": number;
+        "showInactive"?: number;
+        "players"?: number;
+    }, options?: any): FetchArgs;
     speculate(params: {
-        showInactive?: number;
-        players?: number;
-        previousGames?: string;
-    }): FetchArgs;
+        "showInactive"?: number;
+        "players"?: number;
+        "previousGames"?: string;
+    }, options?: any): FetchArgs;
 };
 /**
  * LadderApi - functional programming interface
  */
 export declare const LadderApiFp: {
     getLadder(params: {
-        showInactive?: number;
-        players?: number;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<LadderEntry[]>;
+        "showInactive"?: number;
+        "players"?: number;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<LadderEntry[]>;
     getLadderBetween(params: {
-        begin: number;
-        end: number;
-        showInactive?: number;
-        players?: number;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<LadderEntry[]>;
+        "begin": number;
+        "end": number;
+        "showInactive"?: number;
+        "players"?: number;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<LadderEntry[]>;
     speculate(params: {
-        showInactive?: number;
-        players?: number;
-        previousGames?: string;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<Speculated>;
+        "showInactive"?: number;
+        "players"?: number;
+        "previousGames"?: string;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Speculated>;
 };
 /**
  * LadderApi - object-oriented interface
@@ -560,9 +569,9 @@ export declare class LadderApi extends BaseAPI {
      * @param players Include detailed player info
      */
     getLadder(params: {
-        showInactive?: number;
-        players?: number;
-    }): Promise<LadderEntry[]>;
+        "showInactive"?: number;
+        "players"?: number;
+    }, options?: any): Promise<LadderEntry[]>;
     /**
      * Get the ladder
      * Get the ladder.
@@ -572,11 +581,11 @@ export declare class LadderApi extends BaseAPI {
      * @param players Include detailed player info
      */
     getLadderBetween(params: {
-        begin: number;
-        end: number;
-        showInactive?: number;
-        players?: number;
-    }): Promise<LadderEntry[]>;
+        "begin": number;
+        "end": number;
+        "showInactive"?: number;
+        "players"?: number;
+    }, options?: any): Promise<LadderEntry[]>;
     /**
      * Get the ladder
      * Get the ladder.
@@ -585,72 +594,72 @@ export declare class LadderApi extends BaseAPI {
      * @param previousGames CSV of speculative games
      */
     speculate(params: {
-        showInactive?: number;
-        players?: number;
-        previousGames?: string;
-    }): Promise<Speculated>;
+        "showInactive"?: number;
+        "players"?: number;
+        "previousGames"?: string;
+    }, options?: any): Promise<Speculated>;
 }
 /**
  * LadderApi - factory interface
  */
 export declare const LadderApiFactory: (fetch?: FetchAPI, basePath?: string) => {
     getLadder(params: {
-        showInactive?: number;
-        players?: number;
-    }): Promise<LadderEntry[]>;
+        "showInactive"?: number;
+        "players"?: number;
+    }, options?: any): Promise<LadderEntry[]>;
     getLadderBetween(params: {
-        begin: number;
-        end: number;
-        showInactive?: number;
-        players?: number;
-    }): Promise<LadderEntry[]>;
+        "begin": number;
+        "end": number;
+        "showInactive"?: number;
+        "players"?: number;
+    }, options?: any): Promise<LadderEntry[]>;
     speculate(params: {
-        showInactive?: number;
-        players?: number;
-        previousGames?: string;
-    }): Promise<Speculated>;
+        "showInactive"?: number;
+        "players"?: number;
+        "previousGames"?: string;
+    }, options?: any): Promise<Speculated>;
 };
 /**
  * PlayersApi - fetch parameter creator
  */
-export declare const PlayersApiFetchParamCreactor: {
+export declare const PlayersApiFetchParamCreator: {
     getActive(params: {
-        at?: string;
-    }): FetchArgs;
+        "at"?: string;
+    }, options?: any): FetchArgs;
     getPerPlayerStats(params: {
-        player: string;
-    }): FetchArgs;
+        "player": string;
+    }, options?: any): FetchArgs;
     getPlayer(params: {
-        player: string;
-    }): FetchArgs;
+        "player": string;
+    }, options?: any): FetchArgs;
     getPlayerAchievements(params: {
-        player: string;
-    }): FetchArgs;
+        "player": string;
+    }, options?: any): FetchArgs;
     getPlayerGames(params: {
-        player: string;
-    }): FetchArgs;
+        "player": string;
+    }, options?: any): FetchArgs;
 };
 /**
  * PlayersApi - functional programming interface
  */
 export declare const PlayersApiFp: {
     getActive(params: {
-        at?: string;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<{
+        "at"?: string;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{
         [key: string]: ActivePlayers;
     }>;
     getPerPlayerStats(params: {
-        player: string;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<PerPlayerStat[]>;
+        "player": string;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<PerPlayerStat[]>;
     getPlayer(params: {
-        player: string;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<Player>;
+        "player": string;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Player>;
     getPlayerAchievements(params: {
-        player: string;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<Achievement[]>;
+        "player": string;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Achievement[]>;
     getPlayerGames(params: {
-        player: string;
-    }): (fetch: FetchAPI, basePath?: string) => Promise<Game[]>;
+        "player": string;
+    }, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Game[]>;
 };
 /**
  * PlayersApi - object-oriented interface
@@ -662,8 +671,8 @@ export declare class PlayersApi extends BaseAPI {
      * @param at CSV of timestamps
      */
     getActive(params: {
-        at?: string;
-    }): Promise<{
+        "at"?: string;
+    }, options?: any): Promise<{
         [key: string]: ActivePlayers;
     }>;
     /**
@@ -672,66 +681,66 @@ export declare class PlayersApi extends BaseAPI {
      * @param player ID of the player
      */
     getPerPlayerStats(params: {
-        player: string;
-    }): Promise<PerPlayerStat[]>;
+        "player": string;
+    }, options?: any): Promise<PerPlayerStat[]>;
     /**
      * Get player info
      * Get player info.
      * @param player ID of the player
      */
     getPlayer(params: {
-        player: string;
-    }): Promise<Player>;
+        "player": string;
+    }, options?: any): Promise<Player>;
     /**
      * Get player&#39;s achievements
      * Get player&#39;s achievements.
      * @param player ID of the player
      */
     getPlayerAchievements(params: {
-        player: string;
-    }): Promise<Achievement[]>;
+        "player": string;
+    }, options?: any): Promise<Achievement[]>;
     /**
      * Get player&#39;s games
      * Get player&#39;s games.
      * @param player ID of the player
      */
     getPlayerGames(params: {
-        player: string;
-    }): Promise<Game[]>;
+        "player": string;
+    }, options?: any): Promise<Game[]>;
 }
 /**
  * PlayersApi - factory interface
  */
 export declare const PlayersApiFactory: (fetch?: FetchAPI, basePath?: string) => {
     getActive(params: {
-        at?: string;
-    }): Promise<{
+        "at"?: string;
+    }, options?: any): Promise<{
         [key: string]: ActivePlayers;
     }>;
     getPerPlayerStats(params: {
-        player: string;
-    }): Promise<PerPlayerStat[]>;
+        "player": string;
+    }, options?: any): Promise<PerPlayerStat[]>;
     getPlayer(params: {
-        player: string;
-    }): Promise<Player>;
+        "player": string;
+    }, options?: any): Promise<Player>;
     getPlayerAchievements(params: {
-        player: string;
-    }): Promise<Achievement[]>;
+        "player": string;
+    }, options?: any): Promise<Achievement[]>;
     getPlayerGames(params: {
-        player: string;
-    }): Promise<Game[]>;
+        "player": string;
+    }, options?: any): Promise<Game[]>;
 };
 /**
  * StatsApi - fetch parameter creator
  */
-export declare const StatsApiFetchParamCreactor: {
-    getStats(): FetchArgs;
+export declare const StatsApiFetchParamCreator: {
+    getStats(options?: any): FetchArgs;
 };
 /**
  * StatsApi - functional programming interface
  */
 export declare const StatsApiFp: {
-    getStats(): (fetch: FetchAPI, basePath?: string) => Promise<Stats>;
+    getStats(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Stats>;
 };
 /**
  * StatsApi - object-oriented interface
@@ -741,11 +750,11 @@ export declare class StatsApi extends BaseAPI {
      * Get global stats
      * Get global stats.
      */
-    getStats(): Promise<Stats>;
+    getStats(options?: any): Promise<Stats>;
 }
 /**
  * StatsApi - factory interface
  */
 export declare const StatsApiFactory: (fetch?: FetchAPI, basePath?: string) => {
-    getStats(): Promise<Stats>;
+    getStats(options?: any): Promise<Stats>;
 };

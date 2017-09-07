@@ -116,7 +116,7 @@ class PunditApi(Get.PunditApi, Deployment):
         self.assertEqual(status, '400 Bad Request')
 
     def testInvalidGame(self):
-        status = self._getStatus('pundit.cgi', 'view=json&game=123')
+        status = self._getStatus('pundit.cgi', 'view=json&at=123')
         self.assertEqual(status, '404 Not Found')
 
 

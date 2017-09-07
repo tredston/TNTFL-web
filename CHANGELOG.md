@@ -1,5 +1,8 @@
 # Changelog
 
+## develop
+* Add punditry indicator to game list
+
 ## 5.3.0
 * Fix predictions for players with negative elo
 * Make better use of space on player's page
