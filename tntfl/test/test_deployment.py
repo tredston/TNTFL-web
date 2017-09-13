@@ -84,10 +84,13 @@ class Redirects(Get.Tester, Deployment):
         self._getJson('ladder/?gamesFrom=1223308996&gamesTo=1223400000&view=json')
 
     def testPundit(self):
-        self._getJson('pundit/1223308996')
+        self._getJson('pundit/?at=1223308996')
 
     def testPredict(self):
         self._getJson('predict/-10.200/0.2344/json')
+
+    def testActivePlayers(self):
+        self._getJson('activeplayers/?at=1223308996')
 
     def _testResponse(self, response):
         super(Redirects, self)._testResponse(response)
@@ -218,15 +221,21 @@ class GamesApi(Get.GamesApi, Deployment):
 
 
 class PunditApi(Get.PunditApi, Deployment):
-    def testNoGame(self):
+    def testNoQuery(self):
         with self.assertRaises(urllib.error.HTTPError) as cm:
             self._testPageReachable('pundit/')
         e = cm.exception
-        self.assertEqual(e.code, 404)
+        self.assertEqual(e.code, 400)
+
+    def testNoGame(self):
+        with self.assertRaises(urllib.error.HTTPError) as cm:
+            self._testPageReachable('pundit/?at=')
+        e = cm.exception
+        self.assertEqual(e.code, 400)
 
     def testMissingGame(self):
         with self.assertRaises(urllib.error.HTTPError) as cm:
-            self._testPageReachable('pundit/123')
+            self._testPageReachable('pundit/?at=123')
         e = cm.exception
         self.assertEqual(e.code, 404)
 
