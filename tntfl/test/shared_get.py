@@ -260,7 +260,7 @@ class PunditApi(Tester):
         self.assertEqual(response, {'1430991614': {'facts': []}})
 
     def testMultiple(self):
-        response = self._getJson('pundit.cgi', 'at=1223308996, 1430991614')
+        response = self._getJson('pundit.cgi', 'at=1223308996,1430991614')
         self.assertEqual(len(response.keys()), 2)
         self.assertSetEqual(set(response['1223308996']['facts']), {
             "That was jrem's 2nd most significant game.",
