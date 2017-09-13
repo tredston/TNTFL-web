@@ -6,7 +6,7 @@ from tntfl.player import Streak
 
 
 class FactChecker(object):
-    _reportCount = 10    # eg report the 10 most significant games
+    _reportCount = 5    # eg report the 10 most significant games
 
     def __init__(self):
         self._sharedGames = {}
@@ -78,7 +78,7 @@ class SignificantGames(FactChecker):
 
     def getFact(self, player, game, opponent):
         index = self._getSignificanceIndex(player, game)
-        if index is not None and index < self._reportCount:
+        if index is not None and index < self._reportCount and len(player.games) > self._reportCount * 3:
             ordinal = ""
             if index > 0:
                 ordinal = "%s " % self.ordinal(index + 1)

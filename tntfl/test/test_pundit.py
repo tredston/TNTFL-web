@@ -15,6 +15,26 @@ def bulkAppend(player, playerScore, opponent, opponentScore, startTime, count):
         opponent.games.append(game)
 
 
+class TestSignificantGames(unittest.TestCase):
+    def testSignificantGames(self):
+        player = Player("foo")
+        bulkAppend(player, 5, Player("bar"), 5, 5, 20)
+        player.games[0].skillChangeToBlue = 2
+        player.games[1].skillChangeToBlue = -3
+        player.games[2].skillChangeToBlue = 4
+        player.games[3].skillChangeToBlue = -1
+
+        sut = SignificantGames()
+        result = sut.getFact(player, player.games[0], None)
+        self.assertEqual(result, "That was foo's 3rd most significant game.")
+        result = sut.getFact(player, player.games[1], None)
+        self.assertEqual(result, "That was foo's 2nd most significant game.")
+        result = sut.getFact(player, player.games[2], None)
+        self.assertEqual(result, "That was foo's most significant game.")
+        result = sut.getFact(player, player.games[3], None)
+        self.assertEqual(result, "That was foo's 4th most significant game.")
+
+
 class Unit(unittest.TestCase):
     def testHighestSkill(self):
         player = self._create()
@@ -27,18 +47,6 @@ class Unit(unittest.TestCase):
         self.assertIsNone(result)
         result = sut.getFact(player, player.games[3], None)
         self.assertIsNone(result)
-
-    def testSignificantGames(self):
-        player = self._create()
-        sut = SignificantGames()
-        result = sut.getFact(player, player.games[0], None)
-        self.assertEqual(result, "That was foo's 3rd most significant game.")
-        result = sut.getFact(player, player.games[1], None)
-        self.assertEqual(result, "That was foo's 2nd most significant game.")
-        result = sut.getFact(player, player.games[2], None)
-        self.assertEqual(result, "That was foo's most significant game.")
-        result = sut.getFact(player, player.games[3], None)
-        self.assertEqual(result, "That was foo's 4th most significant game.")
 
     def testGames(self):
         player = Player("foo")

@@ -252,7 +252,6 @@ class PunditApi(Tester):
         self.assertSetEqual(set(response['1223308996']['facts']), {
             "That was jrem's 2nd most significant game.",
             "That game featured jrem's 10th goal against kjb.",
-            "That was kjb's most significant game.",
         })
 
     def testEmpty(self):
@@ -265,7 +264,6 @@ class PunditApi(Tester):
         self.assertSetEqual(set(response['1223308996']['facts']), {
             "That was jrem's 2nd most significant game.",
             "That game featured jrem's 10th goal against kjb.",
-            "That was kjb's most significant game.",
         })
         self.assertEqual(response['1430991614']['facts'], [])
 
