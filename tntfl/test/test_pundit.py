@@ -1,9 +1,8 @@
-from builtins import range
-import unittest
 import os
-from tntfl.ladder import TableFootballLadder
-from tntfl.player import Player
+import unittest
+
 from tntfl.game import Game
+from tntfl.player import Player
 from tntfl.pundit import *
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))

@@ -1,10 +1,8 @@
-from builtins import str
-from builtins import range
-from builtins import object
-from tntfl.player import Streak
-import tntfl.template_utils as utils
 from datetime import datetime
+
+import tntfl.template_utils as utils
 from tntfl.ladder import TableFootballLadder
+from tntfl.player import Streak
 
 
 class FactChecker(object):
