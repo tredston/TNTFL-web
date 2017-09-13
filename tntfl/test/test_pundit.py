@@ -324,31 +324,31 @@ class Unit(unittest.TestCase):
         return player
 
 
-class Functional(unittest.TestCase):
+class TestStreaks(unittest.TestCase):
     def testStreaks(self):
         l = TableFootballLadder(os.path.join(__location__, "testStreak.txt"), False)
         streaky = l.players['streak']
 
         sut = Streaks()
-        result = sut.getFact(streaky, streaky.games[2], None)
-        self.assertEqual(result, "At 3 games, streak was on their longest winning streak.")
-        result = sut.getFact(streaky, streaky.games[3], None)
-        self.assertEqual(result, "At 4 games, streak was on their longest winning streak.")
         result = sut.getFact(streaky, streaky.games[4], None)
-        self.assertEqual(result, "streak broke their winning streak of 4 games.")
+        self.assertEqual(result, "At 5 games, streak was on their longest winning streak.")
         result = sut.getFact(streaky, streaky.games[5], None)
+        self.assertEqual(result, "At 6 games, streak was on their longest winning streak.")
+        result = sut.getFact(streaky, streaky.games[6], None)
+        self.assertEqual(result, "streak broke their winning streak of 6 games.")
+        result = sut.getFact(streaky, streaky.games[7], None)
         self.assertIsNone(result)
 
     def testStreaks2nd(self):
         l = TableFootballLadder(os.path.join(__location__, "testStreak.txt"), False)
         streaky = l.players['streak']
-        bulkAppend(streaky, 6, Player('baz'), 4, 5000000012, 3)
+        bulkAppend(streaky, 6, Player('baz'), 4, 5000000012, 5)
 
         sut = Streaks()
         result = sut.getFact(streaky, streaky.games[-2], None)
         self.assertIsNone(result)
         result = sut.getFact(streaky, streaky.games[-1], None)
-        self.assertEqual(result, "At 3 games, streak was on their 2nd longest winning streak.")
+        self.assertEqual(result, "At 5 games, streak was on their 2nd longest winning streak.")
 
     def testStreaksAgainst(self):
         l = TableFootballLadder(os.path.join(__location__, "testStreak.txt"), False)
@@ -356,9 +356,9 @@ class Functional(unittest.TestCase):
         test = l.players['test']
 
         sut = StreaksAgainst()
-        result = sut.getFact(streaky, streaky.games[3], test)
-        self.assertEqual(result, "That was streak's 4th consecutive win against test.")
-        result = sut.getFact(streaky, streaky.games[4], test)
+        result = sut.getFact(streaky, streaky.games[5], test)
+        self.assertEqual(result, "That was streak's 6th consecutive win against test.")
+        result = sut.getFact(streaky, streaky.games[6], test)
         self.assertIsNone(result)
-        result = sut.getFact(test, streaky.games[4], streaky)
-        self.assertEqual(result, "test avoided losing to streak for the first time in 4 games.")
+        result = sut.getFact(test, streaky.games[6], streaky)
+        self.assertEqual(result, "test avoided losing to streak for the first time in 6 games.")

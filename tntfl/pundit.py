@@ -233,7 +233,7 @@ class Streaks(FactChecker):
 
     # returns 1-indexed significance, 0 = insignificant
     def _getCurrentStreakSignificance(self, streaks):
-        if streaks['current'].count >= 3:
+        if streaks['current'].count >= 5:
             prevStreaks = [s for s in streaks['past'] if s.win == streaks['current'].win]
             if len(prevStreaks) > 0:
                 # find the current streak's significance
@@ -250,7 +250,7 @@ class Streaks(FactChecker):
         return 0
 
     def _getBrokenStreak(self, games, streaks, game):
-        if streaks['current'].count < 2 and len(streaks['past']) > 0 and streaks['past'][-1].count >= 3:
+        if streaks['current'].count < 2 and len(streaks['past']) > 0 and streaks['past'][-1].count >= 5:
             prevStreak = streaks['past'][-1]
             for i, g in enumerate(games):
                 if g.time == game.time and prevStreak.toDate == games[i - 1].time:
@@ -280,7 +280,7 @@ class StreaksAgainst(Streaks):
         sharedGames = self.getSharedGames(player, opponent)
         streaks = player.getAllStreaks(sharedGames)
         streaks = self._rewind(streaks, game.time)
-        if streaks['current'].win and streaks['current'].count >= 3:
+        if streaks['current'].win and streaks['current'].count >= 5:
             return self._description % (player.name, self.ordinal(streaks['current'].count), opponent.name)
         else:
             broken = self._getBrokenStreak(sharedGames, streaks, game)
