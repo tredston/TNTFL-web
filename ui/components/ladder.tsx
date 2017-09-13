@@ -62,7 +62,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       hover={true}
       condensed={true}
       bodyStyle={{fontSize: 20}}
-      trClassName={(row) => getNearlyInactiveClass(row.trend[row.trend.length - 1][0], atDate)}
+      trClassName={(row) => getNearlyInactiveClass(row.trend[row.trend.length - 1].date, atDate)}
     >
       <TableHeaderColumn
         dataField={'rank'}
