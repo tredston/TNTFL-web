@@ -6,33 +6,38 @@ import unittest
 
 
 class TestRunner(unittest.TestCase, metaclass=abc.ABCMeta):
-    def _backupFilename(self, filename):
+    @classmethod
+    def _backupFilename(cls, filename):
         return '%s.actual' % filename
 
-    def _backupFile(self, filename):
+    @classmethod
+    def _backupFile(cls, filename):
         if os.path.exists(filename):
-            os.rename(filename, self._backupFilename(filename))
+            os.rename(filename, cls._backupFilename(filename))
 
-    def _restoreFile(self, filename):
+    @classmethod
+    def _restoreFile(cls, filename):
         if os.path.exists(filename):
             os.remove(filename)
-        if os.path.exists(self._backupFilename(filename)):
-            os.rename(self._backupFilename(filename), filename)
+        if os.path.exists(cls._backupFilename(filename)):
+            os.rename(cls._backupFilename(filename), filename)
+
+    @classmethod
+    def setUpClass(cls):
+        cls._backupFile('tntfl.cfg')
+        cls._backupFile('ladder.txt')
+        shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._restoreFile('ladder.txt')
+        cls._restoreFile('tntfl.cfg')
 
     def _clearCache(self):
         cacheFile = '^\.cache\.'
         for f in os.listdir('.'):
             if re.search(cacheFile, f):
                 os.remove(f)
-
-    def setUp(self):
-        self._backupFile('tntfl.cfg')
-        self._backupFile('ladder.txt')
-        shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
-
-    def tearDown(self):
-        self._restoreFile('ladder.txt')
-        self._restoreFile('tntfl.cfg')
 
     @abc.abstractmethod
     def _getJson(self, page, query=None):
