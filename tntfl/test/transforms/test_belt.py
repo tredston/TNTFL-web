@@ -1,5 +1,7 @@
 import unittest
+
 import tntfl.transforms.belt as beltTransform
+from tntfl import constants
 from tntfl.game import Game
 
 
@@ -31,7 +33,7 @@ class TestBelt(unittest.TestCase):
         self._assert(games[3], False, 'blue')
 
     def testFreeBelt(self):
-        timeout = 60 * 60 * 24 * beltTransform.DAYS_INACTIVE
+        timeout = 60 * 60 * 24 * constants.DAYS_INACTIVE
         games = [
             Game('red', 6, 'blue', 4, 0),
             Game('red', 5, 'blue', 5, 1),
@@ -56,7 +58,7 @@ class TestIsFirstGame(unittest.TestCase):
         player = beltTransform.getPlayer(players, 'red')
         player.hasBelt = True
         player.lastGameTime = 1000
-        timeout = 60 * 60 * 24 * beltTransform.DAYS_INACTIVE
+        timeout = 60 * 60 * 24 * constants.DAYS_INACTIVE
         actual = beltTransform.isFirstGame(players, 1000 + timeout)
         self.assertFalse(actual)
         self.assertTrue(player.hasBelt)
@@ -66,7 +68,7 @@ class TestIsFirstGame(unittest.TestCase):
         player = beltTransform.getPlayer(players, 'red')
         player.hasBelt = True
         player.lastGameTime = 1000
-        timeout = 60 * 60 * 24 * beltTransform.DAYS_INACTIVE
+        timeout = 60 * 60 * 24 * constants.DAYS_INACTIVE
         actual = beltTransform.isFirstGame(players, 1001 + timeout)
         self.assertTrue(actual)
         self.assertFalse(player.hasBelt)
