@@ -2,6 +2,9 @@
 
 ## develop
 * Add punditry indicator to game list
+* Add `activity` to `player` API endpoint
+** Replaces `active`
+* Reduce inactivity limit to 6 weeks
 
 ## 5.3.0
 * Fix predictions for players with negative elo
