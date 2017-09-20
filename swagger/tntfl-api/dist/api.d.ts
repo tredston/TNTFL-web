@@ -227,9 +227,9 @@ export interface Player {
      */
     "games": GamesLink;
     /**
-     * Whether or not the system considers the player active
+     * Player's activity level
      */
-    "active": boolean;
+    "activity": number;
     /**
      * The player's skill value in the ranking system
      */
