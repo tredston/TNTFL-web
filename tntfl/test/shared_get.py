@@ -100,7 +100,7 @@ class PlayerApi(Tester):
         response = self._getJson('player.cgi', 'player=rc&view=json')
         self.assertEqual(response['name'], "rc")
         self.assertEqual(response['rank'], -1)
-        self.assertEqual(response['active'], False)
+        self.assertEqual(response['activity'], 0)
         self.assertAlmostEqual(response['skill'], 1.55744, 4)
         self.assertEqual(response['total']['for'], 59)
         self.assertEqual(response['total']['against'], 142)

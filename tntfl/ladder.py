@@ -60,13 +60,24 @@ class TableFootballLadder(object):
     def getNumActivePlayers(self, atTime=None):
         return len(self._getActivePlayers(atTime))
 
+    def _getMostRecentGame(self, player, atTime):
+        for game in reversed(player.games):
+            if game.time <= atTime:
+                return game
+        return None
+
     def isPlayerActive(self, player, atTime=None):
         if atTime is None:
             atTime = self._getTime()
-        for game in reversed(player.games):
-            if game.time <= atTime:
-                return (atTime - game.time) < (60 * 60 * 24 * self.DAYS_INACTIVE)
-        return False
+        game = self._getMostRecentGame(player, atTime)
+        return (atTime - game.time) < (60 * 60 * 24 * self.DAYS_INACTIVE) if game else False
+
+    def getPlayerActivity(self, player, atTime=None):
+        secondsInactive = 60 * 60 * 24 * self.DAYS_INACTIVE
+        if atTime is None:
+            atTime = self._getTime()
+        game = self._getMostRecentGame(player, atTime)
+        return max(secondsInactive - (atTime - game.time), 0) / secondsInactive if game else 0
 
     def _getTime(self):
         if self._ladderTime['now']:
