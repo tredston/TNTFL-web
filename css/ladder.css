@@ -45,12 +45,36 @@ h2.panel-title {
   background-color:#CD7F32 !important;
 }
 
-tr.nearly-inactive {
-  opacity: 0.6;
+tr.nearly-inactive-1 {
+  opacity: 0.8;
   font-style: italic;
 }
 
-tr.nearly-inactive:hover {
+tr.nearly-inactive-2 {
+  opacity: 0.65;
+  font-style: italic;
+}
+
+tr.nearly-inactive-3 {
+  opacity: 0.5;
+  font-style: italic;
+}
+
+tr.nearly-inactive-4 {
+  opacity: 0.45;
+  font-style: italic;
+}
+
+tr.nearly-inactive-5 {
+  opacity: 0.3;
+  font-style: italic;
+}
+
+tr.nearly-inactive-1:hover,
+tr.nearly-inactive-2:hover,
+tr.nearly-inactive-3:hover,
+tr.nearly-inactive-4:hover,
+tr.nearly-inactive-5:hover {
   opacity: 1;
 }
 
