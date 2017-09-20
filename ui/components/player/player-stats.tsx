@@ -93,7 +93,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
         </div>
         <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
           <div style={rowStyle}>
-            <div style={{display: 'flex'}}><RankStat rank={player.rank} numActivePlayers={numActivePlayers} lastPlayed={games[games.length - 1].date} /></div>
+            <div style={{display: 'flex'}}><RankStat rank={player.rank} numActivePlayers={numActivePlayers} activity={player.activity} /></div>
             <div style={{display: 'flex'}}><StatBox title='Skill'>{player.skill.toFixed(3)}</StatBox></div>
             <div style={{display: 'flex'}}><StatBox title='Skill change today' style={getBG(skillChangeToday)}>{skillChangeToday.toFixed(3)}</StatBox></div>
             <div style={{display: 'flex'}}><StatBox title='Rank change today' style={getBG(rankChangeToday)}>{formatRankChange(rankChangeToday)}</StatBox></div>

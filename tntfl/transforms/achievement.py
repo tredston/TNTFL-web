@@ -1,9 +1,5 @@
-from builtins import object
 import tntfl.achievements as Achievements
-from tntfl.game import Game
-
-# DAYS_INACTIVE = 60
-secondsInactive = 60 * 60 * 24 * 60
+from tntfl import constants
 
 
 class Player(object):
@@ -18,7 +14,7 @@ class Player(object):
         self._activeTillTime = 0
 
     def playGame(self, game):
-        self._activeTillTime = game.time + secondsInactive
+        self._activeTillTime = game.time + 60 * 60 * 24 * constants.DAYS_INACTIVE
 
         self.elo += game.skillChangeToBlue if self.name == game.bluePlayer else -game.skillChangeToBlue
         if self.elo < self.lowestSkill:
@@ -40,7 +36,7 @@ class Player(object):
                     self.unachieved.remove(a)
 
 
-class TableFootballLadder(object):
+class ThinTableFootballLadder(object):
     def __init__(self):
         self.games = []
         self._players = {}
@@ -82,7 +78,7 @@ class TableFootballLadder(object):
 
 
 def do(games):
-    ladder = TableFootballLadder()
+    ladder = ThinTableFootballLadder()
     for game in games:
         if not game.isDeleted():
             ladder.addGame(game)

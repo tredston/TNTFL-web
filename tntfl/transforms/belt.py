@@ -1,7 +1,6 @@
-from builtins import object
 from operator import itemgetter
 
-DAYS_INACTIVE = 60
+from tntfl import constants
 
 
 class Player(object):
@@ -19,7 +18,7 @@ def getPlayer(players, name):
 def isFirstGame(players, time):
     for player in list(players.values()):
         if player.hasBelt:
-            isInactive = time - player.lastGameTime > (60 * 60 * 24 * DAYS_INACTIVE)
+            isInactive = time - player.lastGameTime > (60 * 60 * 24 * constants.DAYS_INACTIVE)
             if isInactive:
                 player.hasBelt = False
             return isInactive

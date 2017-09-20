@@ -449,9 +449,9 @@ definitions:
       games:
         description: Link to get all games for this player
         $ref: '#/definitions/GamesLink'
-      active:
-        description: Whether or not the system considers the player active
-        type: boolean
+      activity:
+        description: Player's activity level
+        type: number
       skill:
         description: The player's skill value in the ranking system
         type: number
@@ -459,7 +459,7 @@ definitions:
       total:
         description: Statistics for the player
         $ref: '#/definitions/PlayerTotals'
-    required: [name, rank, games, active, skill, total]
+    required: [name, rank, games, activity, skill, total]
   Performance:
     description: Resource representing how a player performed in a game
     type: object

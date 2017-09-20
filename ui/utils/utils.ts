@@ -54,11 +54,23 @@ export function formatRankChange(rankChange: number): string {
   return (rankChange > 0 ? '▲' : '▼') + Math.abs(rankChange);
 }
 
-export function getNearlyInactiveClass(lastPlayed: number, now: number): string {
-  const nearlyInactiveDays = 14;
-  const nearlyInactiveTime = (60 - nearlyInactiveDays) * 24 * 60 * 60;
-  const isNearlyInactive = now - lastPlayed > nearlyInactiveTime;
-  return isNearlyInactive ? 'nearly-inactive' : '';
+export function getNearlyInactiveClass(activity: number): string {
+  if (activity < 0.1) {
+    return 'nearly-inactive-5';
+  }
+  if (activity < 0.2) {
+    return 'nearly-inactive-4';
+  }
+  if (activity < 0.3) {
+    return 'nearly-inactive-3';
+  }
+  if (activity < 0.4) {
+    return 'nearly-inactive-2';
+  }
+  if (activity < 0.5) {
+    return 'nearly-inactive-1';
+  }
+  return '';
 }
 
 export function mostRecentGames(games: Game[]): Game[] {

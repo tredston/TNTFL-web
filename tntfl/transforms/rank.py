@@ -1,7 +1,4 @@
-from builtins import object
-from tntfl.game import Game
-
-DAYS_INACTIVE = 60
+from tntfl import constants
 
 
 class Player(object):
@@ -23,7 +20,7 @@ def filterActivePlayers(players, time):
 def do(games):
     players = {}
     activePlayers = []
-    secondsInactive = 60 * 60 * 24 * DAYS_INACTIVE
+    secondsInactive = 60 * 60 * 24 * constants.DAYS_INACTIVE
     for game in [g for g in games if not g.isDeleted()]:
         red = getPlayer(players, game.redPlayer)
         blue = getPlayer(players, game.bluePlayer)

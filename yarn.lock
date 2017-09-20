@@ -5527,7 +5527,7 @@ timers-browserify@^2.0.2:
     setimmediate "^1.0.4"
 
 "tntfl-api@file:./swagger/tntfl-api/":
-  version "5.4.0"
+  version "5.5.0"
   dependencies:
     core-js "^2.4.0"
     isomorphic-fetch "^2.2.1"

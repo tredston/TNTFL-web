@@ -31,12 +31,11 @@ function TrendChart(trend: TrendItem[]): JSX.Element {
 
 interface LadderProps {
   entries: LadderEntry[];
-  atDate: number;
   showInactive: boolean;
 }
 export default function Ladder(props: LadderProps): JSX.Element {
   let { entries } = props;
-  const { atDate, showInactive } = props;
+  const { showInactive } = props;
   if (!showInactive) {
     entries = entries.filter(e => e.player && e.player.rank >= 1);
   }
@@ -53,6 +52,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       totals: e.player.total,
       skill: e.player.skill.toFixed(3),
       trend: e.trend,
+      activity: e.player.activity,
     };
   });
   const numActivePlayers = entries.filter((e) => e.player && e.player.rank >= 1).length;
@@ -62,7 +62,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       hover={true}
       condensed={true}
       bodyStyle={{fontSize: 20}}
-      trClassName={(row) => getNearlyInactiveClass(row.trend[row.trend.length - 1].date, atDate)}
+      trClassName={(row) => getNearlyInactiveClass(row.activity)}
     >
       <TableHeaderColumn
         dataField={'rank'}
