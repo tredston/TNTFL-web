@@ -83,7 +83,6 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
             <Col lg={8}>
               <LadderPanel
                 entries={entries}
-                atDate={now}
                 bsStyle={isSpeculating ? 'warning' : undefined}
               />
             </Col>

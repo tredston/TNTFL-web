@@ -143,7 +143,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
           </Panel>
           <Row>
             <Col lg={8}>
-              <LadderPanel entries={entries} atDate={toTime} />
+              <LadderPanel entries={entries} />
             </Col>
             <Col lg={4}>
               <Panel header={'Monthly Rankings'}>

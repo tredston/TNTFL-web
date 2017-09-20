@@ -54,10 +54,8 @@ export function formatRankChange(rankChange: number): string {
   return (rankChange > 0 ? '▲' : '▼') + Math.abs(rankChange);
 }
 
-export function getNearlyInactiveClass(lastPlayed: number, now: number): string {
-  const nearlyInactiveDays = 14;
-  const nearlyInactiveTime = (60 - nearlyInactiveDays) * 24 * 60 * 60;
-  const isNearlyInactive = now - lastPlayed > nearlyInactiveTime;
+export function getNearlyInactiveClass(activity: number): string {
+  const isNearlyInactive = activity < 0.25;
   return isNearlyInactive ? 'nearly-inactive' : '';
 }
 

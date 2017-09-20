@@ -54,7 +54,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
         <Grid fluid={true}>
           <Row>
             <Col lg={8}>
-              <LadderPanel entries={entries} atDate={now} />
+              <LadderPanel entries={entries} />
             </Col>
             <Col lg={4}>
               <RecentGames games={recentGames} showAllGames={false} base={base}/>
