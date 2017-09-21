@@ -305,7 +305,7 @@ class Unit(unittest.TestCase):
 
         sut = FirstGameSince()
         result = sut.getFact(player, player.games[-1], None)
-        self.assertEqual(result, "That was foo's first game since retiring on 1970-03-02.")
+        self.assertEqual(result, "That was foo's first game since retiring on 1970-02-12.")
         result = sut.getFact(opponent, opponent.games[-1], None)
         self.assertIsNone(result)
 

@@ -303,7 +303,7 @@ class ActivePlayersApi(Tester):
 
     def testAtDates(self):
         response = self._getJson('activeplayers.cgi', 'at=1420000000,1430402614')
-        self.assertEqual(response['1420000000'], {'count': 6})
+        self.assertEqual(response['1420000000'], {'count': 5})
         self.assertEqual(response['1430402614'], {'count': 13})
 
 
