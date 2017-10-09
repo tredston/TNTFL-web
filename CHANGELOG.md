@@ -3,8 +3,9 @@
 ## develop
 * Add punditry indicator to game list
 * Add `activity` to `player` API endpoint
-** Replaces `active`
+  * Replaces `active`
 * Reduce inactivity limit to 6 weeks
+  * Fade player's row gradually for the last half of the active period
 
 ## 5.3.0
 * Fix predictions for players with negative elo
@@ -33,7 +34,7 @@
 
 ## 5.0.0
 * Scale skill point transfer by number of goals played
-** Scaled linearly with 10 goals being the expected length of a game
+  * Scaled linearly with 10 goals being the expected length of a game
 * Removed the `overrated` stat from the `player` API endpoint
 * Fixed league colours in the `Recent Games` list
 
