@@ -1,6 +1,6 @@
 # Changelog
 
-## develop
+## 5.4.0
 * Add punditry indicator to game list
 * Add `activity` to `player` API endpoint
   * Replaces `active`
