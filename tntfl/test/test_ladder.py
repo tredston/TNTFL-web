@@ -34,7 +34,7 @@ class Test(TestCase):
 
         streaks = streaky.getStreaks()
 
-        self.assertEquals(4, streaks['win'].count)
+        self.assertEquals(6, streaks['win'].count)
         self.assertEquals(2, streaks['lose'].count)
         self.assertEquals("(last game was a draw)", streaks['currentType'])
 

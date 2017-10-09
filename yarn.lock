@@ -149,6 +149,10 @@
     react-treebeard "^2.0.3"
     redux "^3.6.0"
 
+"@types/lodash@^4.14.74":
+  version "4.14.74"
+  resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.74.tgz#ac3bd8db988e7f7038e5d22bd76a7ba13f876168"
+
 "@types/node@*":
   version "7.0.23"
   resolved "https://registry.npmjs.org/@types/node/-/node-7.0.23.tgz#ededfd92e61046c32fcad56ea7e1101733fad4a4"
@@ -5523,7 +5527,7 @@ timers-browserify@^2.0.2:
     setimmediate "^1.0.4"
 
 "tntfl-api@file:./swagger/tntfl-api/":
-  version "5.1.1"
+  version "5.5.0"
   dependencies:
     core-js "^2.4.0"
     isomorphic-fetch "^2.2.1"

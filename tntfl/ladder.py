@@ -1,17 +1,15 @@
 import time
 from collections import Counter
-from tntfl.player import Player, Streak
+
+import tntfl.transforms.transforms as PresetTransforms
+from tntfl import constants
 from tntfl.caching_game_store import CachingGameStore
 from tntfl.game import Game
+from tntfl.player import Player, Streak
 from tntfl.skill_change import Elo
-import tntfl.transforms.transforms as PresetTransforms
 
 
 class TableFootballLadder(object):
-
-    # Number of days inactivity after which players are considered inactive
-    DAYS_INACTIVE = 60
-
     def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None, games=None, postGameHooks=[]):
         self.games = []
         self.players = {}
@@ -60,13 +58,24 @@ class TableFootballLadder(object):
     def getNumActivePlayers(self, atTime=None):
         return len(self._getActivePlayers(atTime))
 
+    def _getMostRecentGame(self, player, atTime):
+        for game in reversed(player.games):
+            if game.time <= atTime:
+                return game
+        return None
+
     def isPlayerActive(self, player, atTime=None):
         if atTime is None:
             atTime = self._getTime()
-        for game in reversed(player.games):
-            if game.time <= atTime:
-                return (atTime - game.time) < (60 * 60 * 24 * self.DAYS_INACTIVE)
-        return False
+        game = self._getMostRecentGame(player, atTime)
+        return (atTime - game.time) < (60 * 60 * 24 * constants.DAYS_INACTIVE) if game else False
+
+    def getPlayerActivity(self, player, atTime=None):
+        secondsInactive = 60 * 60 * 24 * constants.DAYS_INACTIVE
+        if atTime is None:
+            atTime = self._getTime()
+        game = self._getMostRecentGame(player, atTime)
+        return max(secondsInactive - (atTime - game.time), 0) / secondsInactive if game else 0
 
     def _getTime(self):
         if self._ladderTime['now']:

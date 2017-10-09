@@ -1,14 +1,12 @@
-from builtins import str
-from builtins import range
-from builtins import object
-from tntfl.player import Streak
-import tntfl.template_utils as utils
 from datetime import datetime
-from tntfl.ladder import TableFootballLadder
+
+import tntfl.template_utils as utils
+from tntfl import constants
+from tntfl.player import Streak
 
 
 class FactChecker(object):
-    _reportCount = 10    # eg report the 10 most significant games
+    _reportCount = 5    # eg report the 10 most significant games
 
     def __init__(self):
         self._sharedGames = {}
@@ -80,7 +78,7 @@ class SignificantGames(FactChecker):
 
     def getFact(self, player, game, opponent):
         index = self._getSignificanceIndex(player, game)
-        if index is not None and index < self._reportCount:
+        if index is not None and index < self._reportCount and len(player.games) > self._reportCount * 3:
             ordinal = ""
             if index > 0:
                 ordinal = "%s " % self.ordinal(index + 1)
@@ -235,7 +233,7 @@ class Streaks(FactChecker):
 
     # returns 1-indexed significance, 0 = insignificant
     def _getCurrentStreakSignificance(self, streaks):
-        if streaks['current'].count >= 3:
+        if streaks['current'].count >= 5:
             prevStreaks = [s for s in streaks['past'] if s.win == streaks['current'].win]
             if len(prevStreaks) > 0:
                 # find the current streak's significance
@@ -252,7 +250,7 @@ class Streaks(FactChecker):
         return 0
 
     def _getBrokenStreak(self, games, streaks, game):
-        if streaks['current'].count < 2 and len(streaks['past']) > 0 and streaks['past'][-1].count >= 3:
+        if streaks['current'].count < 2 and len(streaks['past']) > 0 and streaks['past'][-1].count >= 5:
             prevStreak = streaks['past'][-1]
             for i, g in enumerate(games):
                 if g.time == game.time and prevStreak.toDate == games[i - 1].time:
@@ -282,7 +280,7 @@ class StreaksAgainst(Streaks):
         sharedGames = self.getSharedGames(player, opponent)
         streaks = player.getAllStreaks(sharedGames)
         streaks = self._rewind(streaks, game.time)
-        if streaks['current'].win and streaks['current'].count >= 3:
+        if streaks['current'].win and streaks['current'].count >= 5:
             return self._description % (player.name, self.ordinal(streaks['current'].count), opponent.name)
         else:
             broken = self._getBrokenStreak(sharedGames, streaks, game)
@@ -294,7 +292,7 @@ class FirstGameSince(FactChecker):
 
     def getFact(self, player, game, opponent):
         if len(player.games) > 1:
-            retireTime = player.games[-2].time + (60 * 60 * 24 * TableFootballLadder.DAYS_INACTIVE)
+            retireTime = player.games[-2].time + (60 * 60 * 24 * constants.DAYS_INACTIVE)
             if retireTime < game.time:
                 date = datetime.fromtimestamp(float(retireTime))
                 dateStr = date.strftime("%Y-%m-%d")

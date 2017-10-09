@@ -92,7 +92,7 @@ class PlayerJson(unittest.TestCase):
 
         self.assertEqual(actual['name'], 'aaa')
         self.assertEqual(actual['rank'], -1)
-        self.assertEqual(actual['active'], False)
+        self.assertEqual(actual['activity'], 0)
         self.assertAlmostEqual(actual['skill'], -2.30014, 5)
         self.assertEqual(actual['total']['for'], 14)
         self.assertEqual(actual['total']['against'], 16)

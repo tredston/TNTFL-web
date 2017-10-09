@@ -31,13 +31,13 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     const { base, gameId } = this.props;
     const api = new GamesApi(fetch, base);
     const game = await api.getGame({gameId: +gameId});
-    this.setState({game} as GamePageState);
+    this.setState({game});
   }
   async loadPunditry() {
     const { base, gameId } = this.props;
     const api = new GamesApi(fetch, base);
-    const punditry = await api.getPunditry({gameId: +gameId});
-    this.setState({punditry} as GamePageState);
+    const punditry = await api.getPunditry({at: gameId});
+    this.setState({punditry: punditry[Object.keys(punditry)[0]].facts});
   }
   async loadActivePlayers() {
     const { base, gameId } = this.props;

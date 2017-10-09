@@ -67,7 +67,7 @@ def ladderToJson(ladder, base, showInactive, includePlayers):
     if includePlayers:
         ranked = [p.name for p in ladder.getRankedPlayers() if ladder.isPlayerActive(p)]
         return [{
-            'player': playerLiteToJson(p, ranked),
+            'player': playerLiteToJson(p, ladder, ranked),
             'trend': getTrendWithDates(p),
         } for p in players]
     else:
@@ -79,12 +79,12 @@ def ladderToJson(ladder, base, showInactive, includePlayers):
         } for i, p in enumerate(players)]
 
 
-def playerLiteToJson(player, ranked):
+def playerLiteToJson(player, ladder, ranked):
     rank = ranked.index(player.name) + 1 if player.name in ranked else -1
     return {
         'name': player.name,
         'rank': rank,
-        'active': rank is not -1,
+        'activity': ladder.getPlayerActivity(player),
         'skill': player.elo,
         'total': {
             'for': player.goalsFor,
@@ -99,7 +99,7 @@ def playerLiteToJson(player, ranked):
 
 def playerToJson(player, ladder):
     ranked = [p.name for p in ladder.getRankedPlayers() if ladder.isPlayerActive(p)]
-    content = playerLiteToJson(player, ranked)
+    content = playerLiteToJson(player, ladder, ranked)
     content['total']['gamesAsRed'] = player.gamesAsRed
     content['total']['gamesToday'] = player.gamesToday
     return content

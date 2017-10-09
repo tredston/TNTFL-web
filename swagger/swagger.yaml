@@ -301,14 +301,13 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Game'
-  /pundit/{gameId}/json:
+  /pundit/json:
     get:
       parameters:
-      - name: gameId
-        in: path
-        type: number
-        format: int64
-        description: Timestamp of game
+      - name: at
+        in: query
+        type: string
+        description: CSV of timestamps
         required: true
       operationId: getPunditry
       summary: Get game punditry
@@ -318,9 +317,9 @@ paths:
         200:
           description: Punditry for requested game
           schema:
-            type: array
-            items:
-              type: string
+            type: object
+            additionalProperties:
+              $ref: '#/definitions/Punditry'
   /activeplayers/json:
     get:
       parameters:
@@ -450,9 +449,9 @@ definitions:
       games:
         description: Link to get all games for this player
         $ref: '#/definitions/GamesLink'
-      active:
-        description: Whether or not the system considers the player active
-        type: boolean
+      activity:
+        description: Player's activity level
+        type: number
       skill:
         description: The player's skill value in the ranking system
         type: number
@@ -460,7 +459,7 @@ definitions:
       total:
         description: Statistics for the player
         $ref: '#/definitions/PlayerTotals'
-    required: [name, rank, games, active, skill, total]
+    required: [name, rank, games, activity, skill, total]
   Performance:
     description: Resource representing how a player performed in a game
     type: object
@@ -722,3 +721,11 @@ definitions:
       blueGoalRatio:
         description: Ratio of goals that blue is expected to score
         type: number
+  Punditry:
+    type: object
+    properties:
+      facts:
+        type: array
+        items:
+          type: string
+    required: [facts]

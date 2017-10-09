@@ -7,14 +7,13 @@ import { getLadderLeagueClass, getNearlyInactiveClass } from '../../utils/utils'
 interface RankStatBoxProps {
   rank: number;
   numActivePlayers: number;
-  lastPlayed: number;
+  activity: number;
   style?: CSSProperties;
 }
 export default function RankStatBox(props: RankStatBoxProps): JSX.Element {
-  const { rank, numActivePlayers, lastPlayed, style } = props;
-  const now = (new Date()).getTime() / 1000;
+  const { rank, numActivePlayers, activity, style } = props;
   const league = getLadderLeagueClass(rank, numActivePlayers);
-  const inactive = getNearlyInactiveClass(lastPlayed, now);
+  const inactive = getNearlyInactiveClass(activity);
   const prettyRank = rank !== -1 ? rank : '-';
   return (
     <StatBox title='Rank' style={style} classes={`${league} ${inactive}`}>

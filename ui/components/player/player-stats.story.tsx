@@ -50,7 +50,7 @@ function createStory(): () => JSX.Element {
       href: 'games/json',
     },
     skill: 56.814402967766014,
-    active: true,
+    activity: 1,
   };
   const games: Game[] = createGames(20);
   return () => <PlayerStats player={player} games={games} numActivePlayers={1} base={''} />;

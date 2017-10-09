@@ -84,9 +84,10 @@ interface GameSummaryProps {
   game: Game;
   base: string;
   numActivePlayers: number;
+  punditry?: string[];
 }
 export default function GameSummary(props: GameSummaryProps): JSX.Element {
-  const { game, base, numActivePlayers } = props;
+  const { game, base, numActivePlayers, punditry } = props;
   const redStripe = game.red.score === 10 && game.blue.score === 0;
   const blueStripe = game.red.score === 0 && game.blue.score === 10;
   return (
@@ -107,7 +108,10 @@ export default function GameSummary(props: GameSummaryProps): JSX.Element {
             <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.red.skillChange} colour='skill-change-red' /> </td>
             <td style={{width: '10%'}} className={'rank-change red'}> <RankChange rankChange={game.red.rankChange} colour='skill-change-red' /> </td>
             <td style={{width: '10%'}}/>
-            <td style={{width: '20%', textAlign: 'center'}}> <GameTime date={game.date} base={base} /> </td>
+            <td style={{width: '20%', textAlign: 'center'}}>
+              <GameTime date={game.date} base={base} />
+              {punditry && punditry.length > 0 && <img src={`${base}/img/headset16.png`} style={{marginLeft: 2}} />}
+            </td>
             <td style={{width: '10%'}}/>
             <td style={{width: '10%'}} className={'rank-change blue'}> <RankChange rankChange={game.blue.rankChange} colour='skill-change-blue' /> </td>
             <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.blue.skillChange} colour='skill-change-blue' /> </td>
