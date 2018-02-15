@@ -18,8 +18,10 @@ class GameJson(unittest.TestCase):
     def test(self):
         game = Game('red', 4, 'blue', 6, 1)
         game.skillChangeToBlue = 2
+        game.redSkillAfter = 1.23
         game.redPosChange = -1
         game.redPosAfter = 2
+        game.blueSkillAfter = 3.21
         game.bluePosChange = 1
         game.bluePosAfter = 1
 
@@ -29,6 +31,7 @@ class GameJson(unittest.TestCase):
         self.assertEqual(actual['red']['href'], '../player/red/json')
         self.assertEqual(actual['red']['score'], 4)
         self.assertEqual(actual['red']['skillChange'], -2)
+        self.assertEqual(actual['red']['newSkill'], 1.23)
         self.assertEqual(actual['red']['rankChange'], -1)
         self.assertEqual(actual['red']['newRank'], 2)
 
@@ -36,6 +39,7 @@ class GameJson(unittest.TestCase):
         self.assertEqual(actual['blue']['href'], '../player/blue/json')
         self.assertEqual(actual['blue']['score'], 6)
         self.assertEqual(actual['blue']['skillChange'], 2)
+        self.assertEqual(actual['blue']['newSkill'], 3.21)
         self.assertEqual(actual['blue']['rankChange'], 1)
         self.assertEqual(actual['blue']['newRank'], 1)
 

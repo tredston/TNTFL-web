@@ -27,4 +27,6 @@ def do(games):
         red.elo -= skillChangeToBlue
         blue.elo += skillChangeToBlue
         game.skillChangeToBlue = skillChangeToBlue
+        game.redSkillAfter = red.elo - skillChangeToBlue
+        game.blueSkillAfter = blue.elo + skillChangeToBlue
     return games

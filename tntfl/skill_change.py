@@ -20,3 +20,5 @@ class Elo(SkillChange):
         result = float(game.blueScore) / (game.blueScore + game.redScore)
         delta = 25 * (result - predict)
         game.skillChangeToBlue = delta
+        game.redSkillAfter = red.elo - delta
+        game.blueSkillAfter = blue.elo + delta

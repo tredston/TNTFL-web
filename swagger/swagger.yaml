@@ -480,6 +480,10 @@ definitions:
         description: Skill value change for this player
         type: number
         format: double
+      newSkill:
+        description: New skill value of this player
+        type: number
+        format: double
       rankChange:
         description: Ladder rank change for this player
         type: integer
