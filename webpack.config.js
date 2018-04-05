@@ -9,58 +9,22 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const extractCss = new ExtractTextPlugin({ filename: `[name].css?v=${packageJson.version}`, allChunks: true });
 
-const pages = [
-  {
-    name: 'index',
-    src: './ui/containers/index.tsx',
-    base: '',
-  },
-  {
-    name: 'game',
-    src: './ui/containers/game.tsx',
-    base: '../../',
-  },
-  {
-    name: 'delete',
-    src: './ui/containers/delete.tsx',
-    base: '../../',
-  },
-  {
-    name: 'player',
-    src: './ui/containers/player.tsx',
-    base: '../../',
-  },
-  {
-    name: 'playergames',
-    src: './ui/containers/playergames.tsx',
-    base: '../../../',
-  },
-  {
-    name: 'headtohead',
-    src: './ui/containers/headtohead.tsx',
-    base: '../../../',
-  },
-  {
-    name: 'headtoheadgames',
-    src: './ui/containers/headtoheadgames.tsx',
-    base: '../../../../',
-  },
-  {
-    name: 'historic',
-    src: './ui/containers/historic.tsx',
-    base: '',
-  },
-  {
-    name: 'speculate',
-    src: './ui/containers/speculate.tsx',
-    base: '../',
-  },
-  {
-    name: 'stats',
-    src: './ui/containers/stats.tsx',
-    base: '../',
-  },
-];
+function getPages() {
+  const thing = {
+    0: ['index', 'historic'],
+    1: ['speculate', 'stats'],
+    2: ['game', 'delete', 'player'],
+    3: ['headtohead', 'playergames'],
+    4: ['headtoheadgames'],
+  };
+  const expanded = Object.keys(thing).map(k => thing[k].map(p => ({
+    name: p,
+    src: `./ui/containers/${p}.tsx`,
+    base: '../'.repeat(k),
+  })));
+  return [].concat.apply([], expanded);
+}
+const pages = getPages();
 
 module.exports = {
   mode: isProd ? 'production' : 'development',
