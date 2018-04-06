@@ -40,10 +40,9 @@ export default function BoxPlot(props: Props): JSX.Element {
   return (
     <ContainerDimensions>
       {({height}: {height: number}) => {
-        (config.chart as any).height = height - 50;
-        // TODO grows endlessly again
+        (config.chart as any).height = height;
         return (
-          <div style={{ width: 120, height: '100%', margin: -15 }}>
+          <div style={{ width: 120, margin: -15 }}>
             {data.length >= 5
               ? <ReactHighcharts config={config}/>
               : 'Not enough data'

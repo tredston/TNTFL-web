@@ -91,7 +91,7 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
       <Panel.Body>
         <div style={{ display: 'flex' }}>
           <div style={{ display: 'flex' }}>
-            <StatBox title={'Recent Skill'}><BoxPlot data={getSkillHistory(player, games).filter(d => d.date >= monthAgo).map(d => d.skill)}/></StatBox>
+            <StatBox title={'Recent Skill'} bodyStyle={{height: '80%'}}><BoxPlot data={getSkillHistory(player, games).filter(d => d.date >= monthAgo).map(d => d.skill)}/></StatBox>
           </div>
           <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
             <div style={rowStyle}>

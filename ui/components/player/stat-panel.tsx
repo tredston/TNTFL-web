@@ -14,16 +14,17 @@ const statStyle: CSSProperties = {
 interface StatBoxProps {
   title: string;
   style?: CSSProperties;
+  bodyStyle?: CSSProperties;
   classes?: string;
   children?: any;
 }
 export function StatBox(props: StatBoxProps): JSX.Element {
-  const { title, children, style, classes } = props;
+  const { title, children, style, bodyStyle, classes } = props;
   const mergedStyle = Object.assign({}, statStyle, style);
   return (
     <Panel>
       <Panel.Heading style={mergedStyle} className={classes}><h3>{title}</h3></Panel.Heading>
-      <Panel.Body>{children}</Panel.Body>
+      <Panel.Body style={bodyStyle}>{children}</Panel.Body>
     </Panel>
   );
 }

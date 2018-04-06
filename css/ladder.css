@@ -11,10 +11,6 @@ h2.panel-title {
   font-size: 18pt;
 }
 
-.panel-body {
-  height: 100%;
-}
-
 .ladder-position {
   font-size: x-large;
   font-weight: bold;
