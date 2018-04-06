@@ -1,5 +1,5 @@
-var path = require("path");
-var webpack = require('webpack');
+const path = require("path");
+const webpack = require('webpack');
 const awesomeTypescriptLoader = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const packageJson = require('./package.json');
@@ -74,6 +74,7 @@ const pages = [
 ];
 
 module.exports = {
+  mode: isProd ? 'production' : 'development',
   entry: pages.reduce((acc,cur) => {
     acc[cur.name] = ['babel-polyfill', cur.src];
     return acc;
@@ -117,7 +118,6 @@ module.exports = {
 };
 
 function* plugins() {
-  yield new webpack.optimize.CommonsChunkPlugin('commons-chunk');
   yield new webpack.optimize.ModuleConcatenationPlugin();
   for (var page of pages) {
     const links = page.links;
@@ -137,7 +137,6 @@ function* plugins() {
   }
   if (isProd) {
     yield new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } });
-    yield new webpack.optimize.UglifyJsPlugin();
   }
   else {
     yield new awesomeTypescriptLoader.CheckerPlugin();
