@@ -73,7 +73,6 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     const isSpeculating = speculated && speculated.games.length > 0;
     const now = (new Date()).getTime() / 1000;
     const entries = speculated && speculated.entries;
-    // TODO ladder doesn't turn warn color
     // TODO player links are wrong path
     return (
       <div>
@@ -85,7 +84,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
             <Col lg={8}>
               <LadderPanel
                 entries={entries}
-                bsStyle={isSpeculating ? 'warning' : undefined}
+                speculative={isSpeculating}
               />
             </Col>
             <Col lg={4}>

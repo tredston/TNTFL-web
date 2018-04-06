@@ -15,11 +15,6 @@ h2.panel-title {
   height: 100%;
 }
 
-.panel-warning .panel-body,
-.panel-warning th {
-  background-color: #FAEBCC;
-}
-
 .ladder-position {
   font-size: x-large;
   font-weight: bold;

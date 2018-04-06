@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { CSSProperties } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { TrendItem, LadderEntry, Player } from 'tntfl-api';
 
@@ -32,10 +33,11 @@ function TrendChart(trend: TrendItem[]): JSX.Element {
 interface LadderProps {
   entries: LadderEntry[];
   showInactive: boolean;
+  style?: CSSProperties;
 }
 export default function Ladder(props: LadderProps): JSX.Element {
   let { entries } = props;
-  const { showInactive } = props;
+  const { showInactive, style } = props;
   if (!showInactive) {
     entries = entries.filter(e => e.player && e.player.rank >= 1);
   }
@@ -65,6 +67,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       condensed={true}
       bodyStyle={{fontSize: 20}}
       trClassName={(row) => getNearlyInactiveClass(row.activity)}
+      containerStyle={style}
     >
       <TableHeaderColumn
         dataField={'rank'}
