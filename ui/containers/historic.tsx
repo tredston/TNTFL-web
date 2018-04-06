@@ -48,8 +48,11 @@ function Year(props: MonthlyRankingsProps): JSX.Element {
   }
   return (
     <Col sm={3}>
-      <Panel header={year}>
-        {months.reverse().map((m, i) => <Month year={year} month={m} onClick={onClick} key={i}/>)}
+      <Panel>
+        <Panel.Heading>{year}</Panel.Heading>
+        <Panel.Body>
+          {months.reverse().map((m, i) => <Month year={year} month={m} onClick={onClick} key={i}/>)}
+        </Panel.Body>
       </Panel>
     </Col>
   );
@@ -134,22 +137,27 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
         />
         <Grid fluid={true}>
           <Panel>
-            <RangeSlider
-              gamesFrom={fromTime}
-              gamesTo={toTime}
-              id={'rangeSlider'}
-              onChange={(f, t) => this.onRangeChange(f, t)}
-            />
+            <Panel.Body>
+              <RangeSlider
+                gamesFrom={fromTime}
+                gamesTo={toTime}
+                id={'rangeSlider'}
+                onChange={(f, t) => this.onRangeChange(f, t)}
+              />
+            </Panel.Body>
           </Panel>
           <Row>
             <Col lg={8}>
               <LadderPanel entries={entries} />
             </Col>
             <Col lg={4}>
-              <Panel header={'Monthly Rankings'}>
-                <Row>
-                  {yearPanels}
-                </Row>
+              <Panel>
+                <Panel.Heading>Monthly Rankings</Panel.Heading>
+                <Panel.Body>
+                  <Row>
+                    {yearPanels}
+                  </Row>
+                </Panel.Body>
               </Panel>
             </Col>
           </Row>

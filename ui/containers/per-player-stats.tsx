@@ -27,14 +27,18 @@ export default class PerPlayerStats extends Component<PerPlayerStatsProps, State
   render(): JSX.Element {
     const { playerName, base } = this.props;
     const { stats } = this.state;
+    // TODO No lazy load
     return (
-      <Panel header={<h2>Per-Player Stats</h2>}>
-        {!stats && 'Loading...'}
-        <LazyLoad onContentVisible={() => this.loadPerPlayerStats()}>
-          {stats
-          ? <PerPlayerStatsView playerName={playerName} base={base} stats={stats}/>
-          : <div/>}
-        </LazyLoad>
+      <Panel>
+        <Panel.Heading><h2>Per-Player Stats</h2></Panel.Heading>
+        <Panel.Body>
+          {!stats && 'Loading...'}
+          {/*<LazyLoad onContentVisible={() => this.loadPerPlayerStats()}>*/}
+            {stats
+            ? <PerPlayerStatsView playerName={playerName} base={base} stats={stats}/>
+            : <div/>}
+          {/*</LazyLoad>*/}
+        </Panel.Body>
       </Panel>
     );
   }

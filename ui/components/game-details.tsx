@@ -23,8 +23,11 @@ interface PunditryProps {
 function Punditry(props: PunditryProps): JSX.Element {
   const { facts } = props;
   return (
-    <Panel header={'Punditry'}>
-      {facts.map((fact, i) => <Fact fact={fact} key={`${i}`}/>)}
+    <Panel>
+      <Panel.Heading>Punditry</Panel.Heading>
+      <Panel.Body>
+        {facts.map((fact, i) => <Fact fact={fact} key={`${i}`}/>)}
+      </Panel.Body>
     </Panel>
   );
 }

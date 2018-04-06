@@ -27,17 +27,20 @@ export default function BeltSection(props: BeltSectionProps): JSX.Element {
   const { belt, base } = props;
   const { current, best } = belt;
   return (
-    <Panel header={'Belt'}>
-      <dl className='dl-horizontal'>
-        <StatListItem
-          name={'Current holder'}
-          value={<BeltSectionStat stat={current} base={base} />}
-        />
-        <StatListItem
-          name={'Longest holder'}
-          value={<BeltSectionStat stat={best} base={base} />}
-        />
-      </dl>
+    <Panel>
+      <Panel.Heading>Belt</Panel.Heading>
+      <Panel.Body>
+        <dl className='dl-horizontal'>
+          <StatListItem
+            name={'Current holder'}
+            value={<BeltSectionStat stat={current} base={base} />}
+          />
+          <StatListItem
+            name={'Longest holder'}
+            value={<BeltSectionStat stat={best} base={base} />}
+          />
+        </dl>
+      </Panel.Body>
     </Panel>
   );
 }

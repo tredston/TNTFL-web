@@ -39,8 +39,11 @@ export default class GamesPage extends Component<GamesPageProps, GamesPageState>
         />
         {games
           ? <Grid fluid={true}>
-              <Panel header={<h2>{title}</h2>}>
-                <GameList games={games.slice().reverse()} base={base}/>
+              <Panel>
+                <Panel.Heading><h2>{title}</h2></Panel.Heading>
+                <Panel.Body>
+                  <GameList games={games.slice().reverse()} base={base}/>
+                </Panel.Body>
               </Panel>
             </Grid>
           : 'Loading...'

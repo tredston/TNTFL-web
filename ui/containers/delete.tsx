@@ -52,17 +52,22 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
         {game ?
           <Grid fluid={true}>
             <Panel>
-              <Row>
-                <Col md={8} mdOffset={2}>
-                  <Panel header={'Delete Game'}>
-                    <p>Are you sure you wish to delete this game?</p>
-                    <a href='javascript:history.go(-1);' className='btn btn-default'>No, I'd rather not</a> <a className='btn btn-danger' href='?deleteConfirm=true'>Yes, delete it</a>
-                  </Panel>
-                </Col>
-              </Row>
-              <Row>
-                <GameSummary game={game} base={'../../'} numActivePlayers={numActivePlayers} />
-              </Row>
+              <Panel.Body>
+                <Row>
+                  <Col md={8} mdOffset={2}>
+                    <Panel>
+                      <Panel.Heading>Delete Game</Panel.Heading>
+                      <Panel.Body>
+                        <p>Are you sure you wish to delete this game?</p>
+                        <a href='javascript:history.go(-1);' className='btn btn-default'>No, I'd rather not</a> <a className='btn btn-danger' href='?deleteConfirm=true'>Yes, delete it</a>
+                      </Panel.Body>
+                    </Panel>
+                  </Col>
+                </Row>
+                <Row>
+                  <GameSummary game={game} base={'../../'} numActivePlayers={numActivePlayers} />
+                </Row>
+              </Panel.Body>
             </Panel>
           </Grid>
           : 'Loading...'

@@ -72,18 +72,24 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
             <Row>
               <Col md={8}>
                 <PlayerStats player={player} numActivePlayers={activePlayers || 0} games={games} base={base}/>
-                <Panel header={<h2>Skill Chart</h2>}>
-                  <PlayerSkillChart playerName={player.name} games={games} />
+                <Panel>
+                  <Panel.Heading><h2>Skill Chart</h2></Panel.Heading>
+                  <Panel.Body>
+                    <PlayerSkillChart playerName={player.name} games={games} />
+                  </Panel.Body>
                 </Panel>
                 <PerPlayerStats playerName={playerName} base={base}/>
               </Col>
               <Col md={4}>
                 <RecentGames games={mostRecentGames(games)} showAllGames={true} base={base}/>
-                <Panel header={<h2>Achievements</h2>}>
-                  {achievements
-                    ? <PlayerAchievements achievements={achievements} base={base}/>
-                    : 'Loading...'
-                  }
+                <Panel>
+                  <Panel.Heading><h2>Achievements</h2></Panel.Heading>
+                  <Panel.Body>
+                    {achievements
+                      ? <PlayerAchievements achievements={achievements} base={base}/>
+                      : 'Loading...'
+                    }
+                  </Panel.Body>
                 </Panel>
               </Col>
             </Row>

@@ -51,20 +51,29 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
                 <StatsSection totals={stats.totals}/>
               </Col>
               <Col md={4}>
-                <Panel header={'Most Significant Games'}>
-                  <GameList games={stats.records.mostSignificant} base={base} />
+                <Panel>
+                  <Panel.Heading>Most Significant Games</Panel.Heading>
+                  <Panel.Body>
+                    <GameList games={stats.records.mostSignificant} base={base} />
+                  </Panel.Body>
                 </Panel>
               </Col>
               <Col md={4}>
-                <Panel header={'Least Significant Games'}>
-                  <GameList games={stats.records.leastSignificant} base={base} />
+                <Panel>
+                  <Panel.Heading>Least Significant Games</Panel.Heading>
+                  <Panel.Body>
+                    <GameList games={stats.records.leastSignificant} base={base} />
+                  </Panel.Body>
                 </Panel>
               </Col>
             </Row>
             <Row>
               <Col md={12}>
-                <Panel header={'Games Per Week'}>
-                  <GamesPerWeek gamesPerWeek={stats.gamesPerWeek} />
+                <Panel>
+                  <Panel.Heading>Games Per Week</Panel.Heading>
+                  <Panel.Body>
+                    <GamesPerWeek gamesPerWeek={stats.gamesPerWeek} />
+                  </Panel.Body>
                 </Panel>
               </Col>
             </Row>

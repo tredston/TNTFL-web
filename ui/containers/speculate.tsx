@@ -73,6 +73,8 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     const isSpeculating = speculated && speculated.games.length > 0;
     const now = (new Date()).getTime() / 1000;
     const entries = speculated && speculated.entries;
+    // TODO ladder doesn't turn warn color
+    // TODO player links are wrong path
     return (
       <div>
         <NavigationBar
@@ -87,14 +89,17 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
               />
             </Col>
             <Col lg={4}>
-              <Panel header={'Speculative Games'}>
-                <AddGameForm
-                  base={base}
-                  isBusy={isBusy}
-                  onSubmit={(rp, rs, bp, bs) => this.onAddGame(rp, rs, bp, bs)}
-                />
-                {speculated && <GameList games={speculated.games.slice().reverse()} base={base}/>}
-                <a href='#' onClick={(e) => this.onReset(e)}>Reset speculation</a>
+              <Panel>
+                <Panel.Heading>Speculative Games</Panel.Heading>
+                <Panel.Body>
+                  <AddGameForm
+                    base={base}
+                    isBusy={isBusy}
+                    onSubmit={(rp, rs, bp, bs) => this.onAddGame(rp, rs, bp, bs)}
+                  />
+                  {speculated && <GameList games={speculated.games.slice().reverse()} base={base}/>}
+                  <a href='#' onClick={(e) => this.onReset(e)}>Reset speculation</a>
+                </Panel.Body>
               </Panel>
             </Col>
           </Row>
