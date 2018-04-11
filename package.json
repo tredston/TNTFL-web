@@ -48,7 +48,6 @@
     "react-container-dimensions": "^1.3.2",
     "react-dom": "16",
     "react-highcharts": "16",
-    "react-lazy-load": "3",
     "tntfl-api": "file:./swagger/tntfl-api/",
     "typescript": "2.8"
   },
