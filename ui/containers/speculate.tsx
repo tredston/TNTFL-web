@@ -71,7 +71,6 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     const { base } = this.props;
     const { speculated, isBusy } = this.state;
     const isSpeculating = speculated && speculated.games.length > 0;
-    const now = (new Date()).getTime() / 1000;
     const entries = speculated && speculated.entries;
     // TODO player links are wrong path
     return (
