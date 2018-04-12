@@ -20,11 +20,10 @@ interface StatBoxProps {
 }
 export function StatBox(props: StatBoxProps): JSX.Element {
   const { title, children, style, bodyStyle, classes } = props;
-  const mergedStyle = Object.assign({}, statStyle, style);
   return (
-    <Panel>
-      <Panel.Heading style={mergedStyle} className={classes}><h3>{title}</h3></Panel.Heading>
-      <Panel.Body style={bodyStyle}>{children}</Panel.Body>
+    <Panel className={classes}>
+      <Panel.Heading style={style}><h3>{title}</h3></Panel.Heading>
+      <Panel.Body style={{...statStyle, ...bodyStyle}}>{children}</Panel.Body>
     </Panel>
   );
 }
