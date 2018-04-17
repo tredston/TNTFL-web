@@ -48,12 +48,17 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
             <Col md={8}>
               <Stats player1={player1} player2={player2} games={games} base={base}/>
               <Panel>
-                <HeadToHeadChart player1={player1} player2={player2} games={games}/>
+                <Panel.Body>
+                  <HeadToHeadChart player1={player1} player2={player2} games={games}/>
+                </Panel.Body>
               </Panel>
             </Col>
             <Col md={4}>
-              <Panel header={<h2>Goal Distribution</h2>}>
-                <GoalDistributionChart player1={player1} player2={player2} games={games}/>
+              <Panel>
+                <Panel.Heading><h2>Goal Distribution</h2></Panel.Heading>
+                <Panel.Body>
+                  <GoalDistributionChart player1={player1} player2={player2} games={games}/>
+                </Panel.Body>
               </Panel>
               <RecentGames games={mostRecentGames(games)} showAllGames={true} base={base}/>
             </Col>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Game } from 'tntfl-api';
+import { ChartData } from 'chart.js';
 
 function inc(data: any, score: number) {
   if (data[score] === undefined) {
@@ -33,8 +34,8 @@ export default function GoalDistributionChart(props: GoalDistributionChartProps)
   const labels = [...Array(maxGoals + 1).keys()];
   const p1hist = labels.map((score) => p1data[score] || 0);
   const p2hist = labels.map((score) => -p2data[score] || 0);
-  const data = {
-    labels,
+  const data: ChartData = {
+    labels: labels.map(l => `${l}`),
     datasets: [
       {
         label: player1,

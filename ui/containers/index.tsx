@@ -45,7 +45,6 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   render() {
     const { base } = this.props;
     const { entries, recentGames } = this.state;
-    const now = (new Date()).getTime() / 1000;
     return (
       <div>
         <NavigationBar

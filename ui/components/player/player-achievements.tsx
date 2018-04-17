@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { CSSProperties } from 'react';
 import { Panel } from 'react-bootstrap';
 import { Achievement } from 'tntfl-api';
 
@@ -10,7 +11,7 @@ function PlayerAchievement(props: PlayerAchievementProps): JSX.Element {
   const { achievement, base } = props;
   const icon = 'achievement-' + achievement.name.replace(/ /g, '');
   const opacity = achievement.time ? 1 : 0.3;
-  const iconStyle = {width: 100, textAlign: 'center', opacity};
+  const iconStyle: CSSProperties = {width: 100, textAlign: 'center', opacity};
   return (
     <Panel title={`${achievement.name} - ${achievement.description}`}>
       {achievement.time

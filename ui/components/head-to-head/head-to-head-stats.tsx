@@ -47,24 +47,27 @@ export default function HeadToHeadStats(props: HeadToHeadStatsProps): JSX.Elemen
     {name: 'Goals', p1: p1goals, p2: p2goals},
   ];
   return (
-    <Panel header={<h2>{`${player1Name} vs ${player2Name} (${games.length} games)`}</h2>}>
-      <Table style={{textAlign: 'center'}}>
-        <tbody>
-          <PlayerRow
-            player1Name={player1Name}
-            player2Name={player2Name}
-            player1={player1}
-            player2={player2}
-            numActivePlayers={numActivePlayers}
-            base={base}
-          />
-          <PointSwingRow p1swing={p1swing}/>
-          {rows.map(({name, p1, p2}, i) =>
-            <StatRow name={name} redValue={p1} blueValue={p2} redAhead={p1 > p2} blueAhead={p2 > p1} key={`${i}`}/>,
-          )}
-          <PredictRow base={base} player1={player1} player2={player2}/>
-        </tbody>
-      </Table>
+    <Panel>
+      <Panel.Heading><h2>{`${player1Name} vs ${player2Name} (${games.length} games)`}</h2></Panel.Heading>
+      <Panel.Body>
+        <Table style={{textAlign: 'center'}}>
+          <tbody>
+            <PlayerRow
+              player1Name={player1Name}
+              player2Name={player2Name}
+              player1={player1}
+              player2={player2}
+              numActivePlayers={numActivePlayers}
+              base={base}
+            />
+            <PointSwingRow p1swing={p1swing}/>
+            {rows.map(({name, p1, p2}, i) =>
+              <StatRow name={name} redValue={p1} blueValue={p2} redAhead={p1 > p2} blueAhead={p2 > p1} key={`${i}`}/>,
+            )}
+            <PredictRow base={base} player1={player1} player2={player2}/>
+          </tbody>
+        </Table>
+      </Panel.Body>
     </Panel>
   );
 }

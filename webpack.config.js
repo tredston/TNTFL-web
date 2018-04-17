@@ -1,5 +1,5 @@
-var path = require("path");
-var webpack = require('webpack');
+const path = require("path");
+const webpack = require('webpack');
 const awesomeTypescriptLoader = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const packageJson = require('./package.json');
@@ -11,7 +11,7 @@ const pages = [
     name: 'index',
     src: './ui/containers/index.tsx',
     base: '',
-    links: ['<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/2.5.5/react-bootstrap-table.min.css" integrity="sha384-VIXf7ijRNoaapcQEvARxuDSoSqHwZOTEXGpFw8r1dZ6PC0s3vOFhYUrOHO7SQRUl" crossorigin="anonymous">'],
+    links: ['<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/4.3.1/react-bootstrap-table.min.css" integrity="sha384-xBFyNro8lXyoTtvZuqAaTXKhAZ0lyhlJexuTLQJj+PhHgLyqrMQZUQXquka9A+qk" crossorigin="anonymous">'],
   },
   {
     name: 'game',
@@ -29,7 +29,7 @@ const pages = [
     name: 'player',
     src: './ui/containers/player.tsx',
     base: '../../',
-    links: ['<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/2.5.5/react-bootstrap-table.min.css" integrity="sha384-VIXf7ijRNoaapcQEvARxuDSoSqHwZOTEXGpFw8r1dZ6PC0s3vOFhYUrOHO7SQRUl" crossorigin="anonymous">'],
+    links: ['<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/4.3.1/react-bootstrap-table.min.css" integrity="sha384-xBFyNro8lXyoTtvZuqAaTXKhAZ0lyhlJexuTLQJj+PhHgLyqrMQZUQXquka9A+qk" crossorigin="anonymous">'],
   },
   {
     name: 'playergames',
@@ -54,7 +54,7 @@ const pages = [
     src: './ui/containers/historic.tsx',
     base: '',
     links: [
-      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/2.5.5/react-bootstrap-table.min.css" integrity="sha384-VIXf7ijRNoaapcQEvARxuDSoSqHwZOTEXGpFw8r1dZ6PC0s3vOFhYUrOHO7SQRUl" crossorigin="anonymous">',
+      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/4.3.1/react-bootstrap-table.min.css" integrity="sha384-xBFyNro8lXyoTtvZuqAaTXKhAZ0lyhlJexuTLQJj+PhHgLyqrMQZUQXquka9A+qk" crossorigin="anonymous">',
       '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.1.5/css/ion.rangeSlider.min.css" integrity="sha384-Wq9DAJUP5kU9Dk244QvEHs3ZXLGzxXxwU338D+D+czP5fUSWkRoF6VhjUPnMk6if" crossorigin="anonymous">',
       '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.1.5/css/ion.rangeSlider.skinModern.min.css" integrity="sha384-7BZOVCgNHI0de9biH6OtG+p+ZGvcyLZTF2OyorTMm705uvbI1iWwxF2qUvGFrVNY" crossorigin="anonymous">',
     ],
@@ -63,7 +63,7 @@ const pages = [
     name: 'speculate',
     src: './ui/containers/speculate.tsx',
     base: '../',
-    links: ['<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/2.5.5/react-bootstrap-table.min.css" integrity="sha384-VIXf7ijRNoaapcQEvARxuDSoSqHwZOTEXGpFw8r1dZ6PC0s3vOFhYUrOHO7SQRUl" crossorigin="anonymous">'],
+    links: ['<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/4.3.1/react-bootstrap-table.min.css" integrity="sha384-xBFyNro8lXyoTtvZuqAaTXKhAZ0lyhlJexuTLQJj+PhHgLyqrMQZUQXquka9A+qk" crossorigin="anonymous">'],
   },
   {
     name: 'stats',
@@ -74,6 +74,7 @@ const pages = [
 ];
 
 module.exports = {
+  mode: isProd ? 'production' : 'development',
   entry: pages.reduce((acc,cur) => {
     acc[cur.name] = ['babel-polyfill', cur.src];
     return acc;
@@ -117,7 +118,6 @@ module.exports = {
 };
 
 function* plugins() {
-  yield new webpack.optimize.CommonsChunkPlugin('commons-chunk');
   yield new webpack.optimize.ModuleConcatenationPlugin();
   for (var page of pages) {
     const links = page.links;
@@ -137,7 +137,6 @@ function* plugins() {
   }
   if (isProd) {
     yield new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } });
-    yield new webpack.optimize.UglifyJsPlugin();
   }
   else {
     yield new awesomeTypescriptLoader.CheckerPlugin();

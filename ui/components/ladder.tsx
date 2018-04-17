@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { CSSProperties } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { TrendItem, LadderEntry } from 'tntfl-api';
+import { TrendItem, LadderEntry, Player } from 'tntfl-api';
 
 import GamesChart from './games-chart';
 import PlayerName from './player-name';
@@ -32,30 +33,33 @@ function TrendChart(trend: TrendItem[]): JSX.Element {
 interface LadderProps {
   entries: LadderEntry[];
   showInactive: boolean;
+  style?: CSSProperties;
 }
 export default function Ladder(props: LadderProps): JSX.Element {
   let { entries } = props;
-  const { showInactive } = props;
+  const { showInactive, style } = props;
   if (!showInactive) {
     entries = entries.filter(e => e.player && e.player.rank >= 1);
   }
-  const flattened = entries.map(e => {
-    return e.player && {
-      rank: e.player.rank,
-      name: e.player.name,
-      games: e.player.total.games,
-      wins: e.player.total.wins,
-      draws: e.player.total.games - e.player.total.wins - e.player.total.losses,
-      losses: e.player.total.losses,
-      for: e.player.total.for,
-      against: e.player.total.against,
-      totals: e.player.total,
-      skill: e.player.skill.toFixed(3),
-      trend: e.trend,
-      activity: e.player.activity,
-    };
-  });
+  const ladderEntries = entries
+    .filter(e => e.player !== undefined)
+    .map(e => ({player: e.player as Player, trend: e.trend as TrendItem[]}));
+  const flattened = ladderEntries.map(e => ({
+    rank: e.player.rank,
+    name: e.player.name,
+    games: e.player.total.games,
+    wins: e.player.total.wins,
+    draws: e.player.total.games - e.player.total.wins - e.player.total.losses,
+    losses: e.player.total.losses,
+    for: e.player.total.for,
+    against: e.player.total.against,
+    totals: e.player.total,
+    skill: e.player.skill.toFixed(3),
+    trend: e.trend,
+    activity: e.player.activity,
+  }));
   const numActivePlayers = entries.filter((e) => e.player && e.player.rank >= 1).length;
+  // TODO style
   return (
     <BootstrapTable
       data={flattened}
@@ -63,6 +67,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
       condensed={true}
       bodyStyle={{fontSize: 20}}
       trClassName={(row) => getNearlyInactiveClass(row.activity)}
+      containerStyle={style}
     >
       <TableHeaderColumn
         dataField={'rank'}
