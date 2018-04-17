@@ -34,10 +34,11 @@ interface LadderProps {
   entries: LadderEntry[];
   showInactive: boolean;
   style?: CSSProperties;
+  base: string;
 }
 export default function Ladder(props: LadderProps): JSX.Element {
   let { entries } = props;
-  const { showInactive, style } = props;
+  const { showInactive, style, base } = props;
   if (!showInactive) {
     entries = entries.filter(e => e.player && e.player.rank >= 1);
   }
@@ -76,7 +77,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
         columnClassName={(r) => getLadderLeagueClass(r, numActivePlayers)}
         dataFormat={(r) => r !== -1 ? r : '-'}
       >Pos</TableHeaderColumn>
-      <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerName base={''} name={n}/>}>Player</TableHeaderColumn>
+      <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerName base={base} name={n}/>}>Player</TableHeaderColumn>
       <TableHeaderColumn dataField={'totals'} dataFormat={(p) => GamesChart(p)}>Games</TableHeaderColumn>
       <TableHeaderColumn dataField={'games'} dataSort={true} dataAlign={'center'}>Games</TableHeaderColumn>
       <TableHeaderColumn dataField={'wins'} dataSort={true} dataAlign={'center'}>Wins</TableHeaderColumn>

@@ -72,7 +72,6 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     const { speculated, isBusy } = this.state;
     const isSpeculating = speculated && speculated.games.length > 0;
     const entries = speculated && speculated.entries;
-    // TODO player links are wrong path
     return (
       <div>
         <NavigationBar
@@ -84,6 +83,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
               <LadderPanel
                 entries={entries}
                 speculative={isSpeculating}
+                base={base}
               />
             </Col>
             <Col lg={4}>
