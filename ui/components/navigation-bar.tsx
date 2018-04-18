@@ -36,7 +36,6 @@ export default class NavigationBar extends Component<NavigationBarProps, State> 
         </Nav>
         <Nav pullRight>
           <AddGameForm
-            base={base}
             isBusy={isBusy}
             onSubmit={(r, rs, b, bs) => this.onAddGame(r, rs, b, bs)}
           />

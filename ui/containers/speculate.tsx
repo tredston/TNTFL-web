@@ -93,7 +93,6 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
                 <Panel.Heading>Speculative Games</Panel.Heading>
                 <Panel.Body>
                   <AddGameForm
-                    base={base}
                     isBusy={isBusy}
                     onSubmit={(rp, rs, bp, bs) => this.onAddGame(rp, rs, bp, bs)}
                   />
