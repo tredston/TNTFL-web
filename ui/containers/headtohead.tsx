@@ -3,6 +3,7 @@ import { Component, Props } from 'react';
 import { Panel, Grid, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { GamesApi, Game } from 'tntfl-api';
+import '../styles/style.less';
 
 import HeadToHeadChart from '../components/head-to-head/head-to-head-chart';
 import Stats from './head-to-head-stats';

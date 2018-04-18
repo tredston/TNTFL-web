@@ -4,6 +4,7 @@ import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { GamesApi, PlayersApi, Game } from 'tntfl-api';
 import 'whatwg-fetch';
+import '../styles/style.less';
 
 import GameSummary from '../components/game-summary';
 import NavigationBar from '../components/navigation-bar';

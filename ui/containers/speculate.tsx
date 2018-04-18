@@ -4,6 +4,7 @@ import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import {LadderApi, Speculated, Game} from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
+import '../styles/style.less';
 
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';

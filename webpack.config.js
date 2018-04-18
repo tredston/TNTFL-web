@@ -74,7 +74,7 @@ module.exports = {
     filename: '[name]-bundle.js'
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.css'],
+    extensions: ['.ts', '.tsx', '.js', '.less', '.css'],
   },
   module: {
     rules: [
@@ -96,6 +96,7 @@ module.exports = {
         use: { loader: 'awesome-typescript-loader', options: { useCache: true, useBabel: true } },
       },
       {test: /\.css$/, loader: extractCss.extract({fallback: 'style-loader', use: 'css-loader?minimize'})},
+      {test: /\.less$/, loader: extractCss.extract({fallback: 'style-loader', use: 'css-loader?minimize!less-loader'})},
       {test: /\.(jpg|png|gif)$/, loader: 'file-loader', options: { publicPath: './' }},
     ],
   },

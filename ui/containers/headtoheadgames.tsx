@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import '../styles/style.less';
 
 import GamesPage from './games-page';
 import { getParameters } from '../utils/utils';

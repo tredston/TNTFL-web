@@ -7,6 +7,7 @@ import { LadderApi, LadderEntry } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
 import 'ion-rangeslider/css/ion.rangeSlider.css';
 import 'ion-rangeslider/css/ion.rangeSlider.skinModern.css';
+import '../styles/style.less';
 
 import RangeSlider from '../components/range-slider';
 import NavigationBar from '../components/navigation-bar';

@@ -4,6 +4,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { LadderApi, GamesApi, LadderEntry, Game } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
+import '../styles/style.less';
 
 import RecentGames from '../components/recent-game-list';
 import NavigationBar from '../components/navigation-bar';
