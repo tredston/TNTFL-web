@@ -3,10 +3,11 @@ import { Component, Props } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { LadderApi, GamesApi, LadderEntry, Game } from 'tntfl-api';
+import 'react-bootstrap-table/css/react-bootstrap-table.css';
+import '../styles/style.less';
 
 import RecentGames from '../components/recent-game-list';
 import NavigationBar from '../components/navigation-bar';
-
 import LadderPanel from '../components/ladder-panel';
 
 interface IndexPageProps extends Props<IndexPage> {
@@ -67,7 +68,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
 
 ReactDOM.render(
   <IndexPage
-    base={'./'}
+    base={__tntfl_base_path__}
   />,
   document.getElementById('entry'),
 );

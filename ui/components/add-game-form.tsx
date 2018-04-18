@@ -3,6 +3,7 @@ import { Component, Props, CSSProperties, FormEvent } from 'react';
 import { Form, FormGroup, FormControl, Button } from 'react-bootstrap';
 
 import * as Palette from '../palette';
+import * as spinner from '../assets/spinner.gif';
 
 interface ScoreProps {
   name: string;
@@ -27,7 +28,6 @@ function Score(props: ScoreProps): JSX.Element {
 }
 
 export interface AddGameFormProps extends Props<AddGameForm> {
-  base: string;
   isBusy: boolean;
   onSubmit: (redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) => void;
 }
@@ -73,7 +73,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
       scoreValid(+redScore) && scoreValid(+blueScore);
   }
   render() {
-    const { base, isBusy } = this.props;
+    const { isBusy } = this.props;
     const playerWidth = '6em';
     return (
       <Form inline style={{padding: 8}}>
@@ -104,7 +104,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             style={{backgroundColor: Palette.blueFade, width: playerWidth, textAlign: 'center'}}
           /> <Button type='submit' onClick={e => this.handleSubmit(e)} disabled={!this.isValid() && !isBusy}>
             {!isBusy && <span>Add game <span className='glyphicon glyphicon-triangle-right'/></span>}
-            {isBusy && <span><img src={`${base}img/spinner.gif`}/></span>}
+            {isBusy && <span><img src={spinner}/></span>}
           </Button>
         </FormGroup>
       </Form>

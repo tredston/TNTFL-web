@@ -3,6 +3,8 @@ import { Component, Props } from 'react';
 import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { Game, Achievement, Player } from 'tntfl-api';
+import 'react-bootstrap-table/css/react-bootstrap-table.css';
+import '../styles/style.less';
 
 import PerPlayerStats from './per-player-stats';
 import PlayerAchievements from '../components/player/player-achievements';
@@ -103,7 +105,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
 
 ReactDOM.render(
   <PlayerPage
-    base={'../../'}
+    base={__tntfl_base_path__}
     playerName={getParameters(1)[0]}
   />,
   document.getElementById('entry'),

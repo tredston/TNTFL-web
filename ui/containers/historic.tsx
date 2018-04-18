@@ -4,10 +4,13 @@ import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import * as QueryString from 'query-string';
 import { LadderApi, LadderEntry } from 'tntfl-api';
+import 'react-bootstrap-table/css/react-bootstrap-table.css';
+import 'ion-rangeslider/css/ion.rangeSlider.css';
+import 'ion-rangeslider/css/ion.rangeSlider.skinModern.css';
+import '../styles/style.less';
 
 import RangeSlider from '../components/range-slider';
 import NavigationBar from '../components/navigation-bar';
-
 import LadderPanel from '../components/ladder-panel';
 import { getMonthName } from '../utils/utils';
 
@@ -177,7 +180,7 @@ function getParameters(): [number | undefined, number | undefined] {
 
 ReactDOM.render(
   <HistoricPage
-    base={'./'}
+    base={__tntfl_base_path__}
     gamesFrom={getParameters()[0]}
     gamesTo={getParameters()[1]}
   />,

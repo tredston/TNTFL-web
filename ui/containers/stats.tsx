@@ -3,6 +3,7 @@ import { Component, Props } from 'react';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { Stats, StatsApi } from 'tntfl-api';
+import '../styles/style.less';
 
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
@@ -92,7 +93,7 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
 
 ReactDOM.render(
   <StatsPage
-    base={'../'}
+    base={__tntfl_base_path__}
   />,
   document.getElementById('entry'),
 );

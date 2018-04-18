@@ -3,6 +3,8 @@ import { Component, Props } from 'react';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import {LadderApi, Speculated, Game} from 'tntfl-api';
+import 'react-bootstrap-table/css/react-bootstrap-table.css';
+import '../styles/style.less';
 
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
@@ -91,7 +93,6 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
                 <Panel.Heading>Speculative Games</Panel.Heading>
                 <Panel.Body>
                   <AddGameForm
-                    base={base}
                     isBusy={isBusy}
                     onSubmit={(rp, rs, bp, bs) => this.onAddGame(rp, rs, bp, bs)}
                   />
@@ -109,7 +110,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
 
 ReactDOM.render(
   <SpeculatePage
-    base={'../'}
+    base={__tntfl_base_path__}
   />,
   document.getElementById('entry'),
 );
