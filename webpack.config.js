@@ -10,17 +10,17 @@ const isProd = process.env.NODE_ENV === 'production';
 const extractCss = new ExtractTextPlugin({ filename: `[name].css?v=${packageJson.version}`, allChunks: true });
 
 function getPages() {
-  const thing = {
+  const pageDepths = {
     0: ['index', 'historic'],
     1: ['speculate', 'stats'],
     2: ['game', 'delete', 'player'],
     3: ['headtohead', 'playergames'],
     4: ['headtoheadgames'],
   };
-  const expanded = Object.keys(thing).map(k => thing[k].map(p => ({
+  const expanded = Object.keys(pageDepths).map(k => pageDepths[k].map(p => ({
     name: p,
-    src: `./ui/containers/${p}.tsx`,
-    base: '../'.repeat(k),
+    src: [`./ui/path/path${k}.ts`, `./ui/containers/${p}.tsx`],
+    base: `${'../'.repeat(k)}dist/`,
   })));
   return [].concat.apply([], expanded);
 }
@@ -29,13 +29,12 @@ const pages = getPages();
 module.exports = {
   mode: isProd ? 'production' : 'development',
   entry: pages.reduce((acc,cur) => {
-    acc[cur.name] = ['babel-polyfill', cur.src];
+    acc[cur.name] = ['babel-polyfill', ...cur.src];
     return acc;
   }, {}),
   output: {
-    publicPath: 'dist/',
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name]-bundle.js'
+    filename: `[name]-bundle?v=${packageJson.version}.js`,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.less', '.css'],
