@@ -8,6 +8,11 @@
     <% for (var link of htmlWebpackPlugin.options.links) { %>
       <%= link %>
     <% } %>
+    <% for (var key of Object.keys(htmlWebpackPlugin.files.chunks)) { %>
+      <% if (htmlWebpackPlugin.files.chunks[key].css !== undefined && htmlWebpackPlugin.files.chunks[key].css.length > 0) { %>
+        <link href="<%= htmlWebpackPlugin.options.base%><%= htmlWebpackPlugin.files.chunks[key].css%>" rel="stylesheet" type="text/css">
+      <% } %>
+    <% } %>
   </head>
   <body>
     <div id="entry">Javascript disabled</div>

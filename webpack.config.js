@@ -2,74 +2,63 @@ const path = require("path");
 const webpack = require('webpack');
 const awesomeTypescriptLoader = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const packageJson = require('./package.json');
 
 const isProd = process.env.NODE_ENV === 'production';
+
+const extractCss = new ExtractTextPlugin({ filename: `[name].css?v=${packageJson.version}`, allChunks: true });
 
 const pages = [
   {
     name: 'index',
     src: './ui/containers/index.tsx',
     base: '',
-    links: ['<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/4.3.1/react-bootstrap-table.min.css" integrity="sha384-xBFyNro8lXyoTtvZuqAaTXKhAZ0lyhlJexuTLQJj+PhHgLyqrMQZUQXquka9A+qk" crossorigin="anonymous">'],
   },
   {
     name: 'game',
     src: './ui/containers/game.tsx',
     base: '../../',
-    links: [],
   },
   {
     name: 'delete',
     src: './ui/containers/delete.tsx',
     base: '../../',
-    links: [],
   },
   {
     name: 'player',
     src: './ui/containers/player.tsx',
     base: '../../',
-    links: ['<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/4.3.1/react-bootstrap-table.min.css" integrity="sha384-xBFyNro8lXyoTtvZuqAaTXKhAZ0lyhlJexuTLQJj+PhHgLyqrMQZUQXquka9A+qk" crossorigin="anonymous">'],
   },
   {
     name: 'playergames',
     src: './ui/containers/playergames.tsx',
     base: '../../../',
-    links: [],
   },
   {
     name: 'headtohead',
     src: './ui/containers/headtohead.tsx',
     base: '../../../',
-    links: [],
   },
   {
     name: 'headtoheadgames',
     src: './ui/containers/headtoheadgames.tsx',
     base: '../../../../',
-    links: [],
   },
   {
     name: 'historic',
     src: './ui/containers/historic.tsx',
     base: '',
-    links: [
-      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/4.3.1/react-bootstrap-table.min.css" integrity="sha384-xBFyNro8lXyoTtvZuqAaTXKhAZ0lyhlJexuTLQJj+PhHgLyqrMQZUQXquka9A+qk" crossorigin="anonymous">',
-      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.1.5/css/ion.rangeSlider.min.css" integrity="sha384-Wq9DAJUP5kU9Dk244QvEHs3ZXLGzxXxwU338D+D+czP5fUSWkRoF6VhjUPnMk6if" crossorigin="anonymous">',
-      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.1.5/css/ion.rangeSlider.skinModern.min.css" integrity="sha384-7BZOVCgNHI0de9biH6OtG+p+ZGvcyLZTF2OyorTMm705uvbI1iWwxF2qUvGFrVNY" crossorigin="anonymous">',
-    ],
   },
   {
     name: 'speculate',
     src: './ui/containers/speculate.tsx',
     base: '../',
-    links: ['<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/4.3.1/react-bootstrap-table.min.css" integrity="sha384-xBFyNro8lXyoTtvZuqAaTXKhAZ0lyhlJexuTLQJj+PhHgLyqrMQZUQXquka9A+qk" crossorigin="anonymous">'],
   },
   {
     name: 'stats',
     src: './ui/containers/stats.tsx',
     base: '../',
-    links: [],
   },
 ];
 
@@ -106,6 +95,8 @@ module.exports = {
         ],
         use: { loader: 'awesome-typescript-loader', options: { useCache: true, useBabel: true } },
       },
+      {test: /\.css$/, loader: extractCss.extract({fallback: 'style-loader', use: 'css-loader?minimize'})},
+      {test: /\.(jpg|png|gif)$/, loader: 'file-loader', options: { publicPath: './' }},
     ],
   },
   node: {
@@ -119,8 +110,9 @@ module.exports = {
 
 function* plugins() {
   yield new webpack.optimize.ModuleConcatenationPlugin();
+  yield extractCss;
   for (var page of pages) {
-    const links = page.links;
+    const links = [];
     if ((new Date()).getMonth() === 11) {
       links.push(`<link href="${page.base}css/christmas.css" rel="stylesheet">`);
     }
