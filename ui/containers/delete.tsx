@@ -80,7 +80,7 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
 
 ReactDOM.render(
     <DeletePage
-      base={'../../'}
+      base={__tntfl_base_path__}
       gameId={getParameters(2)[0]}
     />,
     document.getElementById('entry'),

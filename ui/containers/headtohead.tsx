@@ -73,7 +73,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
 
 ReactDOM.render(
   <HeadToHeadPage
-    base={'../../../'}
+    base={__tntfl_base_path__}
     player1={getParameters(2)[0]}
     player2={getParameters(2)[1]}
   />,

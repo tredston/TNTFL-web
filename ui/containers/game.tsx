@@ -79,7 +79,7 @@ class GamePage extends Component<GamePageProps, GamePageState> {
 
 ReactDOM.render(
     <GamePage
-      base={'../../'}
+      base={__tntfl_base_path__}
       gameId={getParameters(1)[0]}
     />,
     document.getElementById('entry'),

@@ -180,7 +180,7 @@ function getParameters(): [number | undefined, number | undefined] {
 
 ReactDOM.render(
   <HistoricPage
-    base={'./'}
+    base={__tntfl_base_path__}
     gamesFrom={getParameters()[0]}
     gamesTo={getParameters()[1]}
   />,

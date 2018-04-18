@@ -68,7 +68,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
 
 ReactDOM.render(
   <IndexPage
-    base={'./'}
+    base={__tntfl_base_path__}
   />,
   document.getElementById('entry'),
 );

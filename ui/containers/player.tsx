@@ -105,7 +105,7 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
 
 ReactDOM.render(
   <PlayerPage
-    base={'../../'}
+    base={__tntfl_base_path__}
     playerName={getParameters(1)[0]}
   />,
   document.getElementById('entry'),

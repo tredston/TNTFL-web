@@ -93,7 +93,7 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
 
 ReactDOM.render(
   <StatsPage
-    base={'../'}
+    base={__tntfl_base_path__}
   />,
   document.getElementById('entry'),
 );

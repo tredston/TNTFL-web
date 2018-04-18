@@ -110,7 +110,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
 
 ReactDOM.render(
   <SpeculatePage
-    base={'../'}
+    base={__tntfl_base_path__}
   />,
   document.getElementById('entry'),
 );
