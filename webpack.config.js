@@ -113,15 +113,10 @@ function* plugins() {
   yield new webpack.optimize.ModuleConcatenationPlugin();
   yield extractCss;
   for (var page of pages) {
-    const links = [];
-    if ((new Date()).getMonth() === 11) {
-      links.push(`<link href="${page.base}css/christmas.css" rel="stylesheet">`);
-    }
     yield new HtmlWebpackPlugin({
       template: 'templates/index.ejs',
       title: '',
       base: page.base,
-      links,
       appVersion: `${packageJson.version}`,
       inject: false,
       chunks: ['commons-chunk', page.name],

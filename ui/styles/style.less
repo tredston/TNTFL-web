@@ -1,3 +1,8 @@
+.christmas (@thisMonth) when (@thisMonth = 11) {
+  @import './christmas';
+}
+.christmas(`new Date().getMonth()`);
+
 .panel-heading > h1 {
   font-weight: bold;
   text-align: center;
