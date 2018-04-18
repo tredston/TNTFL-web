@@ -61,6 +61,9 @@ module.exports = {
       {test: /\.css$/, loader: extractCss.extract({fallback: 'style-loader', use: 'css-loader?minimize'})},
       {test: /\.less$/, loader: extractCss.extract({fallback: 'style-loader', use: 'css-loader?minimize!less-loader'})},
       {test: /\.(jpg|png|gif)$/, loader: 'file-loader', options: { name: '[name].[ext]', useRelativePath: true }},
+      {test: /\.svg$/, loader: 'file-loader', options: { name: '[name].[ext]'}},
+      {test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, loader: 'file-loader', options: { name: '[name].[ext]'}},
+      {test: /\.(ttf|eot)(\?v=[0-9].[0-9].[0-9])?$/, loader: 'file-loader', options: { name: '[name].[ext]'}},
     ],
   },
   node: {

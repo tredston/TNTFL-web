@@ -1732,6 +1732,10 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
+bootstrap@3:
+  version "3.3.7"
+  resolved "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.7.tgz#5a389394549f23330875a3b150656574f8a9eb71"
+
 bowser@^1.0.0, bowser@^1.6.0:
   version "1.7.2"
   resolved "https://registry.npmjs.org/bowser/-/bowser-1.7.2.tgz#b94cc6925ba6b5e07c421a58e601ce4611264572"
