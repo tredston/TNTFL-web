@@ -43,14 +43,11 @@ export default class GameList extends Component<GameListProps, State> {
     this.loadPunditry();
     this.loadActivePlayers();
   }
-  shouldComponentUpdate(nextProps: GameListProps, nextState: State) {
-    return this.props.games !== nextProps.games ||
-      !isEqual(this.state.activePlayers, nextState.activePlayers) ||
-      !isEqual(this.state.punditry, nextState.punditry);
-  }
-  componentDidUpdate() {
-    this.loadPunditry();
-    this.loadActivePlayers();
+  componentDidUpdate(prevProps: GameListProps, prevState: State) {
+    if (this.props.games !== prevProps.games) {
+      this.loadPunditry();
+      this.loadActivePlayers();
+    }
   }
   render(): JSX.Element {
     const { games, base } = this.props;
