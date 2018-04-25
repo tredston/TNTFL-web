@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { GamesApi } from 'tntfl-api';
-import 'whatwg-fetch';
 
 import AddGameForm from './add-game-form';
 

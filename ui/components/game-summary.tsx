@@ -106,16 +106,16 @@ export default function GameSummary(props: GameSummaryProps): JSX.Element {
             <td style={{width: '20%'}} className={stripe(blueStripe)}> <PlayerName name={game.blue.name} base={base} colour={blueStripe ? 'yellow-stripe' : 'blue-player'} /> </td>
           </tr>
           <tr className={'game-changes'}>
-            <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.red.skillChange} colour='skill-change-red' /> </td>
-            <td style={{width: '10%'}} className={'rank-change red'}> <RankChange rankChange={game.red.rankChange} colour='skill-change-red' /> </td>
+            <td style={{width: '20%'}}> <SkillChange skillChange={game.red.skillChange} colour='red' /> </td>
+            <td style={{width: '10%'}}> <RankChange rankChange={game.red.rankChange} colour='red' /> </td>
             <td style={{width: '10%'}}/>
             <td style={{width: '20%', textAlign: 'center'}}>
               <GameTime date={game.date} base={base} />
               {punditry && punditry.length > 0 && <img src={headset} style={{marginLeft: 2}} />}
             </td>
             <td style={{width: '10%'}}/>
-            <td style={{width: '10%'}} className={'rank-change blue'}> <RankChange rankChange={game.blue.rankChange} colour='skill-change-blue' /> </td>
-            <td style={{width: '20%'}} className={'score-change red'}> <SkillChange skillChange={game.blue.skillChange} colour='skill-change-blue' /> </td>
+            <td style={{width: '10%'}}> <RankChange rankChange={game.blue.rankChange} colour='blue' /> </td>
+            <td style={{width: '20%'}}> <SkillChange skillChange={game.blue.skillChange} colour='blue' /> </td>
           </tr>
         </tbody>
       </Table>

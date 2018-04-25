@@ -4,6 +4,7 @@ import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { Game, Achievement, Player } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
+import '../styles/achievement.less';
 import '../styles/style.less';
 
 import PerPlayerStats from './per-player-stats';

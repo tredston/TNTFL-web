@@ -58,8 +58,14 @@ module.exports = {
         ],
         use: { loader: 'awesome-typescript-loader', options: { useCache: true, useBabel: true } },
       },
-      {test: /\.css$/, loader: extractCss.extract({fallback: 'style-loader', use: 'css-loader?minimize'})},
-      {test: /\.less$/, loader: extractCss.extract({fallback: 'style-loader', use: 'css-loader?minimize!less-loader'})},
+      {
+        test: /\.css$/,
+        loader: extractCss.extract({fallback: 'style-loader', use: {loader:'css-loader', options: {minimize: isProd}}})
+      },
+      {
+        test: /\.less$/,
+        loader: extractCss.extract({fallback: 'style-loader', use: [{loader:'css-loader', options: {minimize: isProd}}, {loader: 'less-loader'}]})
+      },
       {test: /\.(jpg|png|gif)$/, loader: 'file-loader', options: { name: '[name].[ext]', useRelativePath: true }},
       {test: /\.svg$/, loader: 'file-loader', options: { name: '[name].[ext]'}},
       {test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, loader: 'file-loader', options: { name: '[name].[ext]'}},
@@ -73,6 +79,17 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [...plugins()],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: "commons",
+          chunks: "all",
+          minChunks: 2
+        }
+      }
+    }
+  }
 };
 
 function* plugins() {
@@ -85,7 +102,7 @@ function* plugins() {
       base: page.base,
       appVersion: `${packageJson.version}`,
       inject: false,
-      chunks: ['commons-chunk', page.name],
+      chunks: ['commons', page.name],
       filename: `./${page.name}.html`,
     });
   }

@@ -5,24 +5,26 @@
 }
 .christmas(`new Date().getMonth()`);
 
-.panel-heading > h1 {
-  font-weight: bold;
-  text-align: center;
-  font-size: 22pt;
-  padding: 5px 0;
-  margin: 0;
-}
+.panel-heading {
+  > h1 {
+    font-weight: bold;
+    text-align: center;
+    font-size: 22pt;
+    padding: 5px 0;
+    margin: 0;
+  }
 
-.panel-heading > h2 {
-  font-weight: bold;
-  text-align: center;
-  font-size: 18pt;
-  margin: 0;
-}
+  > h2 {
+    font-weight: bold;
+    text-align: center;
+    font-size: 18pt;
+    margin: 0;
+  }
 
-.panel-heading > h3 {
-  font-size: 12pt;
-  margin: 0;
+  > h3 {
+    font-size: 12pt;
+    margin: 0;
+  }
 }
 
 .panel-body {
@@ -36,93 +38,83 @@
   color: white;
   width: 3em;
   background-color: #2A5B8D !important;
+
+  &.inactive {
+    background-color: #C0C0C0 !important;
+  }
+
+  &.ladder-first {
+    background-color: #EEC900 !important;
+  }
+
+  &.ladder-silver {
+    background-color: #BCC6CC !important;
+  }
+
+  &.ladder-bronze {
+    background-color: #CD7F32 !important;
+  }
 }
 
-.ladder-position.inactive {
-  background-color: #C0C0C0 !important;
+tr.nearly-inactive {
+  &-1 {
+    opacity: 0.8;
+    font-style: italic;
+  }
+
+  &-2 {
+    opacity: 0.65;
+    font-style: italic;
+  }
+
+  &-3 {
+    opacity: 0.5;
+    font-style: italic;
+  }
+
+  &-4 {
+    opacity: 0.45;
+    font-style: italic;
+  }
+
+  &-5 {
+    opacity: 0.3;
+    font-style: italic;
+  }
+
+  &-1:hover,
+  &-2:hover,
+  &-3:hover,
+  &-4:hover,
+  &-5:hover {
+    opacity: 1;
+  }
 }
 
-.ladder-position.ladder-first {
-  background-color:#EEC900 !important;
-}
-
-.ladder-position.ladder-silver {
-  background-color:#BCC6CC !important;
-}
-
-.ladder-position.ladder-bronze {
-  background-color:#CD7F32 !important;
-}
-
-tr.nearly-inactive-1 {
-  opacity: 0.8;
-  font-style: italic;
-}
-
-tr.nearly-inactive-2 {
-  opacity: 0.65;
-  font-style: italic;
-}
-
-tr.nearly-inactive-3 {
-  opacity: 0.5;
-  font-style: italic;
-}
-
-tr.nearly-inactive-4 {
-  opacity: 0.45;
-  font-style: italic;
-}
-
-tr.nearly-inactive-5 {
-  opacity: 0.3;
-  font-style: italic;
-}
-
-tr.nearly-inactive-1:hover,
-tr.nearly-inactive-2:hover,
-tr.nearly-inactive-3:hover,
-tr.nearly-inactive-4:hover,
-tr.nearly-inactive-5:hover {
-  opacity: 1;
-}
-
-.no-table-boder tr>td {
-  border-top: none!important;
-}
-
-.game-changes td {
-  border-spacing: 0;
-  padding: 0 0 30px!important;
-  vertical-align: top;
-}
-.game-changes .detail {
-  text-align: center;
-}
-
-.recent-game td {
-  vertical-align: middle!important;
-  text-align: center;
-  margin: 20px 0 0;
-}
 .recent-game-result {
   font-size: x-large;
   text-align: center;
 }
 
-.game-changes .skill-change {
-  display: inline-block;
-  padding: 1px 5px;
-}
+.game-changes {
+  > td {
+    border-spacing: 0;
+    padding: 0 0 30px!important;
+    vertical-align: top;
+  }
 
-.skill-change-red,
-.game-entry .red {
-  background-color: #FFC0C0;
-}
+  .skill-change {
+    display: inline-block;
+    padding: 1px 5px;
+  }
 
-.skill-change-blue,
-.game-entry .blue {
-  background-color: #C0C0FF;
+  .red {
+    background-color: #FFC0C0;
+  }
+
+  .blue {
+    background-color: #C0C0FF;
+  }
 }
 
 .red-player,
@@ -143,158 +135,25 @@ tr.nearly-inactive-5:hover {
   color: black;
 }
 
-.dl-horizontal dt {
-  line-height: 2;
-  background-color: #DDDDDD;
-  border-radius: 4px 0 0 4px;
-  padding: 2px;
-  padding-right: 8px;
-  width: 220px;
-}
+.dl-horizontal {
+  dt {
+    line-height: 2;
+    background-color: #DDDDDD;
+    border-radius: 4px 0 0 4px;
+    padding: 2px;
+    padding-right: 8px;
+    width: 220px;
+  }
 
-.dl-horizontal dd {
-  line-height: 2;
-  margin-left: 220px;
-  margin-bottom: 5px;
-  padding-left: 20px;
-  border-radius: 0 4px 4px 0;
-  background-color: #F5F5F5;
-  text-align: initial;
-}
-
-/* Achievement icons */
-
-/* Icons made by Freepik <http://www.freepik.com> from http://www.flaticon.com licensed under CC BY 3.0 <http://creativecommons.org/licenses/by/3.0/> */
-
-.achievement-TheBest {
-  background: url("../assets/trophy5.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-TheWorst {
-  background: url("../assets/football100.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Comrades {
-  background: url("../assets/football120.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-FlawlessVictory {
-  background: url("../assets/yellowstripe.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-FreshBlood {
-  background: url("../assets/blood17.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Improver {
-  background: url("../assets/football86.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-FirstGame {
-  background: url("../assets/football81.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-MostlyHarmless {
-  background: url("../assets/mostlyharmless.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Dangerous {
-  background: url("../assets/dangerous.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Elite {
-  background: url("../assets/elite.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-AgainstTheOdds {
-  background: url("../assets/casino17.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-AgainstAllOdds {
-  background: url("../assets/poker5.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Deviant {
-  background: url("../assets/football92.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-CommittedCoreFiler {
-  background: url("../assets/cfl.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Resident {
-  background: url("../assets/family24.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-FestiveCheer {
-  background: url("../assets/tree149.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-NightOwl {
-  background: url("../assets/owl.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-EarlyBird {
-  background: url("../assets/birds15.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-TheDominator {
-  background: url("../assets/football54.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Dedication {
-  background: url("../assets/football90.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-PokeMaster {
-  background: url("../assets/ball80.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-UpUpAndAway {
-  background: url("../assets/balloon.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Unstable {
-  background: url("../assets/seesaw.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-BossFight {
-  background: url("../assets/boss.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-
-/*
- * Misc BS over-writes
- */
-#ladderHolder {
-  padding: 0;
-}
-#ladderHolder .table {
-  margin-bottom: 0;
+  dd {
+    line-height: 2;
+    margin-left: 220px;
+    margin-bottom: 5px;
+    padding-left: 20px;
+    border-radius: 0 4px 4px 0;
+    background-color: #F5F5F5;
+    text-align: initial;
+  }
 }
 
 #compactTable > tbody > tr > td {
