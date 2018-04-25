@@ -1,5 +1,9 @@
 # Changelog
 
+## develop
+* Fix player links on speculate page
+* Performance improvements
+
 ## 5.4.0
 * Add punditry indicator to game list
 * Add `activity` to `player` API endpoint
