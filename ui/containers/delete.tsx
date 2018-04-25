@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Row, Col, Panel } from 'react-bootstrap';
+import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { GamesApi, PlayersApi, Game } from 'tntfl-api';
 import '../styles/achievement.less';
@@ -60,7 +60,7 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
                       <Panel.Heading>Delete Game</Panel.Heading>
                       <Panel.Body>
                         <p>Are you sure you wish to delete this game?</p>
-                        <a href='javascript:history.go(-1);' className='btn btn-default'>No, I'd rather not</a> <a className='btn btn-danger' href='?deleteConfirm=true'>Yes, delete it</a>
+                        <Button href='javascript:history.go(-1);'>No, I'd rather not</Button> <Button bsStyle='danger' href='?deleteConfirm=true'>Yes, delete it</Button>
                       </Panel.Body>
                     </Panel>
                   </Col>
