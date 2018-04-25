@@ -73,6 +73,17 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [...plugins()],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: "commons",
+          chunks: "all",
+          minChunks: 2
+        }
+      }
+    }
+  }
 };
 
 function* plugins() {
@@ -85,7 +96,7 @@ function* plugins() {
       base: page.base,
       appVersion: `${packageJson.version}`,
       inject: false,
-      chunks: ['commons-chunk', page.name],
+      chunks: ['commons', page.name],
       filename: `./${page.name}.html`,
     });
   }
