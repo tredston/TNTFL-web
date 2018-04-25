@@ -2,122 +2,34 @@
 
 /* Icons made by Freepik <http://www.freepik.com> from http://www.flaticon.com licensed under CC BY 3.0 <http://creativecommons.org/licenses/by/3.0/> */
 
-.achievement-TheBest {
-  background: url("../assets/trophy5.png") top center no-repeat;
-  padding-top: 48px !important;
+.achievement (@name, @icon) {
+  .achievement-@{name} {
+    background: url("../assets/@{icon}") top center no-repeat;
+    padding-top: 48px !important;
+  }
 }
 
-.achievement-TheWorst {
-  background: url("../assets/football100.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Comrades {
-  background: url("../assets/football120.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-FlawlessVictory {
-  background: url("../assets/yellowstripe.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-FreshBlood {
-  background: url("../assets/blood17.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Improver {
-  background: url("../assets/football86.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-FirstGame {
-  background: url("../assets/football81.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-MostlyHarmless {
-  background: url("../assets/mostlyharmless.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Dangerous {
-  background: url("../assets/dangerous.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Elite {
-  background: url("../assets/elite.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-AgainstTheOdds {
-  background: url("../assets/casino17.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-AgainstAllOdds {
-  background: url("../assets/poker5.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Deviant {
-  background: url("../assets/football92.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-CommittedCoreFiler {
-  background: url("../assets/cfl.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Resident {
-  background: url("../assets/family24.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-FestiveCheer {
-  background: url("../assets/tree149.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-NightOwl {
-  background: url("../assets/owl.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-EarlyBird {
-  background: url("../assets/birds15.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-TheDominator {
-  background: url("../assets/football54.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Dedication {
-  background: url("../assets/football90.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-PokeMaster {
-  background: url("../assets/ball80.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-UpUpAndAway {
-  background: url("../assets/balloon.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-Unstable {
-  background: url("../assets/seesaw.png") top center no-repeat;
-  padding-top: 48px !important;
-}
-
-.achievement-BossFight {
-  background: url("../assets/boss.png") top center no-repeat;
-  padding-top: 48px !important;
-}
+.achievement(TheBest, "trophy5.png");
+.achievement(TheWorst, "football100.png");
+.achievement(Comrades, "football120.png");
+.achievement(FlawlessVictory, "yellowstripe.png");
+.achievement(FreshBlood, "blood17.png");
+.achievement(Improver, "football86.png");
+.achievement(FirstGame, "football81.png");
+.achievement(MostlyHarmless, "mostlyharmless.png");
+.achievement(Dangerous, "dangerous.png");
+.achievement(Elite, "elite.png");
+.achievement(AgainstTheOdds, "casino17.png");
+.achievement(AgainstAllOdds, "poker5.png");
+.achievement(Deviant, "football92.png");
+.achievement(CommittedCoreFiler, "cfl.png");
+.achievement(Resident, "family24.png");
+.achievement(FestiveCheer, "tree149.png");
+.achievement(NightOwl, "owl.png");
+.achievement(EarlyBird, "birds15.png");
+.achievement(TheDominator, "football54.png");
+.achievement(Dedication, "football90.png");
+.achievement(PokeMaster, "ball80.png");
+.achievement(UpUpAndAway, "balloon.png");
+.achievement(Unstable, "seesaw.png");
+.achievement(BossFight, "boss.png");
