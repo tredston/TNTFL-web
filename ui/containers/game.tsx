@@ -61,12 +61,14 @@ class GamePage extends Component<GamePageProps, GamePageState> {
         {game ?
           <Grid fluid={true}>
             <Panel>
-              <Row>
-                <GameSummary game={game} base={'../../'} numActivePlayers={numActivePlayers} />
-              </Row>
-              <Row>
-                <GameDetails game={game} punditry={punditry}/>
-              </Row>
+              <Panel.Body>
+                <Row>
+                  <GameSummary game={game} base={'../../'} numActivePlayers={numActivePlayers} />
+                </Row>
+                <Row>
+                  <GameDetails game={game} punditry={punditry}/>
+                </Row>
+              </Panel.Body>
             </Panel>
           </Grid>
           : 'Loading...'
