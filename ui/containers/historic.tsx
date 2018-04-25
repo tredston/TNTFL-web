@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Row, Col, Panel } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import * as QueryString from 'query-string';
 import { LadderApi, LadderEntry } from 'tntfl-api';
@@ -50,14 +50,12 @@ function Year(props: MonthlyRankingsProps): JSX.Element {
     months = months.slice(6);
   }
   return (
-    <Col sm={3}>
-      <Panel>
-        <Panel.Heading>{year}</Panel.Heading>
-        <Panel.Body>
-          {months.reverse().map((m, i) => <Month year={year} month={m} onClick={onClick} key={i}/>)}
-        </Panel.Body>
-      </Panel>
-    </Col>
+    <Panel>
+      <Panel.Heading>{year}</Panel.Heading>
+      <Panel.Body>
+        {months.reverse().map((m, i) => <Month year={year} month={m} onClick={onClick} key={i}/>)}
+      </Panel.Body>
+    </Panel>
   );
 }
 
@@ -138,8 +136,8 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
         <NavigationBar
           base={base}
         />
-        <Grid fluid={true}>
-          <Panel>
+        <div>
+          <Panel style={{marginLeft: 20, marginRight: 20}}>
             <Panel.Body>
               <RangeSlider
                 gamesFrom={fromTime}
@@ -149,22 +147,22 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
               />
             </Panel.Body>
           </Panel>
-          <Row>
-            <Col lg={8}>
+          <div className={'ladder-page'}>
+            <div className={'ladder-panel'}>
               <LadderPanel entries={entries} />
-            </Col>
-            <Col lg={4}>
+            </div>
+            <div className={'side-panel'}>
               <Panel>
                 <Panel.Heading>Monthly Rankings</Panel.Heading>
                 <Panel.Body>
-                  <Row>
+                  <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, auto)', gridColumnGap: 5}}>
                     {yearPanels}
-                  </Row>
+                  </div>
                 </Panel.Body>
               </Panel>
-            </Col>
-          </Row>
-        </Grid>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

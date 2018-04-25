@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import { Achievement, Game } from 'tntfl-api';
 
 import Rank from './rank';
@@ -92,7 +92,7 @@ export default function GameSummary(props: GameSummaryProps): JSX.Element {
   const redStripe = game.red.score === 10 && game.blue.score === 0;
   const blueStripe = game.red.score === 0 && game.blue.score === 10;
   return (
-    <Grid fluid={true}>
+    <>
       {game.deleted ? <p className='bg-danger'>This game was deleted by {game.deleted.by} at {formatEpoch(game.deleted.at)}</p> : null}
       <Table id={'compactTable'}>
         <tbody>
@@ -119,6 +119,6 @@ export default function GameSummary(props: GameSummaryProps): JSX.Element {
           </tr>
         </tbody>
       </Table>
-    </Grid>
+    </>
   );
 }

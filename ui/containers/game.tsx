@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Row, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import { Panel } from 'react-bootstrap';
 import { Game, GamesApi, PlayersApi } from 'tntfl-api';
 import '../styles/achievement.less';
 import '../styles/style.less';
@@ -59,18 +59,18 @@ class GamePage extends Component<GamePageProps, GamePageState> {
           base={base}
         />
         {game ?
-          <Grid fluid={true}>
+          <div className={'page-container'}>
             <Panel>
               <Panel.Body>
-                <Row>
+                <div>
                   <GameSummary game={game} base={'../../'} numActivePlayers={numActivePlayers} />
-                </Row>
-                <Row>
+                </div>
+                <div>
                   <GameDetails game={game} punditry={punditry}/>
-                </Row>
+                </div>
               </Panel.Body>
             </Panel>
-          </Grid>
+          </div>
           : 'Loading...'
         }
       </div>

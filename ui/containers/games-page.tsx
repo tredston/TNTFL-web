@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Panel } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import { Game } from 'tntfl-api';
 
 import GameList from '../components/game-list';
@@ -38,14 +38,14 @@ export default class GamesPage extends Component<GamesPageProps, GamesPageState>
           base={base}
         />
         {games
-          ? <Grid fluid={true}>
+          ? <div className={'page-container'}>
               <Panel>
                 <Panel.Heading><h2>{title}</h2></Panel.Heading>
                 <Panel.Body>
                   <GameList games={games.slice().reverse()} base={base}/>
                 </Panel.Body>
               </Panel>
-            </Grid>
+            </div>
           : 'Loading...'
         }
       </div>

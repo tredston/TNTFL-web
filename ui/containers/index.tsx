@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { LadderApi, GamesApi, LadderEntry, Game } from 'tntfl-api';
+import { Game, GamesApi, LadderApi, LadderEntry } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
 import '../styles/style.less';
 
@@ -51,16 +50,14 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
         <NavigationBar
           base={base}
         />
-        <Grid fluid={true}>
-          <Row>
-            <Col lg={8}>
-              <LadderPanel entries={entries} />
-            </Col>
-            <Col lg={4}>
-              <RecentGames games={recentGames} showAllGames={false} base={base}/>
-            </Col>
-          </Row>
-        </Grid>
+        <div className={'ladder-page'}>
+          <div className={'ladder-panel'}>
+            <LadderPanel entries={entries} />
+          </div>
+          <div className={'side-panel'}>
+            <RecentGames games={recentGames} showAllGames={false} base={base}/>
+          </div>
+        </div>
       </div>
     );
   }
