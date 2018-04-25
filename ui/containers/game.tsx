@@ -3,6 +3,7 @@ import { Component, Props } from 'react';
 import { Grid, Row, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { GamesApi, Game } from 'tntfl-api';
+import '../styles/achievement.less';
 import '../styles/style.less';
 
 import GameSummary from '../components/game-summary';
