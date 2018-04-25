@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Panel, Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { Game, Achievement, Player } from 'tntfl-api';
+import { Game, Achievement, Player, PlayersApi } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
 import '../styles/achievement.less';
 import '../styles/style.less';
@@ -14,7 +14,6 @@ import PlayerStats from '../components/player/player-stats';
 import RecentGames from '../components/recent-game-list';
 import NavigationBar from '../components/navigation-bar';
 import { getParameters, mostRecentGames } from '../utils/utils';
-import { PlayersApi } from '../../swagger/tntfl-api/dist/api';
 
 interface PlayerPageProps extends Props<PlayerPage> {
   base: string;
