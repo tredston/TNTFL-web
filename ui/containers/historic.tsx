@@ -61,7 +61,7 @@ function Year(props: MonthlyRankingsProps): JSX.Element {
 }
 
 function getEndOfMonth(startOfMonth: Moment.Moment): Moment.Moment {
-  return Moment(startOfMonth).date(31).hour(23).minute(59).second(59);
+  return Moment.min(Moment(startOfMonth).date(31).hour(23).minute(59).second(59), Moment());
 }
 
 interface HistoricPageProps extends Props<HistoricPage> {
