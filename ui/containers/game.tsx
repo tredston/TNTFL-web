@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Grid, Row, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { GamesApi, Game } from 'tntfl-api';
+import { Game, GamesApi, PlayersApi } from 'tntfl-api';
 import '../styles/achievement.less';
 import '../styles/style.less';
 
@@ -10,7 +10,6 @@ import GameSummary from '../components/game-summary';
 import GameDetails from '../components/game-details';
 import NavigationBar from '../components/navigation-bar';
 import { getParameters } from '../utils/utils';
-import { PlayersApi } from '../../swagger/tntfl-api/dist/api';
 
 interface GamePageProps extends Props<GamePage> {
   base: string;

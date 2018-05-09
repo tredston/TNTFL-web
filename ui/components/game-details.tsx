@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, Panel, Table } from 'react-bootstrap';
+import { Button, Grid, Panel, Table } from 'react-bootstrap';
 import { Game } from 'tntfl-api';
 
 import AchievementPanel from './achievement-panel';
@@ -59,7 +59,7 @@ export default function GameDetails(props: GameDetailsProps): JSX.Element {
       </Table>
       <p><a href='json'>This game as JSON</a></p>
       {!game.deleted &&
-        <a href='delete' className='btn btn-danger pull-right'><span className='glyphicon glyphicon-lock'></span> Delete game</a>
+        <Button href='delete' bsStyle='danger' className={'pull-right'}><span className='glyphicon glyphicon-lock'/> Delete game</Button>
       }
     </Grid>
   );
