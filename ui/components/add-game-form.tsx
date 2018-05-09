@@ -76,7 +76,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
     const { isBusy } = this.props;
     const playerWidth = '6em';
     return (
-      <Form inline style={{padding: 8}}>
+      <Form inline className={'navbar-add-game'}>
         <FormGroup>
           <FormControl
             type='text'
