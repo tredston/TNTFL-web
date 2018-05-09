@@ -103,7 +103,7 @@ export default class AddGameForm extends Component<AddGameFormProps, AddGameForm
             onChange={e => this.handleBluePlayerChange((e.target as any).value)}
             style={{backgroundColor: Palette.blueFade, width: playerWidth, textAlign: 'center'}}
           /> <Button type='submit' onClick={e => this.handleSubmit(e)} disabled={!this.isValid() && !isBusy}>
-            {!isBusy && <span>Add game <span className='glyphicon glyphicon-triangle-right'/></span>}
+            {!isBusy && <span>Add game ▶</span>}
             {isBusy && <span><img src={spinner}/></span>}
           </Button>
         </FormGroup>

@@ -59,7 +59,7 @@ export default function GameDetails(props: GameDetailsProps): JSX.Element {
       </Table>
       <p><a href='json'>This game as JSON</a></p>
       {!game.deleted &&
-        <Button href='delete' bsStyle='danger' className={'pull-right'}><span className='glyphicon glyphicon-lock'/> Delete game</Button>
+        <Button href='delete' bsStyle='danger' className={'pull-right'}>🔒 Delete game</Button>
       }
     </>
   );
