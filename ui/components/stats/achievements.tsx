@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Col, Panel } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import { Achievement, AchievementCount } from 'tntfl-api';
 
 interface AchievementPanelProps {
@@ -29,7 +29,9 @@ export default function Achievements(props: AchievementsProps): JSX.Element {
     <Panel>
       <Panel.Heading>Achievements</Panel.Heading>
       <Panel.Body>
-        {achievements.map((a, i) => <Col xs={3} key={`${i}`}><AchievementPanel achievement={a} count={a.count}/></Col>)}
+        <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, auto)', gridColumnGap: 20}}>
+          {achievements.map((a, i) => <div key={`${i}`}><AchievementPanel achievement={a} count={a.count}/></div>)}
+        </div>
       </Panel.Body>
     </Panel>
   );

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
+import { Button, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { GamesApi, PlayersApi, Game } from 'tntfl-api';
+import { Game, GamesApi, PlayersApi } from 'tntfl-api';
 import '../styles/achievement.less';
 import '../styles/style.less';
 
@@ -51,26 +51,26 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
           base={base}
         />
         {game ?
-          <Grid fluid={true}>
+          <div className={'page-container'}>
             <Panel>
               <Panel.Body>
-                <Row>
-                  <Col md={8} mdOffset={2}>
-                    <Panel>
+                <div>
+                  <div style={{maxWidth: '60%', margin: 'auto'}}>
+                    <Panel bsStyle={'danger'}>
                       <Panel.Heading>Delete Game</Panel.Heading>
                       <Panel.Body>
                         <p>Are you sure you wish to delete this game?</p>
                         <Button href='javascript:history.go(-1);'>No, I'd rather not</Button> <Button bsStyle='danger' href='?deleteConfirm=true'>Yes, delete it</Button>
                       </Panel.Body>
                     </Panel>
-                  </Col>
-                </Row>
-                <Row>
+                  </div>
+                </div>
+                <div>
                   <GameSummary game={game} base={'../../'} numActivePlayers={numActivePlayers} />
-                </Row>
+                </div>
               </Panel.Body>
             </Panel>
-          </Grid>
+          </div>
           : 'Loading...'
         }
       </div>

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Row, Col, Panel } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import {LadderApi, Speculated, Game} from 'tntfl-api';
+import { Game, LadderApi, Speculated } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
 import '../styles/style.less';
 
@@ -79,30 +79,28 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
         <NavigationBar
           base={base}
         />
-        <Grid fluid={true}>
-          <Row>
-            <Col lg={8}>
-              <LadderPanel
-                entries={entries}
-                speculative={isSpeculating}
-                base={base}
-              />
-            </Col>
-            <Col lg={4}>
-              <Panel>
-                <Panel.Heading>Speculative Games</Panel.Heading>
-                <Panel.Body>
-                  <AddGameForm
-                    isBusy={isBusy}
-                    onSubmit={(rp, rs, bp, bs) => this.onAddGame(rp, rs, bp, bs)}
-                  />
-                  {speculated && <GameList games={speculated.games.slice().reverse()} base={base}/>}
-                  <a href='#' onClick={(e) => this.onReset(e)}>Reset speculation</a>
-                </Panel.Body>
-              </Panel>
-            </Col>
-          </Row>
-        </Grid>
+        <div className={'ladder-page'}>
+          <div className={'ladder-panel'}>
+            <LadderPanel
+              entries={entries}
+              speculative={isSpeculating}
+              base={base}
+            />
+          </div>
+          <div className={'side-panel'}>
+            <Panel>
+              <Panel.Heading>Speculative Games</Panel.Heading>
+              <Panel.Body>
+                <AddGameForm
+                  isBusy={isBusy}
+                  onSubmit={(rp, rs, bp, bs) => this.onAddGame(rp, rs, bp, bs)}
+                />
+                {speculated && <GameList games={speculated.games.slice().reverse()} base={base}/>}
+                <a href='#' onClick={(e) => this.onReset(e)}>Reset speculation</a>
+              </Panel.Body>
+            </Panel>
+          </div>
+        </div>
       </div>
     );
   }

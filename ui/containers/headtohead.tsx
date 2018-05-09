@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Panel, Grid, Col } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { GamesApi, Game } from 'tntfl-api';
+import { Game, GamesApi } from 'tntfl-api';
 import '../styles/style.less';
 
 import HeadToHeadChart from '../components/head-to-head/head-to-head-chart';
@@ -45,16 +45,16 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
           base={base}
         />
         {games ?
-          <Grid fluid={true}>
-            <Col md={8}>
+          <div className={'ladder-page'}>
+            <div className={'ladder-panel'}>
               <Stats player1={player1} player2={player2} games={games} base={base}/>
               <Panel>
                 <Panel.Body>
                   <HeadToHeadChart player1={player1} player2={player2} games={games}/>
                 </Panel.Body>
               </Panel>
-            </Col>
-            <Col md={4}>
+            </div>
+            <div className={'side-panel'}>
               <Panel>
                 <Panel.Heading><h2>Goal Distribution</h2></Panel.Heading>
                 <Panel.Body>
@@ -62,8 +62,8 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
                 </Panel.Body>
               </Panel>
               <RecentGames games={mostRecentGames(games)} showAllGames={true} base={base}/>
-            </Col>
-          </Grid>
+            </div>
+          </div>
           : 'Loading...'
         }
       </div>

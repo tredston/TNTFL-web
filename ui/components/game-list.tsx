@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid } from 'react-bootstrap';
-import { isEqual } from 'lodash';
-import { PlayersApi, Game, GamesApi } from 'tntfl-api';
+import { Game, GamesApi, PlayersApi } from 'tntfl-api';
 
 import GameSummary from './game-summary';
 
@@ -53,7 +51,7 @@ export default class GameList extends Component<GameListProps, State> {
     const { games, base } = this.props;
     const { activePlayers, punditry } = this.state;
     return (
-      <Grid fluid={true}>
+      <>
         {games.map((game) =>
           <GameSummary
             game={game}
@@ -63,7 +61,7 @@ export default class GameList extends Component<GameListProps, State> {
             key={`${game.date}`}
           />,
         )}
-      </Grid>
+      </>
     );
   }
 }

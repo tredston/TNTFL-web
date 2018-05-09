@@ -1,9 +1,30 @@
-@import '~bootstrap/less/bootstrap';
+@import './bootstrap';
 
 .christmas (@thisMonth) when (@thisMonth = 11) {
   @import './christmas';
 }
 .christmas(`new Date().getMonth()`);
+
+.page-container {
+  max-width: 1400px;
+  margin: auto;
+}
+
+.ladder-page {
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
+  margin-right: 20px;
+
+  > .ladder-panel {
+    width: calc(~'(100vw - 60px) * 0.7');
+    margin-right: 20px;
+  }
+
+  > .side-panel {
+    width: calc(~'(100vw - 60px) * 0.3');
+  }
+}
 
 .panel-heading {
   > h1 {

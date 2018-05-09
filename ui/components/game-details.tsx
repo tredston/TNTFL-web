@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Grid, Panel, Table } from 'react-bootstrap';
+import { Button, Panel, Table } from 'react-bootstrap';
 import { Game } from 'tntfl-api';
 
 import AchievementPanel from './achievement-panel';
@@ -39,7 +39,7 @@ interface GameDetailsProps {
 export default function GameDetails(props: GameDetailsProps): JSX.Element {
   const { game, punditry } = props;
   return (
-    <Grid fluid={true}>
+    <>
       <Table id={'compactTable'}>
         <tbody>
           <tr>
@@ -61,6 +61,6 @@ export default function GameDetails(props: GameDetailsProps): JSX.Element {
       {!game.deleted &&
         <Button href='delete' bsStyle='danger' className={'pull-right'}><span className='glyphicon glyphicon-lock'/> Delete game</Button>
       }
-    </Grid>
+    </>
   );
 }
