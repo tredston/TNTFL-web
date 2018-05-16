@@ -1,6 +1,6 @@
 {
   "name": "tntfl",
-  "version": "5.4.0",
+  "version": "5.4.2",
   "description": "tntfl",
   "main": "./ui/index.js",
   "files": [
