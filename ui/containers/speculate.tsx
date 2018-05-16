@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Row, Col, Panel } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import {LadderApi, Speculated, Game} from 'tntfl-api';
+import { Game, LadderApi, Speculated } from 'tntfl-api';
+import 'react-bootstrap-table/css/react-bootstrap-table.css';
+import '../styles/style.less';
 
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
@@ -71,34 +73,34 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     const { base } = this.props;
     const { speculated, isBusy } = this.state;
     const isSpeculating = speculated && speculated.games.length > 0;
-    const now = (new Date()).getTime() / 1000;
     const entries = speculated && speculated.entries;
     return (
       <div>
         <NavigationBar
           base={base}
         />
-        <Grid fluid={true}>
-          <Row>
-            <Col lg={8}>
-              <LadderPanel
-                entries={entries}
-                bsStyle={isSpeculating ? 'warning' : undefined}
-              />
-            </Col>
-            <Col lg={4}>
-              <Panel header={'Speculative Games'}>
+        <div className={'ladder-page'}>
+          <div className={'ladder-panel'}>
+            <LadderPanel
+              entries={entries}
+              speculative={isSpeculating}
+              base={base}
+            />
+          </div>
+          <div className={'side-panel'}>
+            <Panel>
+              <Panel.Heading>Speculative Games</Panel.Heading>
+              <Panel.Body>
                 <AddGameForm
-                  base={base}
                   isBusy={isBusy}
                   onSubmit={(rp, rs, bp, bs) => this.onAddGame(rp, rs, bp, bs)}
                 />
                 {speculated && <GameList games={speculated.games.slice().reverse()} base={base}/>}
                 <a href='#' onClick={(e) => this.onReset(e)}>Reset speculation</a>
-              </Panel>
-            </Col>
-          </Row>
-        </Grid>
+              </Panel.Body>
+            </Panel>
+          </div>
+        </div>
       </div>
     );
   }
@@ -106,7 +108,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
 
 ReactDOM.render(
   <SpeculatePage
-    base={'../'}
+    base={__tntfl_base_path__}
   />,
   document.getElementById('entry'),
 );

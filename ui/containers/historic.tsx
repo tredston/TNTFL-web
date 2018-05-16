@@ -1,20 +1,24 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
+import { Panel } from 'react-bootstrap';
+import * as Moment from 'moment';
 import * as QueryString from 'query-string';
 import { LadderApi, LadderEntry } from 'tntfl-api';
+import 'react-bootstrap-table/css/react-bootstrap-table.css';
+import 'ion-rangeslider/css/ion.rangeSlider.css';
+import 'ion-rangeslider/css/ion.rangeSlider.skinModern.css';
+import '../styles/style.less';
 
 import RangeSlider from '../components/range-slider';
 import NavigationBar from '../components/navigation-bar';
-
 import LadderPanel from '../components/ladder-panel';
 import { getMonthName } from '../utils/utils';
 
 interface MonthlyRankingProps {
   year: number;
   month: number;  // 0 indexed
-  onClick: (d: Date) => void;
+  onClick: (d: Moment.Moment) => void;
 }
 function Month(props: MonthlyRankingProps): JSX.Element {
   const { year, month, onClick } = props;
@@ -24,7 +28,7 @@ function Month(props: MonthlyRankingProps): JSX.Element {
         href='#'
         onClick={(e) => {
           e.preventDefault();
-          onClick(new Date(year, month, 1));
+          onClick(Moment().year(year).month(month).date(1).hour(0).minute(0).second(0));
         }}
       >
         {getMonthName(month)}
@@ -35,7 +39,7 @@ function Month(props: MonthlyRankingProps): JSX.Element {
 
 interface MonthlyRankingsProps {
   year: number;
-  onClick: (d: Date) => void;
+  onClick: (d: Moment.Moment) => void;
 }
 function Year(props: MonthlyRankingsProps): JSX.Element {
   const { year, onClick } = props;
@@ -47,23 +51,17 @@ function Year(props: MonthlyRankingsProps): JSX.Element {
     months = months.slice(6);
   }
   return (
-    <Col sm={3}>
-      <Panel header={year}>
+    <Panel>
+      <Panel.Heading>{year}</Panel.Heading>
+      <Panel.Body>
         {months.reverse().map((m, i) => <Month year={year} month={m} onClick={onClick} key={i}/>)}
-      </Panel>
-    </Col>
+      </Panel.Body>
+    </Panel>
   );
 }
 
-function getEndOfMonth(startOfMonth: Date): Date {
-  const december = startOfMonth.getMonth() === 11;
-  const endYear = startOfMonth.getFullYear() + (december ? 1 : 0);
-  const endMonth = december ? 0 : startOfMonth.getMonth() + 1;
-  return new Date(endYear, endMonth, 1);
-}
-
-function dateToEpoch(d: Date): number {
-  return Math.round(d.getTime() / 1000);
+function getEndOfMonth(startOfMonth: Moment.Moment): Moment.Moment {
+  return Moment.min(Moment(startOfMonth).date(31).hour(23).minute(59).second(59), Moment());
 }
 
 interface HistoricPageProps extends Props<HistoricPage> {
@@ -85,12 +83,15 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
       gamesTo: props.gamesTo,
     };
   }
-  async loadLadder(gamesFrom?: number, gamesTo?: number) {
+  getRange(gamesFrom: number | undefined, gamesTo: number | undefined): {begin: number, end: number} {
+    const startOfMonth = Moment().date(1).hour(0).minute(0).second(0);
+    const begin = gamesFrom || startOfMonth.unix();
+    const end = gamesTo || getEndOfMonth(startOfMonth).unix();
+    return { begin, end };
+  }
+  async loadLadder(gamesFrom: number | undefined, gamesTo: number | undefined) {
     const { base } = this.props;
-    const startOfMonth = new Date();
-    startOfMonth.setDate(1);
-    const begin = gamesFrom || dateToEpoch(startOfMonth);
-    const end = gamesTo || dateToEpoch(getEndOfMonth(startOfMonth));
+    const { begin, end } = this.getRange(gamesFrom, gamesTo);
     const api = new LadderApi(fetch, base);
     const entries = await api.getLadderBetween({players: 1, showInactive: 1, begin, end});
     this.setState({entries} as HistoricPageState);
@@ -99,9 +100,9 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     const { gamesFrom, gamesTo } = this.state;
     this.loadLadder(gamesFrom, gamesTo);
   }
-  onMonthSelect(d: Date) {
-    const gamesFrom = dateToEpoch(d);
-    const gamesTo = dateToEpoch(getEndOfMonth(d));
+  onMonthSelect(d: Moment.Moment) {
+    const gamesFrom = d.unix();
+    const gamesTo = getEndOfMonth(d).unix();
     this.onRangeChange(gamesFrom, gamesTo);
   }
   onRangeChange(gamesFrom: number, gamesTo: number) {
@@ -124,36 +125,40 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
 
     const startOfMonth = new Date();
     startOfMonth.setDate(1);
-    const fromTime = gamesFrom || dateToEpoch(startOfMonth);
-    const toTime = gamesTo || dateToEpoch(getEndOfMonth(startOfMonth));
+    const { begin: fromTime, end: toTime } = this.getRange(gamesFrom, gamesTo);
 
     return (
       <div>
         <NavigationBar
           base={base}
         />
-        <Grid fluid={true}>
-          <Panel>
-            <RangeSlider
-              gamesFrom={fromTime}
-              gamesTo={toTime}
-              id={'rangeSlider'}
-              onChange={(f, t) => this.onRangeChange(f, t)}
-            />
+        <div>
+          <Panel style={{marginLeft: 20, marginRight: 20}}>
+            <Panel.Body>
+              <RangeSlider
+                gamesFrom={fromTime}
+                gamesTo={toTime}
+                id={'rangeSlider'}
+                onChange={(f, t) => this.onRangeChange(f, t)}
+              />
+            </Panel.Body>
           </Panel>
-          <Row>
-            <Col lg={8}>
+          <div className={'ladder-page'}>
+            <div className={'ladder-panel'}>
               <LadderPanel entries={entries} />
-            </Col>
-            <Col lg={4}>
-              <Panel header={'Monthly Rankings'}>
-                <Row>
-                  {yearPanels}
-                </Row>
+            </div>
+            <div className={'side-panel'}>
+              <Panel>
+                <Panel.Heading>Monthly Rankings</Panel.Heading>
+                <Panel.Body>
+                  <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, auto)', gridColumnGap: 5}}>
+                    {yearPanels}
+                  </div>
+                </Panel.Body>
               </Panel>
-            </Col>
-          </Row>
-        </Grid>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -169,7 +174,7 @@ function getParameters(): [number | undefined, number | undefined] {
 
 ReactDOM.render(
   <HistoricPage
-    base={'./'}
+    base={__tntfl_base_path__}
     gamesFrom={getParameters()[0]}
     gamesTo={getParameters()[1]}
   />,

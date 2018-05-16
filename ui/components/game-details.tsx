@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid, Panel, Table } from 'react-bootstrap';
+import { Button, Panel, Table } from 'react-bootstrap';
 import { Game } from 'tntfl-api';
 
 import AchievementPanel from './achievement-panel';
@@ -23,8 +23,11 @@ interface PunditryProps {
 function Punditry(props: PunditryProps): JSX.Element {
   const { facts } = props;
   return (
-    <Panel header={'Punditry'}>
-      {facts.map((fact, i) => <Fact fact={fact} key={`${i}`}/>)}
+    <Panel>
+      <Panel.Heading>Punditry</Panel.Heading>
+      <Panel.Body>
+        {facts.map((fact, i) => <Fact fact={fact} key={`${i}`}/>)}
+      </Panel.Body>
     </Panel>
   );
 }
@@ -36,7 +39,7 @@ interface GameDetailsProps {
 export default function GameDetails(props: GameDetailsProps): JSX.Element {
   const { game, punditry } = props;
   return (
-    <Grid fluid={true}>
+    <>
       <Table id={'compactTable'}>
         <tbody>
           <tr>
@@ -56,8 +59,8 @@ export default function GameDetails(props: GameDetailsProps): JSX.Element {
       </Table>
       <p><a href='json'>This game as JSON</a></p>
       {!game.deleted &&
-        <a href='delete' className='btn btn-danger pull-right'><span className='glyphicon glyphicon-lock'></span> Delete game</a>
+        <Button href='delete' bsStyle='danger' className={'pull-right'}>🔒 Delete game</Button>
       }
-    </Grid>
+    </>
   );
 }

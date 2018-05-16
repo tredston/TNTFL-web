@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { TimeUnit } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { GamesPerWeekItem } from 'tntfl-api';
 
@@ -16,14 +17,16 @@ export default function GamesPerWeek(props: GamesPerWeekProps): JSX.Element {
   }]};
   const localOptions = {
     maintainAspectRatio: false,
-    scales: {xAxes: [{
-      type: 'time',
-      time: {
-        minUnit: 'day',
-      },
-    }]},
+    scales: {
+      xAxes: [{
+        type: 'time',
+        time: {
+          minUnit: 'day' as TimeUnit,
+        },
+      }],
+    },
   };
   return (
-    <Line data={data} options={Object.assign({}, options, localOptions)} height={200}/>
+    <Line data={data} options={{...options, ...localOptions}} height={200}/>
   );
 }

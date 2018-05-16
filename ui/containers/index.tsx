@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { LadderApi, GamesApi, LadderEntry, Game } from 'tntfl-api';
+import { Game, GamesApi, LadderApi, LadderEntry } from 'tntfl-api';
+import 'react-bootstrap-table/css/react-bootstrap-table.css';
+import '../styles/style.less';
 
 import RecentGames from '../components/recent-game-list';
 import NavigationBar from '../components/navigation-bar';
-
 import LadderPanel from '../components/ladder-panel';
 
 interface IndexPageProps extends Props<IndexPage> {
@@ -45,22 +45,19 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   render() {
     const { base } = this.props;
     const { entries, recentGames } = this.state;
-    const now = (new Date()).getTime() / 1000;
     return (
       <div>
         <NavigationBar
           base={base}
         />
-        <Grid fluid={true}>
-          <Row>
-            <Col lg={8}>
-              <LadderPanel entries={entries} />
-            </Col>
-            <Col lg={4}>
-              <RecentGames games={recentGames} showAllGames={false} base={base}/>
-            </Col>
-          </Row>
-        </Grid>
+        <div className={'ladder-page'}>
+          <div className={'ladder-panel'}>
+            <LadderPanel entries={entries} />
+          </div>
+          <div className={'side-panel'}>
+            <RecentGames games={recentGames} showAllGames={false} base={base}/>
+          </div>
+        </div>
       </div>
     );
   }
@@ -68,7 +65,7 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
 
 ReactDOM.render(
   <IndexPage
-    base={'./'}
+    base={__tntfl_base_path__}
   />,
   document.getElementById('entry'),
 );

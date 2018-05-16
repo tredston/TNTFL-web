@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Row, Col, Panel } from 'react-bootstrap';
+import { Button, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { GamesApi, PlayersApi, Game } from 'tntfl-api';
-import 'whatwg-fetch';
+import { Game, GamesApi, PlayersApi } from 'tntfl-api';
+import '../styles/achievement.less';
+import '../styles/style.less';
 
 import GameSummary from '../components/game-summary';
 import NavigationBar from '../components/navigation-bar';
@@ -50,21 +51,26 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
           base={base}
         />
         {game ?
-          <Grid fluid={true}>
+          <div className={'page-container'}>
             <Panel>
-              <Row>
-                <Col md={8} mdOffset={2}>
-                  <Panel header={'Delete Game'}>
-                    <p>Are you sure you wish to delete this game?</p>
-                    <a href='javascript:history.go(-1);' className='btn btn-default'>No, I'd rather not</a> <a className='btn btn-danger' href='?deleteConfirm=true'>Yes, delete it</a>
-                  </Panel>
-                </Col>
-              </Row>
-              <Row>
-                <GameSummary game={game} base={'../../'} numActivePlayers={numActivePlayers} />
-              </Row>
+              <Panel.Body>
+                <div>
+                  <div style={{maxWidth: '60%', margin: 'auto'}}>
+                    <Panel bsStyle={'danger'}>
+                      <Panel.Heading>Delete Game</Panel.Heading>
+                      <Panel.Body>
+                        <p>Are you sure you wish to delete this game?</p>
+                        <Button href='javascript:history.go(-1);'>No, I'd rather not</Button> <Button bsStyle='danger' href='?deleteConfirm=true'>Yes, delete it</Button>
+                      </Panel.Body>
+                    </Panel>
+                  </div>
+                </div>
+                <div>
+                  <GameSummary game={game} base={'../../'} numActivePlayers={numActivePlayers} />
+                </div>
+              </Panel.Body>
             </Panel>
-          </Grid>
+          </div>
           : 'Loading...'
         }
       </div>
@@ -74,7 +80,7 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
 
 ReactDOM.render(
     <DeletePage
-      base={'../../'}
+      base={__tntfl_base_path__}
       gameId={getParameters(2)[0]}
     />,
     document.getElementById('entry'),

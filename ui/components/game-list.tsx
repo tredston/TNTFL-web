@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid } from 'react-bootstrap';
-import { isEqual } from 'lodash';
-import { PlayersApi, Game, GamesApi } from 'tntfl-api';
+import { Game, GamesApi, PlayersApi } from 'tntfl-api';
 
 import GameSummary from './game-summary';
 
@@ -43,20 +41,17 @@ export default class GameList extends Component<GameListProps, State> {
     this.loadPunditry();
     this.loadActivePlayers();
   }
-  shouldComponentUpdate(nextProps: GameListProps, nextState: State) {
-    return this.props.games !== nextProps.games ||
-      !isEqual(this.state.activePlayers, nextState.activePlayers) ||
-      !isEqual(this.state.punditry, nextState.punditry);
-  }
-  componentDidUpdate() {
-    this.loadPunditry();
-    this.loadActivePlayers();
+  componentDidUpdate(prevProps: GameListProps, prevState: State) {
+    if (this.props.games !== prevProps.games) {
+      this.loadPunditry();
+      this.loadActivePlayers();
+    }
   }
   render(): JSX.Element {
     const { games, base } = this.props;
     const { activePlayers, punditry } = this.state;
     return (
-      <Grid fluid={true}>
+      <>
         {games.map((game) =>
           <GameSummary
             game={game}
@@ -66,7 +61,7 @@ export default class GameList extends Component<GameListProps, State> {
             key={`${game.date}`}
           />,
         )}
-      </Grid>
+      </>
     );
   }
 }

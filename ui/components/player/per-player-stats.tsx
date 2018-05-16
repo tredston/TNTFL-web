@@ -14,7 +14,7 @@ function HeadToHeadLink(props: HeadToHeadLinkProps): JSX.Element {
   const { base, player1, player2 } = props;
   return (
     <a href={`${base}headtohead/${player1}/${player2}/`}>
-      <span className='glyphicon glyphicon-transfer'></span>
+      ⇋
     </a>
   );
 }

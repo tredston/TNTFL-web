@@ -1,90 +1,43 @@
-var path = require("path");
-var webpack = require('webpack');
+const path = require("path");
+const webpack = require('webpack');
 const awesomeTypescriptLoader = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const packageJson = require('./package.json');
 
 const isProd = process.env.NODE_ENV === 'production';
 
-const pages = [
-  {
-    name: 'index',
-    src: './ui/containers/index.tsx',
-    base: '',
-    links: ['<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/2.5.5/react-bootstrap-table.min.css" integrity="sha384-VIXf7ijRNoaapcQEvARxuDSoSqHwZOTEXGpFw8r1dZ6PC0s3vOFhYUrOHO7SQRUl" crossorigin="anonymous">'],
-  },
-  {
-    name: 'game',
-    src: './ui/containers/game.tsx',
-    base: '../../',
-    links: [],
-  },
-  {
-    name: 'delete',
-    src: './ui/containers/delete.tsx',
-    base: '../../',
-    links: [],
-  },
-  {
-    name: 'player',
-    src: './ui/containers/player.tsx',
-    base: '../../',
-    links: ['<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/2.5.5/react-bootstrap-table.min.css" integrity="sha384-VIXf7ijRNoaapcQEvARxuDSoSqHwZOTEXGpFw8r1dZ6PC0s3vOFhYUrOHO7SQRUl" crossorigin="anonymous">'],
-  },
-  {
-    name: 'playergames',
-    src: './ui/containers/playergames.tsx',
-    base: '../../../',
-    links: [],
-  },
-  {
-    name: 'headtohead',
-    src: './ui/containers/headtohead.tsx',
-    base: '../../../',
-    links: [],
-  },
-  {
-    name: 'headtoheadgames',
-    src: './ui/containers/headtoheadgames.tsx',
-    base: '../../../../',
-    links: [],
-  },
-  {
-    name: 'historic',
-    src: './ui/containers/historic.tsx',
-    base: '',
-    links: [
-      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/2.5.5/react-bootstrap-table.min.css" integrity="sha384-VIXf7ijRNoaapcQEvARxuDSoSqHwZOTEXGpFw8r1dZ6PC0s3vOFhYUrOHO7SQRUl" crossorigin="anonymous">',
-      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.1.5/css/ion.rangeSlider.min.css" integrity="sha384-Wq9DAJUP5kU9Dk244QvEHs3ZXLGzxXxwU338D+D+czP5fUSWkRoF6VhjUPnMk6if" crossorigin="anonymous">',
-      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.1.5/css/ion.rangeSlider.skinModern.min.css" integrity="sha384-7BZOVCgNHI0de9biH6OtG+p+ZGvcyLZTF2OyorTMm705uvbI1iWwxF2qUvGFrVNY" crossorigin="anonymous">',
-    ],
-  },
-  {
-    name: 'speculate',
-    src: './ui/containers/speculate.tsx',
-    base: '../',
-    links: ['<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap-table/2.5.5/react-bootstrap-table.min.css" integrity="sha384-VIXf7ijRNoaapcQEvARxuDSoSqHwZOTEXGpFw8r1dZ6PC0s3vOFhYUrOHO7SQRUl" crossorigin="anonymous">'],
-  },
-  {
-    name: 'stats',
-    src: './ui/containers/stats.tsx',
-    base: '../',
-    links: [],
-  },
-];
+const extractCss = new ExtractTextPlugin({ filename: `[name].css?v=${packageJson.version}`, allChunks: true });
+
+function getPages() {
+  const pageDepths = {
+    0: ['index', 'historic'],
+    1: ['speculate', 'stats'],
+    2: ['game', 'delete', 'player'],
+    3: ['headtohead', 'playergames'],
+    4: ['headtoheadgames'],
+  };
+  const expanded = Object.keys(pageDepths).map(k => pageDepths[k].map(p => ({
+    name: p,
+    src: [`./ui/path/path${k}.ts`, `./ui/containers/${p}.tsx`],
+    base: `${'../'.repeat(k)}dist/`,
+  })));
+  return [].concat.apply([], expanded);
+}
+const pages = getPages();
 
 module.exports = {
+  mode: isProd ? 'production' : 'development',
   entry: pages.reduce((acc,cur) => {
-    acc[cur.name] = ['babel-polyfill', cur.src];
+    acc[cur.name] = ['babel-polyfill', ...cur.src];
     return acc;
   }, {}),
   output: {
-    publicPath: 'dist/',
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name]-bundle.js'
+    filename: `[name]-bundle?v=${packageJson.version}.js`,
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.css'],
+    extensions: ['.ts', '.tsx', '.js', '.less', '.css'],
   },
   module: {
     rules: [
@@ -105,6 +58,18 @@ module.exports = {
         ],
         use: { loader: 'awesome-typescript-loader', options: { useCache: true, useBabel: true } },
       },
+      {
+        test: /\.css$/,
+        loader: extractCss.extract({fallback: 'style-loader', use: {loader:'css-loader', options: {minimize: isProd}}})
+      },
+      {
+        test: /\.less$/,
+        loader: extractCss.extract({fallback: 'style-loader', use: [{loader:'css-loader', options: {minimize: isProd}}, {loader: 'less-loader'}]})
+      },
+      {test: /\.(jpg|png|gif)$/, loader: 'file-loader', options: { name: '[name].[ext]', useRelativePath: true }},
+      {test: /\.svg$/, loader: 'file-loader', options: { name: '[name].[ext]'}},
+      {test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, loader: 'file-loader', options: { name: '[name].[ext]'}},
+      {test: /\.(ttf|eot)(\?v=[0-9].[0-9].[0-9])?$/, loader: 'file-loader', options: { name: '[name].[ext]'}},
     ],
   },
   node: {
@@ -114,30 +79,35 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [...plugins()],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: "commons",
+          chunks: "all",
+          minChunks: 2
+        }
+      }
+    }
+  }
 };
 
 function* plugins() {
-  yield new webpack.optimize.CommonsChunkPlugin('commons-chunk');
   yield new webpack.optimize.ModuleConcatenationPlugin();
+  yield extractCss;
   for (var page of pages) {
-    const links = page.links;
-    if ((new Date()).getMonth() === 11) {
-      links.push(`<link href="${page.base}css/christmas.css" rel="stylesheet">`);
-    }
     yield new HtmlWebpackPlugin({
       template: 'templates/index.ejs',
       title: '',
       base: page.base,
-      links,
       appVersion: `${packageJson.version}`,
       inject: false,
-      chunks: ['commons-chunk', page.name],
+      chunks: ['commons', page.name],
       filename: `./${page.name}.html`,
     });
   }
   if (isProd) {
     yield new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } });
-    yield new webpack.optimize.UglifyJsPlugin();
   }
   else {
     yield new awesomeTypescriptLoader.CheckerPlugin();

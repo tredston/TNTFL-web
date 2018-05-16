@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Grid, Row, Col, Panel } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
 import { Stats, StatsApi } from 'tntfl-api';
+import '../styles/achievement.less';
+import '../styles/style.less';
 
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
@@ -43,37 +45,40 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
           base={base}
         />
         {stats
-          ? <Grid fluid={true}>
-            <Row>
-              <Col md={4}>
-                <BeltSection belt={stats.belt} base={base} />
-                <RecordsSection records={stats.records} base={base}/>
-                <StatsSection totals={stats.totals}/>
-              </Col>
-              <Col md={4}>
-                <Panel header={'Most Significant Games'}>
-                  <GameList games={stats.records.mostSignificant} base={base} />
-                </Panel>
-              </Col>
-              <Col md={4}>
-                <Panel header={'Least Significant Games'}>
-                  <GameList games={stats.records.leastSignificant} base={base} />
-                </Panel>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={12}>
-                <Panel header={'Games Per Week'}>
+          ? <div>
+            <div style={{display: 'flex', flexDirection: 'column', marginLeft: 20, marginRight: 20}}>
+              <div style={{display: 'flex', flexDirection: 'row'}}>
+                <div style={{width: 'calc((100vw - 80px) / 3)', marginRight: 20}}>
+                  <BeltSection belt={stats.belt} base={base} />
+                  <RecordsSection records={stats.records} base={base}/>
+                  <StatsSection totals={stats.totals}/>
+                </div>
+                <div style={{width: 'calc((100vw - 80px) / 3)', marginRight: 20}}>
+                  <Panel>
+                    <Panel.Heading>Most Significant Games</Panel.Heading>
+                    <Panel.Body>
+                      <GameList games={stats.records.mostSignificant} base={base} />
+                    </Panel.Body>
+                  </Panel>
+                </div>
+                <div style={{width: 'calc((100vw - 80px) / 3)'}}>
+                  <Panel>
+                    <Panel.Heading>Least Significant Games</Panel.Heading>
+                    <Panel.Body>
+                      <GameList games={stats.records.leastSignificant} base={base} />
+                    </Panel.Body>
+                  </Panel>
+                </div>
+              </div>
+              <Panel>
+                <Panel.Heading>Games Per Week</Panel.Heading>
+                <Panel.Body>
                   <GamesPerWeek gamesPerWeek={stats.gamesPerWeek} />
-                </Panel>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={12}>
-                <Achievements achievements={stats.totals.achievements}/>
-              </Col>
-            </Row>
-          </Grid>
+                </Panel.Body>
+              </Panel>
+              <Achievements achievements={stats.totals.achievements}/>
+            </div>
+          </div>
         : 'Loading...'
       }
       </div>
@@ -83,7 +88,7 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
 
 ReactDOM.render(
   <StatsPage
-    base={'../'}
+    base={__tntfl_base_path__}
   />,
   document.getElementById('entry'),
 );

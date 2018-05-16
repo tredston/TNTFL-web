@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { GamesApi } from 'tntfl-api';
-import 'whatwg-fetch';
 
 import AddGameForm from './add-game-form';
 
@@ -36,7 +35,6 @@ export default class NavigationBar extends Component<NavigationBarProps, State> 
         </Nav>
         <Nav pullRight>
           <AddGameForm
-            base={base}
             isBusy={isBusy}
             onSubmit={(r, rs, b, bs) => this.onAddGame(r, rs, b, bs)}
           />

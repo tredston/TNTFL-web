@@ -1,5 +1,14 @@
 # Changelog
 
+## develop
+* Fix player links on speculate page
+* Fix missing glyphicons in Chrome
+* Fix period bounding issues
+* Performance improvements
+
+## 5.4.1
+* Require Bootstrap 3 CSS 
+
 ## 5.4.0
 * Add punditry indicator to game list
 * Add `activity` to `player` API endpoint

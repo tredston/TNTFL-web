@@ -215,6 +215,11 @@ paths:
         type: number
         format: int64
         required: true
+      - name: includeDeleted
+        description: Use value '1' to include deleted games.
+        in: query
+        format: int
+        required: false
       operationId: getGames
       summary: Get games
       description: Get games.

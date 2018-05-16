@@ -19,7 +19,7 @@ def postMattermost(mattermostUrl, apiKey, tntflUrl, game, fields, colour):
             },
         ],
         'username': 'ScoreBot',
-        'icon_url': urllib.parse.urljoin(mattermostUrl, '/static/emoji/26bd.png'),
+        'icon_url': urllib.parse.urljoin(mattermostUrl, '/api/v4/emoji/1oybgnu8h7r4dgzcs5ur5fws1w/image'),
     }
     webhookUrl = urllib.parse.urljoin(urllib.parse.urljoin(mattermostUrl, '/hooks/'), apiKey)
     requests.post(webhookUrl, json=message)
