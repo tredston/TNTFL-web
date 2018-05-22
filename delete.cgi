@@ -1,30 +1,27 @@
 #!/usr/bin/env python3
 
-from builtins import next
 import cgi
 import os
+
 import tntfl.constants as Constants
-from tntfl.ladder import TableFootballLadder
-from tntfl.web import redirect_302, fail_404, serve_template, getInt, getString, fail_400
 from tntfl.hooks.deleteGame import do
+from tntfl.ladder import TableFootballLadder
+from tntfl.web import fail_404, getInt, fail_400, redirect_302, getString, no_content_204
 
 form = cgi.FieldStorage()
 
 gameTime = getInt('game', form)
+redirect = getString('redirect', form)
 if gameTime is not None:
     ladder = TableFootballLadder(Constants.ladderFilePath, postGameHooks=[do])
-    if getString('deleteConfirm', form) == "true":
-        deletedBy = os.environ["REMOTE_USER"] if "REMOTE_USER" in os.environ else "Unknown"
-        deleted = ladder.deleteGame(gameTime, deletedBy)
-        if deleted:
-            redirect_302("./")
+    deletedBy = os.environ["REMOTE_USER"] if "REMOTE_USER" in os.environ else "Unknown"
+    deleted = ladder.deleteGame(gameTime, deletedBy)
+    if deleted:
+        if redirect:
+            redirect_302(redirect)
         else:
-            fail_404()
+            no_content_204()
     else:
-        try:
-            game = next(g for g in ladder.games if g.time == gameTime)
-            serve_template("delete.html")
-        except StopIteration:
-            fail_404()
+        fail_404()
 else:
     fail_400()
