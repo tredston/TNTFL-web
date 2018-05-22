@@ -9,7 +9,6 @@ import tntfl.test.test_game_store as test_game_store
 import tntfl.test.test_ladder as test_ladder
 import tntfl.test.test_pundit as test_pundit
 import tntfl.test.test_json as test_json
-import tntfl.test.test_scripts as test_scripts
 import tntfl.test.test_deployment as test_deployment
 import tntfl.test.transforms.test_achievement as test_achievement
 import tntfl.test.transforms.test_belt as test_belt
@@ -39,12 +38,6 @@ def unitTestSuite():
     return test_suite
 
 
-def functionalTestSuite():
-    test_suite = unittest.TestSuite()
-    test_suite.addTest(unittest.findTestCases(test_scripts))
-    return test_suite
-
-
 def integrationTestSuite():
     test_suite = unittest.TestSuite()
     test_suite.addTest(unittest.findTestCases(test_deployment))
@@ -62,11 +55,6 @@ if __name__ == "__main__":
     clearCache()
     print('Running unit tests:')
     result = runner.run(unitTestSuite())
-
-    if len(result.errors) == 0 and len(result.failures) == 0:
-        clearCache()
-        print('Running functional tests:')
-        result = runner.run(functionalTestSuite())
 
     if len(result.errors) == 0 and len(result.failures) == 0 and args.runIntegration:
         clearCache()
