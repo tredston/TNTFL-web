@@ -15,7 +15,6 @@ import GamesPerWeek from '../components/stats/games-per-week';
 import Achievements from '../components/stats/achievements';
 
 interface StatsPageProps extends Props<StatsPage> {
-  base: string;
 }
 interface StatsPageState {
   stats?: Stats;
@@ -28,8 +27,7 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
     };
   }
   async load() {
-    const { base } = this.props;
-    const api = new StatsApi(fetch, base);
+    const api = new StatsApi(fetch, '');
     const stats = await api.getStats();
     this.setState({stats});
   }
@@ -37,27 +35,24 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
     this.load();
   }
   render() {
-    const { base } = this.props;
     const { stats } = this.state;
     return (
       <div>
-        <NavigationBar
-          base={base}
-        />
+        <NavigationBar/>
         {stats
           ? <div>
             <div style={{display: 'flex', flexDirection: 'column', marginLeft: 20, marginRight: 20}}>
               <div style={{display: 'flex', flexDirection: 'row'}}>
                 <div style={{width: 'calc((100vw - 80px) / 3)', marginRight: 20}}>
-                  <BeltSection belt={stats.belt} base={base} />
-                  <RecordsSection records={stats.records} base={base}/>
+                  <BeltSection belt={stats.belt} />
+                  <RecordsSection records={stats.records}/>
                   <StatsSection totals={stats.totals}/>
                 </div>
                 <div style={{width: 'calc((100vw - 80px) / 3)', marginRight: 20}}>
                   <Panel>
                     <Panel.Heading>Most Significant Games</Panel.Heading>
                     <Panel.Body>
-                      <GameList games={stats.records.mostSignificant} base={base} />
+                      <GameList games={stats.records.mostSignificant} />
                     </Panel.Body>
                   </Panel>
                 </div>
@@ -65,7 +60,7 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
                   <Panel>
                     <Panel.Heading>Least Significant Games</Panel.Heading>
                     <Panel.Body>
-                      <GameList games={stats.records.leastSignificant} base={base} />
+                      <GameList games={stats.records.leastSignificant} />
                     </Panel.Body>
                   </Panel>
                 </div>
@@ -87,8 +82,6 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
 }
 
 ReactDOM.render(
-  <StatsPage
-    base={__tntfl_base_path__}
-  />,
+  <StatsPage/>,
   document.getElementById('entry'),
 );

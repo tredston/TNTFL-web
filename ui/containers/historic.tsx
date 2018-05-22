@@ -65,7 +65,6 @@ function getEndOfMonth(startOfMonth: Moment.Moment): Moment.Moment {
 }
 
 interface HistoricPageProps extends Props<HistoricPage> {
-  base: string;
   gamesFrom?: number;
   gamesTo?: number;
 }
@@ -90,9 +89,8 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     return { begin, end };
   }
   async loadLadder(gamesFrom: number | undefined, gamesTo: number | undefined) {
-    const { base } = this.props;
     const { begin, end } = this.getRange(gamesFrom, gamesTo);
-    const api = new LadderApi(fetch, base);
+    const api = new LadderApi(fetch, '');
     const entries = await api.getLadderBetween({players: 1, showInactive: 1, begin, end});
     this.setState({entries} as HistoricPageState);
   }
@@ -116,7 +114,6 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     this.loadLadder(gamesFrom, gamesTo);
   }
   render() {
-    const { base } = this.props;
     const { entries, gamesFrom, gamesTo } = this.state;
     const now = (new Date()).getUTCFullYear();
     const firstYear = 2005;
@@ -129,9 +126,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
 
     return (
       <div>
-        <NavigationBar
-          base={base}
-        />
+        <NavigationBar/>
         <div>
           <Panel style={{marginLeft: 20, marginRight: 20}}>
             <Panel.Body>
@@ -174,7 +169,6 @@ function getParameters(): [number | undefined, number | undefined] {
 
 ReactDOM.render(
   <HistoricPage
-    base={__tntfl_base_path__}
     gamesFrom={getParameters()[0]}
     gamesTo={getParameters()[1]}
   />,

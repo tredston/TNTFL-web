@@ -6,7 +6,6 @@ import GameSummary from './game-summary';
 
 interface GameListProps extends Props<GameList> {
   games: Game[];
-  base: string;
 }
 interface State {
   activePlayers?: Map<number, number>;
@@ -20,19 +19,19 @@ export default class GameList extends Component<GameListProps, State> {
     };
   }
   async loadPunditry() {
-    const { base, games } = this.props;
+    const { games } = this.props;
     if (games.length > 0) {
       const at = games.map((game) => game.date).join(',');
-      const json = await new GamesApi(fetch, base).getPunditry({at});
+      const json = await new GamesApi(fetch, '').getPunditry({at});
       const punditry = Object.keys(json).reduce((acc, cur) => acc.set(+cur, json[cur].facts), new Map<number, string[]>());
       this.setState({punditry});
     }
   }
   async loadActivePlayers() {
-    const { base, games } = this.props;
+    const { games } = this.props;
     if (games.length > 0) {
       const at = games.map((game) => game.date - 1).join(',');
-      const json: {[key: string]: {count: number}} = await new PlayersApi(fetch, base).getActive({at});
+      const json: {[key: string]: {count: number}} = await new PlayersApi(fetch, '').getActive({at});
       const activePlayers = Object.keys(json).reduce((acc, cur) => acc.set(+cur, json[cur].count), new Map<number, number>());
       this.setState({activePlayers});
     }
@@ -48,14 +47,13 @@ export default class GameList extends Component<GameListProps, State> {
     }
   }
   render(): JSX.Element {
-    const { games, base } = this.props;
+    const { games } = this.props;
     const { activePlayers, punditry } = this.state;
     return (
       <>
         {games.map((game) =>
           <GameSummary
             game={game}
-            base={base}
             numActivePlayers={(activePlayers && activePlayers.get(game.date - 1)) || 0}
             punditry={punditry && punditry.get(game.date)}
             key={`${game.date}`}

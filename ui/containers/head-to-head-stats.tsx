@@ -5,7 +5,6 @@ import { PlayersApi, Game, Player } from 'tntfl-api';
 import HeadToHeadStatsView from '../components/head-to-head/head-to-head-stats';
 
 interface HeadToHeadStatsProps extends Props<HeadToHeadStats> {
-  base: string;
   player1: string;
   player2: string;
   games: Game[];
@@ -25,8 +24,7 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
     };
   }
   async loadPlayer(playerName: string): Promise<Player> {
-    const { base } = this.props;
-    const api = new PlayersApi(fetch, base);
+    const api = new PlayersApi(fetch, '');
     return await api.getPlayer({player: playerName});
   }
   async loadPlayers() {
@@ -36,8 +34,7 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
     this.setState({player1: await p1, player2: await p2});
   }
   async loadActivePlayers() {
-    const { base } = this.props;
-    const api = new PlayersApi(fetch, base);
+    const api = new PlayersApi(fetch, '');
     const activePlayers = await api.getActive({});
     this.setState({activePlayers});
   }
@@ -46,11 +43,10 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
     this.loadActivePlayers();
   }
   render(): JSX.Element {
-    const { base, player1: player1Name, player2: player2Name, games } = this.props;
+    const { player1: player1Name, player2: player2Name, games } = this.props;
     const { player1, player2, activePlayers } = this.state;
     return (
       <HeadToHeadStatsView
-        base={base}
         player1Name={player1Name}
         player2Name={player2Name}
         player1={player1}

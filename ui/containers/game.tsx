@@ -12,7 +12,6 @@ import NavigationBar from '../components/navigation-bar';
 import { getParameters } from '../utils/utils';
 
 interface GamePageProps extends Props<GamePage> {
-  base: string;
   gameId: string;
 }
 interface GamePageState {
@@ -28,20 +27,20 @@ class GamePage extends Component<GamePageProps, GamePageState> {
   };
 
   async loadGame() {
-    const { base, gameId } = this.props;
-    const api = new GamesApi(fetch, base);
+    const { gameId } = this.props;
+    const api = new GamesApi(fetch, '');
     const game = await api.getGame({gameId: +gameId});
     this.setState({game});
   }
   async loadPunditry() {
-    const { base, gameId } = this.props;
-    const api = new GamesApi(fetch, base);
+    const { gameId } = this.props;
+    const api = new GamesApi(fetch, '');
     const punditry = await api.getPunditry({at: gameId});
     this.setState({punditry: punditry[Object.keys(punditry)[0]].facts});
   }
   async loadActivePlayers() {
-    const { base, gameId } = this.props;
-    const activePlayers = await new PlayersApi(fetch, base).getActive({at: `${+gameId - 1}`});
+    const { gameId } = this.props;
+    const activePlayers = await new PlayersApi(fetch, '').getActive({at: `${+gameId - 1}`});
     this.setState({activePlayers: activePlayers[Object.keys(activePlayers)[0]].count});
   }
   componentDidMount() {
@@ -50,20 +49,17 @@ class GamePage extends Component<GamePageProps, GamePageState> {
     this.loadActivePlayers();
   }
   render() {
-    const { base } = this.props;
     const { game, punditry, activePlayers } = this.state;
     const numActivePlayers = activePlayers || 0;
     return (
       <div className='gamePage'>
-        <NavigationBar
-          base={base}
-        />
+        <NavigationBar/>
         {game ?
           <div className={'page-container'}>
             <Panel>
               <Panel.Body>
                 <div>
-                  <GameSummary game={game} base={'../../'} numActivePlayers={numActivePlayers} />
+                  <GameSummary game={game} numActivePlayers={numActivePlayers} />
                 </div>
                 <div>
                   <GameDetails game={game} punditry={punditry}/>
@@ -80,7 +76,6 @@ class GamePage extends Component<GamePageProps, GamePageState> {
 
 ReactDOM.render(
     <GamePage
-      base={__tntfl_base_path__}
       gameId={getParameters(1)[0]}
     />,
     document.getElementById('entry'),

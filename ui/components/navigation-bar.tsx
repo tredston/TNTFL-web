@@ -6,7 +6,6 @@ import { GamesApi } from 'tntfl-api';
 import AddGameForm from './add-game-form';
 
 interface NavigationBarProps extends Props<NavigationBar> {
-  base: string;
 }
 interface State {
   isBusy: boolean;
@@ -17,7 +16,6 @@ export default class NavigationBar extends Component<NavigationBarProps, State> 
   };
 
   render(): JSX.Element {
-    const { base } = this.props;
     const { isBusy } = this.state;
     return (
       <Navbar fluid={true}>
@@ -27,11 +25,11 @@ export default class NavigationBar extends Component<NavigationBarProps, State> 
           </Navbar.Brand>
         </Navbar.Header>
         <Nav bsStyle={'pills'}>
-          <NavItem href={base}>Home</NavItem>
-          <NavItem href={base + 'stats/'}>Stats</NavItem>
-          <NavItem href={base + 'speculate/'}>Speculate</NavItem>
-          <NavItem href={base + 'api/'}>API</NavItem>
-          <NavItem href={base + 'historic.cgi'}>Slice</NavItem>
+          <NavItem href={'/'}>Home</NavItem>
+          <NavItem href={'/stats/'}>Stats</NavItem>
+          <NavItem href={'/speculate/'}>Speculate</NavItem>
+          <NavItem href={'/api/'}>API</NavItem>
+          <NavItem href={'/historic/'}>Slice</NavItem>
         </Nav>
         <Nav pullRight>
           <AddGameForm
@@ -44,11 +42,8 @@ export default class NavigationBar extends Component<NavigationBarProps, State> 
   }
 
   async onAddGame(redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) {
-    const { base } = this.props;
     this.setState({isBusy: true});
-    const r = await new GamesApi(fetch, base).addGameRedirect({redPlayer, redScore, bluePlayer, blueScore}) as Response;
-    if (r.status === 200) {
-      window.location.href = r.url;
-    }
+    const newGame = await new GamesApi(fetch, '').addGame({ redPlayer, redScore, bluePlayer, blueScore });
+    window.location.href = `/game/${newGame.date}`;
   }
 }

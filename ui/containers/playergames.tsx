@@ -7,8 +7,7 @@ import { getParameters } from '../utils/utils';
 
 ReactDOM.render(
   <GamesPage
-    base={__tntfl_base_path__}
-    getUrl={`${window.location.href}json`}
+    getUrl={`${window.location.href}/json`}
     title={`${getParameters(2)[0]}'s Games`}
   />,
   document.getElementById('entry'),

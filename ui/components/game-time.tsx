@@ -4,13 +4,12 @@ import { formatEpoch } from '../utils/utils';
 
 interface GameTimeProps {
   date: number;
-  base: string;
 }
 export default function GameTime(props: GameTimeProps): JSX.Element {
-  const { date, base } = props;
+  const { date } = props;
   return (
     <span className='gameTime' style={{textAlign: 'center'}}>
-      <a href={`${base}game/${date}/`}>
+      <a href={`/game/${date}`}>
         {formatEpoch(date)}
       </a>
     </span>

@@ -1,12 +1,11 @@
 import * as React from 'react';
 
 interface PlayerLinkProps {
-  base: string;
   name: string;
 }
 export default function PlayerLink(props: PlayerLinkProps): JSX.Element {
-  const { base, name } = props;
+  const { name } = props;
   return (
-    <a href={`${base}player/${name}`}>{name}</a>
+    <a href={`/player/${name}`}>{name}</a>
   );
 }

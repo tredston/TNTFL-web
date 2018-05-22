@@ -32,17 +32,16 @@ interface InstantStatBoxProps {
   title: string;
   at?: number;
   children?: any;
-  base: string;
 }
 export function InstantStatBox(props: InstantStatBoxProps): JSX.Element {
-  const { title, at, children, base } = props;
+  const { title, at, children } = props;
   return (
     <Panel>
       <Panel.Heading style={{textAlign: 'center'}}><h3>{title}</h3></Panel.Heading>
       <Panel.Body>
         <div style={statStyle}>{children}</div>
         <div style={{textAlign: 'right'}}>
-          {at ? <span>at <GameTime date={at} base={base} /></span> : <span>before first game</span>}
+          {at ? <span>at <GameTime date={at} /></span> : <span>before first game</span>}
         </div>
       </Panel.Body>
     </Panel>
@@ -54,18 +53,17 @@ interface DurationStatBoxProps {
   from?: number;
   to?: number;
   children?: any;
-  base: string;
   style?: CSSProperties;
 }
 export function DurationStatBox(props: DurationStatBoxProps): JSX.Element {
-  const { title, from, to, children, base, style } = props;
+  const { title, from, to, children, style } = props;
   return (
     <Panel>
       <Panel.Heading style={{...style, textAlign: 'center'}}><h3>{title}</h3></Panel.Heading>
       <Panel.Body>
         <div style={statStyle}>{children}</div>
-        {from && <div style={{textAlign: 'right'}}>From <GameTime date={from} base={base} /></div>}
-        {to && <div style={{textAlign: 'right'}}>to <GameTime date={to} base={base} /></div>}
+        {from && <div style={{textAlign: 'right'}}>From <GameTime date={from} /></div>}
+        {to && <div style={{textAlign: 'right'}}>to <GameTime date={to} /></div>}
       </Panel.Body>
     </Panel>
   );

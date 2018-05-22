@@ -10,7 +10,6 @@ import NavigationBar from '../components/navigation-bar';
 import LadderPanel from '../components/ladder-panel';
 
 interface IndexPageProps extends Props<IndexPage> {
-  base: string;
 }
 interface IndexPageState {
   entries?: LadderEntry[];
@@ -23,14 +22,12 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   };
 
   async loadLadder() {
-    const base = '.';
-    const api = new LadderApi(fetch, base);
+    const api = new LadderApi(fetch, '');
     const entries = await api.getLadder({ showInactive: 1, players: 1 });
     this.setState({entries} as IndexPageState);
   }
   async loadRecent() {
-    const base = '.';
-    const api = new GamesApi(fetch, base);
+    const api = new GamesApi(fetch, '');
     const recentGames = await api.getRecent({});
     this.setState({recentGames} as IndexPageState);
   }
@@ -43,19 +40,16 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
     }, 600 * 1000);
   }
   render() {
-    const { base } = this.props;
     const { entries, recentGames } = this.state;
     return (
       <div>
-        <NavigationBar
-          base={base}
-        />
+        <NavigationBar/>
         <div className={'ladder-page'}>
           <div className={'ladder-panel'}>
             <LadderPanel entries={entries} />
           </div>
           <div className={'side-panel'}>
-            <RecentGames games={recentGames} showAllGames={false} base={base}/>
+            <RecentGames games={recentGames} showAllGames={false} />
           </div>
         </div>
       </div>
@@ -64,8 +58,6 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
 }
 
 ReactDOM.render(
-  <IndexPage
-    base={__tntfl_base_path__}
-  />,
+  <IndexPage/>,
   document.getElementById('entry'),
 );

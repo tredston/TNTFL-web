@@ -13,7 +13,6 @@ import RecentGames from '../components/recent-game-list';
 import { getParameters, mostRecentGames } from '../utils/utils';
 
 interface HeadToHeadPageProps extends Props<HeadToHeadPage> {
-  base: string;
   player1: string;
   player2: string;
 }
@@ -28,8 +27,8 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
     };
   }
   async loadGames() {
-    const { base, player1, player2 } = this.props;
-    const api = new GamesApi(fetch, base);
+    const { player1, player2 } = this.props;
+    const api = new GamesApi(fetch, '');
     const games = await api.getHeadToHeadGames({player1, player2});
     this.setState({games} as HeadToHeadPageState);
   }
@@ -37,17 +36,15 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
     this.loadGames();
   }
   render() {
-    const { base, player1, player2 } = this.props;
+    const { player1, player2 } = this.props;
     const { games } = this.state;
     return (
       <div>
-        <NavigationBar
-          base={base}
-        />
+        <NavigationBar/>
         {games ?
           <div className={'ladder-page'}>
             <div className={'ladder-panel'}>
-              <Stats player1={player1} player2={player2} games={games} base={base}/>
+              <Stats player1={player1} player2={player2} games={games} />
               <Panel>
                 <Panel.Body>
                   <HeadToHeadChart player1={player1} player2={player2} games={games}/>
@@ -61,7 +58,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
                   <GoalDistributionChart player1={player1} player2={player2} games={games}/>
                 </Panel.Body>
               </Panel>
-              <RecentGames games={mostRecentGames(games)} showAllGames={true} base={base}/>
+              <RecentGames games={mostRecentGames(games)} showAllGames={true} />
             </div>
           </div>
           : 'Loading...'
@@ -73,7 +70,6 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
 
 ReactDOM.render(
   <HeadToHeadPage
-    base={__tntfl_base_path__}
     player1={getParameters(2)[0]}
     player2={getParameters(2)[1]}
   />,

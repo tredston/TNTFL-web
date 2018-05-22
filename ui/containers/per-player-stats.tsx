@@ -7,7 +7,6 @@ import PerPlayerStatsView from '../components/player/per-player-stats';
 
 interface PerPlayerStatsProps extends Props<PerPlayerStats> {
   playerName: string;
-  base: string;
 }
 interface State {
   stats?: PerPlayerStat[];
@@ -18,8 +17,8 @@ export default class PerPlayerStats extends Component<PerPlayerStatsProps, State
   };
 
   async loadPerPlayerStats() {
-    const { base, playerName } = this.props;
-    const api = new PlayersApi(fetch, base);
+    const { playerName } = this.props;
+    const api = new PlayersApi(fetch, '');
     const stats = await api.getPerPlayerStats({player: playerName});
     this.setState({stats} as State);
   }
@@ -27,14 +26,14 @@ export default class PerPlayerStats extends Component<PerPlayerStatsProps, State
     this.loadPerPlayerStats();
   }
   render(): JSX.Element {
-    const { playerName, base } = this.props;
+    const { playerName } = this.props;
     const { stats } = this.state;
     return (
       <Panel>
         <Panel.Heading><h2>Per-Player Stats</h2></Panel.Heading>
         <Panel.Body>
           {stats
-            ? <PerPlayerStatsView playerName={playerName} base={base} stats={stats}/>
+            ? <PerPlayerStatsView playerName={playerName} stats={stats}/>
             : 'Loading...'
           }
         </Panel.Body>
