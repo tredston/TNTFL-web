@@ -41,12 +41,6 @@ class Deployment(unittest.TestCase, metaclass=abc.ABCMeta):
         cls._restoreFile('ladder.txt')
         cls._restoreFile('tntfl.cfg')
 
-    def _clearCache(self):
-        cacheFile = '^\.cache\.'
-        for f in os.listdir('.'):
-            if re.search(cacheFile, f):
-                os.remove(f)
-
     def _getJson(self, page, query=None):
         response = self._get(page, query)
         self.assertEqual(response.status_code, 200)
@@ -137,9 +131,6 @@ class AddGame(Deployment):
     def testInvalidAdd(self):
         r = requests.get(self._page('game/add/json'))
         self.assertEqual(r.status_code, 400)
-
-    def tearDown(self):
-        self._clearCache()
 
 
 @unittest.skip('Requires credentials')

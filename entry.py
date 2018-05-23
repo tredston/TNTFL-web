@@ -151,11 +151,11 @@ def speculate():
 
     def getLadder(speculative_games):
         transforms = PresetTransforms.transforms_for_recent()
-        games = Transformer.transform(lambda: GameStore(Constants.ladderFilePath).getGames(), transforms, False)
+        games = Transformer.transform(lambda: GameStore(Constants.ladderFilePath).getGames(), transforms)
 
         if len(speculative_games) > 0:
             games += speculative_games
-            games = Transformer.transform(lambda: games, transforms, False)
+            games = Transformer.transform(lambda: games, transforms)
 
         return TableFootballLadder(None, games=games)
 

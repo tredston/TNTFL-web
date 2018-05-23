@@ -15,7 +15,7 @@ redScore = getInt('redScore', form)
 blueScore = getInt('blueScore', form)
 if redPlayer is not None and bluePlayer is not None and redScore is not None and blueScore is not None and redPlayer != bluePlayer:
     ladder = TableFootballLadder(Constants.ladderFilePath, games=[], postGameHooks=[do])
-    ladder._gameStore = CachingGameStore(Constants.ladderFilePath, False)
+    ladder._gameStore = CachingGameStore(Constants.ladderFilePath)
     ladder.appendGame(redPlayer, redScore, bluePlayer, blueScore)
     no_content_204()
 else:

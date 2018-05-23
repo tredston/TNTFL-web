@@ -1,7 +1,6 @@
 import os
 import unittest
 
-from tntfl import constants
 from tntfl.game import Game
 from tntfl.ladder import TableFootballLadder
 from tntfl.player import Player

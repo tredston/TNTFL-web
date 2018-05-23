@@ -16,14 +16,6 @@ import tntfl.test.transforms.test_elo as test_elo
 import tntfl.test.transforms.test_rank as test_rank
 
 
-def clearCache():
-    print('Clearing cache')
-    cacheFile = '^\.cache\.'
-    for f in os.listdir('.'):
-        if re.search(cacheFile, f):
-            os.remove(f)
-
-
 def unitTestSuite():
     test_suite = unittest.TestSuite()
     test_suite.addTest(unittest.findTestCases(test_achievements))
@@ -52,16 +44,12 @@ if __name__ == "__main__":
 
     runner = unittest.TextTestRunner()
 
-    clearCache()
     print('Running unit tests:')
     result = runner.run(unitTestSuite())
 
     if len(result.errors) == 0 and len(result.failures) == 0 and args.runIntegration:
-        clearCache()
         print('Running integration tests:')
         result = runner.run(integrationTestSuite())
-
-    clearCache()
 
     ok = len(result.errors) == 0 and len(result.failures) == 0
     sys.exit(not ok)

@@ -39,13 +39,13 @@ class Test(TestCase):
         self.assertEquals("(last game was a draw)", streaks['currentType'])
 
     def testTwoLadders(self):
-        a = TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False)
-        b = TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False)
+        a = TableFootballLadder(os.path.join(__location__, "testLadder.txt"))
+        b = TableFootballLadder(os.path.join(__location__, "testLadder.txt"))
         self.assertEquals(5, len(a.games))
         self.assertEquals(5, len(b.games))
 
     def testJrem(self):
-        jl = TableFootballLadder(os.path.join(__location__, "jrem.ladder"), False)
+        jl = TableFootballLadder(os.path.join(__location__, "jrem.ladder"))
         jrem = jl.players['jrem']
         streaks = jrem.getStreaks()
 
@@ -59,7 +59,7 @@ class Test(TestCase):
         self.assertEqual(3, len(ladder.players))
 
     def testRankChange(self):
-        ladder = TableFootballLadder(os.path.join(__location__, "test_rank.txt"), False)
+        ladder = TableFootballLadder(os.path.join(__location__, "test_rank.txt"))
         self.assertEqual(2, ladder.games[0].redPosAfter)
         self.assertEqual(1, ladder.games[0].bluePosAfter)
         self.assertEqual(1, ladder.games[1].redPosAfter)
@@ -68,7 +68,7 @@ class Test(TestCase):
         self.assertEqual(-1, ladder.games[1].bluePosChange)
 
     def testActivePlayers(self):
-        ladder = TableFootballLadder(os.path.join(__location__, "test_active.txt"), False, transforms=PresetTransforms.no_transforms())
+        ladder = TableFootballLadder(os.path.join(__location__, "test_active.txt"), transforms=PresetTransforms.no_transforms())
         self.assertEqual(3, ladder.getNumActivePlayers(5000000003))
         self.assertEqual(0, ladder.getNumActivePlayers(6000000002))
         self.assertEqual(2, ladder.getNumActivePlayers(6000000004))

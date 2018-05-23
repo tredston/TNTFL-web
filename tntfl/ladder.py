@@ -10,7 +10,7 @@ from tntfl.skill_change import Elo
 
 
 class TableFootballLadder(object):
-    def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None, games=None, postGameHooks=[]):
+    def __init__(self, ladderFilePath, timeRange=None, transforms=None, games=None, postGameHooks=[]):
         self.games = []
         self.players = {}
         self._skillChange = Elo()
@@ -22,7 +22,7 @@ class TableFootballLadder(object):
 
         self._gameStore = None
         if games is None:
-            self._gameStore = CachingGameStore(ladderFilePath, useCache)
+            self._gameStore = CachingGameStore(ladderFilePath)
             transforms = PresetTransforms.transforms_for_full_games(self._ladderTime) if transforms is None else transforms
             games = self._gameStore.loadGames(self._ladderTime, transforms)
         withAchievements = 'achievement' in [t.getName() for t in transforms] if transforms is not None else True

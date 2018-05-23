@@ -1,6 +1,5 @@
 import tntfl.constants as Constants
 from tntfl.ladder import TableFootballLadder
-from tntfl.transforms.transforms import Transforms
 
 
 class TNTFL(object):
@@ -12,8 +11,6 @@ class TNTFL(object):
         return self._tntfl
 
     def invalidate(self):
-        for transform in list(Transforms.values()):
-            transform.deleteCache()
         self._tntfl = TableFootballLadder(Constants.ladderFilePath)
 
 
