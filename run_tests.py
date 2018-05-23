@@ -30,7 +30,7 @@ def unitTestSuite():
     return test_suite
 
 
-def integrationTestSuite():
+def functionalTestSuite():
     test_suite = unittest.TestSuite()
     test_suite.addTest(unittest.findTestCases(test_deployment))
     return test_suite
@@ -47,9 +47,9 @@ if __name__ == "__main__":
     print('Running unit tests:')
     result = runner.run(unitTestSuite())
 
-    if len(result.errors) == 0 and len(result.failures) == 0 and args.runIntegration:
-        print('Running integration tests:')
-        result = runner.run(integrationTestSuite())
+    if len(result.errors) == 0 and len(result.failures) == 0:
+        print('Running functional tests:')
+        result = runner.run(functionalTestSuite())
 
     ok = len(result.errors) == 0 and len(result.failures) == 0
     sys.exit(not ok)
