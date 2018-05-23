@@ -4,6 +4,8 @@ import os
 import shutil
 import unittest
 
+from tntfl.blueprints.common import tntfl
+
 
 class TestCase(unittest.TestCase, metaclass=abc.ABCMeta):
     @classmethod
@@ -24,14 +26,15 @@ class TestCase(unittest.TestCase, metaclass=abc.ABCMeta):
 
     @classmethod
     def setUpClass(cls):
-        cls._backupFile('tntfl.cfg')
+        tntfl.invalidate()
+        # cls._backupFile('tntfl.cfg')
         cls._backupFile('ladder.txt')
         shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
 
     @classmethod
     def tearDownClass(cls):
         cls._restoreFile('ladder.txt')
-        cls._restoreFile('tntfl.cfg')
+        # cls._restoreFile('tntfl.cfg')
 
     def _getJson(self, page, query=None):
         response = self._get(page, query)
