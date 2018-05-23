@@ -1,19 +1,21 @@
 import argparse
-import os
-import re
 import sys
 import unittest
 
 import tntfl.test.test_achievements as test_achievements
 import tntfl.test.test_game_store as test_game_store
+import tntfl.test.test_json as test_json
 import tntfl.test.test_ladder as test_ladder
 import tntfl.test.test_pundit as test_pundit
-import tntfl.test.test_json as test_json
-import tntfl.test.test_deployment as test_deployment
 import tntfl.test.transforms.test_achievement as test_achievement
 import tntfl.test.transforms.test_belt as test_belt
 import tntfl.test.transforms.test_elo as test_elo
 import tntfl.test.transforms.test_rank as test_rank
+from tntfl.test.blueprints import test_entry
+from tntfl.test.blueprints import test_game_api
+from tntfl.test.blueprints import test_ladder_api
+from tntfl.test.blueprints import test_pages
+from tntfl.test.blueprints import test_player_api
 
 
 def unitTestSuite():
@@ -32,7 +34,11 @@ def unitTestSuite():
 
 def functionalTestSuite():
     test_suite = unittest.TestSuite()
-    test_suite.addTest(unittest.findTestCases(test_deployment))
+    test_suite.addTest(unittest.findTestCases(test_entry))
+    test_suite.addTest(unittest.findTestCases(test_game_api))
+    test_suite.addTest(unittest.findTestCases(test_ladder_api))
+    test_suite.addTest(unittest.findTestCases(test_pages))
+    test_suite.addTest(unittest.findTestCases(test_player_api))
     return test_suite
 
 
