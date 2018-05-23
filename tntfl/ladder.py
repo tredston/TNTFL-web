@@ -97,35 +97,6 @@ class TableFootballLadder(object):
             maxStreak(streaks['lose'], losing, player)
         return {'win': winning, 'lose': losing}
 
-    def _runHooks(self, gameTime):
-        games = self._gameStore.loadGames({'now': True}, PresetTransforms.transforms_for_recent())
-        try:
-            game = next(g for g in games if g.time == gameTime)
-            for hook in self.postGameHooks:
-                hook(game)
-        except StopIteration:
-            pass
-
-    def appendGame(self, redPlayer, redScore, bluePlayer, blueScore):
-        game = None
-        redScore = int(redScore)
-        blueScore = int(blueScore)
-        if redScore >= 0 and blueScore >= 0 and (redScore + blueScore) > 0:
-            game = Game(redPlayer.lower(), redScore, bluePlayer.lower(), blueScore, int(time.time()))
-            self._gameStore.appendGame(game)
-            self._runHooks(game.time)
-            # Invalidate
-            self.games = None
-            self.players = None
-            return game.time
-        return None
-
-    def deleteGame(self, gameTime, deletedBy):
-        found = self._gameStore.deleteGame(gameTime, deletedBy)
-        if found:
-            self._runHooks(gameTime)
-        return found
-
     def getRankedPlayers(self):
         return sorted([p for p in list(self.players.values())], key=lambda x: x.elo, reverse=True)
 

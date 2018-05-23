@@ -1,7 +1,4 @@
-import unittest
-import urllib.error
-import urllib.parse
-import urllib.request
+import json
 
 from flask import Flask
 
@@ -17,57 +14,39 @@ class ApiTests(TestCase):
         self.client = self.app.test_client()
 
 
-@unittest.skip('No add')
 class AddGame(ApiTests):
     def test(self):
-        page = 'game/add/json'
+        page = '/game/add/json'
         query = 'redPlayer=foo&redScore=5&bluePlayer=bar&blueScore=5'
-        newGame = self._getJson(page, query)
+        r = self.client.post(self._page(page, query))
+        self.assertEqual(r.status_code, 200)
+        newGame = json.loads(r.data.decode('utf-8'))
         self.assertEqual(newGame['red']['name'], 'foo')
 
     def testAddYellowStripeApi(self):
-        page = 'game/add/json'
+        page = '/game/add/json'
         query = 'redPlayer=foo&redScore=10&bluePlayer=bar&blueScore=0'
-        r = self.client.post(self._page(page, query)).json()
-        self.assertEqual(r['red']['name'], 'foo')
+        r = self.client.post(self._page(page, query))
+        self.assertEqual(r.status_code, 200)
+        newGame = json.loads(r.data.decode('utf-8'))
+        self.assertEqual(newGame['red']['name'], 'foo')
 
     def testNoSinglePlayer(self):
-        page = 'game/add/json'
+        page = '/game/add/json'
         query = 'redPlayer=cxh&redScore=10&bluePlayer=cxh&blueScore=0'
         r = self.client.post(self._page(page, query))
         self.assertEqual(r.status_code, 400)
 
     def testInvalidAdd(self):
-        r = self.client.get(self._page('game/add/json'))
+        r = self.client.post(self._page('/game/add/json'))
         self.assertEqual(r.status_code, 400)
 
 
-@unittest.skip('Requires credentials')
 class DeletePage(ApiTests):
-    _username = None
-    _password = None
-
     def testNoGame(self):
-        self.assertEqual(self._getErrorCode('delete.cgi'), 400)
-
-    def testInvalidGame(self):
-        self.assertEqual(self._getErrorCode('delete.cgi?game=123'), 404)
-
-    def _testResponse(self, response):
-        super(DeletePage, self)._testResponse(response)
-        self.assertTrue("<!DOCTYPE html>" in response)
-
-    def _getErrorCode(self, page):
-        opener = self._getOpener()
-        with self.assertRaises(urllib.error.HTTPError) as cm:
-            opener.open(self._page(page)).read()
-        return cm.exception.code
-
-    def _getOpener(self):
-        password_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-        password_mgr.add_password(None, self.urlBase, self._username, self._password)
-        handler = urllib.request.HTTPBasicAuthHandler(password_mgr)
-        return urllib.request.build_opener(handler)
+        # Doesn't do anything
+        r = self.client.post(self._page('/game/1223308996/delete/json'))
+        self.assertEqual(r.status_code, 200)
 
 
 class GameApi(ApiTests):

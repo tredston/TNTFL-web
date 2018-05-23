@@ -11,6 +11,7 @@ import tntfl.test.transforms.test_achievement as test_achievement
 import tntfl.test.transforms.test_belt as test_belt
 import tntfl.test.transforms.test_elo as test_elo
 import tntfl.test.transforms.test_rank as test_rank
+from tntfl.test import test_add, test_delete
 from tntfl.test.blueprints import test_entry
 from tntfl.test.blueprints import test_game_api
 from tntfl.test.blueprints import test_ladder_api
@@ -39,6 +40,8 @@ def functionalTestSuite():
     test_suite.addTest(unittest.findTestCases(test_ladder_api))
     test_suite.addTest(unittest.findTestCases(test_pages))
     test_suite.addTest(unittest.findTestCases(test_player_api))
+    test_suite.addTest(unittest.findTestCases(test_add))
+    test_suite.addTest(unittest.findTestCases(test_delete))
     return test_suite
 
 

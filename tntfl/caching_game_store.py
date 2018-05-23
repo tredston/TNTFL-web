@@ -1,7 +1,5 @@
-from builtins import object
-from tntfl.game_store import GameStore
-from tntfl.transforms.transforms import Transforms
 import tntfl.transforms.transformer as Transformer
+from tntfl.game_store import GameStore
 
 
 class CachingGameStore(object):
@@ -17,9 +15,3 @@ class CachingGameStore(object):
         if not self._ladderTime['now']:
             games = [g for g in games if self._ladderTime['range'][0] <= g.time <= self._ladderTime['range'][1]]
         return games
-
-    def appendGame(self, game):
-        self._gameStore.appendGame(game)
-
-    def deleteGame(self, gameTime, deletedBy):
-        return self._gameStore.deleteGame(gameTime, deletedBy)
