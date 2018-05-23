@@ -1,4 +1,5 @@
 import json
+import unittest
 
 from flask import Flask
 
@@ -43,10 +44,15 @@ class AddGame(ApiTests):
 
 
 class DeletePage(ApiTests):
-    def testNoGame(self):
-        # Doesn't do anything
+    def test(self):
         r = self.client.post(self._page('/game/1223308996/delete/json'))
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 204)
+
+    @unittest.skip('TODO')
+    def testReferrer(self):
+        # TODO send referrer info
+        r = self.client.post(self._page('/game/1223308996/delete/json'))
+        self.assertEqual(r.status_code, 302)
 
 
 class GameApi(ApiTests):

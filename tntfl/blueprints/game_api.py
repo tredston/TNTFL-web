@@ -2,7 +2,7 @@ import json
 from urllib.parse import urljoin
 
 import requests
-from flask import abort, Blueprint, request
+from flask import abort, Blueprint, request, redirect
 
 from tntfl.blueprints.common import tntfl
 from tntfl.constants import ladder_host
@@ -41,7 +41,12 @@ def game(game_time):
         abort(404)
 
 
-@game_api.route('/game/<int:game_time>/delete/json', methods=['POST'])
+@game_api.route('/game/<int:game_time>/delete/json', methods=['GET', 'POST'])
 def delete(game_time):
     tntfl.invalidate()
-    return ''
+    referrer = request.referrer
+    if referrer and referrer.endswith('/delete'):
+        referrer = referrer[:-len('/delete')]
+        url = urljoin(ladder_host, 'game/{}/delete?redirect={}'.format(game_time, referrer))
+        return redirect(url, code=302)
+    return '', 204
