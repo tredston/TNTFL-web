@@ -1,18 +1,21 @@
-import unittest
 import os
+import unittest
+
 from tntfl.game_store import GameStore
-from tntfl.game import Game
 
 
 class TestGameStore(unittest.TestCase):
+    def getLadder(self, filename):
+        return 'file://' + filename
+
     def testRead(self):
         try:
             game1 = ("tlr", 0, "cjm", 10, 1445443858)
-            filePath = "temp.txt"
+            filePath = "/tmp/temp.txt"
             with open(filePath, 'w') as temp:
                 temp.write("\n%s %s %s %s %.0f" % game1)
 
-            sut = GameStore(filePath)
+            sut = GameStore(self.getLadder(filePath))
             result = sut.getGames()
             self.assertEqual(len(result), 1)
             self._assertGame(result[0], game1)
@@ -22,7 +25,7 @@ class TestGameStore(unittest.TestCase):
     def testReadDeleted(self):
         try:
             game1 = ("tlr", 0, "cjm", 10, 1445443858, "cjm", 1445443859)
-            filePath = "temp.txt"
+            filePath = "/tmp/temp.txt"
             with open(filePath, 'w') as temp:
                 temp.write("\n%s %s %s %s %.0f %s %.0f" % game1)
 

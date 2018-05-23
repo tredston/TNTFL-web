@@ -6,7 +6,7 @@ from tntfl.hooks.utils import postMattermost
 
 
 def do(game):
-    config = Constants.getConfig()
+    config = Constants.config
     if config.has_option('mattermost', 'mattermost_url') and config.has_option('mattermost', 'delete_api_key') and config.has_option('mattermost', 'tntfl_url'):
         mattermostUrl = config.get('mattermost', 'mattermost_url')
         apiKey = config.get('mattermost', 'delete_api_key')

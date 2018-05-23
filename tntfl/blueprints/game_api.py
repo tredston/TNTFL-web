@@ -1,24 +1,26 @@
 import json
-import requests
+from urllib.parse import urljoin
 
+import requests
 from flask import abort, Blueprint, request
 
 from tntfl.blueprints.common import tntfl
+from tntfl.constants import ladder_host
 from tntfl.template_utils import gameToJson
 
 game_api = Blueprint('game_api', __name__)
-# TODO constants
-deployment = 'https://int.corefiling.com/~tlr/tntfl-test'
 
 
 @game_api.route('/game/add/json', methods=['POST'])
 def add():
-    response = requests.post(deployment + '/game/add', params={
+    url = urljoin(ladder_host, 'game/add')
+    query = {
         'redPlayer': request.args.get('redPlayer'),
         'redScore': request.args.get('redScore'),
         'bluePlayer': request.args.get('bluePlayer'),
         'blueScore': request.args.get('blueScore'),
-    })
+    }
+    response = requests.post(url, params=query)
     if response.status_code is not 204:
         abort(response.status_code)
 

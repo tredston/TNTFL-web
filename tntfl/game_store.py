@@ -1,5 +1,6 @@
-from builtins import object
 from time import time
+from urllib.request import urlopen
+
 from tntfl.game import Game
 
 
@@ -10,9 +11,9 @@ class GameStore(object):
 
     def getGames(self):
         games = []
-        with open(self._ladderFilePath, 'r') as ladder:
-            for line in ladder.readlines():
-                gameLine = line.split()
+        ladder = urlopen(self._ladderFilePath)
+        for line in ladder:
+            gameLine = line.decode('utf-8').split()
                 numParts = len(gameLine)
                 # Red player, red score, blue player, blue score, time[, deletedBy, deletedAt]
                 if numParts == 5 or numParts == 7:
