@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const awesomeTypescriptLoader = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const packageJson = require('./package.json');
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -106,6 +107,9 @@ function* plugins() {
       filename: `./${page.name}.html`,
     });
   }
+  yield new CopyWebpackPlugin([
+    { from: 'swagger/api.html' },
+  ]);
   if (isProd) {
     yield new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } });
   }

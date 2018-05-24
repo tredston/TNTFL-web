@@ -71,9 +71,4 @@ def historicPage():
 
 @pages.route('/api/')
 def apiPage():
-    template = 'swagger/api.html'
-    if os.path.exists(template):
-        with open(template, 'r') as fh:
-            return fh.read()
-    else:
-        raise Exception('Missing HTML: %s' % template)
+    return get_template('api.html')
