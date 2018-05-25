@@ -98,7 +98,7 @@ function* plugins() {
   yield extractCss;
   for (var page of pages) {
     yield new HtmlWebpackPlugin({
-      template: 'templates/index.ejs',
+      template: 'ui/templates/index.ejs',
       title: '',
       base: page.base,
       appVersion: `${packageJson.version}`,
