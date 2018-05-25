@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { Stats, StatsApi } from 'tntfl-api';
+import { Stats } from 'tntfl-api';
 import '../styles/achievement.less';
 import '../styles/style.less';
 
+import { statsApi } from '../clients/tntfl';
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
 import StatsSection from '../components/stats/stats-section';
@@ -27,7 +28,7 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
     };
   }
   async load() {
-    const stats = await new StatsApi(undefined, '', fetch).getStats();
+    const stats = await statsApi().getStats();
     this.setState({stats});
   }
   componentDidMount() {

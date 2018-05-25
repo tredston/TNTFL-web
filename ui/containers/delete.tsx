@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Button, Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { Game, GamesApi, PlayersApi } from 'tntfl-api';
+import { Game } from 'tntfl-api';
 import '../styles/achievement.less';
 import '../styles/style.less';
 
+import { gamesApi, playersApi } from '../clients/tntfl';
 import GameSummary from '../components/game-summary';
 import NavigationBar from '../components/navigation-bar';
 import { getParameters } from '../utils/utils';
@@ -25,13 +26,13 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
 
   async loadGame() {
     const { gameId } = this.props;
-    const game = await new GamesApi(undefined, '', fetch).getGame(+gameId);
+    const game = await gamesApi().getGame(+gameId);
     this.setState({game} as DeletePageState);
   }
   async loadActivePlayers() {
     const { gameId } = this.props;
     const at = `${+gameId - 1}`;
-    const activePlayers = await new PlayersApi(undefined, '', fetch).getActive(at);
+    const activePlayers = await playersApi().getActive(at);
     this.setState({activePlayers: activePlayers[Number(Object.keys(activePlayers)[0])].count});
   }
   componentDidMount() {

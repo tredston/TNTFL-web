@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
 import * as ReactDOM from 'react-dom';
-import { Game, GamesApi, LadderApi, LadderEntry } from 'tntfl-api';
+import { Game, LadderEntry } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
 import '../styles/style.less';
 
+import { gamesApi, ladderApi } from '../clients/tntfl';
 import RecentGames from '../components/recent-game-list';
 import NavigationBar from '../components/navigation-bar';
 import LadderPanel from '../components/ladder-panel';
@@ -22,11 +23,11 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   };
 
   async loadLadder() {
-    const entries = await new LadderApi(undefined, '', fetch).getLadder(1, 1);
+    const entries = await ladderApi().getLadder(1, 1);
     this.setState({entries} as IndexPageState);
   }
   async loadRecent() {
-    const recentGames = await new GamesApi(undefined, '', fetch).getRecent();
+    const recentGames = await gamesApi().getRecent();
     this.setState({recentGames} as IndexPageState);
   }
   componentDidMount() {

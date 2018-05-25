@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Player, GamesApi } from 'tntfl-api';
+import { Player } from 'tntfl-api';
 
+import { gamesApi } from '../../clients/tntfl';
 import StatRow from './stat-row';
 
 interface PredictRowProps extends Props<PredictRow> {
@@ -21,7 +22,7 @@ export default class PredictRow extends Component<PredictRowProps, PredictRowSta
   async loadPrediction(props: PredictRowProps) {
     const { player1, player2 } = props;
     if (player1 !== undefined && player2 !== undefined) {
-      const r = await new GamesApi(undefined, '', fetch).predict(player1.skill, player2.skill);
+      const r = await gamesApi().predict(player1.skill, player2.skill);
       this.setState({predictedBlueGoalRatio: r.blueGoalRatio});
     }
   }

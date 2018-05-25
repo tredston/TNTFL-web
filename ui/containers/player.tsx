@@ -2,12 +2,13 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { Achievement, Game, Player, PlayersApi } from 'tntfl-api';
+import { Achievement, Game, Player } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
 import '../styles/achievement.less';
 import '../styles/style.less';
 
 import PerPlayerStats from './per-player-stats';
+import { playersApi } from '../clients/tntfl';
 import PlayerAchievements from '../components/player/player-achievements';
 import PlayerSkillChart from '../components/player/player-skill-chart';
 import PlayerStats from '../components/player/player-stats';
@@ -36,21 +37,21 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
   }
   async loadSummary() {
     const { playerName } = this.props;
-    const player = await new PlayersApi(undefined, '', fetch).getPlayer(playerName);
+    const player = await playersApi().getPlayer(playerName);
     this.setState({player} as PlayerPageState);
   }
   async loadGames() {
     const { playerName } = this.props;
-    const games = await new PlayersApi(undefined, '', fetch).getPlayerGames(playerName);
+    const games = await playersApi().getPlayerGames(playerName);
     this.setState({games} as PlayerPageState);
   }
   async loadAchievements() {
     const { playerName } = this.props;
-    const achievements = await new PlayersApi(undefined, '', fetch).getPlayerAchievements(playerName);
+    const achievements = await playersApi().getPlayerAchievements(playerName);
     this.setState({achievements} as PlayerPageState);
   }
   async loadActivePlayers() {
-    const activePlayers = await new PlayersApi(undefined, '', fetch).getActive();
+    const activePlayers = await playersApi().getActive();
     this.setState({activePlayers: activePlayers[Object.keys(activePlayers)[0]].count});
   }
   componentDidMount() {

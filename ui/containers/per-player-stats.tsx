@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
 import { Panel } from 'react-bootstrap';
-import { PerPlayerStat, PlayersApi } from 'tntfl-api';
+import { PerPlayerStat } from 'tntfl-api';
 
+import { playersApi } from '../clients/tntfl';
 import PerPlayerStatsView from '../components/player/per-player-stats';
 
 interface PerPlayerStatsProps extends Props<PerPlayerStats> {
@@ -18,7 +19,7 @@ export default class PerPlayerStats extends Component<PerPlayerStatsProps, State
 
   async loadPerPlayerStats() {
     const { playerName } = this.props;
-    const stats = await new PlayersApi(undefined, '', fetch).getPerPlayerStats(playerName);
+    const stats = await playersApi().getPerPlayerStats(playerName);
     this.setState({stats} as State);
   }
   componentDidMount() {

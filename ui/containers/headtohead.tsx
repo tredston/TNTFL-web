@@ -2,9 +2,10 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { Game, GamesApi } from 'tntfl-api';
+import { Game } from 'tntfl-api';
 import '../styles/style.less';
 
+import { gamesApi } from '../clients/tntfl';
 import HeadToHeadChart from '../components/head-to-head/head-to-head-chart';
 import Stats from './head-to-head-stats';
 import GoalDistributionChart from '../components/head-to-head/goal-distribution-chart';
@@ -28,7 +29,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
   }
   async loadGames() {
     const { player1, player2 } = this.props;
-    const games = await new GamesApi(undefined, '', fetch).getHeadToHeadGames(player1, player2);
+    const games = await gamesApi().getHeadToHeadGames(player1, player2);
     this.setState({games} as HeadToHeadPageState);
   }
   componentDidMount() {

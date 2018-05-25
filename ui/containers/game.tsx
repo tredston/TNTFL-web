@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import * as ReactDOM from 'react-dom';
 import { Panel } from 'react-bootstrap';
-import { Game, GamesApi, PlayersApi } from 'tntfl-api';
+import { Game } from 'tntfl-api';
 import '../styles/achievement.less';
 import '../styles/style.less';
 
+import { gamesApi, playersApi } from '../clients/tntfl';
 import GameSummary from '../components/game-summary';
 import GameDetails from '../components/game-details';
 import NavigationBar from '../components/navigation-bar';
@@ -28,17 +29,17 @@ class GamePage extends Component<GamePageProps, GamePageState> {
 
   async loadGame() {
     const { gameId } = this.props;
-    const game = await new GamesApi(undefined, '', fetch).getGame(+gameId);
+    const game = await gamesApi().getGame(+gameId);
     this.setState({game});
   }
   async loadPunditry() {
     const { gameId } = this.props;
-    const punditry = await new GamesApi(undefined, '', fetch).getPunditry(gameId);
+    const punditry = await gamesApi().getPunditry(gameId);
     this.setState({punditry: punditry[Object.keys(punditry)[0]].facts});
   }
   async loadActivePlayers() {
     const { gameId } = this.props;
-    const activePlayers = await new PlayersApi(undefined, '', fetch).getActive(`${+gameId - 1}`);
+    const activePlayers = await playersApi().getActive(`${+gameId - 1}`);
     this.setState({activePlayers: activePlayers[Object.keys(activePlayers)[0]].count});
   }
   componentDidMount() {

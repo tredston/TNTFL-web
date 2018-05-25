@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { Game, LadderApi, Speculated } from 'tntfl-api';
+import { Game, Speculated } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
 import '../styles/style.less';
 
+import { ladderApi } from '../clients/tntfl';
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
 import AddGameForm from '../components/add-game-form';
@@ -27,7 +28,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
   }
   async loadLadder(games: Game[]) {
     const serialised = games.map(g => `${g.red.name},${g.red.score},${g.blue.score},${g.blue.name}`).join(',');
-    const speculated = await new LadderApi(undefined, '', fetch).speculate(1, 1, serialised);
+    const speculated = await ladderApi().speculate(1, 1, serialised);
     this.setState({speculated} as SpeculatePageState);
   }
   componentDidMount() {

@@ -4,12 +4,13 @@ import * as ReactDOM from 'react-dom';
 import { Panel } from 'react-bootstrap';
 import * as Moment from 'moment';
 import * as QueryString from 'query-string';
-import { LadderApi, LadderEntry } from 'tntfl-api';
+import { LadderEntry } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
 import 'ion-rangeslider/css/ion.rangeSlider.css';
 import 'ion-rangeslider/css/ion.rangeSlider.skinModern.css';
 import '../styles/style.less';
 
+import { ladderApi } from '../clients/tntfl';
 import RangeSlider from '../components/range-slider';
 import NavigationBar from '../components/navigation-bar';
 import LadderPanel from '../components/ladder-panel';
@@ -90,7 +91,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
   }
   async loadLadder(gamesFrom: number | undefined, gamesTo: number | undefined) {
     const { begin, end } = this.getRange(gamesFrom, gamesTo);
-    const entries = await new LadderApi(undefined, '', fetch).getLadderBetween(begin, end, 1, 1);
+    const entries = await ladderApi().getLadderBetween(begin, end, 1, 1);
     this.setState({entries} as HistoricPageState);
   }
   componentDidMount() {

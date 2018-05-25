@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { GamesApi } from 'tntfl-api';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
 
 import AddGameForm from './add-game-form';
+import { gamesApi } from '../clients/tntfl';
 
 interface NavigationBarProps extends Props<NavigationBar> {
 }
@@ -43,7 +43,7 @@ export default class NavigationBar extends Component<NavigationBarProps, State> 
 
   async onAddGame(redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) {
     this.setState({isBusy: true});
-    const newGame = await new GamesApi(undefined, '', fetch).addGame(redPlayer, redScore, bluePlayer, blueScore);
+    const newGame = await gamesApi().addGame(redPlayer, redScore, bluePlayer, blueScore);
     window.location.href = `/game/${newGame.date}`;
   }
 }
