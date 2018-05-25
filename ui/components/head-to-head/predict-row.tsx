@@ -21,7 +21,7 @@ export default class PredictRow extends Component<PredictRowProps, PredictRowSta
   async loadPrediction(props: PredictRowProps) {
     const { player1, player2 } = props;
     if (player1 !== undefined && player2 !== undefined) {
-      const r = await new GamesApi(fetch, '').predict({redElo: player1.skill, blueElo: player2.skill});
+      const r = await new GamesApi(undefined, '', fetch).predict(player1.skill, player2.skill);
       this.setState({predictedBlueGoalRatio: r.blueGoalRatio});
     }
   }

@@ -44,7 +44,7 @@ function createStory(): () => JSX.Element {
       against: 5494,
       gamesAsRed: 609,
       gamesToday: 2,
-      for: 6419,
+      _for: 6419,
     },
     games: {
       href: 'games/json',

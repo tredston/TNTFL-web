@@ -27,8 +27,7 @@ export default class StatsPage extends Component<StatsPageProps, StatsPageState>
     };
   }
   async load() {
-    const api = new StatsApi(fetch, '');
-    const stats = await api.getStats();
+    const stats = await new StatsApi(undefined, '', fetch).getStats();
     this.setState({stats});
   }
   componentDidMount() {

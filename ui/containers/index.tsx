@@ -22,13 +22,11 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   };
 
   async loadLadder() {
-    const api = new LadderApi(fetch, '');
-    const entries = await api.getLadder({ showInactive: 1, players: 1 });
+    const entries = await new LadderApi(undefined, '', fetch).getLadder(1, 1);
     this.setState({entries} as IndexPageState);
   }
   async loadRecent() {
-    const api = new GamesApi(fetch, '');
-    const recentGames = await api.getRecent({});
+    const recentGames = await new GamesApi(undefined, '', fetch).getRecent();
     this.setState({recentGames} as IndexPageState);
   }
   componentDidMount() {

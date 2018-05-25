@@ -22,14 +22,14 @@ function toTableData(stats: PerPlayerStat[]) {
   return stats && stats.sort((a: PerPlayerStat, b: PerPlayerStat) => b.skillChange - a.skillChange).map((s) => {
     return {
       opponent: s.opponent,
-      for: s.for,
+      for: s._for,
       against: s.against,
       games: s.games,
       wins: s.wins,
       draws: s.games - s.wins - s.losses,
       losses: s.losses,
       totals: {
-        for: s.for,
+        for: s._for,
         against: s.against,
         games: s.games,
         wins: s.wins,

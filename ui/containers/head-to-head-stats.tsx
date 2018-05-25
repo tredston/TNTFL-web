@@ -24,8 +24,7 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
     };
   }
   async loadPlayer(playerName: string): Promise<Player> {
-    const api = new PlayersApi(fetch, '');
-    return await api.getPlayer({player: playerName});
+    return await new PlayersApi(undefined, '', fetch).getPlayer(playerName);
   }
   async loadPlayers() {
     const { player1, player2 } = this.props;
@@ -34,8 +33,7 @@ export default class HeadToHeadStats extends Component<HeadToHeadStatsProps, Hea
     this.setState({player1: await p1, player2: await p2});
   }
   async loadActivePlayers() {
-    const api = new PlayersApi(fetch, '');
-    const activePlayers = await api.getActive({});
+    const activePlayers = await new PlayersApi(undefined, '', fetch).getActive();
     this.setState({activePlayers});
   }
   componentDidMount() {

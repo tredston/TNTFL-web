@@ -43,7 +43,7 @@ export default class NavigationBar extends Component<NavigationBarProps, State> 
 
   async onAddGame(redPlayer: string, redScore: number, bluePlayer: string, blueScore: number) {
     this.setState({isBusy: true});
-    const newGame = await new GamesApi(fetch, '').addGame({ redPlayer, redScore, bluePlayer, blueScore });
+    const newGame = await new GamesApi(undefined, '', fetch).addGame(redPlayer, redScore, bluePlayer, blueScore);
     window.location.href = `/game/${newGame.date}`;
   }
 }

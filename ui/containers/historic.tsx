@@ -90,8 +90,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
   }
   async loadLadder(gamesFrom: number | undefined, gamesTo: number | undefined) {
     const { begin, end } = this.getRange(gamesFrom, gamesTo);
-    const api = new LadderApi(fetch, '');
-    const entries = await api.getLadderBetween({players: 1, showInactive: 1, begin, end});
+    const entries = await new LadderApi(undefined, '', fetch).getLadderBetween(begin, end, 1, 1);
     this.setState({entries} as HistoricPageState);
   }
   componentDidMount() {

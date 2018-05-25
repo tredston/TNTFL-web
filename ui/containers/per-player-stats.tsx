@@ -18,8 +18,7 @@ export default class PerPlayerStats extends Component<PerPlayerStatsProps, State
 
   async loadPerPlayerStats() {
     const { playerName } = this.props;
-    const api = new PlayersApi(fetch, '');
-    const stats = await api.getPerPlayerStats({player: playerName});
+    const stats = await new PlayersApi(undefined, '', fetch).getPerPlayerStats(playerName);
     this.setState({stats} as State);
   }
   componentDidMount() {

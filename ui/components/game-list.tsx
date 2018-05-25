@@ -22,7 +22,7 @@ export default class GameList extends Component<GameListProps, State> {
     const { games } = this.props;
     if (games.length > 0) {
       const at = games.map((game) => game.date).join(',');
-      const json = await new GamesApi(fetch, '').getPunditry({at});
+      const json = await new GamesApi(undefined, '', fetch).getPunditry(at);
       const punditry = Object.keys(json).reduce((acc, cur) => acc.set(+cur, json[cur].facts), new Map<number, string[]>());
       this.setState({punditry});
     }
@@ -31,7 +31,7 @@ export default class GameList extends Component<GameListProps, State> {
     const { games } = this.props;
     if (games.length > 0) {
       const at = games.map((game) => game.date - 1).join(',');
-      const json: {[key: string]: {count: number}} = await new PlayersApi(fetch, '').getActive({at});
+      const json: {[key: string]: {count: number}} = await new PlayersApi(undefined, '', fetch).getActive(at);
       const activePlayers = Object.keys(json).reduce((acc, cur) => acc.set(+cur, json[cur].count), new Map<number, number>());
       this.setState({activePlayers});
     }

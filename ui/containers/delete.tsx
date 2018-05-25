@@ -25,15 +25,13 @@ class DeletePage extends Component<DeletePageProps, DeletePageState> {
 
   async loadGame() {
     const { gameId } = this.props;
-    const api = new GamesApi(fetch, '');
-    const game = await api.getGame({gameId: +gameId});
+    const game = await new GamesApi(undefined, '', fetch).getGame(+gameId);
     this.setState({game} as DeletePageState);
   }
   async loadActivePlayers() {
     const { gameId } = this.props;
-    const api = new PlayersApi(fetch, '');
     const at = `${+gameId - 1}`;
-    const activePlayers: {[key: string]: {count: number}} = await api.getActive({at});
+    const activePlayers = await new PlayersApi(undefined, '', fetch).getActive(at);
     this.setState({activePlayers: activePlayers[Number(Object.keys(activePlayers)[0])].count});
   }
   componentDidMount() {

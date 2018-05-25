@@ -28,8 +28,7 @@ class HeadToHeadPage extends Component<HeadToHeadPageProps, HeadToHeadPageState>
   }
   async loadGames() {
     const { player1, player2 } = this.props;
-    const api = new GamesApi(fetch, '');
-    const games = await api.getHeadToHeadGames({player1, player2});
+    const games = await new GamesApi(undefined, '', fetch).getHeadToHeadGames(player1, player2);
     this.setState({games} as HeadToHeadPageState);
   }
   componentDidMount() {

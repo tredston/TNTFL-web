@@ -27,8 +27,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
   }
   async loadLadder(games: Game[]) {
     const serialised = games.map(g => `${g.red.name},${g.red.score},${g.blue.score},${g.blue.name}`).join(',');
-    const api = new LadderApi(fetch, '');
-    const speculated = await api.speculate({showInactive: 1, players: 1, previousGames: serialised});
+    const speculated = await new LadderApi(undefined, '', fetch).speculate(1, 1, serialised);
     this.setState({speculated} as SpeculatePageState);
   }
   componentDidMount() {

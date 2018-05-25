@@ -28,19 +28,17 @@ class GamePage extends Component<GamePageProps, GamePageState> {
 
   async loadGame() {
     const { gameId } = this.props;
-    const api = new GamesApi(fetch, '');
-    const game = await api.getGame({gameId: +gameId});
+    const game = await new GamesApi(undefined, '', fetch).getGame(+gameId);
     this.setState({game});
   }
   async loadPunditry() {
     const { gameId } = this.props;
-    const api = new GamesApi(fetch, '');
-    const punditry = await api.getPunditry({at: gameId});
+    const punditry = await new GamesApi(undefined, '', fetch).getPunditry(gameId);
     this.setState({punditry: punditry[Object.keys(punditry)[0]].facts});
   }
   async loadActivePlayers() {
     const { gameId } = this.props;
-    const activePlayers = await new PlayersApi(fetch, '').getActive({at: `${+gameId - 1}`});
+    const activePlayers = await new PlayersApi(undefined, '', fetch).getActive(`${+gameId - 1}`);
     this.setState({activePlayers: activePlayers[Object.keys(activePlayers)[0]].count});
   }
   componentDidMount() {

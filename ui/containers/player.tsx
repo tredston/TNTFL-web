@@ -36,21 +36,21 @@ class PlayerPage extends Component<PlayerPageProps, PlayerPageState> {
   }
   async loadSummary() {
     const { playerName } = this.props;
-    const player = await new PlayersApi(fetch, '').getPlayer({player: playerName});
+    const player = await new PlayersApi(undefined, '', fetch).getPlayer(playerName);
     this.setState({player} as PlayerPageState);
   }
   async loadGames() {
     const { playerName } = this.props;
-    const games = await new PlayersApi(fetch, '').getPlayerGames({player: playerName});
+    const games = await new PlayersApi(undefined, '', fetch).getPlayerGames(playerName);
     this.setState({games} as PlayerPageState);
   }
   async loadAchievements() {
     const { playerName } = this.props;
-    const achievements = await new PlayersApi(fetch, '').getPlayerAchievements({player: playerName});
+    const achievements = await new PlayersApi(undefined, '', fetch).getPlayerAchievements(playerName);
     this.setState({achievements} as PlayerPageState);
   }
   async loadActivePlayers() {
-    const activePlayers = await new PlayersApi(fetch, '').getActive({});
+    const activePlayers = await new PlayersApi(undefined, '', fetch).getActive();
     this.setState({activePlayers: activePlayers[Object.keys(activePlayers)[0]].count});
   }
   componentDidMount() {
