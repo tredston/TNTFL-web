@@ -11,6 +11,7 @@ import tntfl.test.transforms.test_achievement as test_achievement
 import tntfl.test.transforms.test_belt as test_belt
 import tntfl.test.transforms.test_elo as test_elo
 import tntfl.test.transforms.test_rank as test_rank
+from tntfl.constants import config
 from tntfl.test import test_add, test_delete
 from tntfl.test.blueprints import test_entry
 from tntfl.test.blueprints import test_game_api
@@ -40,6 +41,11 @@ def functionalTestSuite():
     test_suite.addTest(unittest.findTestCases(test_ladder_api))
     test_suite.addTest(unittest.findTestCases(test_pages))
     test_suite.addTest(unittest.findTestCases(test_player_api))
+    return test_suite
+
+
+def integration_test_suite():
+    test_suite = unittest.TestSuite()
     test_suite.addTest(unittest.findTestCases(test_add))
     test_suite.addTest(unittest.findTestCases(test_delete))
     return test_suite
@@ -47,8 +53,8 @@ def functionalTestSuite():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--integration', dest='runIntegration', action='store_true')
-    parser.set_defaults(runIntegration=False)
+    parser.add_argument('-i', '--integration', dest='integration', action='store_true')
+    parser.set_defaults(integration=False)
     args = parser.parse_args()
 
     runner = unittest.TextTestRunner()
@@ -59,6 +65,11 @@ if __name__ == "__main__":
     if len(result.errors) == 0 and len(result.failures) == 0:
         print('Running functional tests:')
         result = runner.run(functionalTestSuite())
+
+    if len(result.errors) == 0 and len(result.failures) == 0 and args.integration:
+        config.reset()
+        print('Running integration tests:')
+        result = runner.run(integration_test_suite())
 
     ok = len(result.errors) == 0 and len(result.failures) == 0
     sys.exit(not ok)

@@ -25,11 +25,9 @@ class FunctionalTestBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         tntfl.invalidate()
-        # cls._backupFile('tntfl.cfg')
-        cls._backupFile('ladder.txt')
-        shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
+        cls._backupFile('tntfl.cfg')
+        shutil.copyfile(os.path.join('tntfl', 'test', 'tntfl.cfg'), 'tntfl.cfg')
 
     @classmethod
     def tearDownClass(cls):
-        cls._restoreFile('ladder.txt')
-        # cls._restoreFile('tntfl.cfg')
+        cls._restoreFile('tntfl.cfg')

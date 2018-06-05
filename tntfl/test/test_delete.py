@@ -1,15 +1,17 @@
 import unittest
-from urllib.parse import urljoin
 
 import requests
+from flask import Flask
 from requests.auth import HTTPBasicAuth
+from urllib.parse import urljoin
 
+from tntfl.blueprints.game_api import game_api
 from tntfl.constants import config
-from tntfl.test.functional_test_base import FunctionalTestBase
+from tntfl.test.blueprints.test_case import TestCase
 
 
 @unittest.skip('Credentials required')
-class TestDelete(FunctionalTestBase):
+class TestDelete(unittest.TestCase):
     username = ''
     password = ''
 
@@ -39,3 +41,19 @@ class TestDelete(FunctionalTestBase):
         response = requests.post(url, params=query, auth=HTTPBasicAuth(self.username, self.password), allow_redirects=False)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.headers['Location'], redirect)
+
+
+class ApiTests(TestCase):
+    def setUp(self):
+        self.app = Flask(__name__)
+        self.app.register_blueprint(game_api)
+        self.app.config['TESTING'] = True
+        self.client = self.app.test_client()
+
+
+class DeletePage(ApiTests):
+    @unittest.skip('TODO')
+    def testReferrer(self):
+        # TODO send referrer info
+        r = self.client.post(self._page('/game/1223308996/delete/json'))
+        self.assertEqual(r.status_code, 302)

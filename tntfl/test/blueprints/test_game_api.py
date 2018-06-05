@@ -1,6 +1,3 @@
-import json
-import unittest
-
 from flask import Flask
 
 from tntfl.blueprints.game_api import game_api
@@ -17,22 +14,6 @@ class ApiTests(TestCase, FunctionalTestBase):
 
 
 class AddGame(ApiTests):
-    def test(self):
-        page = '/game/add/json'
-        query = 'redPlayer=foo&redScore=5&bluePlayer=bar&blueScore=5'
-        r = self.client.post(self._page(page, query))
-        self.assertEqual(r.status_code, 200)
-        newGame = json.loads(r.data.decode('utf-8'))
-        self.assertEqual(newGame['red']['name'], 'foo')
-
-    def testAddYellowStripeApi(self):
-        page = '/game/add/json'
-        query = 'redPlayer=foo&redScore=10&bluePlayer=bar&blueScore=0'
-        r = self.client.post(self._page(page, query))
-        self.assertEqual(r.status_code, 200)
-        newGame = json.loads(r.data.decode('utf-8'))
-        self.assertEqual(newGame['red']['name'], 'foo')
-
     def testNoSinglePlayer(self):
         page = '/game/add/json'
         query = 'redPlayer=cxh&redScore=10&bluePlayer=cxh&blueScore=0'
@@ -48,12 +29,6 @@ class DeletePage(ApiTests):
     def test(self):
         r = self.client.post(self._page('/game/1223308996/delete/json'))
         self.assertEqual(r.status_code, 204)
-
-    @unittest.skip('TODO')
-    def testReferrer(self):
-        # TODO send referrer info
-        r = self.client.post(self._page('/game/1223308996/delete/json'))
-        self.assertEqual(r.status_code, 302)
 
 
 class GameApi(ApiTests):
@@ -100,5 +75,3 @@ class GameApi(ApiTests):
         self.assertTrue('deleted' in response)
         self.assertEqual(response['deleted']['by'], 'eu')
         self.assertEqual(response['deleted']['at'], 1430915500)
-
-
