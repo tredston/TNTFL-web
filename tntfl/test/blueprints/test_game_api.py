@@ -5,9 +5,10 @@ from flask import Flask
 
 from tntfl.blueprints.game_api import game_api
 from tntfl.test.blueprints.test_case import TestCase
+from tntfl.test.functional_test_base import FunctionalTestBase
 
 
-class ApiTests(TestCase):
+class ApiTests(TestCase, FunctionalTestBase):
     def setUp(self):
         self.app = Flask(__name__)
         self.app.register_blueprint(game_api)

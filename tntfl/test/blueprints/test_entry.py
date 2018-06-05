@@ -1,8 +1,9 @@
 from entry import app
 from tntfl.test.blueprints.test_case import TestCase
+from tntfl.test.functional_test_base import FunctionalTestBase
 
 
-class ApiTests(TestCase):
+class ApiTests(TestCase, FunctionalTestBase):
     def setUp(self):
         app.config['TESTING'] = True
         self.client = app.test_client()

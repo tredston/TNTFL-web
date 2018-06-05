@@ -1,9 +1,7 @@
 import json
 
-from tntfl.test.functional_test_base import FunctionalTestBase
 
-
-class TestCase(FunctionalTestBase):
+class TestCase(object):
     def _getJson(self, page, query=None):
         response = self._get(page, query)
         self.assertEqual(response.status_code, 200)

@@ -2,9 +2,10 @@ from flask import Flask
 
 from tntfl.blueprints.pages import pages
 from tntfl.test.blueprints.test_case import TestCase
+from tntfl.test.functional_test_base import FunctionalTestBase
 
 
-class PageTests(TestCase):
+class PageTests(TestCase, FunctionalTestBase):
     def setUp(self):
         self.app = Flask(__name__)
         self.app.register_blueprint(pages)
