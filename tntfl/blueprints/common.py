@@ -1,4 +1,4 @@
-import tntfl.constants as Constants
+from tntfl.constants import config
 from tntfl.ladder import TableFootballLadder
 
 
@@ -8,7 +8,7 @@ class TNTFL(object):
 
     def get(self):
         if self._tntfl is None:
-            self._tntfl = TableFootballLadder(Constants.ladderFilePath)
+            self._tntfl = TableFootballLadder(config.ladderFilePath)
         return self._tntfl
 
     def invalidate(self):

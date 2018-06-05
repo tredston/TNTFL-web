@@ -2,7 +2,7 @@ import json
 
 from flask import Blueprint, request
 
-import tntfl.constants as Constants
+from tntfl.constants import config
 import tntfl.transforms.transforms as PresetTransforms
 from tntfl.blueprints.common import tntfl
 from tntfl.ladder import TableFootballLadder
@@ -23,7 +23,7 @@ def ladder():
     games_to = request.args.get('gamesTo')
     if games_from and games_to:
         time_range = (int(games_from), int(games_to))
-        this_tntfl = TableFootballLadder(Constants.ladderFilePath, timeRange=time_range, transforms=PresetTransforms.transforms_for_ladder())
+        this_tntfl = TableFootballLadder(config.ladderFilePath, timeRange=time_range, transforms=PresetTransforms.transforms_for_ladder())
 
     return json.dumps(ladderToJson(this_tntfl, base, show_inactive, include_players))
 
@@ -36,6 +36,6 @@ def ladderRange(games_from, games_to):
     include_players = request.args.get('players')
 
     time_range = (int(games_from), int(games_to))
-    this_tntfl = TableFootballLadder(Constants.ladderFilePath, timeRange=time_range, transforms=PresetTransforms.transforms_for_ladder())
+    this_tntfl = TableFootballLadder(config.ladderFilePath, timeRange=time_range, transforms=PresetTransforms.transforms_for_ladder())
 
     return json.dumps(ladderToJson(this_tntfl, base, show_inactive, include_players))

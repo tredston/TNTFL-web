@@ -3,7 +3,7 @@
 import cgi
 import time
 
-import tntfl.constants as Constants
+from tntfl.constants import config
 from tntfl.game import Game
 from tntfl.hooks.addGame import do
 from tntfl.hooks.utils import runHooks
@@ -11,7 +11,7 @@ from tntfl.web import fail_400, getInt, getString, no_content_204
 
 
 def appendGame(game):
-    with open(Constants.ladder_file, 'a') as ladder:
+    with open(config.ladder_file, 'a') as ladder:
         ladder.write("\n%s %s %s %s %.0f" % (game.redPlayer, game.redScore, game.bluePlayer, game.blueScore, game.time))
     runHooks(game.time, [do])
     return game.time

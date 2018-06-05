@@ -5,7 +5,7 @@ import requests
 from flask import abort, Blueprint, request, redirect
 
 from tntfl.blueprints.common import tntfl
-from tntfl.constants import ladder_host
+from tntfl.constants import config
 from tntfl.template_utils import gameToJson
 
 game_api = Blueprint('game_api', __name__)
@@ -13,7 +13,7 @@ game_api = Blueprint('game_api', __name__)
 
 @game_api.route('/game/add/json', methods=['POST'])
 def add():
-    url = urljoin(ladder_host, 'game/add')
+    url = urljoin(config.ladder_host, 'game/add')
     query = {
         'redPlayer': request.args.get('redPlayer'),
         'redScore': request.args.get('redScore'),
@@ -47,6 +47,6 @@ def delete(game_time):
     referrer = request.referrer
     if referrer and referrer.endswith('/delete'):
         referrer = referrer[:-len('/delete')]
-        url = urljoin(ladder_host, 'game/{}/delete?redirect={}'.format(game_time, referrer))
+        url = urljoin(config.ladder_host, 'game/{}/delete?redirect={}'.format(game_time, referrer))
         return redirect(url, code=302)
     return '', 204

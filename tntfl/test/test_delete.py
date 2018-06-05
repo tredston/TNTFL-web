@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 import requests
 from requests.auth import HTTPBasicAuth
 
-from tntfl.constants import ladder_host
+from tntfl.constants import config
 from tntfl.test.functional_test_base import FunctionalTestBase
 
 
@@ -20,19 +20,19 @@ class TestDelete(FunctionalTestBase):
         self.tearDownClass()
 
     def test(self):
-        url = urljoin(ladder_host, 'game/1430928939/delete')
+        url = urljoin(config.ladder_host, 'game/1430928939/delete')
         response = requests.post(url, auth=HTTPBasicAuth(self.username, self.password))
         print(response.text)
         self.assertEqual(response.status_code, 204)
 
     def testUnauthenticated(self):
-        url = urljoin(ladder_host, 'game/1430928939/delete')
+        url = urljoin(config.ladder_host, 'game/1430928939/delete')
         response = requests.post(url)
         self.assertEqual(response.status_code, 401)
 
     def testRedirect(self):
         redirect = 'https://www.google.com'
-        url = urljoin(ladder_host, 'game/1430928939/delete')
+        url = urljoin(config.ladder_host, 'game/1430928939/delete')
         query = {
             'redirect': redirect
         }

@@ -2,13 +2,13 @@ from urllib.parse import urljoin
 
 import requests
 
-from tntfl.constants import ladder_host
+from tntfl.constants import config
 from tntfl.test.functional_test_base import FunctionalTestBase
 
 
 class TestAdd(FunctionalTestBase):
     def test(self):
-        url = urljoin(ladder_host, 'game/add')
+        url = urljoin(config.ladder_host, 'game/add')
         query = {
             'redPlayer': 'foo',
             'redScore': 4,
@@ -19,7 +19,7 @@ class TestAdd(FunctionalTestBase):
         self.assertEqual(response.status_code, 204)
 
     def testMissingParams(self):
-        url = urljoin(ladder_host, 'game/add')
+        url = urljoin(config.ladder_host, 'game/add')
         query = {
             'redPlayer': 'foo',
             'redScore': 4,
@@ -28,7 +28,7 @@ class TestAdd(FunctionalTestBase):
         self.assertEqual(response.status_code, 400)
 
     def testPlayingSelf(self):
-        url = urljoin(ladder_host, 'game/add')
+        url = urljoin(config.ladder_host, 'game/add')
         query = {
             'redPlayer': 'foo',
             'redScore': 4,
@@ -39,7 +39,7 @@ class TestAdd(FunctionalTestBase):
         self.assertEqual(response.status_code, 400)
 
     def testNegativeGoals(self):
-        url = urljoin(ladder_host, 'game/add')
+        url = urljoin(config.ladder_host, 'game/add')
         query = {
             'redPlayer': 'foo',
             'redScore': -4,

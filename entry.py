@@ -3,7 +3,7 @@ import time
 
 from flask import Flask, request, abort
 
-import tntfl.constants as Constants
+from tntfl.constants import config
 import tntfl.transforms.transformer as Transformer
 import tntfl.transforms.transforms as PresetTransforms
 from tntfl.blueprints.ladder_api import ladder_api
@@ -151,7 +151,7 @@ def speculate():
 
     def getLadder(speculative_games):
         transforms = PresetTransforms.transforms_for_recent()
-        games = Transformer.transform(lambda: GameStore(Constants.ladderFilePath).getGames(), transforms)
+        games = Transformer.transform(lambda: GameStore(config.ladderFilePath).getGames(), transforms)
 
         if len(speculative_games) > 0:
             games += speculative_games
