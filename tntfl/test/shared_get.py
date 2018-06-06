@@ -34,7 +34,7 @@ class TestRunner(unittest.TestCase, metaclass=abc.ABCMeta):
         cls._restoreFile('tntfl.cfg')
 
     def _clearCache(self):
-        cacheFile = '^\.cache\.'
+        cacheFile = r'^\.cache\.'
         for f in os.listdir('.'):
             if re.search(cacheFile, f):
                 os.remove(f)
