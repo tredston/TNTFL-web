@@ -105,6 +105,32 @@ jobs:
             . venv/bin/activate
             coverage run --source=tntfl --omit=tntfl/test/* run_tests.py
             codeclimate-test-reporter
+  Server docker:
+    docker:
+      - image: docker:17.05.0-ce-git
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: install
+          command: |
+            apk update
+            apk add jq
+      - setup_remote_docker
+      - run:
+          name: build
+          command: |
+            docker build -t tntfl .
+      - run:
+          name: push
+          command: |
+            VERSION=$(cat package.json | jq -r .version)
+            IMAGE=tredston/tntfl:$VERSION-${CIRCLE_BRANCH/\//.}.$CIRCLE_BUILD_NUM
+            docker tag tntfl $IMAGE
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push $IMAGE
 
 workflows:
   version: 2
@@ -117,5 +143,8 @@ workflows:
           requires:
             - UI compile
       - Server coverage:
+          requires:
+            - Server test
+      - Server docker:
           requires:
             - Server test
