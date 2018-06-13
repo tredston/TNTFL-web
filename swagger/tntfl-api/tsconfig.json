@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "target": "es5",
+    "target": "es2017",
     "module": "commonjs",
     "noImplicitAny": true,
     "outDir": "dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "lib": [
+      "es2017",
+      "dom"
+    ]
   },
   "exclude": [
     "dist",
-    "node_modules",
-    "typings/browser",
-    "typings/main",
-    "typings/main.d.ts"
+    "node_modules"
   ]
 }

@@ -83,12 +83,11 @@ function stripe(b: boolean): string {
 
 interface GameSummaryProps {
   game: Game;
-  base: string;
   numActivePlayers: number;
   punditry?: string[];
 }
 export default function GameSummary(props: GameSummaryProps): JSX.Element {
-  const { game, base, numActivePlayers, punditry } = props;
+  const { game, numActivePlayers, punditry } = props;
   const redStripe = game.red.score === 10 && game.blue.score === 0;
   const blueStripe = game.red.score === 0 && game.blue.score === 10;
   return (
@@ -97,20 +96,20 @@ export default function GameSummary(props: GameSummaryProps): JSX.Element {
       <Table id={'compactTable'}>
         <tbody>
           <tr className={'recent-game-result'}>
-            <td style={{width: '20%'}} className={stripe(redStripe)}> <PlayerName name={game.red.name} base={base} colour={redStripe ? 'yellow-stripe' : 'red-player'} /> </td>
+            <td style={{width: '20%'}} className={stripe(redStripe)}> <PlayerName name={game.red.name} colour={redStripe ? 'yellow-stripe' : 'red-player'} /> </td>
             <td style={{width: '10%'}} className={stripe(redStripe)}> <Rank rank={game.red.newRank + game.red.rankChange} numActivePlayers={numActivePlayers} /> </td>
             <td style={{width: '10%'}} className={stripe(redStripe)}> <AchievementsSummary achievements={game.red.achievements} /> </td>
             <td style={{width: '20%'}} className={stripe(redStripe || blueStripe)}> <GameScore redScore={game.red.score} blueScore={game.blue.score}/> </td>
             <td style={{width: '10%'}} className={stripe(blueStripe)}> <AchievementsSummary achievements={game.blue.achievements} /> </td>
             <td style={{width: '10%'}} className={stripe(blueStripe)}> <Rank rank={game.blue.newRank + game.blue.rankChange} numActivePlayers={numActivePlayers} /> </td>
-            <td style={{width: '20%'}} className={stripe(blueStripe)}> <PlayerName name={game.blue.name} base={base} colour={blueStripe ? 'yellow-stripe' : 'blue-player'} /> </td>
+            <td style={{width: '20%'}} className={stripe(blueStripe)}> <PlayerName name={game.blue.name} colour={blueStripe ? 'yellow-stripe' : 'blue-player'} /> </td>
           </tr>
           <tr className={'game-changes'}>
             <td style={{width: '20%'}}> <SkillChange skillChange={game.red.skillChange} colour='red' /> </td>
             <td style={{width: '10%'}}> <RankChange rankChange={game.red.rankChange} colour='red' /> </td>
             <td style={{width: '10%'}}/>
             <td style={{width: '20%', textAlign: 'center'}}>
-              <GameTime date={game.date} base={base} />
+              <GameTime date={game.date} />
               {punditry && punditry.length > 0 && <img src={headset} style={{marginLeft: 2}} />}
             </td>
             <td style={{width: '10%'}}/>

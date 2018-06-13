@@ -3,8 +3,12 @@ class Player(object):
         self.elo = 0.0
 
 
+def getBlueGoalRatio(red, blue):
+    return 1 / (1 + 10 ** ((red - blue) / 180))
+
+
 def calculateSkillChange(red, blue, redScore, blueScore):
-    predict = 1 / (1 + 10 ** ((red.elo - blue.elo) / 180))
+    predict = getBlueGoalRatio(red.elo, blue.elo)
     goals = blueScore + redScore
     result = blueScore / goals
     delta = (2.5 * goals) * (result - predict)

@@ -10,16 +10,15 @@ interface PlayerRowProps {
   player1?: Player;
   player2?: Player;
   numActivePlayers: number;
-  base: string;
 }
 export default function PlayerRow(props: PlayerRowProps): JSX.Element {
-  const { player1Name, player2Name, player1, player2, numActivePlayers, base } = props;
+  const { player1Name, player2Name, player1, player2, numActivePlayers } = props;
   return (
     <tr>
       <td style={{width: '30%', padding: 0}}>
         <div style={{display: 'flex'}}>
           <div style={{width: '70%'}}>
-            <PlayerName name={player1Name} base={base} colour={'red-player'}/>
+            <PlayerName name={player1Name} colour={'red-player'}/>
           </div>
           <div style={{width: '30%'}}>
             {player1 ? <Rank rank={player1.rank} numActivePlayers={numActivePlayers}/> : 'Loading...'}
@@ -33,7 +32,7 @@ export default function PlayerRow(props: PlayerRowProps): JSX.Element {
             {player2 ? <Rank rank={player2.rank} numActivePlayers={numActivePlayers}/> : 'Loading...'}
           </div>
           <div style={{width: '70%'}}>
-            <PlayerName name={player2Name} base={base} colour={'blue-player'}/>
+            <PlayerName name={player2Name} colour={'blue-player'}/>
           </div>
         </div>
       </td>

@@ -44,7 +44,7 @@ function createStory(): () => JSX.Element {
       against: 5494,
       gamesAsRed: 609,
       gamesToday: 2,
-      for: 6419,
+      _for: 6419,
     },
     games: {
       href: 'games/json',
@@ -53,7 +53,7 @@ function createStory(): () => JSX.Element {
     activity: 1,
   };
   const games: Game[] = createGames(20);
-  return () => <PlayerStats player={player} games={games} numActivePlayers={1} base={''} />;
+  return () => <PlayerStats player={player} games={games} numActivePlayers={1} />;
 }
 
 storiesOf('PlayerStats', module)

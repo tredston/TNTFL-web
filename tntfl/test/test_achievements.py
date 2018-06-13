@@ -355,8 +355,11 @@ class TestNothingIfNotConsistent(unittest.TestCase):
 
 
 class TestEarlyBird(unittest.TestCase):
+    def getLadder(self, filename):
+        return 'file://' + os.path.join(__location__, filename)
+
     def test(self):
-        ladder = TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False)
+        ladder = TableFootballLadder(self.getLadder("testLadder.txt"))
         player = Player("foo")
         opponent = Player("baz")
         game = addGame(opponent, 0, player, 10, 6000000003)
@@ -369,7 +372,7 @@ class TestEarlyBird(unittest.TestCase):
         self.assertFalse(result)
 
     def testFirstGame(self):
-        ladder = TableFootballLadder(os.path.join(__location__, "emptyLadder.txt"), False)
+        ladder = TableFootballLadder(self.getLadder("emptyLadder.txt"))
         player = Player("foo")
         opponent = Player("baz")
         game = addGame(opponent, 0, player, 10, 0)

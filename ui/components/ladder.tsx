@@ -34,11 +34,10 @@ interface LadderProps {
   entries: LadderEntry[];
   showInactive: boolean;
   style?: CSSProperties;
-  base: string;
 }
 export default function Ladder(props: LadderProps): JSX.Element {
   let { entries } = props;
-  const { showInactive, style, base } = props;
+  const { showInactive, style } = props;
   if (!showInactive) {
     entries = entries.filter(e => e.player && e.player.rank >= 1);
   }
@@ -52,7 +51,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
     wins: e.player.total.wins,
     draws: e.player.total.games - e.player.total.wins - e.player.total.losses,
     losses: e.player.total.losses,
-    for: e.player.total.for,
+    for: e.player.total._for,
     against: e.player.total.against,
     totals: e.player.total,
     skill: e.player.skill.toFixed(3),
@@ -60,7 +59,6 @@ export default function Ladder(props: LadderProps): JSX.Element {
     activity: e.player.activity,
   }));
   const numActivePlayers = entries.filter((e) => e.player && e.player.rank >= 1).length;
-  // TODO style
   return (
     <BootstrapTable
       data={flattened}
@@ -77,7 +75,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
         columnClassName={(r) => getLadderLeagueClass(r, numActivePlayers)}
         dataFormat={(r) => r !== -1 ? r : '-'}
       >Pos</TableHeaderColumn>
-      <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerName base={base} name={n}/>}>Player</TableHeaderColumn>
+      <TableHeaderColumn dataField={'name'} dataSort={true} isKey={true} dataFormat={(n) => <PlayerName name={n}/>}>Player</TableHeaderColumn>
       <TableHeaderColumn dataField={'totals'} dataFormat={(p) => GamesChart(p)}>Games</TableHeaderColumn>
       <TableHeaderColumn dataField={'games'} dataSort={true} dataAlign={'center'}>Games</TableHeaderColumn>
       <TableHeaderColumn dataField={'wins'} dataSort={true} dataAlign={'center'}>Wins</TableHeaderColumn>

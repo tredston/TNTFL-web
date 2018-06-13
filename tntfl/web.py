@@ -1,23 +1,6 @@
-import cgi
-import json
-import os
-
-
-def serve_template(templatename, generate=None):
-    print(get_template(templatename, generate))
-
-
-def get_template(templatename, generate):
-    form = cgi.FieldStorage()
-    if form.getfirst("view") == "json":
-        return 'Content-Type: application/json\n\n%s' % json.dumps(generate())
-    else:
-        template = os.path.join('dist', templatename)
-        if os.path.exists(template):
-            with open(template, 'r') as fh:
-                return 'Content-Type: text/html\n\n%s' % fh.read()
-        else:
-            raise Exception('Missing HTML: %s' % template)
+def no_content_204():
+    print("Status: 204 No Content")
+    print()
 
 
 def redirect_302(redirectionTo):
@@ -46,10 +29,4 @@ def getString(key, form):
 def getInt(key, form, default=None):
     value = form.getfirst(key)
     value = int(value) if value else default
-    return value
-
-
-def getFloat(key, form, default=None):
-    value = form.getfirst(key)
-    value = float(value) if value else default
     return value
