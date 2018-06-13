@@ -16,3 +16,7 @@ class TNTFL(object):
 
 
 tntfl = TNTFL()
+
+
+def parse_times(at):
+    return [int(t) for t in at.split(',') if len(t) > 0]
