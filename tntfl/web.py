@@ -1,8 +1,3 @@
-import cgi
-import json
-import os
-
-
 def no_content_204():
     print("Status: 204 No Content")
     print()

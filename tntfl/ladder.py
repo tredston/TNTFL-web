@@ -4,16 +4,13 @@ from collections import Counter
 import tntfl.transforms.transforms as PresetTransforms
 from tntfl import constants
 from tntfl.caching_game_store import CachingGameStore
-from tntfl.game import Game
 from tntfl.player import Player, Streak
-from tntfl.skill_change import Elo
 
 
 class TableFootballLadder(object):
     def __init__(self, ladderFilePath, timeRange=None, transforms=None, games=None, postGameHooks=[]):
         self.games = []
         self.players = {}
-        self._skillChange = Elo()
         self._recentlyActivePlayers = (-1, [])
 
         self._ladderTime = {'now': timeRange is None, 'range': timeRange}
@@ -43,10 +40,6 @@ class TableFootballLadder(object):
         if name not in self.players:
             self.players[name] = Player(name)
         return self.players[name]
-
-    # returns blue's goal ratio
-    def predict(self, red, blue):
-        return self._skillChange.getBlueGoalRatio(red.elo, blue.elo)
 
     def _getActivePlayers(self, atTime=None):
         if atTime is None:

@@ -15,7 +15,7 @@ from tntfl.game import Game
 from tntfl.game_store import GameStore
 from tntfl.ladder import TableFootballLadder
 from tntfl.pundit import Pundit
-from tntfl.skill_change import Elo
+import tntfl.transforms.elo as Elo
 from tntfl.template_utils import gameToJson, getSharedGames, getStatsJson, getSpeculateJson
 
 app = Flask(__name__)
@@ -128,7 +128,7 @@ def headToHeadGames(player1, player2):
 
 @app.route('/predict/<red_elo>/<blue_elo>/json')
 def predict(red_elo, blue_elo):
-    return json.dumps({'blueGoalRatio': Elo().getBlueGoalRatio(float(red_elo), float(blue_elo))})
+    return json.dumps({'blueGoalRatio': Elo.getBlueGoalRatio(float(red_elo), float(blue_elo))})
 
 
 @app.route('/stats/json')

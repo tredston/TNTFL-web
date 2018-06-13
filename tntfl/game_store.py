@@ -1,4 +1,3 @@
-from time import time
 from urllib.request import urlopen
 
 from tntfl.game import Game
