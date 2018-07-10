@@ -43,10 +43,8 @@ def game(game_time):
 
 @game_api.route('/game/<int:game_time>/delete/json', methods=['GET', 'POST'])
 def delete(game_time):
+    """ Returns a 302, not JSON. """
     tntfl.invalidate()
-    referrer = request.referrer
-    if referrer and referrer.endswith('/delete'):
-        referrer = referrer[:-len('/delete')]
-        url = urljoin(config.ladder_host, 'game/{}/delete?redirect={}'.format(game_time, referrer))
+    # Redirect so we don't have to do any auth/referring
+    url = urljoin(config.ladder_host, 'game/{}/delete'.format(game_time))
         return redirect(url, code=302)
-    return '', 204

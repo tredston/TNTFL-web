@@ -8,7 +8,7 @@ from tntfl.constants import config
 from tntfl.game_store import GameStore
 from tntfl.hooks.deleteGame import do
 from tntfl.hooks.utils import runHooks
-from tntfl.web import fail_404, getInt, fail_400, redirect_302, getString, no_content_204
+from tntfl.web import fail_404, getInt, fail_400, redirect_302, no_content_204
 
 
 def deleteGame(gameTime, deletedBy, deletedAt):
@@ -32,15 +32,16 @@ def deleteGame(gameTime, deletedBy, deletedAt):
 
 
 form = cgi.FieldStorage()
-
 gameTime = getInt('game', form)
-redirect = getString('redirect', form)
+referrer = os.environ.get("HTTP_REFERER")
+deletedBy = os.environ.get("REMOTE_USER", "Unknown")
 if gameTime is not None:
-    deletedBy = os.environ["REMOTE_USER"] if "REMOTE_USER" in os.environ else "Unknown"
     deleted = deleteGame(gameTime, deletedBy, int(time.time()))
     if deleted:
-        if redirect:
-            redirect_302(redirect)
+        if referrer:
+            if referrer.endswith('/delete'):
+                referrer = referrer[:-len('/delete')]
+            redirect_302(referrer)
         else:
             no_content_204()
     else:

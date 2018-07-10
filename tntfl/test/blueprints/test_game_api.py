@@ -31,12 +31,6 @@ class AddGame(ApiTests):
         self.assertEqual(r.status_code, 400)
 
 
-class DeletePage(ApiTests):
-    def test(self):
-        r = self.client.post(self._page('/game/1223308996/delete/json'))
-        self.assertEqual(r.status_code, 204)
-
-
 class GameApi(ApiTests):
     def testNoGame(self):
         r = self.client.get(self._page('/game/'))
