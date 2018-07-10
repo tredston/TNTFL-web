@@ -1,4 +1,4 @@
-from entry import app
+from tntfl.blueprints.entry import app
 from tntfl.test.blueprints.test_case import TestCase
 from tntfl.test.functional_test_base import FunctionalTestBase
 

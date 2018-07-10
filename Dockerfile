@@ -7,8 +7,7 @@ RUN pip install Flask requests --user
 
 # Backend
 WORKDIR /tntfl
-ENV FLASK_APP=entry.py
-COPY entry.py .
+ENV FLASK_APP=tntfl/blueprints/entry.py
 COPY tntfl tntfl
 
 # Frontend
