@@ -20,7 +20,10 @@ def add():
         'bluePlayer': request.args.get('bluePlayer'),
         'blueScore': request.args.get('blueScore'),
     }
-    response = requests.post(url, params=query)
+    headers = {
+        'Referer': 'https://{}/game/add/json'.format(request.host),
+    }
+    response = requests.post(url, params=query, headers=headers)
     if response.status_code is not 204:
         abort(response.status_code)
 
@@ -47,4 +50,4 @@ def delete(game_time):
     tntfl.invalidate()
     # Redirect so we don't have to do any auth/referring
     url = urljoin(config.ladder_host, 'game/{}/delete'.format(game_time))
-        return redirect(url, code=302)
+    return redirect(url, code=302)
