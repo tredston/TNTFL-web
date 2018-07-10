@@ -1,10 +1,11 @@
-from builtins import range
 import os
 import unittest
-from tntfl.player import Player
+
+from tntfl.achievements import *
 from tntfl.game import Game
 from tntfl.ladder import TableFootballLadder
-from tntfl.achievements import *
+from tntfl.player import Player
+from tntfl.test.configured_test_case import ConfiguredTestCase
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -17,7 +18,7 @@ def addGame(red, redScore, blue, blueScore, time, skillChangeToBlue=0):
     return game
 
 
-class TestAgainstTheOdds(unittest.TestCase):
+class TestAgainstTheOdds(ConfiguredTestCase, unittest.TestCase):
     def testUnder50(self):
         ach = AgainstTheOdds()
         player = Player("foo")
@@ -69,7 +70,7 @@ class TestAgainstTheOdds(unittest.TestCase):
         self.assertTrue(result)
 
 
-class TestAgainstAllOdds(unittest.TestCase):
+class TestAgainstAllOdds(ConfiguredTestCase, unittest.TestCase):
     def _test(self, blueElo):
         ach = AgainstAllOdds()
         player = Player("foo")
@@ -86,7 +87,7 @@ class TestAgainstAllOdds(unittest.TestCase):
         self.assertTrue(self._test(100))
 
 
-class TestUnstable(unittest.TestCase):
+class TestUnstable(ConfiguredTestCase, unittest.TestCase):
     def test(self):
         sut = Unstable()
         player = Player("foo")
@@ -117,7 +118,7 @@ class TestUnstable(unittest.TestCase):
         self.assertFalse(result)
 
 
-class TestUpUpAndAway(unittest.TestCase):
+class TestUpUpAndAway(ConfiguredTestCase, unittest.TestCase):
     def _prep(self, sut, player, opponent):
         for i in range(7):
             game = addGame(player, 6, opponent, 4, i, -1)
@@ -157,7 +158,7 @@ class TestUpUpAndAway(unittest.TestCase):
         self.assertFalse(result)
 
 
-class TestComrades(unittest.TestCase):
+class TestComrades(ConfiguredTestCase, unittest.TestCase):
     def test(self):
         sut = Comrades()
         player = Player("foo")
@@ -182,7 +183,7 @@ class TestComrades(unittest.TestCase):
         self.assertFalse(result)
 
 
-class TestDedication(unittest.TestCase):
+class TestDedication(ConfiguredTestCase, unittest.TestCase):
     def test(self):
         sut = Dedication()
         player = Player("foo")
@@ -197,7 +198,7 @@ class TestDedication(unittest.TestCase):
         self.assertTrue(result)
 
 
-class TestPokeMaster(unittest.TestCase):
+class TestPokeMaster(ConfiguredTestCase, unittest.TestCase):
     def test(self):
         sut = PokeMaster()
         player = Player("foo")
@@ -212,7 +213,7 @@ class TestPokeMaster(unittest.TestCase):
         self.assertTrue(result)
 
 
-class TestTheDominator(unittest.TestCase):
+class TestTheDominator(ConfiguredTestCase, unittest.TestCase):
     def test(self):
         sut = TheDominator()
         player = Player("foo")
@@ -290,7 +291,7 @@ class TestTheDominator(unittest.TestCase):
         self.assertFalse(result)
 
 
-class TestNothingIfNotConsistent(unittest.TestCase):
+class TestNothingIfNotConsistent(ConfiguredTestCase, unittest.TestCase):
     def test(self):
         sut = NothingIfNotConsistent()
         player = Player("foo")
@@ -354,7 +355,7 @@ class TestNothingIfNotConsistent(unittest.TestCase):
         self.assertTrue(result)
 
 
-class TestEarlyBird(unittest.TestCase):
+class TestEarlyBird(ConfiguredTestCase, unittest.TestCase):
     def getLadder(self, filename):
         return 'file://' + os.path.join(__location__, filename)
 
