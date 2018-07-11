@@ -1,9 +1,9 @@
-from builtins import range
-from builtins import object
-from collections import Counter, defaultdict
-import datetime
-import os.path
 import abc
+import datetime
+from builtins import range
+from collections import Counter, defaultdict
+
+from tntfl.constants import config
 
 
 class Achievement(metaclass=abc.ABCMeta):
@@ -329,10 +329,7 @@ class BossFight(Achievement):
 
     def __init__(self):
         super(BossFight, self).__init__()
-        self.boss = None
-        if os.path.isfile("boss.txt"):
-            with open("boss.txt", "r") as f:
-                self.boss = f.readline().strip()
+        self.boss = config.get('tntfl', 'boss')
 
     def applies(self, player, game, opponent, ladder):
         if self.boss is not None:

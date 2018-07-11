@@ -1,11 +1,17 @@
 from flask import Flask
 
+from tntfl.blueprints.common import tntfl
 from tntfl.blueprints.player_api import player_api
 from tntfl.test.blueprints.test_case import TestCase
-from tntfl.test.functional_test_base import FunctionalTestBase
+from tntfl.test.configured_test_case import ConfiguredTestCase
 
 
-class ApiTests(TestCase, FunctionalTestBase):
+class ApiTests(TestCase, ConfiguredTestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        tntfl.invalidate()
+
     def setUp(self):
         self.app = Flask(__name__)
         self.app.register_blueprint(player_api)

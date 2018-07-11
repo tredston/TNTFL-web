@@ -16,7 +16,7 @@ def get_template(templatename):
 
 @pages.route('/dist/<path:path>')
 def dist(path):
-    return send_from_directory('dist', path)
+    return send_from_directory(os.path.join(os.getcwd(), 'dist'), path)
 
 
 @pages.route('/')

@@ -47,4 +47,4 @@ class Configuration(object):
         return self.configuration.has_option(section, option)
 
 
-config = Configuration('tntfl.cfg')
+config = Configuration(os.path.join(os.getcwd(), 'tntfl.cfg'))
