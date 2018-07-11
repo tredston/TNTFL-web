@@ -2,10 +2,8 @@ import os
 import shutil
 import unittest
 
-from tntfl.blueprints.common import tntfl
 
-
-class FunctionalTestBase(unittest.TestCase):
+class IntegrationTestBase(unittest.TestCase):
     @classmethod
     def _backupFilename(cls, filename):
         return '%s.actual' % filename
@@ -24,10 +22,12 @@ class FunctionalTestBase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        tntfl.invalidate()
         cls._backupFile('tntfl.cfg')
-        shutil.copyfile(os.path.join('tntfl', 'test', 'tntfl-functional.cfg'), 'tntfl.cfg')
+        shutil.copyfile(os.path.join('tntfl', 'test', 'tntfl-integration.cfg'), 'tntfl.cfg')
+        cls._backupFile('ladder.txt')
+        shutil.copyfile(os.path.join('tntfl', 'test', 'jrem.ladder'), 'ladder.txt')
 
     @classmethod
     def tearDownClass(cls):
         cls._restoreFile('tntfl.cfg')
+        cls._restoreFile('ladder.txt')
