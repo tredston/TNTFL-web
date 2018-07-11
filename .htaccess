@@ -1,12 +1,11 @@
 Options -MultiViews
 Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"
+Header always set Access-Control-Allow-Headers: "Content-Type"
 
 RewriteEngine on
-RewriteBase /~tlr/tntfl
-
-# Allow any CORS
-RewriteCond %{REQUEST_METHOD} OPTIONS
-RewriteRule ^(.*)$ $1 [R=200,L]
+RewriteCond %{HTTP_REFERER} FRONTEND_URL_HOST  # ^https://tntfl.company.io/.*
+RewriteBase BACKEND_URL_PATH  # /ladder
 
 RewriteRule ^game(.cgi)?/add/ game.cgi?method=add [QSA]
 
