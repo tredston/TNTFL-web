@@ -13,13 +13,13 @@ export default function GoalsStat(props: GoalsStatProps): JSX.Element {
   const data = {
     labels: ['For', 'Against'],
     datasets: [{
-      data: [player.total._for, player.total.against],
+      data: [player.total.for, player.total.against],
       backgroundColor: ['blue', 'red'],
     }],
   };
   return (
     <PieStatBox title='Goals' style={style} data={data}>
-      {player.total._for + player.total.against} goals
+      {player.total.for + player.total.against} goals
     </PieStatBox>
   );
 }

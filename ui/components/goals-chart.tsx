@@ -2,8 +2,8 @@ import * as React from 'react';
 import { PlayerTotals } from 'tntfl-api';
 
 export default function GoalsChart(totals: PlayerTotals): JSX.Element {
-  const total = totals._for + totals.against;
-  const goalsFor = (totals._for / total) * 100;
+  const total = totals.for + totals.against;
+  const goalsFor = (totals.for / total) * 100;
   const against = (totals.against / total) * 100;
   return (
     <div style={{display: 'flex', border: '1px solid black', width: 75, height: 25}}>

@@ -51,7 +51,7 @@ export default function Ladder(props: LadderProps): JSX.Element {
     wins: e.player.total.wins,
     draws: e.player.total.games - e.player.total.wins - e.player.total.losses,
     losses: e.player.total.losses,
-    for: e.player.total._for,
+    for: e.player.total.for,
     against: e.player.total.against,
     totals: e.player.total,
     skill: e.player.skill.toFixed(3),

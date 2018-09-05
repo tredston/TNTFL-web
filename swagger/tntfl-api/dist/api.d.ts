@@ -352,7 +352,7 @@ export interface PerPlayerStat {
      * @type {number}
      * @memberof PerPlayerStat
      */
-    _for: number;
+    for: number;
     /**
      * Goals conceded
      * @type {number}
@@ -481,7 +481,7 @@ export interface PlayerTotals {
      * @type {number}
      * @memberof PlayerTotals
      */
-    _for: number;
+    for: number;
     /**
      * The total number of goals scored against the player
      * @type {number}
