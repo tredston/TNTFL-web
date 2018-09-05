@@ -53,6 +53,10 @@
     "typescript": "2.8"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
     "@storybook/addon-actions": "4.0.0-alpha.1",
     "@storybook/addon-links": "4.0.0-alpha.1",
     "@storybook/addons": "4.0.0-alpha.1",
@@ -61,11 +65,7 @@
     "@types/storybook__addon-links": "^3.0.1",
     "@types/storybook__react": "3.0.3",
     "awesome-typescript-loader": "5",
-    "babel-core": "^6.25.0",
     "babel-loader": "8",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
     "exports-loader": "0.7",

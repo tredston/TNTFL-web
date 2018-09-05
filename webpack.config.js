@@ -30,7 +30,7 @@ const pages = getPages();
 module.exports = {
   mode: isProd ? 'production' : 'development',
   entry: pages.reduce((acc,cur) => {
-    acc[cur.name] = ['babel-polyfill', ...cur.src];
+    acc[cur.name] = ['@babel/polyfill', ...cur.src];
     return acc;
   }, {}),
   output: {
@@ -57,7 +57,7 @@ module.exports = {
           'node_modules',
           'swagger',
         ],
-        use: { loader: 'awesome-typescript-loader', options: { useCache: true, useBabel: true } },
+        use: { loader: 'awesome-typescript-loader', options: { useCache: true, useBabel: true, babelCore: "@babel/core" } },
       },
       {
         test: /\.css$/,
