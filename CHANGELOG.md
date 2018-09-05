@@ -1,6 +1,6 @@
 # Changelog
 
-## develop
+## 5.4.2
 * Fix player links on speculate page
 * Fix missing glyphicons in Chrome
 * Fix period bounding issues

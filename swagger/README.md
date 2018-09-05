@@ -1,4 +1,6 @@
 # Generate client
-* Generate with [editor.swagger.io](editor.swagger.io)
+* Generate `typescript-fetch` client with [editor.swagger.io](editor.swagger.io)
 * Unzip to `tntfl-api`
-* `tsc -d`
+* `yarn global add typescript`
+* `yarn install`
+* `yarn exec tsc -d`

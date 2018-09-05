@@ -31,3 +31,10 @@ api_key = api-key
 delete_api_key = api-key
 tntfl_url = https://deployment.url
 ```
+
+## Development
+
+The web server is written with flask and can be started with:
+```bash
+FLASK_APP=tntfl/blueprints/entry.py python3 -m flask run
+```
