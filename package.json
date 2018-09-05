@@ -60,7 +60,7 @@
     "@types/storybook__addon-actions": "^3.0.1",
     "@types/storybook__addon-links": "^3.0.1",
     "@types/storybook__react": "3.0.3",
-    "awesome-typescript-loader": "5.0.0-1",
+    "awesome-typescript-loader": "5",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
     "babel-polyfill": "^6.23.0",
