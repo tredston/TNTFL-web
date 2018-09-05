@@ -12,8 +12,8 @@ const extractCss = new ExtractTextPlugin({ filename: `[name].css?v=${packageJson
 
 function getPages() {
   const pageDepths = {
-    0: ['index', 'historic'],
-    1: ['speculate', 'stats'],
+    0: ['index'],
+    1: ['speculate', 'stats', 'historic'],
     2: ['game', 'delete', 'player'],
     3: ['headtohead', 'playergames'],
     4: ['headtoheadgames'],
