@@ -1008,7 +1008,13 @@
   version "2.7.32"
   resolved "https://registry.npmjs.org/@types/chart.js/-/chart.js-2.7.32.tgz#37ad544b58902886720cc6cefdff635e3ef682b5"
 
-"@types/lodash@^4.14.74":
+"@types/lodash.isequal@^4.5.3":
+  version "4.5.3"
+  resolved "https://registry.npmjs.org/@types/lodash.isequal/-/lodash.isequal-4.5.3.tgz#b0d2747d3e76cc94da47ebd932c69a98c0ba61b4"
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*":
   version "4.14.116"
   resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.116.tgz#5ccf215653e3e8c786a58390751033a9adca0eb9"
 

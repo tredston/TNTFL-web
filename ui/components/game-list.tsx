@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
 import { Game } from 'tntfl-api';
+import isEqual = require('lodash.isequal');
 
 import GameSummary from './game-summary';
 import { gamesApi, playersApi } from '../clients/tntfl';
@@ -42,7 +43,7 @@ export default class GameList extends Component<GameListProps, State> {
     this.loadActivePlayers();
   }
   componentDidUpdate(prevProps: GameListProps, prevState: State) {
-    if (this.props.games !== prevProps.games) {
+    if (!isEqual(this.props.games, prevProps.games)) {
       this.loadPunditry();
       this.loadActivePlayers();
     }
