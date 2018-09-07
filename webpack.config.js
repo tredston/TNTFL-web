@@ -110,6 +110,7 @@ function* plugins() {
   yield new CopyWebpackPlugin([
     { from: 'swagger/api.html' },
   ]);
+  yield new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/);
   if (isProd) {
     yield new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } });
   }
