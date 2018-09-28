@@ -11,7 +11,7 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 
 
 def testLadder():
-    return TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False)
+    return TableFootballLadder('file://' + os.path.join(__location__, "testLadder.txt"))
 
 
 class GameJson(unittest.TestCase):

@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Component, Props } from 'react';
 import * as ReactDOM from 'react-dom';
-import { Game, GamesApi, LadderApi, LadderEntry } from 'tntfl-api';
+import { Game, LadderEntry } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
 import '../styles/style.less';
 
+import { gamesApi, ladderApi } from '../clients/tntfl';
 import RecentGames from '../components/recent-game-list';
 import NavigationBar from '../components/navigation-bar';
 import LadderPanel from '../components/ladder-panel';
 
 interface IndexPageProps extends Props<IndexPage> {
-  base: string;
 }
 interface IndexPageState {
   entries?: LadderEntry[];
@@ -23,15 +23,11 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
   };
 
   async loadLadder() {
-    const base = '.';
-    const api = new LadderApi(fetch, base);
-    const entries = await api.getLadder({ showInactive: 1, players: 1 });
+    const entries = await ladderApi().getLadder(1, 1);
     this.setState({entries} as IndexPageState);
   }
   async loadRecent() {
-    const base = '.';
-    const api = new GamesApi(fetch, base);
-    const recentGames = await api.getRecent({});
+    const recentGames = await gamesApi().getRecent();
     this.setState({recentGames} as IndexPageState);
   }
   componentDidMount() {
@@ -43,19 +39,16 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
     }, 600 * 1000);
   }
   render() {
-    const { base } = this.props;
     const { entries, recentGames } = this.state;
     return (
       <div>
-        <NavigationBar
-          base={base}
-        />
+        <NavigationBar/>
         <div className={'ladder-page'}>
           <div className={'ladder-panel'}>
             <LadderPanel entries={entries} />
           </div>
           <div className={'side-panel'}>
-            <RecentGames games={recentGames} showAllGames={false} base={base}/>
+            <RecentGames games={recentGames} showAllGames={false} />
           </div>
         </div>
       </div>
@@ -64,8 +57,6 @@ export default class IndexPage extends Component<IndexPageProps, IndexPageState>
 }
 
 ReactDOM.render(
-  <IndexPage
-    base={__tntfl_base_path__}
-  />,
+  <IndexPage/>,
   document.getElementById('entry'),
 );

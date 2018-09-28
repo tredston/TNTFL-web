@@ -14,23 +14,25 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 
 
 class Test(TestCase):
+    def getLadder(self, filename):
+        return 'file://' + os.path.join(__location__, filename)
 
     def testLadder(self):
-        l = TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False)
-        l._theTime = 5000000004
-        self.assertEqual(5, len(l.games))
-        self.assertEqual(4, len(l.players))
+        ladder = TableFootballLadder(self.getLadder("testLadder.txt"))
+        ladder._theTime = 5000000004
+        self.assertEqual(5, len(ladder.games))
+        self.assertEqual(4, len(ladder.players))
 
-        aaa = l.players['aaa']
+        aaa = ladder.players['aaa']
         self.assertAlmostEqual(-2.30014, aaa.elo, places=5)
 
-        self.assertEqual(1, l.getPlayerRank('ccc'))
-        self.assertEqual(-1, l.getPlayerRank('inactive'))
+        self.assertEqual(1, ladder.getPlayerRank('ccc'))
+        self.assertEqual(-1, ladder.getPlayerRank('inactive'))
 
     def testPlayerStreak(self):
-        l = TableFootballLadder(os.path.join(__location__, "testStreak.txt"), False)
+        ladder = TableFootballLadder(self.getLadder("testStreak.txt"))
 
-        streaky = l.players['streak']
+        streaky = ladder.players['streak']
 
         streaks = streaky.getStreaks()
 
@@ -39,13 +41,13 @@ class Test(TestCase):
         self.assertEquals("(last game was a draw)", streaks['currentType'])
 
     def testTwoLadders(self):
-        a = TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False)
-        b = TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False)
+        a = TableFootballLadder(self.getLadder("testLadder.txt"))
+        b = TableFootballLadder(self.getLadder("testLadder.txt"))
         self.assertEquals(5, len(a.games))
         self.assertEquals(5, len(b.games))
 
     def testJrem(self):
-        jl = TableFootballLadder(os.path.join(__location__, "jrem.ladder"), False)
+        jl = TableFootballLadder(self.getLadder("jrem.ladder"))
         jrem = jl.players['jrem']
         streaks = jrem.getStreaks()
 
@@ -54,12 +56,12 @@ class Test(TestCase):
         self.assertEquals(14, streaks['lose'].count)
 
     def testGamesRange(self):
-        l = TableFootballLadder(os.path.join(__location__, "testLadder.txt"), False, [5000000000, 5000000002])
-        self.assertEqual(3, len(l.games))
-        self.assertEqual(3, len(l.players))
+        ladder = TableFootballLadder(self.getLadder("testLadder.txt"), [5000000000, 5000000002])
+        self.assertEqual(3, len(ladder.games))
+        self.assertEqual(3, len(ladder.players))
 
     def testRankChange(self):
-        ladder = TableFootballLadder(os.path.join(__location__, "test_rank.txt"), False)
+        ladder = TableFootballLadder(self.getLadder("test_rank.txt"))
         self.assertEqual(2, ladder.games[0].redPosAfter)
         self.assertEqual(1, ladder.games[0].bluePosAfter)
         self.assertEqual(1, ladder.games[1].redPosAfter)
@@ -68,7 +70,7 @@ class Test(TestCase):
         self.assertEqual(-1, ladder.games[1].bluePosChange)
 
     def testActivePlayers(self):
-        ladder = TableFootballLadder(os.path.join(__location__, "test_active.txt"), False, transforms=PresetTransforms.no_transforms())
+        ladder = TableFootballLadder(self.getLadder("test_active.txt"), transforms=PresetTransforms.no_transforms())
         self.assertEqual(3, ladder.getNumActivePlayers(5000000003))
         self.assertEqual(0, ladder.getNumActivePlayers(6000000002))
         self.assertEqual(2, ladder.getNumActivePlayers(6000000004))

@@ -1,1 +1,5 @@
 requests==2.4.3
+coverage==4.3.4
+codeclimate-test-reporter
+pycodestyle==2.4.0
+Flask==1.0.1

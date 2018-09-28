@@ -198,3 +198,10 @@ def getStatsJson(ladder, base):
         },
         'gamesPerWeek': getGamesPerWeek(ladder.games),
     }
+
+
+def getSpeculateJson(ladder, base, speculated_games, show_inactive, include_players):
+    return {
+        'entries': ladderToJson(ladder, base, show_inactive, include_players),
+        'games': [gameToJson(game, base) for game in speculated_games],
+    }

@@ -1,5 +1,20 @@
-import requests
 import urllib.parse
+
+import requests
+
+from tntfl.constants import config
+import tntfl.transforms.transforms as PresetTransforms
+from tntfl.caching_game_store import CachingGameStore
+
+
+def runHooks(gameTime, postGameHooks):
+    games = CachingGameStore(config.ladderFilePath).loadGames({'now': True}, PresetTransforms.transforms_for_recent())
+    try:
+        game = next(g for g in games if g.time == gameTime)
+        for hook in postGameHooks:
+            hook(game)
+    except StopIteration:
+        pass
 
 
 def postMattermost(mattermostUrl, apiKey, tntflUrl, game, fields, colour):

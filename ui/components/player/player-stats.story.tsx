@@ -53,7 +53,7 @@ function createStory(): () => JSX.Element {
     activity: 1,
   };
   const games: Game[] = createGames(20);
-  return () => <PlayerStats player={player} games={games} numActivePlayers={1} base={''} />;
+  return () => <PlayerStats player={player} games={games} numActivePlayers={1} />;
 }
 
 storiesOf('PlayerStats', module)

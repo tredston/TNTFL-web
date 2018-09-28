@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const awesomeTypescriptLoader = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const packageJson = require('./package.json');
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -11,8 +12,8 @@ const extractCss = new ExtractTextPlugin({ filename: `[name].css?v=${packageJson
 
 function getPages() {
   const pageDepths = {
-    0: ['index', 'historic'],
-    1: ['speculate', 'stats'],
+    0: ['index'],
+    1: ['speculate', 'stats', 'historic'],
     2: ['game', 'delete', 'player'],
     3: ['headtohead', 'playergames'],
     4: ['headtoheadgames'],
@@ -29,7 +30,7 @@ const pages = getPages();
 module.exports = {
   mode: isProd ? 'production' : 'development',
   entry: pages.reduce((acc,cur) => {
-    acc[cur.name] = ['babel-polyfill', ...cur.src];
+    acc[cur.name] = ['@babel/polyfill', ...cur.src];
     return acc;
   }, {}),
   output: {
@@ -56,7 +57,7 @@ module.exports = {
           'node_modules',
           'swagger',
         ],
-        use: { loader: 'awesome-typescript-loader', options: { useCache: true, useBabel: true } },
+        use: { loader: 'awesome-typescript-loader', options: { useCache: true, useBabel: true, babelCore: "@babel/core" } },
       },
       {
         test: /\.css$/,
@@ -97,7 +98,7 @@ function* plugins() {
   yield extractCss;
   for (var page of pages) {
     yield new HtmlWebpackPlugin({
-      template: 'templates/index.ejs',
+      template: 'ui/templates/index.ejs',
       title: '',
       base: page.base,
       appVersion: `${packageJson.version}`,
@@ -106,6 +107,10 @@ function* plugins() {
       filename: `./${page.name}.html`,
     });
   }
+  yield new CopyWebpackPlugin([
+    { from: 'swagger/api.html' },
+  ]);
+  yield new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/);
   if (isProd) {
     yield new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } });
   }

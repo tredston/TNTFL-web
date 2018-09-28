@@ -4,12 +4,13 @@ import * as ReactDOM from 'react-dom';
 import { Panel } from 'react-bootstrap';
 import * as Moment from 'moment';
 import * as QueryString from 'query-string';
-import { LadderApi, LadderEntry } from 'tntfl-api';
+import { LadderEntry } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
 import 'ion-rangeslider/css/ion.rangeSlider.css';
 import 'ion-rangeslider/css/ion.rangeSlider.skinModern.css';
 import '../styles/style.less';
 
+import { ladderApi } from '../clients/tntfl';
 import RangeSlider from '../components/range-slider';
 import NavigationBar from '../components/navigation-bar';
 import LadderPanel from '../components/ladder-panel';
@@ -65,7 +66,6 @@ function getEndOfMonth(startOfMonth: Moment.Moment): Moment.Moment {
 }
 
 interface HistoricPageProps extends Props<HistoricPage> {
-  base: string;
   gamesFrom?: number;
   gamesTo?: number;
 }
@@ -90,10 +90,8 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     return { begin, end };
   }
   async loadLadder(gamesFrom: number | undefined, gamesTo: number | undefined) {
-    const { base } = this.props;
     const { begin, end } = this.getRange(gamesFrom, gamesTo);
-    const api = new LadderApi(fetch, base);
-    const entries = await api.getLadderBetween({players: 1, showInactive: 1, begin, end});
+    const entries = await ladderApi().getLadderBetween(begin, end, 1, 1);
     this.setState({entries} as HistoricPageState);
   }
   componentDidMount() {
@@ -116,7 +114,6 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
     this.loadLadder(gamesFrom, gamesTo);
   }
   render() {
-    const { base } = this.props;
     const { entries, gamesFrom, gamesTo } = this.state;
     const now = (new Date()).getUTCFullYear();
     const firstYear = 2005;
@@ -129,9 +126,7 @@ export default class HistoricPage extends Component<HistoricPageProps, HistoricP
 
     return (
       <div>
-        <NavigationBar
-          base={base}
-        />
+        <NavigationBar/>
         <div>
           <Panel style={{marginLeft: 20, marginRight: 20}}>
             <Panel.Body>
@@ -174,7 +169,6 @@ function getParameters(): [number | undefined, number | undefined] {
 
 ReactDOM.render(
   <HistoricPage
-    base={__tntfl_base_path__}
     gamesFrom={getParameters()[0]}
     gamesTo={getParameters()[1]}
   />,

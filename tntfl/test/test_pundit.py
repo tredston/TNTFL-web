@@ -1,7 +1,6 @@
 import os
 import unittest
 
-from tntfl import constants
 from tntfl.game import Game
 from tntfl.ladder import TableFootballLadder
 from tntfl.player import Player
@@ -327,9 +326,12 @@ class Unit(unittest.TestCase):
 
 
 class TestStreaks(unittest.TestCase):
+    def getLadder(self, filename):
+        return 'file://' + os.path.join(__location__, filename)
+
     def testStreaks(self):
-        l = TableFootballLadder(os.path.join(__location__, "testStreak.txt"), False)
-        streaky = l.players['streak']
+        ladder = TableFootballLadder(self.getLadder("testStreak.txt"))
+        streaky = ladder.players['streak']
 
         sut = Streaks()
         result = sut.getFact(streaky, streaky.games[4], None)
@@ -342,8 +344,8 @@ class TestStreaks(unittest.TestCase):
         self.assertIsNone(result)
 
     def testStreaks2nd(self):
-        l = TableFootballLadder(os.path.join(__location__, "testStreak.txt"), False)
-        streaky = l.players['streak']
+        ladder = TableFootballLadder(self.getLadder("testStreak.txt"))
+        streaky = ladder.players['streak']
         bulkAppend(streaky, 6, Player('baz'), 4, 5000000012, 5)
 
         sut = Streaks()
@@ -353,9 +355,9 @@ class TestStreaks(unittest.TestCase):
         self.assertEqual(result, "At 5 games, streak was on their 2nd longest winning streak.")
 
     def testStreaksAgainst(self):
-        l = TableFootballLadder(os.path.join(__location__, "testStreak.txt"), False)
-        streaky = l.players['streak']
-        test = l.players['test']
+        ladder = TableFootballLadder(self.getLadder("testStreak.txt"))
+        streaky = ladder.players['streak']
+        test = ladder.players['test']
 
         sut = StreaksAgainst()
         result = sut.getFact(streaky, streaky.games[5], test)

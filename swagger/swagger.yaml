@@ -1,10 +1,9 @@
 swagger: '2.0'
 info:
-  version: 5.1.0
+  version: 5.5.0
   title: TNTFL
   description: Table Football Ladder
-host: www.int.corefiling.com
-basePath: /~tlr/tntfl
+host: foos.cfl.io
 schemes:
 - http
 - https
@@ -129,41 +128,6 @@ paths:
           description: Game resource
           schema:
             $ref: '#/definitions/Game'
-  /game/add:
-    post:
-      parameters:
-      - name: redPlayer
-        in: query
-        type: string
-        description: 'The player on red'
-        required: true
-      - name: redScore
-        in: query
-        type: integer
-        format: int32
-        description: 'The red team score'
-        required: true
-      - name: bluePlayer
-        in: query
-        type: string
-        description: 'The player on blue'
-        required: true
-      - name: blueScore
-        in: query
-        type: integer
-        format: int32
-        description: 'The blue team score'
-        required: true
-      operationId: addGameRedirect
-      summary: Add a game
-      description: Add a game.
-      tags: [games]
-      responses:
-        302:
-          description: Redirect to new game's page
-          headers:
-            Location:
-              type: 'string'
   /game/add/json:
     post:
       consumes:
@@ -218,6 +182,7 @@ paths:
       - name: includeDeleted
         description: Use value '1' to include deleted games.
         in: query
+        type: number
         format: int
         required: false
       operationId: getGames

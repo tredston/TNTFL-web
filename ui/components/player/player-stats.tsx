@@ -73,10 +73,9 @@ interface PlayerStatsProps {
   player: Player;
   games: Game[];
   numActivePlayers: number;
-  base: string;
 }
 export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
-  const { player, numActivePlayers, games, base } = props;
+  const { player, numActivePlayers, games } = props;
   const gamesToday = player.total.gamesToday !== undefined ? games.slice(games.length - player.total.gamesToday) : [];
   const flawlessVictories = games.reduce((count, game) => count += isTenNilWin(player.name, game) ? 1 : 0, 0);
   const skillChangeToday = gamesToday.reduce((skill, game) => skill += skillChange(game, player), 0);
@@ -103,7 +102,6 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
                 <DurationStatBox title={'Current streak'}
                   from={currentStreak.gameTimes[0]}
                   to={currentStreak.gameTimes[currentStreak.gameTimes.length - 1]}
-                  base={base}
                 >
                   {currentStreak.gameTimes.length > 0 ? `${currentStreak.gameTimes.length} ${currentStreak.win ? 'wins' : 'losses'}` : '-'}
                 </DurationStatBox>
@@ -114,14 +112,13 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
               <div style={{display: 'flex'}}><SidePreferenceStat player={player} /></div>
 
               <div style={{display: 'flex'}}><StatBox title='Flawless Victories'>{flawlessVictories}</StatBox></div>
-              <div style={{display: 'flex'}}><InstantStatBox title={'Highest ever skill'} at={highestSkill.date} base={base}>{highestSkill.skill.toFixed(3)}</InstantStatBox></div>
-              <div style={{display: 'flex'}}><InstantStatBox title={'Lowest ever skill'} at={lowestSkill.date} base={base}>{lowestSkill.skill.toFixed(3)}</InstantStatBox></div>
+              <div style={{display: 'flex'}}><InstantStatBox title={'Highest ever skill'} at={highestSkill.date}>{highestSkill.skill.toFixed(3)}</InstantStatBox></div>
+              <div style={{display: 'flex'}}><InstantStatBox title={'Lowest ever skill'} at={lowestSkill.date}>{lowestSkill.skill.toFixed(3)}</InstantStatBox></div>
               <div style={{display: 'flex'}}>
                 <DurationStatBox
                   title={'Longest winning streak'}
                   from={winningStreak.gameTimes[0]}
                   to={winningStreak.gameTimes[winningStreak.gameTimes.length - 1]}
-                  base={base}
                 >
                   {winningStreak.gameTimes.length || '-'}
                 </DurationStatBox>
@@ -131,7 +128,6 @@ export default function PlayerStats(props: PlayerStatsProps): JSX.Element {
                   title={'Longest losing streak'}
                   from={losingStreak.gameTimes[0]}
                   to={losingStreak.gameTimes[losingStreak.gameTimes.length - 1]}
-                  base={base}
                 >
                   {losingStreak.gameTimes.length || '-'}
                 </DurationStatBox>

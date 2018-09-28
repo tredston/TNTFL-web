@@ -4,16 +4,13 @@ from collections import Counter
 import tntfl.transforms.transforms as PresetTransforms
 from tntfl import constants
 from tntfl.caching_game_store import CachingGameStore
-from tntfl.game import Game
 from tntfl.player import Player, Streak
-from tntfl.skill_change import Elo
 
 
 class TableFootballLadder(object):
-    def __init__(self, ladderFilePath, useCache=True, timeRange=None, transforms=None, games=None, postGameHooks=[]):
+    def __init__(self, ladderFilePath, timeRange=None, transforms=None, games=None, postGameHooks=[]):
         self.games = []
         self.players = {}
-        self._skillChange = Elo()
         self._recentlyActivePlayers = (-1, [])
 
         self._ladderTime = {'now': timeRange is None, 'range': timeRange}
@@ -22,7 +19,7 @@ class TableFootballLadder(object):
 
         self._gameStore = None
         if games is None:
-            self._gameStore = CachingGameStore(ladderFilePath, useCache)
+            self._gameStore = CachingGameStore(ladderFilePath)
             transforms = PresetTransforms.transforms_for_full_games(self._ladderTime) if transforms is None else transforms
             games = self._gameStore.loadGames(self._ladderTime, transforms)
         withAchievements = 'achievement' in [t.getName() for t in transforms] if transforms is not None else True
@@ -43,10 +40,6 @@ class TableFootballLadder(object):
         if name not in self.players:
             self.players[name] = Player(name)
         return self.players[name]
-
-    # returns blue's goal ratio
-    def predict(self, red, blue):
-        return self._skillChange.getBlueGoalRatio(red.elo, blue.elo)
 
     def _getActivePlayers(self, atTime=None):
         if atTime is None:
@@ -96,35 +89,6 @@ class TableFootballLadder(object):
             maxStreak(streaks['win'], winning, player)
             maxStreak(streaks['lose'], losing, player)
         return {'win': winning, 'lose': losing}
-
-    def _runHooks(self, gameTime):
-        games = self._gameStore.loadGames({'now': True}, PresetTransforms.transforms_for_recent())
-        try:
-            game = next(g for g in games if g.time == gameTime)
-            for hook in self.postGameHooks:
-                hook(game)
-        except StopIteration:
-            pass
-
-    def appendGame(self, redPlayer, redScore, bluePlayer, blueScore):
-        game = None
-        redScore = int(redScore)
-        blueScore = int(blueScore)
-        if redScore >= 0 and blueScore >= 0 and (redScore + blueScore) > 0:
-            game = Game(redPlayer.lower(), redScore, bluePlayer.lower(), blueScore, int(time.time()))
-            self._gameStore.appendGame(game)
-            self._runHooks(game.time)
-            # Invalidate
-            self.games = None
-            self.players = None
-            return game.time
-        return None
-
-    def deleteGame(self, gameTime, deletedBy):
-        found = self._gameStore.deleteGame(gameTime, deletedBy)
-        if found:
-            self._runHooks(gameTime)
-        return found
 
     def getRankedPlayers(self):
         return sorted([p for p in list(self.players.values())], key=lambda x: x.elo, reverse=True)

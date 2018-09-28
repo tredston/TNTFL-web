@@ -1,17 +1,16 @@
 Options -MultiViews
-Header set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"
+Header always set Access-Control-Allow-Headers: "Content-Type"
 
 RewriteEngine on
-RewriteBase /~tlr/tntfl
+RewriteCond %{HTTP_REFERER} FRONTEND_URL_HOST  # ^https://tntfl.company.io/.*
+RewriteBase BACKEND_URL_PATH  # /ladder
 
-RewriteRule (.*)/json$ $1?view=json [QSA]
+RewriteRule ^game(.cgi)?/add/ game.cgi?method=add [QSA]
 
 RewriteRule ^game(.cgi)?/([^/]+)$ game/$2/ [R]
-RewriteRule ^game(.cgi)?/add/ game.cgi?method=add [QSA]
 RewriteRule ^game(.cgi)?/([0-9]+)/delete$ delete.cgi?&game=$2 [QSA]
-RewriteRule ^game(.cgi)?/([0-9]+)/ game.cgi?game=$2 [QSA]
-
-RewriteRule ^games(.cgi)?/([0-9]+)/([0-9]+)/ games.cgi?from=$2&to=$3 [QSA]
 
 <Files "delete.cgi">
   AuthType                basic
@@ -20,25 +19,3 @@ RewriteRule ^games(.cgi)?/([0-9]+)/([0-9]+)/ games.cgi?from=$2&to=$3 [QSA]
   AuthLDAPURL             "ldaps://ldap-auth.int.corefiling.com ldap-auth1.int.corefiling.com ldap-auth2.int.corefiling.com/ou=People,dc=decisionsoft,dc=com?uid"
   Require                 valid-user
 </Files>
-
-RewriteRule ^player(.cgi)?/([^/]+)$ player/$2/ [R]
-RewriteRule ^player(.cgi)?/([a-zA-Z]+)/$ player.cgi?player=$2 [QSA]
-RewriteRule ^player(.cgi)?/([a-zA-Z]+)/games/ player.cgi?player=$2&method=games [QSA]
-RewriteRule ^player(.cgi)?/([a-zA-Z]+)/achievements/ player.cgi?player=$2&method=achievements [QSA]
-RewriteRule ^player(.cgi)?/([a-zA-Z]+)/perplayerstats/ player.cgi?player=$2&method=perplayerstats [QSA]
-
-RewriteRule ^headtohead(.cgi)?/([a-zA-Z]+)/([a-zA-Z]+)/$ headtohead.cgi?player1=$2&player2=$3 [QSA]
-RewriteRule ^headtohead(.cgi)?/([a-zA-Z]+)/([a-zA-Z]+)/games/ headtohead.cgi?player1=$2&player2=$3&method=games [QSA]
-
-RewriteRule ^ladder(.cgi)?/? ladder.cgi [QSA]
-RewriteRule ^ladder(.cgi)?/([0-9]+)/([0-9]+)/ ladder.cgi?gamesFrom=$2&gamesTo=$3 [QSA]
-
-RewriteRule ^predict(.cgi)?/? predict.cgi [QSA]
-RewriteRule ^predict(.cgi)?/([0-9.-]+)/([0-9.-]+)/ predict.cgi?redElo=$2&blueElo=$3 [QSA]
-
-RewriteRule ^api(.cgi)?/ swagger/api.html
-RewriteRule ^stats(.cgi)?/ stats.cgi
-RewriteRule ^recent(.cgi)?/ recent.cgi
-RewriteRule ^speculate(.cgi)?/ speculate.cgi
-RewriteRule ^activeplayers(.cgi)?/ activeplayers.cgi
-RewriteRule ^pundit(.cgi)?/ pundit.cgi

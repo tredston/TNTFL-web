@@ -7,7 +7,6 @@ import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
 
 interface GamesPageProps extends Props<GamesPage> {
-  base: string;
   getUrl: string;
   title: string;
 }
@@ -30,19 +29,17 @@ export default class GamesPage extends Component<GamesPageProps, GamesPageState>
     this.load();
   }
   render() {
-    const { base, title } = this.props;
+    const { title } = this.props;
     const { games } = this.state;
     return (
       <div>
-        <NavigationBar
-          base={base}
-        />
+        <NavigationBar/>
         {games
           ? <div className={'page-container'}>
               <Panel>
                 <Panel.Heading><h2>{title}</h2></Panel.Heading>
                 <Panel.Body>
-                  <GameList games={games.slice().reverse()} base={base}/>
+                  <GameList games={games.slice().reverse()} />
                 </Panel.Body>
               </Panel>
             </div>

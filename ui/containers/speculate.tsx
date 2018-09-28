@@ -2,17 +2,17 @@ import * as React from 'react';
 import { Component, Props } from 'react';
 import { Panel } from 'react-bootstrap';
 import * as ReactDOM from 'react-dom';
-import { Game, LadderApi, Speculated } from 'tntfl-api';
+import { Game, Speculated } from 'tntfl-api';
 import 'react-bootstrap-table/css/react-bootstrap-table.css';
 import '../styles/style.less';
 
+import { ladderApi } from '../clients/tntfl';
 import GameList from '../components/game-list';
 import NavigationBar from '../components/navigation-bar';
 import AddGameForm from '../components/add-game-form';
 import LadderPanel from '../components/ladder-panel';
 
 interface SpeculatePageProps extends Props<SpeculatePage> {
-  base: string;
 }
 interface SpeculatePageState {
   speculated?: Speculated;
@@ -27,10 +27,8 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     };
   }
   async loadLadder(games: Game[]) {
-    const { base } = this.props;
     const serialised = games.map(g => `${g.red.name},${g.red.score},${g.blue.score},${g.blue.name}`).join(',');
-    const api = new LadderApi(fetch, base);
-    const speculated = await api.speculate({showInactive: 1, players: 1, previousGames: serialised});
+    const speculated = await ladderApi().speculate(1, 1, serialised);
     this.setState({speculated} as SpeculatePageState);
   }
   componentDidMount() {
@@ -70,21 +68,17 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
     this.loadLadder([]).then(() => this.setState({isBusy: false} as SpeculatePageState));
   }
   render() {
-    const { base } = this.props;
     const { speculated, isBusy } = this.state;
     const isSpeculating = speculated && speculated.games.length > 0;
     const entries = speculated && speculated.entries;
     return (
       <div>
-        <NavigationBar
-          base={base}
-        />
+        <NavigationBar/>
         <div className={'ladder-page'}>
           <div className={'ladder-panel'}>
             <LadderPanel
               entries={entries}
               speculative={isSpeculating}
-              base={base}
             />
           </div>
           <div className={'side-panel'}>
@@ -95,7 +89,7 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
                   isBusy={isBusy}
                   onSubmit={(rp, rs, bp, bs) => this.onAddGame(rp, rs, bp, bs)}
                 />
-                {speculated && <GameList games={speculated.games.slice().reverse()} base={base}/>}
+                {speculated && <GameList games={speculated.games.slice().reverse()} />}
                 <a href='#' onClick={(e) => this.onReset(e)}>Reset speculation</a>
               </Panel.Body>
             </Panel>
@@ -107,8 +101,6 @@ export default class SpeculatePage extends Component<SpeculatePageProps, Specula
 }
 
 ReactDOM.render(
-  <SpeculatePage
-    base={__tntfl_base_path__}
-  />,
+  <SpeculatePage/>,
   document.getElementById('entry'),
 );
